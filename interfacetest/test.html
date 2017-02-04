@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+
+        $( document ).ready(function() {
+            console.log("ready");
+            loadMockResponse(function(data) {
+                console.log(data);
+            });
+        });
+
+        function loadFromPagefreeze(url1, url2, callback) {
+            $.ajax({
+                type: "POST",
+                url: "https://api1.pagefreezer.com/v1/api/utils/diff/compare",
+                dataType:"jsonp",
+                data: {
+                    url1: url1,
+                    url2: url2,
+                    source: "text",
+                    dataType: "json"
+                },
+                headers: {"x-api-key": "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj"},
+                success: callback
+            });
+        }
+
+        function loadMockResponse(callback) {
+            $.get('mockresponse.json', function(data) {
+                console.log(data);
+
+                var rawHtml1 = data.result.output.raw_html1;
+                var rawHtml2 = data.result.output.raw_html2;
+
+                $('#oldView').html(rawHtml1);
+                $('#newView').html(rawHtml2);
+
+                var diffs = data.result.output.diffs;
+                diffs.forEach(function(diff) {
+                    var textAbove = rawHtml1.substring(0, diff.offset - 1);
+                    var textBelow = rawHtml1.substring(diff.offset + diff.old.length);
+
+                })
+            })
+        }
+    </script>
+</head>
+<body>
+    <div>
+        Old: <input id="url1" type="text"/>&nbsp;New: <input id="url2" type="text"/>&nbsp;<button id="submitButton">Diff</button>
+    </div>
+    <table>
+        <tr><td>Old</td><td>New</td></tr>
+        <tr><td id="oldView"></td><td id="newView"></td></tr>
+    </table>
+</body>
+</html>
