@@ -12,7 +12,7 @@ import json
 def get_PF_diff(url1, url2):
     a = requests.post("https://api1.pagefreezer.com/v1/api/utils/diff/compare", 
                   data=json.dumps({"url1":url1, "url2":url2}) , 
-                  headers= { "Accept": "application/json", "Content-Type": "application/json", "x-api-key": "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj"})
+                  headers= { "Accept": "application/json", "Content-Type": "application/json", "x-api-key": "<HAHAA THIS IS WHERE THE API KEY WOULD GO>"})
     return a.json()
 
 
