@@ -1,6 +1,6 @@
 <% include parts/header.ejs %>
     <div class="row">
-        <% if((typeof oldUrl !== 'undefined') && (typeof oldUrl !== 'undefined')) { %>
+        <% if((typeof oldUrl !== 'undefined') && (typeof newUrl !== 'undefined')) { %>
             <script type="text/javascript">
                 $(document).ready(function() {
                     console.log('urls from get request');
@@ -36,9 +36,9 @@
             <hr/>
         </div>
     </div>
+    <% include parts/tools.ejs %>
     <div class="row">
-        <div class="col-md-8" id="pageView">
+        <div class="col-md-12" id="pageView">
         </div>
-        <% include parts/tools.ejs %>
     </div>
 <% include parts/footer.ejs %>
