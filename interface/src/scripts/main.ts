@@ -58,18 +58,17 @@ $( document ).ready(function() {
         var values = response.result.values;
         console.log(values)
         if (values.length > 0) {
-            appendPre('Data, data:');
             for (let i = 0; i < values.length; i++) {
                 let row = values[i];
-                // Print columns A and E, which correspond to indices 0 and 4.
-                appendPre(row[0] + ', ' + row[4]);
-
+                console.log(row[0] + ', ' + row[4]);
                 console.log(row[8] + ' ' + row[9])
+                
                 toggleProgressbar(true);
                 Pagefreezer.diffPages(
                     $('#url1').val(),
                     $('#url2').val(),
                     function(data, status) {
+                        console.log(status)
                         $('#pageView').html(data.result.output.html);
                         $('#pageView link[rel=stylesheet]').remove();
                         toggleProgressbar(false);
@@ -78,18 +77,11 @@ $( document ).ready(function() {
             
 
         } else {
-            appendPre('No data found.');
+            console.log('No data found.');
         }
         }, function (response: any) {
-        appendPre('Error: ' + response.result.error.message);
+            console.error('Error: ' + response.result.error.message);
         });
-    }
-
-
-    function appendPre(message: string) {
-        var pre = document.getElementById('content');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
     }
 })
 

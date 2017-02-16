@@ -57,7 +57,7 @@ app.get('/diff?', function(req, res) {
             'url2' : newUrl,
             'diff_mode' : 1
         });
-        console.log(postData);
+        // console.log(postData);
         let postOptions = {
             host: 'api1.pagefreezer.com',
             path: '/v1/api/utils/diff/compare',
