@@ -49,7 +49,7 @@ $( document ).ready(function() {
         var path = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${range}`;
 
         gapi.client.request({
-        'path': path,
+            'path': path,
         }).then(function (response: any) {
         // If we need to write to spreadsheets: 
         // 1) Get started: https://developers.google.com/sheets/api/quickstart/js
@@ -65,10 +65,9 @@ $( document ).ready(function() {
                 
                 toggleProgressbar(true);
                 Pagefreezer.diffPages(
-                    $('#url1').val(),
-                    $('#url2').val(),
-                    function(data, status) {
-                        console.log(status)
+                    row[8],
+                    row[9],
+                    function(data, status) {                        
                         $('#pageView').html(data.result.output.html);
                         $('#pageView link[rel=stylesheet]').remove();
                         toggleProgressbar(false);
