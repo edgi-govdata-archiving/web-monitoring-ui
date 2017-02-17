@@ -8,7 +8,20 @@
                 })
             </script>
         <%}%>
+        <% if(typeof index !== 'undefined') { %>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    console.log('request by index');
+
+                    // hack to wait for gapi to init
+                    setTimeout(function() {
+                        $('#diff_by_index').click();
+                    }, 2000)                    
+                })
+            </script>
+        <%}%>
         <div class="col-md-12">
+            <a id="diff_by_index" href=""></a>
             <form role="form" class="form-inline hidden">
                 <div class="form-group">
 

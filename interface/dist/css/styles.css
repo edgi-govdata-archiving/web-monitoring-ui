@@ -3,7 +3,7 @@ body.fixed-to-top-offset {
 }
 
 .info-text {
-    
+    display: none;
 }
 
 #inspectorView {
