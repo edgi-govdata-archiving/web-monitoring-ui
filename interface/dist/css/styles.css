@@ -6,6 +6,10 @@ body.fixed-to-top-offset {
     display: none;
 }
 
+.pager li > a {
+    border-radius: 6px;
+}
+
 #inspectorView {
     color: white;
     margin-bottom: 10px;
