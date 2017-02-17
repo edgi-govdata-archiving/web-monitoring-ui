@@ -27,8 +27,9 @@ The new interface routes to:
 
 With parameters:
 `index` (required)
+
 Main page `http://localhost:3000` redirects to  
-`http://localhost:3000/diffbyindex?index=7` as first records
+`http://localhost:3000/diffbyindex?index=7` as first record
 
 The old interface is hidden, but GET requests can still be made to:
 `http://localhost:3000/diff`
