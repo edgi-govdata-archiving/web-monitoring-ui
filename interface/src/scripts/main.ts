@@ -37,7 +37,7 @@ function start() {
         // !! Work around because gapi.client.init is not in types file 
         (gapi as any).client.init({ 'apiKey': API_KEY });
 
-        showPage(8)
+        showPage(12)
     });
 };
 
@@ -65,8 +65,7 @@ function showPage(row_index: number) {
             Pagefreezer.diffPages(
                 row_data[8],
                 row_data[9],
-                function(data, status) {                        
-                    console.log(status)
+                function(data, status) {
                     loadIframe(data.result.output.html)
                     toggleProgressbar(false);
             });
@@ -94,14 +93,17 @@ function loadIframe(html_embed: string) {
         otherhead.appendChild(link);
 
         // set dimensions
-        iframe.setAttribute('width', (iframe as any).contentWindow.document.body.scrollWidth);
+        // iframe.setAttribute('width', (iframe as any).contentWindow.document.body.scrollWidth);
         iframe.setAttribute('height',(iframe as any).contentWindow.document.body.scrollHeight);
     };
 }
 
 function showDiffMetadata(data: any) {
-    $('#diff_title').text(`${data[0]} - ${data[5]} : `)
-    $('#diff_page_url').attr('href', `http://${data[6]}`).text(data[6])
+    var index = data[0] || 'No index';
+    var title = data[5] || 'No title';
+    var url = data[6] || 'No url'
+    $('#diff_title').text(`${index} - ${title} : `)
+    $('#diff_page_url').attr('href', `http://${url}`).text(url)
 
     // Magic numbers! Match with column indexes from google spreadsheet.
     // Hack because we don't get any type of metadata, just an array

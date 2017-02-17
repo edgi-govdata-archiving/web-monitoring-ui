@@ -21,10 +21,10 @@ body.fixed-to-top-offset {
 
 iframe {
     border: 2px solid black;
+    width: 100%;
 }
 
 .progress {
-    margin: 15px;
     width: 100%;
 }
 
