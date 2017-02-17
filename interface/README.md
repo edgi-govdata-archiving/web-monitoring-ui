@@ -15,6 +15,8 @@ install the node dependencies with `npm install`,
 create `config.json` with google api_key,
 then run `node app.js`
 
+How to get api key: https://developers.google.com/api-client-library/javascript/start/start-js
+
 ######Manual view:
 access the main view at `http://localhost:3000`
 
