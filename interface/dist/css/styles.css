@@ -2,14 +2,27 @@ body.fixed-to-top-offset {
     padding-top: 30rem; 
 }
 
-#inspectorView {
-    color: white;
+.info-text {
+    
 }
 
+#inspectorView {
+    color: white;
+    margin-bottom: 10px;
+}
+#inspectorView input[type="checkbox"] {
+    margin-right: 7px;
+}
 #inspectorView label {
-    font-weight: normal;
-    font-size: 1.2rem;
+    display: block;
+    font-weight: 200;
+    font-size: 1.4rem;
     cursor: pointer;
+}
+
+.short-view label {
+    float: left;
+    margin-right: 25px;
 }
 
 .navbar-text {

@@ -26,6 +26,8 @@ $( document ).ready(function() {
             });
     });
 
+    $('#toggle_view').click(toggleView);
+
     // Load Google api
     gapi.load('client', start);
 })
@@ -125,4 +127,10 @@ function toggleProgressbar(isVisible: boolean) {
     } else {
         $('.progress').hide()
     }
+}
+
+function toggleView(e: Event) {
+    e.preventDefault();
+    $('.info-text').toggle();
+    $('#inspectorView').toggleClass('short-view');
 }
