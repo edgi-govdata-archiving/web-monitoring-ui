@@ -61,22 +61,42 @@ function showPage(row_index: number) {
             console.log(row_data)
             showDiffMetadata(row_data)
             // Todo: turn into own function
-            // toggleProgressbar(true);
-            // Pagefreezer.diffPages(
-            //     row_data[8],
-            //     row_data[9],
-            //     function(data, status) {                        
-            //         console.log(status)
-            //         $('#pageView').html(data.result.output.html);
-            //         // $('#pageView link[rel=stylesheet]').remove();
-            //         toggleProgressbar(false);
-            // });
+            toggleProgressbar(true);
+            Pagefreezer.diffPages(
+                row_data[8],
+                row_data[9],
+                function(data, status) {                        
+                    console.log(status)
+                    loadIframe(data.result.output.html)
+                    toggleProgressbar(false);
+            });
         } else {
             $('#diff_title').text('No data found')
         }
     }, function (response: any) {
         console.error('Error: ' + response.result.error.message);
     });
+}
+
+function loadIframe(html_embed: string) {
+    // inject html
+    var iframe = document.getElementById('pageView');
+    iframe.setAttribute('srcdoc', html_embed);
+
+    iframe.onload = function() {
+        // inject diff css
+        var frm = (frames as any)['pageView'].contentDocument;
+        var otherhead = frm.getElementsByTagName("head")[0];
+        var link = frm.createElement("link");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("type", "text/css");
+        link.setAttribute("href", "http://localhost:3000/css/diff.css");
+        otherhead.appendChild(link);
+
+        // set dimensions
+        iframe.setAttribute('width', (iframe as any).contentWindow.document.body.scrollWidth);
+        iframe.setAttribute('height',(iframe as any).contentWindow.document.body.scrollHeight);
+    };
 }
 
 function showDiffMetadata(data: any) {
