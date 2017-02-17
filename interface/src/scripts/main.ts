@@ -31,8 +31,15 @@ $( document ).ready(function() {
     // Load Google api
     gapi.load('client', start);
 
-    
+    setPagination()
 })
+
+function setPagination() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var index = parseInt(urlParams.get('index')) || 7;
+    $('#prev_index').text(`<-- Row ${index-1}`).attr('href', `/diffbyindex?index=${index-1}`);
+    $('#next_index').text(`Row ${index+1} -->`).attr('href', `/diffbyindex?index=${index+1}`);
+}
 
 function start() {
     $.getJSON('config.json', function (data) {
@@ -146,24 +153,6 @@ declare class URLSearchParams {
     /** Constructor returning a URLSearchParams object. */
     constructor(init?: string| URLSearchParams);
 
-    /**Appends a specified key/value pair as a new search parameter. */
-    append(name: string, value: string): void
-
-    /** Deletes the given search parameter, and its associated value, from the list of all search parameters. */
-    delete(name: string): void; 
-
     /** Returns the first value associated to the given search parameter. */
     get(name: string): string;
-
-    /** Returns all the values association with a given search parameter. */
-    getAll(name: string): string[];
-
-    /** Returns a Boolean indicating if such a search parameter exists. */
-    has(name: string): boolean;
-
-    /** Sets the value associated to a given search parameter to the given value. If there were several values, delete the others. */
-    set(name: string, value: string): void;
-
-    /** Returns a string containg a query string suitable for use in a URL. */
-    toString(): string;
 }
