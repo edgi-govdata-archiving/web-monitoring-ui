@@ -1,5 +1,4 @@
-// How to get: https://developers.google.com/api-client-library/javascript/start/start-js
-
 {
     "api_key": "YOUR_GOOGLE_API_KEY"
 }
+// How to get: https://developers.google.com/api-client-library/javascript/start/start-js
