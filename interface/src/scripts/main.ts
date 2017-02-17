@@ -78,7 +78,7 @@ function showPage(row_index: number) {
 
             console.log(row_data);
             showDiffMetadata(row_data);
-            // runDiff(old_url, new_url);
+            runDiff(old_url, new_url);
             
         } else {
             $('#diff_title').text('No data found')
