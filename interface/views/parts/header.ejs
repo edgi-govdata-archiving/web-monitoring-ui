@@ -16,23 +16,31 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script type="text/javascript" src="bundle.js"></script>
 </head>
-<body>
+<body class="fixed-to-top-offset">
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <nav class="navbar navbar-inverse" role="navigation">
-                <div class="navbar-header">
-
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Diff View</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                    </button> <a class="navbar-brand" href="#">Diff View</a>
+            <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="navbar-text">
+                                <span id="diff_title"></span>
+                                <a id="diff_page_url" href="#"></a>
+                            </p>                            
+                        </div>
+                        <div class="col-md-4">
+                            <nav aria-label="...">
+                                <ul class="pager">
+                                    <li><a href="#">Previous</a></li>
+                                    <li><a href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <% include tools.ejs %>
                 </div>
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                </div>
-
             </nav>
         </div>
     </div>
