@@ -91,6 +91,21 @@ app.get('/diff?', function(req, res) {
 
 });
 
+/**
+ * Get view based on row index
+ *
+ * parameters:
+ * -index
+ 
+ */
+
+app.get('/diffbyindex?', function(req, res) {
+    var index = req.query.index;
+    res.render('main.html', {
+        index : index
+    });
+});
+
 app.listen(3000, function () {
     console.log('Listening on port 3000')
 });
