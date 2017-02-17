@@ -58,17 +58,13 @@ function showPage(row_index: number) {
         var values = response.result.values;
         if (values) {
             var row_data = values[0];
-            console.log(row_data)
-            showDiffMetadata(row_data)
-            // Todo: turn into own function
-            toggleProgressbar(true);
-            Pagefreezer.diffPages(
-                row_data[8],
-                row_data[9],
-                function(data, status) {
-                    loadIframe(data.result.output.html)
-                    toggleProgressbar(false);
-            });
+            var old_url = row_data[8];
+            var new_url = row_data[9];
+
+            console.log(row_data);
+            showDiffMetadata(row_data);
+            // runDiff(old_url, new_url);
+            
         } else {
             $('#diff_title').text('No data found')
         }
@@ -77,6 +73,17 @@ function showPage(row_index: number) {
     });
 }
 
+function runDiff(old_url: string, new_url: string) {
+    // Todo: turn into own function
+    toggleProgressbar(true);
+    Pagefreezer.diffPages(
+        old_url,
+        new_url,
+        function(data, status) {
+            loadIframe(data.result.output.html);
+            toggleProgressbar(false);
+    });
+}
 function loadIframe(html_embed: string) {
     // inject html
     var iframe = document.getElementById('pageView');
