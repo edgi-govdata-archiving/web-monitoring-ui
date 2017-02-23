@@ -1,4 +1,4 @@
-<% include parts/header.ejs %>
+{% include 'header.html' %}
     <div class="row">
         <% if((typeof oldUrl !== 'undefined') && (typeof newUrl !== 'undefined')) { %>
             <script type="text/javascript">
@@ -16,7 +16,7 @@
                     // hack to wait for gapi to init
                     setTimeout(function() {
                         $('#diff_by_index').click();
-                    }, 2000)                    
+                    }, 2000)
                 })
             </script>
         <%}%>
@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-12">
             <iframe id="pageView" sandbox="allow-same-origin" srcdoc=""></iframe>
