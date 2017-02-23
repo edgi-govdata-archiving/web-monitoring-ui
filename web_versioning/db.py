@@ -8,33 +8,32 @@ import csv
 import sqlalchemy
 import pymongo
 
+# These schemas were informed by work by @Mr0grog at
+# https://github.com/edgi-govdata-archiving/webpage-versions-db/blob/master/db/schema.rb
+PAGES_COLUMNS = (
+    sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
+    sqlalchemy.Column('url', sqlalchemy.Text),
+    sqlalchemy.Column('title', sqlalchemy.Text),
+    sqlalchemy.Column('agency', sqlalchemy.Text),
+    sqlalchemy.Column('site', sqlalchemy.Text),
+    sqlalchemy.Column('created_at', sqlalchemy.DateTime,
+                      default=datetime.datetime.utcnow),
+)
+
+SNAPSHOTS_COLUMNS = (
+    sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
+    sqlalchemy.Column('page_uuid', sqlalchemy.Text),
+    sqlalchemy.Column('capture_time', sqlalchemy.DateTime),
+    sqlalchemy.Column('path', sqlalchemy.Text),
+    sqlalchemy.Column('created_at', sqlalchemy.DateTime,
+                      default=datetime.datetime.utcnow),
+)
+
 
 def create(engine):
-    # These schemas were informed by work by @Mr0grog at
-    # https://github.com/edgi-govdata-archiving/webpage-versions-db/blob/master/db/schema.rb
     meta = sqlalchemy.MetaData(engine)
-
-    columns = (
-            sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
-            sqlalchemy.Column('url', sqlalchemy.Text),
-            sqlalchemy.Column('title', sqlalchemy.Text),
-            sqlalchemy.Column('agency', sqlalchemy.Text),
-            sqlalchemy.Column('site', sqlalchemy.Text),
-            sqlalchemy.Column('created_at', sqlalchemy.DateTime,
-                            default=datetime.datetime.utcnow),
-    )
-    sqlalchemy.Table("Pages", meta, *columns)
-
-    columns = (
-            sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
-            sqlalchemy.Column('page_uuid', sqlalchemy.Text),
-            sqlalchemy.Column('capture_time', sqlalchemy.DateTime),
-            sqlalchemy.Column('path', sqlalchemy.Text),
-            sqlalchemy.Column('created_at', sqlalchemy.DateTime,
-                            default=datetime.datetime.utcnow),
-    )
-    sqlalchemy.Table("Snapshots", meta, *columns)
-
+    sqlalchemy.Table("Pages", meta, *PAGES_COLUMNS)
+    sqlalchemy.Table("Snapshots", meta, *SNAPSHOTS_COLUMNS)
     meta.create_all()
 
 
@@ -42,21 +41,16 @@ class Pages:
     """
     Interface to a table associating a URL with agency metadata.
     """
-    def __init__(self, meta):
-        self._table = sqlalchemy.Table('Pages', meta)
+    def __init__(self, engine):
+        self._engine = engine
+        meta = sqlalchemy.MetaData(engine)
+        self._table = sqlalchemy.Table('Pages', meta, autoload=True)
 
     def insert(self, url, title='', agency='', site=''):
-        c = self._conn
         _uuid = str(uuid.uuid4())
-        c.execute("INSERT INTO Pages (uuid, url, title, agency, site) "
-                  "VALUES "
-                  "(?, ?, ?, ?, ?);", (_uuid, url, title, agency, site))
+        values = (_uuid, url, title, agency, site, datetime.datetime.utcnow())
+        self._engine.execute(self._table.insert().values(values))
         return _uuid
-
-    def __len__(self):
-        c = self._conn
-        length, = c.execute("SELECT COUNT(*) FROM Pages").fetchone()
-        return length
 
 
 class Snapshots:
@@ -70,31 +64,25 @@ class Snapshots:
     processing_deque = collections.deque()
     nt = collections.namedtuple('Snapshot', 'uuid page_uuid capture_time path')
 
-    def __init__(self, conn):
-        self._conn = conn
+    def __init__(self, engine):
+        self._engine = engine
+        meta = sqlalchemy.MetaData(engine)
+        self._table = sqlalchemy.Table('Snapshots', meta, autoload=True)
 
     def insert(self, page_uuid, capture_time, path):
-        c = self._conn
         _uuid = str(uuid.uuid4())
-        c.execute("INSERT INTO Snapshots "
-                  "(uuid, page_uuid, capture_time, path) "
-                  "VALUES "
-                  "(?, ?, ?, ?);", (_uuid, page_uuid, capture_time, path))
+        values = (_uuid, page_uuid, capture_time, path,
+                  datetime.datetime.utcnow())
+        self._engine.execute(self._table.insert().values(values))
         self.processing_deque.append(_uuid)
         return _uuid
 
     def __getitem__(self, uuid):
         "instance[uuid] -> namedtuple"
-        c = self._conn
-        result = c.execute("SELECT uuid, page_uuid, capture_time, path "
-                           "FROM Snapshots "
-                           "WHERE uuid=?;", uuid).fetchone()
+        result = self._engine.execute(
+            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        return result
         return self.nt(*result)
-
-    def __len__(self):
-        c = self._conn
-        length, = c.execute("SELECT COUNT(*) FROM Snapshots").fetchone()
-        return length
 
 
 class Results:

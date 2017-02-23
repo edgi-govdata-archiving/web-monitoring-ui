@@ -11,12 +11,12 @@ MONGO_DB_NAME = 'page_freezer_v1'
 engine = sqlalchemy.create_engine(SQL_DB_URI)
 client = pymongo.MongoClient(MONGO_DB_URI)
 
+create(engine)
 results = Results(client[MONGO_DB_NAME])
 Annotations = Annotations(client[MONGO_DB_NAME])
 snapshots = Snapshots(engine.connect())
 pages = Pages(engine.connect())
 
-create(engine)
 
 def load_examples():
     EXAMPLES = [
