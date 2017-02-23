@@ -33,7 +33,7 @@ When a user shows up:
   source changes.
 * Meanwhile, a visual diff is loaded asynchronously on the client side.
 * The user enters their evaluation of the diff. This information, dubbed an
-  Annotation, is stored separately from the Result. One Result can potentially
+  Annotation, is stored separately from the Diff. One Diff can potentially
   be annotated by multiple people.
 * The process repeats with the next diff in the priority queue.
 
@@ -42,9 +42,18 @@ When a user shows up:
 * A SQL database which contains:
     * Pages: associates a URL with agency metadata
     * Snapshots: assocates an HTML snapshot at a specific time with a Page
-* A NoSQL (MongoDB) database which contains:
-    * Results: stores a PageFreezer (or PageFreezer-like) result for a diff of
-      two Snapshots along with a hash of that diff
-    * Annotations: Human-entered information about a Result
+    * Diffs: stores a reference to a PageFreezer (or PageFreezer-like) result
+      for a diff of two Snapshots along with a hash of that diff
+    * Priorities: associates each Diff with a priority ranking
+    * Annotations: Human-entered information about a Diff
 * A server written in Python using the Tornado framework.
 * A frontend using TypeScript, JQuery, and Bootstrap.
+
+## Development Install
+
+Create a new postgresql user and database.
+```
+createuser web_versioning --pwprompt
+createdb -O web_versioning web_versioning_dev
+export WEB_VERSIONING_SQL_DB_URI="postgresql://web_versioning:<PASSWORD>@localhost"
+```

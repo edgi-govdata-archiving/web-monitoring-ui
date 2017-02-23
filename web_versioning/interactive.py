@@ -3,22 +3,17 @@ from datetime import datetime, timedelta
 import os
 
 import sqlalchemy
-import pymongo
-from web_versioning.db import (Pages, Snapshots, Results, Annotations, create,
+from web_versioning.db import (Pages, Snapshots, Diffs, Annotations, create,
                                compare, NoAncestor, diff_snapshot)
 
 
-SQL_DB_URI = 'sqlite://'
-MONGO_DB_URI = 'mongodb://localhost:27017/'
-MONGO_DB_NAME = 'page_freezer_v1'
-engine = sqlalchemy.create_engine(SQL_DB_URI)
-client = pymongo.MongoClient(MONGO_DB_URI)
+engine = sqlalchemy.create_engine(os.environ['WEB_VERSIONING_SQL_DB_URI'])
 
 create(engine)
-results = Results(client[MONGO_DB_NAME])
-Annotations = Annotations(client[MONGO_DB_NAME])
 snapshots = Snapshots(engine.connect())
 pages = Pages(engine.connect())
+diffs = Diffs(engine)
+annotations = Annotations(engine)
 
 
 def load_examples():
@@ -48,7 +43,7 @@ def parse_pagefreezer_xml():
 
 
 def diff_new_snapshots():
-    f = functools.partial(diff_snapshot, snapshots=snapshots, results=results)
+    f = functools.partial(diff_snapshot, snapshots=snapshots, diffs=diffs)
     while True:
         # Get the uuid of a Snapshot to be processed.
         try:

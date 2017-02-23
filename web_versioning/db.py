@@ -3,16 +3,13 @@
 
 # Pages: associates a URL with agency metadata
 # Snapshots: assocates an HTML snapshot at a specific time with a Page
-# Results: stores a PageFreezer (or PageFreezer-like) result for a diff of two
-#          Snapshots along with a hash of that diff
-# Annotations: Human-entered information about a Result
-#
-# The Pages and Snapshots are implemented with a SQL database because it is
-# thought that their schemas will rarely change. The Reults and Annotations are
-# implemented with a NoSQL (MongoDB) database because they are nested structues
-# and their schemas are in flux.
+# Diffs: stores a PageFreezer (or PageFreezer-like) result for a diff of two
+#        Snapshots along with a hash of that diff
+# Priorities: associates a priority with a Diff
+# Annotations: Human-entered information about a Diff
 
 import os
+import tempfile
 import datetime
 import collections
 import uuid
@@ -23,7 +20,6 @@ import csv
 
 import requests
 import sqlalchemy
-import pymongo
 
 # These schemas were informed by work by @Mr0grog at
 # https://github.com/edgi-govdata-archiving/webpage-versions-db/blob/master/db/schema.rb
@@ -36,7 +32,6 @@ PAGES_COLUMNS = (
     sqlalchemy.Column('created_at', sqlalchemy.DateTime,
                       default=datetime.datetime.utcnow),
 )
-
 SNAPSHOTS_COLUMNS = (
     sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
     sqlalchemy.Column('page_uuid', sqlalchemy.Text),
@@ -45,12 +40,36 @@ SNAPSHOTS_COLUMNS = (
     sqlalchemy.Column('created_at', sqlalchemy.DateTime,
                       default=datetime.datetime.utcnow),
 )
+DIFFS_COLUMNS = (
+    sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
+    sqlalchemy.Column('diffhash', sqlalchemy.Text),
+    sqlalchemy.Column('uuid1', sqlalchemy.Text),
+    sqlalchemy.Column('uuid2', sqlalchemy.Text),
+    sqlalchemy.Column('path', sqlalchemy.Text),
+    sqlalchemy.Column('annotation', sqlalchemy.JSON),
+    sqlalchemy.Column('created_at', sqlalchemy.DateTime,
+                      default=datetime.datetime.utcnow),
+)
+ANNOTATIONS_COLUMNS = (
+    sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
+    sqlalchemy.Column('diff_uuid', sqlalchemy.Text),
+    sqlalchemy.Column('annotation', sqlalchemy.types.JSON),
+    sqlalchemy.Column('created_at', sqlalchemy.DateTime,
+                      default=datetime.datetime.utcnow),
+)
+PRIORITIES_COLUMNS = (
+    sqlalchemy.Column('priority', sqlalchemy.Float),
+    sqlalchemy.Column('diff_uuid', sqlalchemy.Text)
+)
 
 
 def create(engine):
     meta = sqlalchemy.MetaData(engine)
     sqlalchemy.Table("Pages", meta, *PAGES_COLUMNS)
     sqlalchemy.Table("Snapshots", meta, *SNAPSHOTS_COLUMNS)
+    sqlalchemy.Table("Diffs", meta, *DIFFS_COLUMNS)
+    sqlalchemy.Table("Annotations", meta, *ANNOTATIONS_COLUMNS)
+    # TODO Priorities
     meta.create_all()
 
 
@@ -188,31 +207,53 @@ class Snapshots:
         return self.nt(*result[:-1])
 
 
-class Results:
+class Diffs:
     """
     Interface to an object store of PageFreezer(-like) results.
 
     Parameters
     ----------
-    db : pymongo database
+    engine : sqlalchemy.engine.Engine
     """
     unprocessed = collections.deque()
+    nt = collections.namedtuple('Diff', 'uuid diffhash uuid1 uuid2 result '
+                                        'annotation')
 
-    def __init__(self, db):
-        self._collection = db['page_freezer_results_v1']
+    def __init__(self, engine):
+        self._engine = engine
+        meta = sqlalchemy.MetaData(engine)
+        self._table = sqlalchemy.Table('Diffs', meta, autoload=True)
+
+    def _get_new_filepath(self):
+        "Get a path to save a result JSON to."
+        return tempfile.NamedTemporaryFile(delete=False).name
 
     def insert(self, snapshot1_uuid, snapshot2_uuid, result):
         diffs = result['output']['diffs']
         diffhash = hashlib.sha256(str(diffs).encode()).hexdigest()
         _uuid = str(uuid.uuid4())
-        self._collection.insert_one({'uuid': _uuid,
-                                     'diffhash': diffhash,
-                                     'created_at': time.time(),
-                                     'uuid1': snapshot1_uuid,
-                                     'uuid2': snapshot2_uuid,
-                                     'result': result})
+        filepath = self._get_new_filepath()
+        with open(filepath, 'w') as f:
+            json.dump(result, f)
+        values = (_uuid, diffhash, snapshot1_uuid, snapshot2_uuid, filepath,
+                  None, datetime.datetime.utcnow())
+        self._engine.execute(self._table.insert().values(values))
         self.unprocessed.append(_uuid)
         return _uuid
+
+    def __getitem__(self, uuid):
+        "Look up a Diff by its uuid."
+        result = self._engine.execute(
+            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        # Pack the result in a namedtuple, stripping off created_at which is
+        # only for internal database debugging / recovery.
+        d = self.nt(*result[:-1])
+        # We store the path the file where the JSON was dumped. Load it and put
+        # it into the result, replacing the path on the way out.
+        path = d.result
+        with open(path) as f:
+            result = json.load(f)
+        return d._replace(result=result)
 
 
 class Annotations:
@@ -221,19 +262,32 @@ class Annotations:
 
     Parameters
     ----------
-    db : pymongo database
+    engine : sqlalchemy.engine.Engine
     """
-    def __init__(self, db):
-        self._collection = db['annotations']
+    nt = collections.namedtuple('Annotation', 'uuid diff_uuid annotation')
 
-    def add(self, uuid, annotation):
+    def __init__(self, engine):
+        self._engine = engine
+        meta = sqlalchemy.MetaData(engine)
+        self._table = sqlalchemy.Table('Diffs', meta, autoload=True)
+
+    def insert(self, diff_uuid, annotation):
         """
-        Record an annotation about the Result with the given uuid.
+        Record an annotation about the Diff with the given uuid.
         """
-        self._collection.insert_one({'uuid': str(uuid.uuid4()),
-                                     'result_uuid': uuid,
-                                     'created_at': time.time(),
-                                     'annotation': annotation})
+        _uuid = str(uuid.uuid4())
+        values = (_uuid, diff_uuid, annotation, datetime.datetime.utcnow())
+        self._engine.execute(self._table.insert().values(values))
+        return _uuid
+
+    def __getitem__(self, uuid):
+        "Look up an Annotation by its uuid."
+        result = self._engine.execute(
+            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        # Pack the result in a namedtuple, stripping off created_at which is
+        # only for internal database debugging / recovery.
+        return self.nt(*result[:-1])
+
 
 
 def compare(html1, html2):
@@ -260,18 +314,18 @@ def compare(html1, html2):
     return response.json()
 
 
-def diff_snapshot(snapshot_uuid, snapshots, results):
+def diff_snapshot(snapshot_uuid, snapshots, diffs):
     """
-    Compare a snapshot with its ancestor and store the result.
+    Compare a snapshot with its ancestor and store the result in Diffs.
 
     It might be convenient to use ``functools.partial`` to bind this to
-    specific instances of Snapshots and Results.
+    specific instances of Snapshots and Diffs.
 
     Parameters
     ----------
     snapshot_uuid : string
     snapshots : Snapshots
-    results : Results
+    diff : Diffs
     """
     # Retrieve the Snapshot for the database.
     snapshot = snapshots[snapshot_uuid]
@@ -288,7 +342,7 @@ def diff_snapshot(snapshot_uuid, snapshots, results):
     if result['status'] != 'ok':
         raise PageFreezerError("result status is not 'ok': {}"
                                 "".format(result['status']))
-    results.insert(ancestor.uuid, snapshot.uuid, result['result'])
+    diffs.insert(ancestor.uuid, snapshot.uuid, result['result'])
 
 
 # Some custom Exceptions:
@@ -299,5 +353,3 @@ class PageFreezerError(Exception):
 
 class NoAncestor(Exception):
     ...
-
-
