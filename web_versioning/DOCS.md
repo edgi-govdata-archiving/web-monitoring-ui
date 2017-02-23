@@ -53,7 +53,26 @@ When a user shows up:
 
 Create a new postgresql user and database.
 ```
-createuser web_versioning --pwprompt
+createuser web_versioning --pwprompt  # Enter a password.
 createdb -O web_versioning web_versioning_dev
-export WEB_VERSIONING_SQL_DB_URI="postgresql://web_versioning:<PASSWORD>@localhost"
+export WEB_VERSIONING_SQL_DB_URI="postgresql://web_versioning:<PASSWORD>@localhost/web_versioning_dev"
+```
+
+Install Python package.
+
+```
+pip install -r requirements.txt
+python setup.py develop
+
+Experiment interactively with the backend. For example, using IPython:
+
+```
+ipython -i web_versioning/interactive.py
+```
+
+```python
+load_examples()  # Load examples in archives/ into Pages and Snapshots.
+diff_new_snapshots()  # Process all Snapshots using PageFreezer (takes ~30 secs)
+# This part still needs a nice dev API, but you can grab a Diff like this:
+diffs[diffs._engine.execute(diffs._table.select()).fetchone().uuid]
 ```
