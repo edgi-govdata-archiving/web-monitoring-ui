@@ -63,6 +63,7 @@ Install Python package.
 ```
 pip install -r requirements.txt
 python setup.py develop
+```
 
 Experiment interactively with the backend. For example, using IPython:
 
