@@ -2,38 +2,49 @@
 
 ## Story
 
-In the background, the server is processing URLs:
+An admin provides some initial data to the server:
 
-* It requests a diff from PageFreezer (or some similar API).
-* It caches the results along with a hash of the raw diff. This can be used to
-  identify unique diffs and relate identical ones.
-* Meanwhile, each unique diff is assigned a priority. To start, this prority may
+* An admin registers Pages (URLs) to be tracked, with associated agency
+  metadata.
+* At some point, a new file dump of captured HTML pages becomes available in
+  storage. An admin registers these new Snapshots. A Snapshot refers to a Page
+  and a time of capture, along with the location of the captured HTML in
+  storage.
+
+In the background, the server processes new Snapshots:
+
+* The server requests a diff from PageFreezer (or some similar API) between the
+  Snapshot and some ancestor Snapshot of the same Page. (It could be the oldest,
+  or the most recent, or any between --- no assumptions are built in.)
+* The server stashes PageFreezer's response along with a hash of the diff, which
+  can be used to identify unique diff and related identical ones.
+* Then, each unique diff is assigned a priority. To start, this prority may
   simply be 1 (probably interesting) or 0 (probably not interesting).
 
 When a user shows up:
 
 * User specifies any domain allocation preferences.
-* User requests the "next" URL to look at.
-* Server determines the highest priority diff that needs evaluation and
+* User requests the "next" diff to evaluate.
+* Server determines the highest priority diff that needs human inspection and
   redirects user to ``/diff/<DIFF_HASH>``. This is a permanent link that can be
   shared or revisited later.
 * The page at ``/diff/<DIFF_HASH>`` displays viral statistics about the diff,
   gleaned from PageFreezer's result object, including text-only changes and
   source changes.
 * Meanwhile, a visual diff is loaded asynchronously on the client side.
-* The user enters their evaluation of the diff. (Significant changes? Comments?) This information is stored.
-* The process repeats.
+* The user enters their evaluation of the diff. This information, dubbed an
+  Annotation, is stored separately from the Result. One Result can potentially
+  be annotated by multiple people.
+* The process repeats with the next diff in the priority queue.
 
 ## Components
 
-A database (sqlite just for now) with:
-
-* A table of URLs of interest.
-* A table of cached PageFreezer diff results.
-* A table of priorities associated with unique diffs.
-* A table of user-submitted evaluations linked to unique diffs. There could be
-  more than one evaluation of a given diff.
-
-A server written in Python using the Tornado framework.
-
-A frontend using TypeScript, JQuery, and Bootstrap.
+* A SQL database which contains:
+    * Pages: associates a URL with agency metadata
+    * Snapshots: assocates an HTML snapshot at a specific time with a Page
+* A NoSQL (MongoDB) database which contains:
+    * Results: stores a PageFreezer (or PageFreezer-like) result for a diff of
+      two Snapshots along with a hash of that diff
+    * Annotations: Human-entered information about a Result
+* A server written in Python using the Tornado framework.
+* A frontend using TypeScript, JQuery, and Bootstrap.

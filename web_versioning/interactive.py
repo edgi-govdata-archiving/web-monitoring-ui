@@ -1,8 +1,11 @@
+import functools
 from datetime import datetime, timedelta
 import os
+
 import sqlalchemy
 import pymongo
-from web_versioning.db import Pages, Snapshots, Results, Annotations, create
+from web_versioning.db import (Pages, Snapshots, Results, Annotations, create,
+                               compare, NoAncestor, diff_snapshot)
 
 
 SQL_DB_URI = 'sqlite://'
@@ -27,7 +30,7 @@ def load_examples():
         'truepos-image-removal',
         'truepos-major-changes',
     ]
-    archives_dir = os.path.join('..', 'archives')
+    archives_dir = os.path.join('archives')
     time1 = datetime.now()
     time0 = time1 - timedelta(days=1)
     for example in EXAMPLES:
@@ -35,10 +38,26 @@ def load_examples():
         page_uuid = pages.insert(simulated_url)
         for suffix, _time in (('-a.html', time0), ('-b.html', time1)):
             filename = example + suffix
-            path = os.path.join(archives_dir, filename)
+            path = os.path.abspath(os.path.join(archives_dir, filename))
             snapshots.insert(page_uuid, _time, path)
 
 
 def parse_pagefreezer_xml():
     # format = '%Y-%m-%d %I:%M %p'
     ...
+
+
+def diff_new_snapshots():
+    f = functools.partial(diff_snapshot, snapshots=snapshots, results=results)
+    while True:
+        # Get the uuid of a Snapshot to be processed.
+        try:
+            snapshot_uuid = snapshots.unprocessed.popleft()
+        except IndexError:
+            # nothing left to process
+            return
+        try:
+            f(snapshot_uuid)
+        except NoAncestor:
+            # This is the oldest Snapshot for this Page -- nothing to compare.
+            continue
