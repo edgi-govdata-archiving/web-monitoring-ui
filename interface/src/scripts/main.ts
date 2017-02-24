@@ -42,7 +42,7 @@ function setPagination() {
 }
 
 function start() {
-    $.getJSON('config.json', function (data) {
+    $.getJSON('./config.json', function (data) {
         var API_KEY = data.api_key;
         // 2. Initialize the JavaScript client library.
         // !! Work around because gapi.client.init is not in types file 
@@ -53,6 +53,9 @@ function start() {
             var index = parseInt(urlParams.get('index'));
             showPage(index);
         })
+    })
+    .fail(function() {
+        console.error('Couldn\'t find api key');
     });
 };
 
@@ -111,7 +114,7 @@ function loadIframe(html_embed: string) {
         var link = frm.createElement("link");
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
-        link.setAttribute("href", "http://localhost:3000/css/diff.css");
+        link.setAttribute("href", `${window.location.origin}/css/diff.css`);
         otherhead.appendChild(link);
 
         // set dimensions
