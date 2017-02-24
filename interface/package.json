@@ -24,5 +24,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "6.5.0"
+  }
 }
