@@ -1,3 +1,8 @@
+# DEPRECATED!!!
+
+# This is unfinished and will probably be replaced by a Rails app.
+# See db.py for the good code.
+
 import os
 import tornado.ioloop
 import tornado.web
