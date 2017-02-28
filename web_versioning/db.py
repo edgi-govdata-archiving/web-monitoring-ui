@@ -91,9 +91,9 @@ class Pages:
     """
     nt = collections.namedtuple('Page', 'uuid url title agency site')
     def __init__(self, engine):
-        self._engine = engine
+        self.engine = engine
         meta = sqlalchemy.MetaData(engine)
-        self._table = sqlalchemy.Table('Pages', meta, autoload=True)
+        self.table = sqlalchemy.Table('Pages', meta, autoload=True)
 
     def insert(self, url, title='', agency='', site=''):
         """
@@ -115,13 +115,13 @@ class Pages:
         """
         _uuid = str(uuid.uuid4())
         values = (_uuid, url, title, agency, site, datetime.datetime.utcnow())
-        self._engine.execute(self._table.insert().values(values))
+        self.engine.execute(self.table.insert().values(values))
         return _uuid
 
     def __getitem__(self, uuid):
         "Look up a Page by its uuid."
-        result = self._engine.execute(
-            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        result = self.engine.execute(
+            self.table.select().where(self.table.c.uuid == uuid)).fetchone()
         # Pack the result in a namedtuple, stripping off created_at which is
         # only for internal database debugging / recovery.
         return self.nt(*result[:-1])
@@ -130,9 +130,9 @@ class Pages:
         """
         Find a Page by its url.
         """
-        proxy = self._engine.execute(
-            self._table.select()
-            .where(self._table.c.url == url))
+        proxy = self.engine.execute(
+            self.table.select()
+            .where(self.table.c.url == url))
         result = proxy.fetchone()
         # Pack the result in a namedtuple, stripping off created_at which is
         # only for internal database debugging / recovery.
@@ -151,9 +151,9 @@ class Snapshots:
     nt = collections.namedtuple('Snapshot', 'uuid page_uuid capture_time path')
 
     def __init__(self, engine):
-        self._engine = engine
+        self.engine = engine
         meta = sqlalchemy.MetaData(engine)
-        self._table = sqlalchemy.Table('Snapshots', meta, autoload=True)
+        self.table = sqlalchemy.Table('Snapshots', meta, autoload=True)
 
     def insert(self, page_uuid, capture_time, path):
         """
@@ -175,14 +175,14 @@ class Snapshots:
         _uuid = str(uuid.uuid4())
         values = (_uuid, page_uuid, capture_time, path,
                   datetime.datetime.utcnow())
-        self._engine.execute(self._table.insert().values(values))
+        self.engine.execute(self.table.insert().values(values))
         self.unprocessed.append(_uuid)
         return _uuid
 
     def __getitem__(self, uuid):
         "Look up a Snapshot by its uuid."
-        result = self._engine.execute(
-            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        result = self.engine.execute(
+            self.table.select().where(self.table.c.uuid == uuid)).fetchone()
         # Pack the result in a namedtuple, stripping off created_at which is
         # only for internal database debugging / recovery.
         return self.nt(*result[:-1])
@@ -191,10 +191,10 @@ class Snapshots:
         """
         Lazily yield Snapshots for a given Page in reverse chronological order.
         """
-        proxy = self._engine.execute(
-            self._table.select()
-            .where(self._table.c.page_uuid == page_uuid)
-            .order_by(sqlalchemy.desc(self._table.c.capture_time)))
+        proxy = self.engine.execute(
+            self.table.select()
+            .where(self.table.c.page_uuid == page_uuid)
+            .order_by(sqlalchemy.desc(self.table.c.capture_time)))
         while True:
             result = proxy.fetchone()
             if result is None:
@@ -206,10 +206,10 @@ class Snapshots:
         """
         Return the oldest Snapshot for a given Page.
         """
-        proxy = self._engine.execute(
-            self._table.select()
-            .where(self._table.c.page_uuid == page_uuid)
-            .order_by(self._table.c.capture_time))
+        proxy = self.engine.execute(
+            self.table.select()
+            .where(self.table.c.page_uuid == page_uuid)
+            .order_by(self.table.c.capture_time))
         result = proxy.fetchone()
         # As above, use a namedtuple and omit created_at.
         return self.nt(*result[:-1])
@@ -228,9 +228,9 @@ class Diffs:
                                         'annotation')
 
     def __init__(self, engine):
-        self._engine = engine
+        self.engine = engine
         meta = sqlalchemy.MetaData(engine)
-        self._table = sqlalchemy.Table('Diffs', meta, autoload=True)
+        self.table = sqlalchemy.Table('Diffs', meta, autoload=True)
 
     def _get_new_filepath(self):
         "Get a path to save a result JSON to."
@@ -245,14 +245,14 @@ class Diffs:
             json.dump(result, f)
         values = (_uuid, diffhash, snapshot1_uuid, snapshot2_uuid, filepath,
                   None, datetime.datetime.utcnow())
-        self._engine.execute(self._table.insert().values(values))
+        self.engine.execute(self.table.insert().values(values))
         self.unprocessed.append(_uuid)
         return _uuid
 
     def __getitem__(self, uuid):
         "Look up a Diff by its uuid."
-        result = self._engine.execute(
-            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        result = self.engine.execute(
+            self.table.select().where(self.table.c.uuid == uuid)).fetchone()
         # Pack the result in a namedtuple, stripping off created_at which is
         # only for internal database debugging / recovery.
         d = self.nt(*result[:-1])
@@ -348,27 +348,40 @@ class Annotations:
     nt = collections.namedtuple('Annotation', 'uuid diff_uuid annotation')
 
     def __init__(self, engine):
-        self._engine = engine
+        self.engine = engine
         meta = sqlalchemy.MetaData(engine)
-        self._table = sqlalchemy.Table('Diffs', meta, autoload=True)
+        self.table = sqlalchemy.Table('Annotations', meta, autoload=True)
 
     def insert(self, diff_uuid, annotation):
         """
         Record an annotation about the Diff with the given uuid.
+
+        Parameters
+        ----------
+        diff_uuid : string
+            the Diff that this annotation regards
+        annotation : dict
+            i.e., a JSON-like blob
         """
         _uuid = str(uuid.uuid4())
         values = (_uuid, diff_uuid, annotation, datetime.datetime.utcnow())
-        self._engine.execute(self._table.insert().values(values))
+        self.engine.execute(self.table.insert().values(values))
         return _uuid
 
     def __getitem__(self, uuid):
         "Look up an Annotation by its uuid."
-        result = self._engine.execute(
-            self._table.select().where(self._table.c.uuid == uuid)).fetchone()
+        result = self.engine.execute(
+            self.table.select().where(self.table.c.uuid == uuid)).fetchone()
         # Pack the result in a namedtuple, stripping off created_at which is
         # only for internal database debugging / recovery.
         return self.nt(*result[:-1])
 
+    def by_diff(self, diff_uuid):
+        "Look up a list of all Annotations for a given Diff."
+        results = self.engine.execute(
+            self.table.select()
+            .where(self.table.c.diff_uuid == diff_uuid)).fetchall()
+        return [self.nt(*result[:-1]) for result in results]
 
 
 def compare(html1, html2):
@@ -430,11 +443,18 @@ def diff_snapshot(snapshot_uuid, snapshots, diffs):
     diffs.insert(ancestor.uuid, snapshot.uuid, result['result'])
 
 
-# Some custom Exceptions:
-
-class PageFreezerError(Exception):
+class WebVersioningException(Exception):
+    # All exceptions raised by this package inherit from this.
     ...
 
 
-class NoAncestor(Exception):
+class PageFreezerError(WebVersioningException):
+    ...
+
+
+class NoAncestor(WebVersioningException):
+    ...
+
+
+class EmptyWorkQueue(WebVersioningException):
     ...
