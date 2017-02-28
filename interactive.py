@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import os
 
 import sqlalchemy
-from web_versioning.db import (Pages, Snapshots, Diffs, Annotations, create,
+from web_monitoring.db import (Pages, Snapshots, Diffs, Annotations, create,
                                compare, NoAncestor, diff_snapshot)
 
 

@@ -53,9 +53,9 @@ When a user shows up:
 
 Create a new postgresql user and database.
 ```
-createuser web_versioning --pwprompt  # Enter a password.
-createdb -O web_versioning web_versioning_dev
-export WEB_VERSIONING_SQL_DB_URI="postgresql://web_versioning:<PASSWORD>@localhost/web_versioning_dev"
+createuser web_monitoring --pwprompt  # Enter a password.
+createdb -O web_monitoring web_monitoring_dev
+export WEB_VERSIONING_SQL_DB_URI="postgresql://web_monitoring:<PASSWORD>@localhost/web_monitoring_dev"
 ```
 
 Install Python package.
@@ -68,7 +68,7 @@ python setup.py develop
 Experiment interactively with the backend. For example, using IPython:
 
 ```
-ipython -i web_versioning/interactive.py
+ipython -i web_monitoring/interactive.py
 ```
 
 ```python
