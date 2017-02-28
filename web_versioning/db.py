@@ -56,16 +56,18 @@ DIFFS_COLUMNS = (
     sqlalchemy.Column('created_at', sqlalchemy.DateTime,
                       default=datetime.datetime.utcnow),
 )
+PRIORITIES_COLUMNS = (
+    sqlalchemy.Column('diff_uuid', sqlalchemy.Text, primary_key=True),
+    sqlalchemy.Column('priority', sqlalchemy.Float),
+    sqlalchemy.Column('created_at', sqlalchemy.DateTime,
+                      default=datetime.datetime.utcnow),
+)
 ANNOTATIONS_COLUMNS = (
     sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
     sqlalchemy.Column('diff_uuid', sqlalchemy.Text),
     sqlalchemy.Column('annotation', sqlalchemy.types.JSON),
     sqlalchemy.Column('created_at', sqlalchemy.DateTime,
                       default=datetime.datetime.utcnow),
-)
-PRIORITIES_COLUMNS = (
-    sqlalchemy.Column('priority', sqlalchemy.Float),
-    sqlalchemy.Column('diff_uuid', sqlalchemy.Text)
 )
 
 
@@ -74,8 +76,8 @@ def create(engine):
     sqlalchemy.Table("Pages", meta, *PAGES_COLUMNS)
     sqlalchemy.Table("Snapshots", meta, *SNAPSHOTS_COLUMNS)
     sqlalchemy.Table("Diffs", meta, *DIFFS_COLUMNS)
+    sqlalchemy.Table("Priorities", meta, *PRIORITIES_COLUMNS)
     sqlalchemy.Table("Annotations", meta, *ANNOTATIONS_COLUMNS)
-    # TODO Priorities
     meta.create_all()
 
 
@@ -260,6 +262,79 @@ class Diffs:
         with open(path) as f:
             result = json.load(f)
         return d._replace(result=result)
+
+
+class Priorities:
+    """
+    Interface to a table assigning priorities to Diffs.
+
+    Parameters
+    ----------
+    engine : sqlalchemy.engine.Engine
+    """
+    def __init__(self, engine):
+        self.engine = engine
+        meta = sqlalchemy.MetaData(engine)
+        self.table = sqlalchemy.Table('Priorities', meta, autoload=True)
+
+    def insert(self, diff_uuid, priority):
+        """
+        Record an annotation about the Diff with the given uuid.
+        """
+        # Note that Priorities reuses diff_uuid as the primary key;
+        # it does not need to generate a separate id.
+        values = (diff_uuid, priority, datetime.datetime.utcnow())
+        self.engine.execute(self.table.insert().values(values))
+        return diff_uuid
+
+    def annotated(self, diff_uuid):
+        """
+        Delete or de-prioritize because this has been annotated.
+        """
+        self.engine.execute(self.table.delete()
+                             .where(self.table.c.diff_uuid == diff_uuid))
+
+    def __iter__(self):
+        "a generator of diff_uuids starting with highest priority"
+        proxy = self.engine.execute(
+            self.table.select()
+            .order_by(sqlalchemy.desc(self.table.c.priority)))
+        def gen():
+            for result in proxy:
+                if result is None:
+                    raise StopIteration
+                yield result[0]  # diff_uuid
+        return gen()
+
+
+class WorkQueue:
+    def __init__(self, priorities, diffs):
+        self.priorities = priorities
+        self.diffs = diffs
+        self.checked_out = {}  # maps user_id to diff_uuid
+
+    def checkout_next(self, user_id):
+        for diff_uuid in self.priorities:
+            if diff_uuid not in self.checked_out.values():
+                # This is the highest-priority Diff not yet checked out.
+                self.checked_out[user_id] = diff_uuid
+                return self.diffs[diff_uuid]
+        raise EmptyWorkQueue("All work is complete or checkout out.")
+        
+    def checkout(self, user_id, diff_uuid):
+        """
+        Mark this Diff as being worked on by someone currently.
+        """
+        if user_id in self.checked_out:
+            self.checkin(user_id)
+        self.checked_out[user_id] = diff_uuid
+        return self.diffs[diff_uuid]
+
+    def checkin(self, user_id):
+        """
+        Mark this Diff as not being worked on and not complete.
+        """
+        self.checked_out.pop(user_id)
 
 
 class Annotations:
