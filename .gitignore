@@ -98,3 +98,7 @@ archives/.idea/
 config.json
 .vscode/
 .DS_Store
+
+.ipynb_checkpoints/
+web_monitoring.egg-info/
+__pycache__/
