@@ -7,9 +7,13 @@
 #        Snapshots along with a hash of that diff
 # Priorities: associates a priority with a Diff
 # Annotations: Human-entered information about a Diff
+#
+# Additionally, there is WorkQueue that wraps Priorities and Diffs and
+# implements a checkout/checkin system for users requesting a Diff to annotate.
 
 import os
 import tempfile
+import logging
 import datetime
 import collections
 import uuid
@@ -20,6 +24,8 @@ import csv
 
 import requests
 import sqlalchemy
+
+logger = logging.getLogger(__name__)
 
 # These schemas were informed by work by @Mr0grog at
 # https://github.com/edgi-govdata-archiving/webpage-versions-db/blob/master/db/schema.rb
@@ -310,8 +316,12 @@ def compare(html1, html2):
     headers = {'x-api-key': os.environ['PAGE_FREEZER_API_KEY'],
                'Accept': 'application/json',
                'Content-Type': 'application/json', }
-    response = requests.post(URL, data=json.dumps(data), headers=headers)
-    return response.json()
+    logger.debug("Sending PageFreezer request...")
+    raw_response = requests.post(URL, data=json.dumps(data), headers=headers)
+    response = raw_response.json()
+    logger.debug("Response received in %.3f seconds with status %s.",
+                 response.get('elapsed'), response.get('status'))
+    return response
 
 
 def diff_snapshot(snapshot_uuid, snapshots, diffs):
