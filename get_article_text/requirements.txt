@@ -1,2 +1,0 @@
-flask
-newspaper3k
