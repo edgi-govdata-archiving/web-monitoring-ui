@@ -92,12 +92,12 @@ function showPage(row_index: number) {
 }
 
 function runDiff(old_url: string, new_url: string) {
-    // Todo: turn into own function
     toggleProgressbar(true);
     Pagefreezer.diffPages(
         old_url,
         new_url,
         function(data, status) {
+            console.log(data)
             loadIframe(data.result.output.html);
             toggleProgressbar(false);
     });
