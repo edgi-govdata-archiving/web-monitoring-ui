@@ -1,5 +1,5 @@
-# page-freezer-cli
-CLI tools &amp; data management protocols for interacting with Page Freezer.
+# web-monitoring-ui
+works with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) and [web-monitoring-processing](https://github.com/edgi-govdata-archiving/web-monitoring-processing) to support the next web monitoring workflow
 
 See [the versionista outputter repo](https://github.com/edgi-govdata-archiving/versionista-outputter) and the [version tracking ui](https://github.com/edgi-govdata-archiving/version-tracking-ui) repos for earlier work that has some overlap/similar goals. 
 
@@ -52,7 +52,7 @@ The PageFreezer `compare` method takes the following parameters:
 | `html`  (optional) |	Default: `1`. <br>`2`=HTML with HEAD, <br>`1`=HTML without HEAD, <br>`0`=False (no HTML output). |
 | `snippet`  (optional)	 | Default: `200` (characters). It will generate snippets of changes. |
 
-See [our PageFreezer Api page](./pagefreezer-api.md) for more details.
+See [our PageFreezer Api page](https://github.com/edgi-govdata-archiving/web-monitoring-processing/blob/master/pagefreezer-api.md) for more details.
 
 ### HTML Diff tools exist
 
