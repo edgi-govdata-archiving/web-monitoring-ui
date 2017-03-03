@@ -1,8 +1,8 @@
 A node application with the following capabilities:
 * Page through records from Google spreadsheet and visualizes differences between URLs using pagefreezer cli
     * DEMO is READ-ONLY
-    * app pulls data from this example: https://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/edit#gid=0
-    * sheet mimics data that analysts use but added fields for urls seeded from these examples: https://github.com/edgi-govdata-archiving/pagefreezer-cli/tree/master/archives
+    * App pulls data from this example: https://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/edit#gid=0
+    * Sheet mimics data that analysts use but added fields for urls seeded from these examples: https://github.com/edgi-govdata-archiving/pagefreezer-cli/tree/master/archives
 
 * These functions still available but hidden:
     * Take 2 URLs as input and visualize their differences
@@ -10,15 +10,15 @@ A node application with the following capabilities:
     * Take a formatted URL and automatically display a diff
 
 #####Usage:
-Checkout branch with `git checkout ui_mockup`, 
-install the node dependencies with `npm install`, 
-create `config.json` with google api_key,
-then run `node app.js`
+    * Install node dependencies with `npm install`, 
+    * Rename `dist/config.json.example` to `config.json` and supply google api_key
+    * How to get api key: https://developers.google.com/api-client-library/javascript/start/start-js
+    * Run `node app.js`
 
-How to get api key: https://developers.google.com/api-client-library/javascript/start/start-js
+
 
 ######Manual view:
-access the main view at `http://localhost:3000`
+Access the main view at `http://localhost:3000`
 
 Screenshot:
 ![screenshot](screenshot.png)
