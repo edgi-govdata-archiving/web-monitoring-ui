@@ -1,6 +1,6 @@
 del {
-    background-color: lightcoral;
+    background-color: lightcoral !important;
 }
 ins {
-    background-color: lightgreen;
+    background-color: lightgreen !important;
 }

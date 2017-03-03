@@ -3,8 +3,9 @@ var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
 
+gulp.task("default", ["browserify","watch"]);
 
-gulp.task("default", function () {
+gulp.task("browserify", function () {
     return browserify({
         basedir: '.',
         debug: true,
@@ -16,4 +17,8 @@ gulp.task("default", function () {
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(gulp.dest("dist"));
+});
+
+gulp.task("watch", function() {
+    gulp.watch('src/scripts/*.ts', ['browserify']);
 });

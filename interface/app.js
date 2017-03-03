@@ -20,7 +20,8 @@ app.engine('html', require('ejs').renderFile);
  * Main view for manual entry
  */
 app.get('/', function (req, res) {
-    res.render('main.html')
+    //res.render('main.html')
+    res.redirect('/diffbyindex?index=7');
 });
 
 /**
@@ -57,7 +58,7 @@ app.get('/diff?', function(req, res) {
             'url2' : newUrl,
             'diff_mode' : 1
         });
-        console.log(postData);
+        // console.log(postData);
         let postOptions = {
             host: 'api1.pagefreezer.com',
             path: '/v1/api/utils/diff/compare',
@@ -91,6 +92,21 @@ app.get('/diff?', function(req, res) {
 
 });
 
-app.listen(3000, function () {
+/**
+ * Get view based on row index
+ *
+ * parameters:
+ * -index
+ 
+ */
+
+app.get('/diffbyindex?', function(req, res) {
+    var index = req.query.index;
+    res.render('main.html', {
+        index : index
+    });
+});
+
+app.listen(process.env.PORT || 3000, function () {
     console.log('Listening on port 3000')
 });

@@ -1,20 +1,47 @@
-#inspectorView {
-    background-color: #363636;
-    color: ghostwhite;
-    height:100vh;
+body.fixed-to-top-offset { 
+    padding-top: 30rem; 
 }
 
+.info-text {
+    display: none;
+}
+
+.pager li > a {
+    border-radius: 6px;
+}
+
+#inspectorView {
+    color: white;
+    margin-bottom: 10px;
+}
+#inspectorView input[type="checkbox"] {
+    margin-right: 7px;
+}
+#inspectorView label {
+    display: block;
+    font-weight: 200;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.short-view label {
+    float: left;
+    margin-right: 25px;
+}
+
+.navbar-text {
+    font-size: 2.2rem;
+}
 .diff {
     height:100vh;
 }
-.diff iframe {
-    border: none;
+
+iframe {
+    border: 2px solid black;
     width: 100%;
-    height: 100%;
 }
 
 .progress {
-    margin: 15px;
     width: 100%;
 }
 

@@ -1,6 +1,6 @@
 <% include parts/header.ejs %>
     <div class="row">
-        <% if((typeof oldUrl !== 'undefined') && (typeof oldUrl !== 'undefined')) { %>
+        <% if((typeof oldUrl !== 'undefined') && (typeof newUrl !== 'undefined')) { %>
             <script type="text/javascript">
                 $(document).ready(function() {
                     console.log('urls from get request');
@@ -8,8 +8,21 @@
                 })
             </script>
         <%}%>
+        <% if(typeof index !== 'undefined') { %>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    console.log('request by index');
+
+                    // hack to wait for gapi to init
+                    setTimeout(function() {
+                        $('#diff_by_index').click();
+                    }, 2000)                    
+                })
+            </script>
+        <%}%>
         <div class="col-md-12">
-            <form role="form" class="form-inline">
+            <a id="diff_by_index" href=""></a>
+            <form role="form" class="form-inline hidden">
                 <div class="form-group">
 
                     <label for="url1">
@@ -33,12 +46,12 @@
                     <span>Please wait<span class="dotdotdot"></span></span>
                 </div>
             </div>
-            <hr/>
         </div>
     </div>
+    
     <div class="row">
-        <div class="col-md-8" id="pageView">
+        <div class="col-md-12">
+            <iframe id="pageView" sandbox="allow-same-origin" srcdoc=""></iframe>
         </div>
-        <% include parts/tools.ejs %>
     </div>
 <% include parts/footer.ejs %>
