@@ -1,6 +1,6 @@
 A node application with the following capabilities:
 * Page through records from Google spreadsheet and visualizes differences between URLs using pagefreezer cli
-    * [DEMO](edgi-web-monitor-ui.herokuapp.com) is READ-ONLY
+    * [DEMO](https://edgi-web-monitor-ui.herokuapp.com) is READ-ONLY
     * App pulls data from this [example](https://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/edit#gid=0): 
     * Sheet mimics data that analysts use but added fields for urls seeded from these [examples](https://github.com/edgi-govdata-archiving/pagefreezer-cli/tree/master/archives)
 
