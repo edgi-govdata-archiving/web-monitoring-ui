@@ -35,6 +35,8 @@ export interface Diff {
     offset: number;
 }
 
+// Class calls '/diff' route. 
+// Work-around until we get ajax request to pf to work on localhost
 export class Pagefreezer {
 
     public static DIFF_API_URL = "/diff";
