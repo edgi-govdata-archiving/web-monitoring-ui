@@ -39,6 +39,7 @@ app.get('/diff?', function(req, res) {
     let oldUrl = req.query.old_url;
     let newUrl = req.query.new_url;
     let as = req.query.as;
+    let config = require('./dist/config.json')
 
     if(as != null && as == "view") {
         //render a view
@@ -68,7 +69,7 @@ app.get('/diff?', function(req, res) {
                 'Accept' : 'application/json',
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(postData),
-                'x-api-key' : ''
+                'x-api-key' : config.pagefreezer_token
             }
         };
 
