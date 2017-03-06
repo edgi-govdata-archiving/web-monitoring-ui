@@ -7,12 +7,43 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-"use strict";
+
 /// <reference path="../../node_modules/@types/jquery/index.d.ts" />
-var Pagefreezer = (function () {
-    function Pagefreezer() {
-    }
-    Pagefreezer.diffPages = function (url1, url2, callback) {
+
+export interface PagefreezerResponse {
+    status: string;
+    result: Result;
+}
+
+export interface Result {
+    status: string;
+    output: Output;
+}
+
+export interface Output {
+    html: string;
+    diffs: Diff;
+    rawHtml2: string;
+    rawHtml1: string;
+}
+
+export interface Diff {
+
+    new: string;
+    old: string;
+    change: number;
+    offset: number;
+}
+
+// Class calls '/diff' route. 
+// Work-around until we get ajax request to pf to work on localhost
+export class Pagefreezer {
+
+    public static DIFF_API_URL = "/diff";
+    public static API_KEY = "";
+
+    public static diffPages(url1: string, url2: string, callback: (response: PagefreezerResponse, status: string) => void) {
+
         $.ajax({
             type: "GET",
             url: Pagefreezer.DIFF_API_URL,
@@ -24,15 +55,12 @@ var Pagefreezer = (function () {
                 as: "json",
             },
             success: callback,
-            error: function (error) {
+            error: function(error) {
                 console.log(error);
             },
-            headers: { "x-api-key": "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj" }
+            headers: {"x-api-key": ""}
         });
-    };
-    return Pagefreezer;
-}());
-Pagefreezer.DIFF_API_URL = "/diff";
-Pagefreezer.API_KEY = "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj";
-exports.Pagefreezer = Pagefreezer;
-//# sourceMappingURL=Pagefreezer.js.map
+
+    }
+
+}

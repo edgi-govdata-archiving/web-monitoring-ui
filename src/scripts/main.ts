@@ -15,15 +15,10 @@ $( document ).ready(function() {
     toggleProgressbar(false);
 
     $('#submitButton').click(function () {
-        toggleProgressbar(true);
-        Pagefreezer.diffPages(
-            $('#url1').val(),
-            $('#url2').val(),
-            function(data, status) {
-                $('#pageView').html(data.result.output.html);
-                $('#pageView link[rel=stylesheet]').remove();
-                toggleProgressbar(false);
-            });
+        runDiff(
+            $('#url1').val(), 
+            $('#url2').val()
+        );
     });
 
     $('#toggle_view').click(toggleView);
