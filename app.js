@@ -68,7 +68,7 @@ app.get('/diff?', function(req, res) {
                 'Accept' : 'application/json',
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(postData),
-                'x-api-key' : 'SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj'
+                'x-api-key' : ''
             }
         };
 

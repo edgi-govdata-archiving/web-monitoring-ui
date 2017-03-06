@@ -38,7 +38,7 @@ export interface Diff {
 export class Pagefreezer {
 
     public static DIFF_API_URL = "/diff";
-    public static API_KEY = "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj";
+    public static API_KEY = "";
 
     public static diffPages(url1: string, url2: string, callback: (response: PagefreezerResponse, status: string) => void) {
 
@@ -56,7 +56,7 @@ export class Pagefreezer {
             error: function(error) {
                 console.log(error);
             },
-            headers: {"x-api-key": "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj"}
+            headers: {"x-api-key": ""}
         });
 
     }

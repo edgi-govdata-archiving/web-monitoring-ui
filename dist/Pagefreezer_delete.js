@@ -27,11 +27,11 @@ var Pagefreezer = (function () {
             error: function (error) {
                 console.log(error);
             },
-            headers: { "x-api-key": "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj" }
+            headers: { "x-api-key": "" }
         });
     };
     return Pagefreezer;
 }());
 Pagefreezer.DIFF_API_URL = "/diff";
-Pagefreezer.API_KEY = "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj";
+Pagefreezer.API_KEY = "";
 exports.Pagefreezer = Pagefreezer;

@@ -9,7 +9,7 @@ A node application with the following capabilities:
     * Take a formatted URL and return raw JSON from pagefreezer
     * Take a formatted URL and automatically display a diff
 
-#####Usage
+## Usage
 * Install node dependencies with `npm install`, 
 * Rename `dist/config.json.example` to `config.json` and supply google api_key
 * [How to get api key](https://developers.google.com/api-client-library/javascript/start/start-js)
@@ -17,13 +17,13 @@ A node application with the following capabilities:
 
 
 
-######Manual view:
+## Manual view:
 Access the main view at `http://localhost:3000`
 
 Screenshot:
 ![screenshot](screenshot.png)
 
-######URL Schemes:
+## URL Schemes:
 The new interface routes to:
 `http://localhost:3000/diffbyindex`
 
@@ -41,6 +41,7 @@ With parameters:
 `new_url` (required),
 `as` (optional can be `json` or `view`)
 
-######Example:
+## Example:
 <http://localhost:3000/diff?old_url=https://raw.githubusercontent.com/edgi-govdata-archiving/pagefreezer-cli/master/archives/truepos-major-changes-a.html&new_url=https://raw.githubusercontent.com/edgi-govdata-archiving/pagefreezer-cli/master/archives/truepos-major-changes-b.html&as=view>
+
 Automatically runs the diff and displays the output
