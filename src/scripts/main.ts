@@ -38,7 +38,7 @@ function setPagination() {
 
 function start() {
     $.getJSON('./config.json', function (data) {
-        var API_KEY = data.api_key;
+        var API_KEY = data.API_KEY;
         // 2. Initialize the JavaScript client library.
         // !! Work around because gapi.client.init is not in types file 
         (gapi as any).client.init({ 'apiKey': API_KEY });
@@ -76,7 +76,7 @@ function showPage(row_index: number) {
 
             console.log(row_data);
             showDiffMetadata(row_data);
-            runDiff(old_url, new_url);
+            // runDiff(old_url, new_url);
             
         } else {
             $('#diff_title').text('No data found')
@@ -99,12 +99,12 @@ function runDiff(old_url: string, new_url: string) {
 }
 function loadIframe(html_embed: string) {
     // inject html
-    var iframe = document.getElementById('pageView');
+    var iframe = document.getElementById('diff_view');
     iframe.setAttribute('srcdoc', html_embed);
 
     iframe.onload = function() {
         // inject diff css
-        var frm = (frames as any)['pageView'].contentDocument;
+        var frm = (frames as any)['diff_view'].contentDocument;
         var otherhead = frm.getElementsByTagName("head")[0];
         var link = frm.createElement("link");
         link.setAttribute("rel", "stylesheet");

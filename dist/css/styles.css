@@ -2,6 +2,14 @@ body.fixed-to-top-offset {
     padding-top: 30rem; 
 }
 
+.navbar .brand {
+    display: block;
+    float: left;
+    padding: 10px 20px 10px;
+    font-size: 3rem;
+    font-weight: 200;
+    text-decoration: none;
+}
 .info-text {
     display: none;
 }

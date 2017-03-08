@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="#">LIST VIEW</a>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-md-12" id="list_view">
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $.get('http://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/gviz/tq?tqx=out:html&tq&gid=0', 
+                function(data) { 
+                    let html = $.parseHTML(data);
+                    let table = '';
+                    $.each( html, function( i, el ) {
+                        if (el.nodeName === 'TABLE') {
+                            $("tr", el).each(function() {
+                                $(this).find('td').slice(13).remove();
+                            })
+                            $(el).addClass('table');
+                            $('#list_view').append(el);
+                        }
+                    });
+                })
+        })
+    </script>
+</div>
