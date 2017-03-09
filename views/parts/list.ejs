@@ -5,26 +5,60 @@
         </div>
     </nav>
     <div class="row">
-        <div class="col-md-12" id="list_view">
+        <div class="col-md-12">
+            <table id="list_view" class="table">
 
+            </table>
         </div>
     </div>
     <script>
         $(document).ready(function() {
-            $.get('http://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/gviz/tq?tqx=out:html&tq&gid=0', 
-                function(data) { 
-                    let html = $.parseHTML(data);
-                    let table = '';
-                    $.each( html, function( i, el ) {
-                        if (el.nodeName === 'TABLE') {
-                            $("tr", el).each(function() {
-                                $(this).find('td').slice(13).remove();
-                            })
-                            $(el).addClass('table');
-                            $('#list_view').append(el);
-                        }
-                    });
+            // $.get('http://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/gviz/tq?tqx=out:html&tq&gid=0', 
+            //     function(data) { 
+            //         let html = $.parseHTML(data);
+            //         let table = '';
+            //         $.each( html, function( i, el ) {
+            //             if (el.nodeName === 'TABLE') {
+            //                 $("tr", el).each(function() {
+            //                     $(this).find('td').slice(13).remove();
+            //                 })
+            //                 $(el).addClass('table');
+            //                 $('#list_view').append(el);
+            //             }
+            //         });
+            //     })
+            $.getJSON('./config.json', function(data) {
+                let user = data["EDGI-WEB-MONITOR-USER"];
+                let pass = data["EDGI-WEB-MONITOR-PASSWORD"];
+                $.ajax({
+                    type: "GET",
+                    url: "https://web-monitoring-db.herokuapp.com/pages.json?page=1",
+                    dataType: "json",
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(`${user}:${pass}`)
+                    },
+                    success: function(data) {
+                        let example = data.data.slice(0, 10);
+                        let table = $('#list_view');
+                        let diff = $('#diff_view');
+                        example.forEach(function(record) {
+                            let row = $('<tr>').append(
+                                $('<td>').text(record.id),
+                                $('<td>').text(record.site),
+                                $('<td>').text(record.versionista_url)
+                            ).click(function() {
+                                diff.attr('src', record.versionista_url)
+                            });
+                            table.append(row);
+                        })
+                        console.log(data)
+                    }
                 })
+            })
+            
         })
     </script>
 </div>

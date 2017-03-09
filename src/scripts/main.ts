@@ -31,7 +31,7 @@ $( document ).ready(function() {
 
 function setPagination() {
     var urlParams = new URLSearchParams(window.location.search);
-    var index = parseInt(urlParams.get('index')) || 7;
+    var index = parseInt(urlParams.get('index')) || 2;
     $('#prev_index').text(`<-- Row ${index-1}`).attr('href', `/diffbyindex?index=${index-1}`);
     $('#next_index').text(`Row ${index+1} -->`).attr('href', `/diffbyindex?index=${index+1}`);
 }
