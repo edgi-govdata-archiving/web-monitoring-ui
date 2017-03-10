@@ -13,20 +13,6 @@
     </div>
     <script>
         $(document).ready(function() {
-            // $.get('http://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/gviz/tq?tqx=out:html&tq&gid=0', 
-            //     function(data) { 
-            //         let html = $.parseHTML(data);
-            //         let table = '';
-            //         $.each( html, function( i, el ) {
-            //             if (el.nodeName === 'TABLE') {
-            //                 $("tr", el).each(function() {
-            //                     $(this).find('td').slice(13).remove();
-            //                 })
-            //                 $(el).addClass('table');
-            //                 $('#list_view').append(el);
-            //             }
-            //         });
-            //     })
             $.getJSON('./config.json', function(data) {
                 let user = data["EDGI-WEB-MONITOR-USER"];
                 let pass = data["EDGI-WEB-MONITOR-PASSWORD"];
@@ -40,17 +26,27 @@
                     headers: {
                         'Authorization': 'Basic ' + btoa(`${user}:${pass}`)
                     },
-                    success: function(data) {
-                        let example = data.data.slice(0, 10);
+                    success: function(result) {
+                        // TODO: paginate through records
+                        // Currently geting small subset to test
+                        let pageSet = result.data.slice(0, 10); 
                         let table = $('#list_view');
                         let diff = $('#diff_view');
-                        example.forEach(function(record) {
+                        table.append(getTableHeader());
+                        pageSet.forEach(function(record) {
                             let row = $('<tr>').append(
-                                $('<td>').text(record.id),
+                                $('<td>').text(record.latest.id),
+                                $('<td>').text(record.latest.updated_at),
                                 $('<td>').text(record.site),
-                                $('<td>').text(record.versionista_url)
+                                $('<td>').text(record.title),
+                                $('<td>').text(record.url),
+                                $('<td>').text(record.versionista_url),                    
+                                $('<td>').text(record.diff_with_previous_url),
+                                $('<td>').text(record.diff_with_first_url)
                             ).click(function() {
-                                diff.attr('src', record.versionista_url)
+                                diff.load(record.versionista_url);
+                                // diff.attr('src', record.versionista_url)
+                                
                             });
                             table.append(row);
                         })
@@ -59,6 +55,18 @@
                 })
             })
             
+            function getTableHeader() {
+                return $('<tr>').append(
+                    $('<td>').text('ID'), //record.latest.id
+                    $('<td>').text('Output Date'), //record.latest.updated_at
+                    $('<td>').text('Site'), //record.site
+                    $('<td>').text('Page Name'), //record.title
+                    $('<td>').text('Url'),
+                    $('<td>').text('Page View Url'),
+                    $('<td>').text('Last Two'),
+                    $('<td>').text('Latest to Base')
+                );
+            }
         })
     </script>
 </div>
