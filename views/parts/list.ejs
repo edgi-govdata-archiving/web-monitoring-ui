@@ -7,7 +7,8 @@
     <div class="row">
         <div class="col-md-12">
             <table id="list_view" class="table">
-
+                <thead></thead>
+                <tbody></tbody>    
             </table>
         </div>
     </div>
@@ -32,23 +33,26 @@
                         let pageSet = result.data.slice(0, 10); 
                         let table = $('#list_view');
                         let diff = $('#diff_view');
-                        table.append(getTableHeader());
+
+                        table.find('thead').append(getTableHeader());
+                        
                         pageSet.forEach(function(record) {
                             let row = $('<tr>').append(
                                 $('<td>').text(record.latest.id),
                                 $('<td>').text(record.latest.updated_at),
                                 $('<td>').text(record.site),
                                 $('<td>').text(record.title),
-                                $('<td>').text(record.url),
-                                $('<td>').text(record.versionista_url),                    
-                                $('<td>').text(record.diff_with_previous_url),
-                                $('<td>').text(record.diff_with_first_url)
-                            ).click(function() {
+                                $('<td>').html(`<a href="${record.url}">${record.url.substr(0, 20)}</a>`),
+                                $('<td>').html(`<a href="${record.versionista_url}">${record.versionista_url.substr(-15)}</a>`),
+                                $('<td>').html(`<a href="${record.latest.diff_with_previous_url}">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
+                                $('<td>').html(`<a href="${record.latest.diff_with_first_url}">${record.latest.diff_with_first_url.substr(-15)}</a>`)
+                            );
+                            row.click(function() {
                                 diff.load(record.versionista_url);
-                                // diff.attr('src', record.versionista_url)
                                 
+                                // diff.attr('src', record.versionista_url)
                             });
-                            table.append(row);
+                            table.find('tbody').append(row);
                         })
                         console.log(data)
                     }
@@ -56,16 +60,16 @@
             })
             
             function getTableHeader() {
-                return $('<tr>').append(
-                    $('<td>').text('ID'), //record.latest.id
-                    $('<td>').text('Output Date'), //record.latest.updated_at
-                    $('<td>').text('Site'), //record.site
-                    $('<td>').text('Page Name'), //record.title
-                    $('<td>').text('Url'),
-                    $('<td>').text('Page View Url'),
-                    $('<td>').text('Last Two'),
-                    $('<td>').text('Latest to Base')
-                );
+                return $('<tr>')
+                    .append(
+                        $('<th>').text('ID'), //record.latest.id
+                        $('<th>').text('Output Date'), //record.latest.updated_at
+                        $('<th>').text('Site'), //record.site
+                        $('<th>').text('Page Name'), //record.title
+                        $('<th>').text('Url'),
+                        $('<th>').text('Page View Url'),
+                        $('<th>').text('Last Two'),
+                        $('<th>').text('Latest to Base'));
             }
         })
     </script>
