@@ -121,22 +121,22 @@ function loadIframe(html_embed: string) {
 function showDiffMetadata(data: any) {
     var index = data[0] || 'No index';
     var title = data[5] || 'No title';
-    var url = data[6] || 'No url'
-    $('#diff_title').text(`${index} - ${title} : `)
-    $('#diff_page_url').attr('href', `http://${url}`).text(url)
+    var url = data[6] || 'No url';
+    $('#diff_title').text(`${index} - ${title} : `);
+    $('#diff_page_url').attr('href', `http://${url}`).text(url);
 
     // Magic numbers! Match with column indexes from google spreadsheet.
     // Hack because we don't get any type of metadata, just an array
     for (var i = 15; i <= 32; i++) {
-        $(`#cbox${i}`).prop('checked', data[i])
+        $(`#cbox${i}`).prop('checked', data[i]);
     }
 }
 
 function toggleProgressbar(isVisible: boolean) {
     if(isVisible) {
-        $('.progress').show()
+        $('.progress').show();
     } else {
-        $('.progress').hide()
+        $('.progress').hide();
     }
 }
 

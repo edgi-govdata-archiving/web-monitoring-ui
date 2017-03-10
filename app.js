@@ -20,8 +20,7 @@ app.engine('html', require('ejs').renderFile);
  * Main view for manual entry
  */
 app.get('/', function (req, res) {
-    //res.render('main.html')
-    res.redirect('/diffbyindex?index=2');
+    res.render('main.html')
 });
 
 /**

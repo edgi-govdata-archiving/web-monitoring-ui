@@ -13,6 +13,8 @@
         </div>
     </div>
     <script>
+
+        // TODO: break into own module
         $(document).ready(function() {
             $.getJSON('./config.json', function(data) {
                 let user = data["EDGI-WEB-MONITOR-USER"];
@@ -35,23 +37,9 @@
                         let diff = $('#diff_view');
 
                         table.find('thead').append(getTableHeader());
-                        
+
                         pageSet.forEach(function(record) {
-                            let row = $('<tr>').append(
-                                $('<td>').text(record.latest.id),
-                                $('<td>').text(record.latest.updated_at),
-                                $('<td>').text(record.site),
-                                $('<td>').text(record.title),
-                                $('<td>').html(`<a href="${record.url}">${record.url.substr(0, 20)}</a>`),
-                                $('<td>').html(`<a href="${record.versionista_url}">${record.versionista_url.substr(-15)}</a>`),
-                                $('<td>').html(`<a href="${record.latest.diff_with_previous_url}">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
-                                $('<td>').html(`<a href="${record.latest.diff_with_first_url}">${record.latest.diff_with_first_url.substr(-15)}</a>`)
-                            );
-                            row.click(function() {
-                                diff.load(record.versionista_url);
-                                
-                                // diff.attr('src', record.versionista_url)
-                            });
+                            let row = getTableRow(record);
                             table.find('tbody').append(row);
                         })
                         console.log(data)
@@ -70,6 +58,47 @@
                         $('<th>').text('Page View Url'),
                         $('<th>').text('Last Two'),
                         $('<th>').text('Latest to Base'));
+            }
+
+            function getTableRow(record) {
+                let row = $('<tr>').append(
+                    $('<td>').text(record.latest.id),
+                    $('<td>').text(record.latest.updated_at),
+                    $('<td>').text(record.site),
+                    $('<td>').text(record.title),
+                    $('<td>').html(`<a href="${record.url}">${record.url.substr(0, 20)}...</a>`),
+                    $('<td>').html(`<a href="${record.versionista_url}">${record.versionista_url.substr(-15)}</a>`),
+                    $('<td>').html(`<a href="${record.latest.diff_with_previous_url}">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
+                    $('<td>').html(`<a href="${record.latest.diff_with_first_url}">${record.latest.diff_with_first_url.substr(-15)}</a>`)
+                );
+                row.click(function() {
+                    showDiffMetadata(record)
+                    $('#update_record').data('record_info', {
+                        'page_id': record.id,
+                        'version_id': record.latest.id,
+                        'annotations': {
+                            'indiv_1': true
+                        }
+                    })
+                    // diff.load(record.versionista_url);                    
+                    // diff.attr('src', record.versionista_url)
+                });
+
+                return row;
+            }
+
+            function showDiffMetadata(record) {
+                var index = record.latest.id|| 'No index';
+                var title = record.title || 'No title';
+                var url = record.url || 'No url';
+                $('#diff_title').text(`${index} - ${title} : `);
+                $('#diff_page_url').attr('href', `http://${url}`).text(`${url.substr(0, 40)}...`);
+
+                // Magic numbers! Match with column indexes from google spreadsheet.
+                // Hack because we don't get any type of metadata, just an array
+                // for (var i = 15; i <= 32; i++) {
+                //     $(`#cbox${i}`).prop('checked', data[i])
+                // }
             }
         })
     </script>
