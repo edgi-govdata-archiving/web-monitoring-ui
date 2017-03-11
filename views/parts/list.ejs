@@ -79,6 +79,8 @@
                     
                     toggleView();
                     showDiffMetadata(record);
+                    $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url);
+                    $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url);
 
                     $('#lnk_update_record').off('click').on('click', function() {
                         let annotations = {};
