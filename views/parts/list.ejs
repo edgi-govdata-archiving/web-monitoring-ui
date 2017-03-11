@@ -15,8 +15,9 @@
     <script>
         // TODO: break into own module
         $(document).ready(function() {
+            $('#lnk_toggle_signifiers').click(toggleSignifierAbbreviations);
             $('#lnk_view_list').click(toggleView);
-            $('#lnk_toggle_view').click(toggleSignifierAbbreviations);
+            
 
             $.getJSON('./config.json', function(data) {
                 toggleProgressbar(true);
