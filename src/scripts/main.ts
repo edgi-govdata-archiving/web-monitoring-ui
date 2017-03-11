@@ -21,20 +21,9 @@ $( document ).ready(function() {
         );
     });
 
-    $('#lnk_toggle_view').click(toggleSignifierAbbreviations);
-
     // Load Google api
     gapi.load('client', start);
-
-    // setPagination()
 })
-
-function setPagination() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var index = parseInt(urlParams.get('index')) || 2;
-    $('#prev_index').text(`<-- Row ${index-1}`).attr('href', `/diffbyindex?index=${index-1}`);
-    $('#next_index').text(`Row ${index+1} -->`).attr('href', `/diffbyindex?index=${index+1}`);
-}
 
 function start() {
     $.getJSON('./config.json', function (data) {
@@ -117,32 +106,12 @@ function loadIframe(html_embed: string) {
     };
 }
 
-// function showDiffMetadata(data: any) {
-//     var index = data[0] || 'No index';
-//     var title = data[5] || 'No title';
-//     var url = data[6] || 'No url';
-//     $('#diff_title').text(`${index} - ${title} : `);
-//     $('#diff_page_url').attr('href', `http://${url}`).text(url);
-
-//     // Magic numbers! Match with column indexes from google spreadsheet.
-//     // Hack because we don't get any type of metadata, just an array
-//     for (var i = 15; i <= 32; i++) {
-//         $(`#cbox${i}`).prop('checked', data[i]);
-//     }
-// }
-
 function toggleProgressbar(isVisible: boolean) {
     if(isVisible) {
         $('.progress').show();
     } else {
         $('.progress').hide();
     }
-}
-
-function toggleSignifierAbbreviations(e: Event) {
-    e.preventDefault();
-    $('.info-text').toggle();
-    $('#inspectorView').toggleClass('short-view');
 }
 
 // Quick type for URLSearchParams 

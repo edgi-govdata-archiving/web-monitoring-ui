@@ -16,7 +16,7 @@
         // TODO: break into own module
         $(document).ready(function() {
             $('#lnk_toggle_signifiers').click(toggleSignifierAbbreviations);
-            $('#lnk_view_list').click(toggleView);
+            $('#lnk_view_list').click(showListView);
             
 
             $.getJSON('./config.json', function(data) {
@@ -42,8 +42,10 @@
 
                         table.find('thead').append(getTableHeader());
 
-                        pageSet.forEach(function(record) {
+                        pageSet.forEach(function(record, index, pageSet) {
                             let row = getTableRow(record);
+                            row.data('prev_record', pageSet[index-1]);
+                            row.data('next_record', pageSet[index+1]);
                             table.find('tbody').append(row);
                         })
                         toggleProgressbar(false);
@@ -64,7 +66,7 @@
                         $('<th>').text('Latest to Base'));
             }
             function getTableRow(record) {
-                let row = $('<tr>').append(
+                let row = $('<tr>').attr('id', `row_record_${record.latest.id}`).append(
                     $('<td>').text(record.latest.id),
                     $('<td>').text(record.latest.updated_at),
                     $('<td>').text(record.site),
@@ -74,27 +76,34 @@
                     $('<td>').html(`<a href="${record.latest.diff_with_previous_url}" target="_blank">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
                     $('<td>').html(`<a href="${record.latest.diff_with_first_url}" target="_blank">${record.latest.diff_with_first_url.substr(-15)}</a>`)
                 );
-                row.click(function() {
-                    let page_id = record.id,
-                        version_id = record.latest.id;
-                    
-                    toggleView();
-                    showDiffMetadata(record);
-                    $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url);
-                    $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url);
 
-                    $('#lnk_update_record').off('click').on('click', function() {
-                        let annotations = {};
-                        // Build up annotations object
-                        $('#inspectorView input[type="checkbox"]').each(function(chkbox) {
-                            annotations[this.id] = this.checked;
-                        })
-                        update(page_id, version_id, annotations);
-                    })
+                row.click(function() {
+                    showPage(record);
+                    setPagination(row.data('prev_record'), row.data('next_record'));
                 });
 
                 return row;
             }
+
+            function showPage(record) {
+                let page_id = record.id,
+                    version_id = record.latest.id;
+                
+                showPageView();
+                showDiffMetadata(record);
+                $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url);
+                $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url);
+
+                $('#lnk_update_record').off('click').on('click', function() {
+                    let annotations = {};
+                    // Build up annotations object
+                    $('#inspectorView input[type="checkbox"]').each(function(chkbox) {
+                        annotations[this.id] = this.checked;
+                    })
+                    update(page_id, version_id, annotations);
+                })
+            }
+
             function update(page_id, version_id, annotations) {
                 //TODO: Need some sort of user login
                 $.getJSON('./config.json', function(data) {
@@ -143,9 +152,14 @@
                     }
                 });               
             }
-            function toggleView() {
-                $('#container_list_view').toggle();
-                $('#container_page_view').toggle();
+            function showListView() {
+                $('#container_list_view').show();
+                $('#container_page_view').hide();
+            }
+
+            function showPageView() {
+                $('#container_list_view').hide();
+                $('#container_page_view').show();
             }
             function toggleProgressbar(isVisible) {
                 if(isVisible) {
@@ -159,6 +173,24 @@
                 e.preventDefault();
                 $('.info-text').toggle();
                 $('#inspectorView').toggleClass('short-view');
+            }
+
+            function setPagination(prev_record, next_record) {
+                if (prev_record) {
+                    $('#prev_index').show().off().click(function() {
+                        showPage(prev_record);
+                        let row = $(`#row_record_${prev_record.latest.id}`);
+                        setPagination(row.data('prev_record'), row.data('next_record'));
+                    })
+                } else { $('#prev_index').hide(); }
+                if (next_record) {
+                    $('#next_index').show().off().click(function() {
+                        showPage(next_record);
+                        let row = $(`#row_record_${next_record.latest.id}`);
+                        setPagination(row.data('prev_record'), row.data('next_record'));
+                    })
+                } else { $('#next_index').hide() }
+                
             }
         })
     </script>
