@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" id="container_list_view">
     <nav class="navbar navbar-inverse">
         <div class="navbar-inner">
             <a class="brand" href="#">LIST VIEW</a>
@@ -6,17 +6,20 @@
     </nav>
     <div class="row">
         <div class="col-md-12">
-            <table id="list_view" class="table">
+            <table id="tbl_list_view" class="table">
                 <thead></thead>
                 <tbody></tbody>    
             </table>
         </div>
     </div>
     <script>
-
         // TODO: break into own module
         $(document).ready(function() {
+            $('#lnk_view_list').click(toggleView);
+            $('#lnk_toggle_view').click(toggleSignifierAbbreviations);
+
             $.getJSON('./config.json', function(data) {
+                toggleProgressbar(true);
                 let user = data["EDGI-WEB-MONITOR-USER"];
                 let pass = data["EDGI-WEB-MONITOR-PASSWORD"];
                 $.ajax({
@@ -33,7 +36,7 @@
                         // TODO: paginate through records
                         // Currently geting small subset to test
                         let pageSet = result.data.slice(0, 10); 
-                        let table = $('#list_view');
+                        let table = $('#tbl_list_view');
                         let diff = $('#diff_view');
 
                         table.find('thead').append(getTableHeader());
@@ -42,7 +45,7 @@
                             let row = getTableRow(record);
                             table.find('tbody').append(row);
                         })
-                        console.log(data)
+                        toggleProgressbar(false);
                     }
                 })
             })
@@ -59,7 +62,6 @@
                         $('<th>').text('Last Two'),
                         $('<th>').text('Latest to Base'));
             }
-
             function getTableRow(record) {
                 let row = $('<tr>').append(
                     $('<td>').text(record.latest.id),
@@ -74,10 +76,11 @@
                 row.click(function() {
                     let page_id = record.id,
                         version_id = record.latest.id;
-
+                    
+                    toggleView();
                     showDiffMetadata(record);
 
-                    $('#update_record').off('click').on('click', function() {
+                    $('#lnk_update_record').off('click').on('click', function() {
                         let annotations = {};
                         // Build up annotations object
                         $('#inspectorView input[type="checkbox"]').each(function(chkbox) {
@@ -136,6 +139,23 @@
                         }
                     }
                 });               
+            }
+            function toggleView() {
+                $('#container_list_view').toggle();
+                $('#container_page_view').toggle();
+            }
+            function toggleProgressbar(isVisible) {
+                if(isVisible) {
+                    $('.progress').show();
+                } else {
+                    $('.progress').hide();
+                }
+            }
+
+            function toggleSignifierAbbreviations(e) {
+                e.preventDefault();
+                $('.info-text').toggle();
+                $('#inspectorView').toggleClass('short-view');
             }
         })
     </script>

@@ -53,6 +53,10 @@ iframe {
     width: 100%;
 }
 
+#container_page_view {
+    display: none;
+}
+
 .progress .progress-bar.active {
     font-weight: 700;
     animation: progress-bar-stripes .5s linear infinite;

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" id="container_page_view">
     <div class="row">
         <div class="col-md-12">
             <nav class="navbar navbar-inverse" role="navigation">
@@ -21,13 +21,19 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <a id="toggle_view" href="#">Toggle View</a> | 
-                            <a id="update_record" href="#">Update Record<a>
+                            <a id="lnk_toggle_view" href="#">Toggle View</a> || 
+                            <a id="lnk_update_record" href="#">Update Record</a> ||
+                            <a id="lnk_view_list" href="#">Back to list view</a>
                         </div>
                     </div>
                     <% include tools.ejs %>
                 </div>
             </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <iframe id="diff_view" srcdoc="Diff view should go here with different modes and such" height="200"></iframe>
         </div>
     </div>
 </div> <!-- END container-fluid -->
