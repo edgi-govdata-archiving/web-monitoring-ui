@@ -9,7 +9,7 @@ gulp.task("browserify", function () {
     return browserify({
         basedir: '.',
         debug: true,
-        entries: ['src/scripts/main.ts', 'src/scripts/Pagefreezer.ts'],
+        entries: ['src/scripts/main.ts'],
         cache: {},
         packageCache: {}
     })

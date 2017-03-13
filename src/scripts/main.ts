@@ -8,72 +8,17 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {Pagefreezer} from "./Pagefreezer";
-
 $( document ).ready(function() {
     toggleProgressbar(false);
-
-    $('#submitButton').click(function () {
-        runDiff(
-            $('#url1').val(), 
-            $('#url2').val()
-        );
-    });
 })
 
-function start() {
-    
-};
-
-function showPage(row_index: number) {
-    // link to test spreadsheet: https://docs.google.com/spreadsheets/d/17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ/edit#gid=0
-    var sheetID = '17QA_C2-XhLefxZlRKw74KDY3VNstbPvK3IHWluDJMGQ'
-    var range = `A${row_index}:AG${row_index}`
-
-    // Info on spreadsheets.values.get: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get
-    var path = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${range}`;
-    gapi.client.request({
-        'path': path,
-    }).then(function (response: any) {
-        // If we need to write to spreadsheets: 
-        // 1) Get started: https://developers.google.com/sheets/api/quickstart/js
-        // 2) Read/write docs: https://developers.google.com/sheets/api/guides/values
-
-        var values = response.result.values;
-        if (values) {
-            var row_data = values[0];
-            var old_url = row_data[8];
-            var new_url = row_data[9];
-
-            console.log(row_data);
-            // runDiff(old_url, new_url);
-            
-        } else {
-            $('#diff_title').text('No data found')
-        }
-    }, function (response: any) {
-        console.error('Error: ' + response.result.error.message);
-    });
-}
-
-function runDiff(old_url: string, new_url: string) {
-    toggleProgressbar(true);
-    Pagefreezer.diffPages(
-        old_url,
-        new_url,
-        function(data, status) {
-            console.log(data)
-            loadIframe(data.result.output.html);
-            toggleProgressbar(false);
-    });
-}
 function loadIframe(html_embed: string) {
     // inject html
     var iframe = document.getElementById('diff_view');
     iframe.setAttribute('srcdoc', html_embed);
 
     iframe.onload = function() {
-        // inject diff css
+        // inject diff.css to highlight <ins> and <del> elements
         var frm = (frames as any)['diff_view'].contentDocument;
         var otherhead = frm.getElementsByTagName("head")[0];
         var link = frm.createElement("link");
@@ -82,8 +27,7 @@ function loadIframe(html_embed: string) {
         link.setAttribute("href", `${window.location.origin}/css/diff.css`);
         otherhead.appendChild(link);
 
-        // set dimensions
-        // iframe.setAttribute('width', (iframe as any).contentWindow.document.body.scrollWidth);
+        // set iframe height = frame content
         iframe.setAttribute('height',(iframe as any).contentWindow.document.body.scrollHeight);
     };
 }
@@ -94,13 +38,4 @@ function toggleProgressbar(isVisible: boolean) {
     } else {
         $('.progress').hide();
     }
-}
-
-// Quick type for URLSearchParams 
-declare class URLSearchParams {
-    /** Constructor returning a URLSearchParams object. */
-    constructor(init?: string| URLSearchParams);
-
-    /** Returns the first value associated to the given search parameter. */
-    get(name: string): string;
 }

@@ -34,11 +34,11 @@ body.fixed-to-top-offset {
     cursor: pointer;
 }
 
-#tbl_list_view tr {
+#tbl_list_view tbody tr {
     cursor: pointer;
 }
 
-#tbl_list_view tr:hover {
+#tbl_list_view tbody tr:hover {
     background-color: #EEE;
 }
 
