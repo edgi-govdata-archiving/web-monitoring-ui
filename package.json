@@ -1,5 +1,5 @@
 {
-  "name": "diffinterface",
+  "name": "web-monitoring-ui",
   "version": "0.1.0",
   "description": "web-monitoring-ui",
   "main": "views/main.html",
