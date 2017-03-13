@@ -16,6 +16,7 @@
         // TODO: break into own module
         $(document).ready(function() {
             // setup handlers 
+
             $('#lnk_toggle_signifiers').click(toggleSignifierAbbreviations);
             $('#lnk_view_list').click(toggleListView);
             
@@ -66,6 +67,9 @@
             }
 
             function getTableRow(record) {
+                // explicit check because this field is sometimes null
+                let diff_with_first_url = record.latest.diff_with_first_url || '';
+
                 let row = $('<tr>').attr('id', `row_record_${record.latest.id}`).append(
                     $('<td>').text(record.latest.id),
                     $('<td>').text(record.latest.updated_at),
@@ -74,7 +78,7 @@
                     $('<td>').html(`<a href="https://${record.url}" target="_blank">${record.url.substr(0, 20)}...</a>`),
                     $('<td>').html(`<a href="${record.versionista_url}" target="_blank">${record.versionista_url.substr(-15)}</a>`),
                     $('<td>').html(`<a href="${record.latest.diff_with_previous_url}" target="_blank">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
-                    $('<td>').html(`<a href="${record.latest.diff_with_first_url}" target="_blank">${record.latest.diff_with_first_url.substr(-15)}</a>`)
+                    $('<td>').html(`<a href="${diff_with_first_url}" target="_blank">${diff_with_first_url.substr(-15)}</a>`)
                 );
 
                 row.click(function() {
@@ -93,8 +97,8 @@
                 showDiffMetadata(record);
 
                 // populate versionista links
-                $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url);
-                $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url);
+                $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url || '');
+                $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url || '');
 
                 $('#lnk_update_record').off('click').on('click', function() {
                     let annotations = {};
