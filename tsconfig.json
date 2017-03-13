@@ -1,6 +1,5 @@
 {
   "files": [
-    "src/scripts/Pagefreezer.ts",
     "src/scripts/main.ts"
   ],
   "compilerOptions": {

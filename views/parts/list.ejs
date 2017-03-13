@@ -15,10 +15,11 @@
     <script>
         // TODO: break into own module
         $(document).ready(function() {
-            $('#lnk_toggle_signifiers').click(toggleSignifierAbbreviations);
-            $('#lnk_view_list').click(showListView);
-            
+            // setup handlers 
 
+            $('#lnk_toggle_signifiers').click(toggleSignifierAbbreviations);
+            $('#lnk_view_list').click(toggleListView);
+            
             $.getJSON('./config.json', function(data) {
                 toggleProgressbar(true);
                 let user = data["EDGI-WEB-MONITOR-USER"];
@@ -54,18 +55,21 @@
             })
             
             function getTableHeader() {
-                return $('<tr>')
-                    .append(
-                        $('<th>').text('ID'), //record.latest.id
-                        $('<th>').text('Output Date'), //record.latest.updated_at
-                        $('<th>').text('Site'), //record.site
-                        $('<th>').text('Page Name'), //record.title
-                        $('<th>').text('Url'),
-                        $('<th>').text('Page View Url'),
-                        $('<th>').text('Last Two'),
-                        $('<th>').text('Latest to Base'));
+                return $('<tr>').append(
+                    $('<th>').text('ID'), 
+                    $('<th>').text('Output Date'), 
+                    $('<th>').text('Site'), 
+                    $('<th>').text('Page Name'), 
+                    $('<th>').text('Url'),
+                    $('<th>').text('Page View Url'),
+                    $('<th>').text('Last Two'),
+                    $('<th>').text('Latest to Base'));
             }
+
             function getTableRow(record) {
+                // explicit check because this field is sometimes null
+                let diff_with_first_url = record.latest.diff_with_first_url || '';
+
                 let row = $('<tr>').attr('id', `row_record_${record.latest.id}`).append(
                     $('<td>').text(record.latest.id),
                     $('<td>').text(record.latest.updated_at),
@@ -74,7 +78,7 @@
                     $('<td>').html(`<a href="https://${record.url}" target="_blank">${record.url.substr(0, 20)}...</a>`),
                     $('<td>').html(`<a href="${record.versionista_url}" target="_blank">${record.versionista_url.substr(-15)}</a>`),
                     $('<td>').html(`<a href="${record.latest.diff_with_previous_url}" target="_blank">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
-                    $('<td>').html(`<a href="${record.latest.diff_with_first_url}" target="_blank">${record.latest.diff_with_first_url.substr(-15)}</a>`)
+                    $('<td>').html(`<a href="${diff_with_first_url}" target="_blank">${diff_with_first_url.substr(-15)}</a>`)
                 );
 
                 row.click(function() {
@@ -89,10 +93,12 @@
                 let page_id = record.id,
                     version_id = record.latest.id;
                 
-                showPageView();
+                togglePageView();
                 showDiffMetadata(record);
-                $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url);
-                $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url);
+
+                // populate versionista links
+                $('#lnk_last_two_diff').attr('href', record.latest.diff_with_previous_url || '');
+                $('#lnk_last_to_base_diff').attr('href', record.latest.diff_with_first_url || '');
 
                 $('#lnk_update_record').off('click').on('click', function() {
                     let annotations = {};
@@ -104,6 +110,7 @@
                 })
             }
 
+            // post annotations to web-monitoring-db
             function update(page_id, version_id, annotations) {
                 //TODO: Need some sort of user login
                 $.getJSON('./config.json', function(data) {
@@ -126,14 +133,18 @@
                     })
                 })
             }
+
             function showDiffMetadata(record) {
                 let page_id = record.id,
                     version_id = record.latest.id|| 'No index',
                     title = record.title || 'No title',
                     url = record.url || 'No url';
+
                 $('#diff_title').text(`${version_id} - ${title} : `);
                 $('#diff_page_url').attr('href', `https://${url}`).text(`${url.substr(0, 40)}...`).attr('target', '_blank');
 
+                // Get annotations and check checkboxes
+                // annotation keys and checkbox element id's correspond
                 $.ajax({
                     cache: false,
                     url: `https://web-monitoring-db.herokuapp.com/pages/${page_id}/versions/${version_id}`,
@@ -142,7 +153,7 @@
                         let current_annotation = data.data.current_annotation;
                         if (Object.keys(current_annotation).length > 0) {
                             Object.keys(current_annotation).forEach(function(key) {
-                                $(`#${key}`).prop('checked', current_annotation[key]);                                
+                                $(`#${key}`).prop('checked', current_annotation[key]);
                             });
                         } else {
                             $('#inspectorView input[type="checkbox"]').each(function() {
@@ -152,15 +163,17 @@
                     }
                 });               
             }
-            function showListView() {
+
+            function toggleListView() {
                 $('#container_list_view').show();
                 $('#container_page_view').hide();
             }
 
-            function showPageView() {
+            function togglePageView() {
                 $('#container_list_view').hide();
                 $('#container_page_view').show();
             }
+
             function toggleProgressbar(isVisible) {
                 if(isVisible) {
                     $('.progress').show();
@@ -183,6 +196,7 @@
                         setPagination(row.data('prev_record'), row.data('next_record'));
                     })
                 } else { $('#prev_index').hide(); }
+
                 if (next_record) {
                     $('#next_index').show().off().click(function() {
                         showPage(next_record);
@@ -190,8 +204,7 @@
                         setPagination(row.data('prev_record'), row.data('next_record'));
                     })
                 } else { $('#next_index').hide() }
-                
             }
-        })
+        });
     </script>
 </div>
