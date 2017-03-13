@@ -11,7 +11,6 @@
 import {Pagefreezer} from "./Pagefreezer";
 
 $( document ).ready(function() {
-    console.log("ready");
     toggleProgressbar(false);
 
     $('#submitButton').click(function () {
@@ -20,27 +19,10 @@ $( document ).ready(function() {
             $('#url2').val()
         );
     });
-
-    // Load Google api
-    gapi.load('client', start);
 })
 
 function start() {
-    $.getJSON('./config.json', function (data) {
-        var API_KEY = data.API_KEY;
-        // 2. Initialize the JavaScript client library.
-        // !! Work around because gapi.client.init is not in types file 
-        (gapi as any).client.init({ 'apiKey': API_KEY });
-
-        $('#diff_by_index').click(function () {
-            var urlParams = new URLSearchParams(window.location.search);
-            var index = parseInt(urlParams.get('index'));
-            showPage(index);
-        })
-    })
-    .fail(function() {
-        console.error('Couldn\'t find api key');
-    });
+    
 };
 
 function showPage(row_index: number) {
