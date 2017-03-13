@@ -22,14 +22,24 @@ body.fixed-to-top-offset {
     color: white;
     margin-bottom: 10px;
 }
+
 #inspectorView input[type="checkbox"] {
     margin-right: 7px;
 }
+
 #inspectorView label {
     display: block;
     font-weight: 200;
     font-size: 1.4rem;
     cursor: pointer;
+}
+
+#tbl_list_view tr {
+    cursor: pointer;
+}
+
+#tbl_list_view tr:hover {
+    background-color: #EEE;
 }
 
 .short-view label {
