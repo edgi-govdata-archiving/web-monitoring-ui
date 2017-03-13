@@ -7,7 +7,7 @@ This component works with [web-monitoring-db](https://github.com/edgi-govdata-ar
 A node application with the following capabilities:
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://edgi-web-monitor-ui.herokuapp.com)
-    * LIST VIEW shows first 10 records from [web-monitor-db]json endpoint(https://web-monitoring-db.herokuapp.com/pages.json)
+    * LIST VIEW shows first 10 records from [web-monitor-db](https://web-monitoring-db.herokuapp.com/pages.json) json endpoint
     * PAGE VIEW shows basic info about record: site, urls, and links to versionista diffs
         * paginate through records
 
