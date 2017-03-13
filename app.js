@@ -20,8 +20,7 @@ app.engine('html', require('ejs').renderFile);
  * Main view for manual entry
  */
 app.get('/', function (req, res) {
-    //res.render('main.html')
-    res.redirect('/diffbyindex?index=7');
+    res.render('main.html')
 });
 
 /**
@@ -39,7 +38,8 @@ app.get('/diff?', function(req, res) {
     let oldUrl = req.query.old_url;
     let newUrl = req.query.new_url;
     let as = req.query.as;
-    let config = require('./dist/config.json')
+    let config = require('./dist/config.json');
+    let token = config.PAGEFREEZER_TOKEN || process.env.PAGEFREEZER_TOKEN;
 
     if(as != null && as == "view") {
         //render a view
@@ -69,7 +69,7 @@ app.get('/diff?', function(req, res) {
                 'Accept' : 'application/json',
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(postData),
-                'x-api-key' : config.pagefreezer_token
+                'x-api-key' : token
             }
         };
 

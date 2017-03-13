@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Diff View</title>
-
-    <link rel="stylesheet" type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script type="text/javascript" src="bundle.js"></script>
-</head>
-<body>
-
-<div class="container-fluid">
+<div class="container-fluid" id="container_page_view">
     <div class="row">
         <div class="col-md-12">
             <nav class="navbar navbar-inverse" role="navigation">
@@ -41,11 +21,26 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <a id="toggle_view" href="#">Toggle View</a>
+                            <a id="lnk_toggle_signifiers" href="#">Toggle Signifiers</a> || 
+                            <a id="lnk_update_record" href="#">Update Record</a> ||
+                            <a id="lnk_view_list" href="#">Back to list view</a>
                         </div>
                     </div>
+                    
                     <% include tools.ejs %>
                 </div>
             </nav>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a id="lnk_last_two_diff" href="#" target="_blank" rel="noopener">Last two diff </a> || 
+            <a id="lnk_last_to_base_diff" href="#" target="_blank" rel="noopener">Last to base diff</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <iframe id="diff_view" srcdoc="Diff view should go here with different modes and such" height="200"></iframe>
+        </div>
+    </div>
+</div> <!-- END container-fluid -->

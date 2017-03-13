@@ -21,24 +21,13 @@ $( document ).ready(function() {
         );
     });
 
-    $('#toggle_view').click(toggleView);
-
     // Load Google api
     gapi.load('client', start);
-
-    setPagination()
 })
-
-function setPagination() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var index = parseInt(urlParams.get('index')) || 7;
-    $('#prev_index').text(`<-- Row ${index-1}`).attr('href', `/diffbyindex?index=${index-1}`);
-    $('#next_index').text(`Row ${index+1} -->`).attr('href', `/diffbyindex?index=${index+1}`);
-}
 
 function start() {
     $.getJSON('./config.json', function (data) {
-        var API_KEY = data.api_key;
+        var API_KEY = data.API_KEY;
         // 2. Initialize the JavaScript client library.
         // !! Work around because gapi.client.init is not in types file 
         (gapi as any).client.init({ 'apiKey': API_KEY });
@@ -75,8 +64,7 @@ function showPage(row_index: number) {
             var new_url = row_data[9];
 
             console.log(row_data);
-            showDiffMetadata(row_data);
-            runDiff(old_url, new_url);
+            // runDiff(old_url, new_url);
             
         } else {
             $('#diff_title').text('No data found')
@@ -99,12 +87,12 @@ function runDiff(old_url: string, new_url: string) {
 }
 function loadIframe(html_embed: string) {
     // inject html
-    var iframe = document.getElementById('pageView');
+    var iframe = document.getElementById('diff_view');
     iframe.setAttribute('srcdoc', html_embed);
 
     iframe.onload = function() {
         // inject diff css
-        var frm = (frames as any)['pageView'].contentDocument;
+        var frm = (frames as any)['diff_view'].contentDocument;
         var otherhead = frm.getElementsByTagName("head")[0];
         var link = frm.createElement("link");
         link.setAttribute("rel", "stylesheet");
@@ -118,32 +106,12 @@ function loadIframe(html_embed: string) {
     };
 }
 
-function showDiffMetadata(data: any) {
-    var index = data[0] || 'No index';
-    var title = data[5] || 'No title';
-    var url = data[6] || 'No url'
-    $('#diff_title').text(`${index} - ${title} : `)
-    $('#diff_page_url').attr('href', `http://${url}`).text(url)
-
-    // Magic numbers! Match with column indexes from google spreadsheet.
-    // Hack because we don't get any type of metadata, just an array
-    for (var i = 15; i <= 32; i++) {
-        $(`#cbox${i}`).prop('checked', data[i])
-    }
-}
-
 function toggleProgressbar(isVisible: boolean) {
     if(isVisible) {
-        $('.progress').show()
+        $('.progress').show();
     } else {
-        $('.progress').hide()
+        $('.progress').hide();
     }
-}
-
-function toggleView(e: Event) {
-    e.preventDefault();
-    $('.info-text').toggle();
-    $('#inspectorView').toggleClass('short-view');
 }
 
 // Quick type for URLSearchParams 
