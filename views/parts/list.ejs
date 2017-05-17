@@ -26,7 +26,7 @@
                 let pass = data["EDGI-WEB-MONITOR-PASSWORD"];
                 $.ajax({
                     type: "GET",
-                    url: "https://web-monitoring-db.herokuapp.com/pages.json?page=1",
+                    url: "https://web-monitoring-db-staging.herokuapp.com/api/v0/pages.json?page=1",
                     dataType: "json",
                     xhrFields: {
                         withCredentials: true
@@ -67,18 +67,22 @@
             }
 
             function getTableRow(record) {
+                const version = record.latest;
+                const versionistaData = version.source_metadata;
+                
                 // explicit check because this field is sometimes null
-                let diff_with_first_url = record.latest.diff_with_first_url || '';
+                let diff_with_first_url = versionistaData.diff_with_first_url || '';
+                let diff_with_previous_url = versionistaData.diff_with_previous_url || '';
 
-                let row = $('<tr>').attr('id', `row_record_${record.latest.id}`).append(
-                    $('<td>').text(record.latest.id),
+                let row = $('<tr>').attr('id', `row_record_${record.latest.uuid}`).append(
+                    $('<td>').text(record.latest.uuid),
                     $('<td>').text(record.latest.updated_at),
                     $('<td>').text(record.site),
                     $('<td>').text(record.title),
                     $('<td>').html(`<a href="https://${record.url}" target="_blank">${record.url.substr(0, 20)}...</a>`),
-                    $('<td>').html(`<a href="${record.versionista_url}" target="_blank">${record.versionista_url.substr(-15)}</a>`),
-                    $('<td>').html(`<a href="${record.latest.diff_with_previous_url}" target="_blank">${record.latest.diff_with_previous_url.substr(-15)}</a>`),
-                    $('<td>').html(`<a href="${diff_with_first_url}" target="_blank">${diff_with_first_url.substr(-15)}</a>`)
+                    $('<td>').html(`<a href="${versionistaData.url}" target="_blank">${versionistaData.url.substr(-15)}</a>`),
+                    $('<td>').html(diff_with_previous_url ? `<a href="${versionistaData.diff_with_previous_url}" target="_blank">${versionistaData.diff_with_previous_url.substr(-15)}</a>` : `<em>[Initial Version]</em>`),
+                    $('<td>').html(diff_with_first_url ? `<a href="${diff_with_first_url}" target="_blank">${diff_with_first_url.substr(-15)}</a>` : `<em>[Initial Version]</em>`)
                 );
 
                 row.click(function() {
@@ -90,8 +94,8 @@
             }
 
             function showPage(record) {
-                let page_id = record.id,
-                    version_id = record.latest.id;
+                let page_id = record.uuid,
+                    version_id = record.latest.uuid;
                 
                 togglePageView();
                 showDiffMetadata(record);
@@ -104,7 +108,7 @@
                     let annotations = {};
                     // Build up annotations object
                     $('#inspectorView input[type="checkbox"]').each(function(chkbox) {
-                        annotations[this.id] = this.checked;
+                        annotations[this.uuid] = this.checked;
                     })
                     update(page_id, version_id, annotations);
                 })
@@ -118,7 +122,7 @@
                     let pass = data["EDGI-WEB-MONITOR-PASSWORD"];
                     $.ajax({    
                         type: "POST",
-                        url: `https://web-monitoring-db.herokuapp.com/pages/${page_id}/versions/${version_id}/annotations.json`,
+                        url: `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${page_id}/versions/${version_id}/annotations.json`,
                         dataType: "json",
                         xhrFields: {
                             withCredentials: true
@@ -135,8 +139,8 @@
             }
 
             function showDiffMetadata(record) {
-                let page_id = record.id,
-                    version_id = record.latest.id|| 'No index',
+                let page_id = record.uuid,
+                    version_id = record.latest.uuid|| 'No index',
                     title = record.title || 'No title',
                     url = record.url || 'No url';
 
@@ -147,7 +151,7 @@
                 // annotation keys and checkbox element id's correspond
                 $.ajax({
                     cache: false,
-                    url: `https://web-monitoring-db.herokuapp.com/pages/${page_id}/versions/${version_id}`,
+                    url: `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${page_id}/versions/${version_id}`,
                     dataType: "json",
                     success: function(data) {
                         let current_annotation = data.data.current_annotation;
@@ -192,7 +196,7 @@
                 if (prev_record) {
                     $('#prev_index').show().off().click(function() {
                         showPage(prev_record);
-                        let row = $(`#row_record_${prev_record.latest.id}`);
+                        let row = $(`#row_record_${prev_record.latest.uuid}`);
                         setPagination(row.data('prev_record'), row.data('next_record'));
                     })
                 } else { $('#prev_index').hide(); }
@@ -200,7 +204,7 @@
                 if (next_record) {
                     $('#next_index').show().off().click(function() {
                         showPage(next_record);
-                        let row = $(`#row_record_${next_record.latest.id}`);
+                        let row = $(`#row_record_${next_record.latest.uuid}`);
                         setPagination(row.data('prev_record'), row.data('next_record'));
                     })
                 } else { $('#next_index').hide() }
