@@ -9,7 +9,7 @@ gulp.task("browserify", function () {
     return browserify({
         basedir: '.',
         debug: true,
-        entries: ['src/scripts/main.ts'],
+        entries: ['src/scripts/main.tsx'],
         cache: {},
         packageCache: {}
     })
@@ -20,5 +20,5 @@ gulp.task("browserify", function () {
 });
 
 gulp.task("watch", function() {
-    gulp.watch('src/scripts/*.ts', ['browserify']);
+    gulp.watch('src/**/*.{ts,tsx}', ['browserify']);
 });

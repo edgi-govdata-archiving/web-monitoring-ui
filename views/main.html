@@ -12,20 +12,22 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="bundle.js"></script>
     </head>
     <body>
-        <% include parts/page.ejs %>
-        <% include parts/list.ejs %>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="progress active progress-striped">
-                    <div class="progress-bar progress-success" style="width:100%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-                        <span>Please wait<span class="dotdotdot"></span></span>
+        <div id="web-monitoring-ui-root">
+            <% include parts/page.ejs %>
+            <% include parts/list.ejs %>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="progress active progress-striped">
+                        <div class="progress-bar progress-success" style="width:100%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                            <span>Please wait<span class="dotdotdot"></span></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
+        <script type="text/javascript" src="bundle.js"></script>
     </body>
 </html>
