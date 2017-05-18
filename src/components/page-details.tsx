@@ -10,9 +10,15 @@ export interface IPageDetailsProps {
 
 export default class PageDetails extends React.Component<IPageDetailsProps, undefined> {
     render () {
+        const returnToList = (event: React.MouseEvent<any>) => {
+            event.preventDefault();
+            this.props.returnToList();
+        };
+
         return (
-            <div onClick={this.props.returnToList}>
+            <div>
                 <h2>Page detail view for {this.props.page.uuid}</h2>
+                <a href="#" onClick={returnToList}>Back to page list</a>
                 <AnnotationForm version={this.props.page.latest} />
                 <DiffView html="" />
             </div>
