@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 // TODO: once we have a proper user object, this should not be a string
-export interface NavBarProps {
+export interface INavBarProps {
     title?: string;
     user?: string;
 }
 
 // TODO: this will get a lot more complex to be able to trigger navigation, etc.
-export default ({title = 'EDGI Web Monitoring', user = ''}: NavBarProps) => (
+export default ({title = 'EDGI Web Monitoring', user = ''}: INavBarProps) => (
     <nav className="navbar navbar-inverse">
         <div className="container-fluid">
             <div className="navbar-header">

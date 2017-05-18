@@ -1,4 +1,5 @@
-import mockData from './mock-data';
+/* tslint:disable interface-name */
+import mockData from '../../data/mock-api-pages';
 
 export interface Version {
     uuid: string;
@@ -24,7 +25,7 @@ export interface Page {
 }
 
 export function getPages () {
-    return Promise.resolve(mockData.map((page:any) => {
+    return Promise.resolve(mockData.map((page: any) => {
         const version = Object.assign({}, page.latest, {
             capture_time: new Date(page.latest.capture_time),
             created_at: new Date(page.latest.created_at),
@@ -33,8 +34,8 @@ export function getPages () {
 
         return Object.assign({}, page, {
             created_at: new Date(page.created_at),
-            updated_at: new Date(page.updated_at),
-            latest: version
+            latest: version,
+            updated_at: new Date(page.updated_at)
         });
     }));
 }

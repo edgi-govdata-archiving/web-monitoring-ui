@@ -1,57 +1,60 @@
 import * as React from 'react';
-import NavBar from './nav-bar'
-import PageList from './page-list'
-import PageDetails from './page-details';
 import {getPages, Page} from '../services/web-monitoring-db';
+import NavBar from './nav-bar';
+import PageDetails from './page-details';
+import PageList from './page-list';
 
-export interface WebMonitoringUiProps {
-}
-
-export interface WebMonitoringUiState {
+export interface IWebMonitoringUiState {
     ready: boolean;
-    pages?: Array<Page>;
+    pages?: Page[];
     viewingPage?: Page;
 }
 
 // The WebMonitoringUi represents the root container for the app
-export default class WebMonitoringUi extends React.Component<WebMonitoringUiProps, WebMonitoringUiState> {
-    constructor(props: WebMonitoringUiProps) {
-        super(props);
+export default class WebMonitoringUi extends React.Component<undefined, IWebMonitoringUiState> {
+    constructor () {
+        super();
         this.state = {ready: false};
     }
 
     componentDidMount () {
-        getPages().then((pages: Array<Page>) => {
+        getPages().then((pages: Page[]) => {
             this.setState({
                 ready: true,
-                pages: pages
+                pages
             });
         });
     }
 
     render () {
-        const onSelectPage = this.onSelectPage.bind(this);
         let mainView;
         if (!this.state.ready) {
-            mainView = <div>Loading…</div>
+            mainView = <div>Loading…</div>;
         }
         else if (this.state.viewingPage) {
-            mainView = <PageDetails page={this.state.viewingPage} returnToList={() => this.setState({viewingPage: null})} />
+            const returnToList = this.switchToListView.bind(this);
+            mainView = <PageDetails page={this.state.viewingPage} returnToList={returnToList} />;
         }
         else {
-            mainView = <PageList pages={this.state.pages} onSelectPage={onSelectPage} />
+            const onSelectPage = this.onSelectPage.bind(this);
+            mainView = <PageList pages={this.state.pages} onSelectPage={onSelectPage} />;
         }
 
-        return <div>
-            <NavBar title="EDGI" />
-            <div className="main-view">
-                {mainView}
+        return (
+            <div>
+                <NavBar title="EDGI" />
+                <div className="main-view">
+                    {mainView}
+                </div>
             </div>
-        </div>;
+        );
     }
 
     onSelectPage (page: any) {
-        console.log('Selected:', page);
         this.setState({viewingPage: page});
+    }
+
+    switchToListView () {
+        this.setState({viewingPage: null});
     }
 }
