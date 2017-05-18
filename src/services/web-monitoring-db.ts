@@ -1,6 +1,8 @@
 /* tslint:disable interface-name */
 import mockData from '../../data/mock-api-pages';
 
+const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
+
 export interface Version {
     uuid: string;
     page_uuid?: string;
@@ -24,18 +26,39 @@ export interface Page {
     latest: Version;
 }
 
-export function getPages () {
-    return Promise.resolve(mockData.map((page: any) => {
-        const version = Object.assign({}, page.latest, {
-            capture_time: new Date(page.latest.capture_time),
-            created_at: new Date(page.latest.created_at),
-            updated_at: new Date(page.latest.updated_at)
-        });
+interface IApiResponse {
+    links?: {};
+    data?: {}|any[];
+    errors?: any[];
+}
 
-        return Object.assign({}, page, {
-            created_at: new Date(page.created_at),
-            latest: version,
-            updated_at: new Date(page.updated_at)
-        });
-    }));
+export function getPages () {
+    return fetch(`${defaultApiUrl}api/v0/pages`)
+        .then(response => response.json())
+        .then(data => data.data.map(parsePage));
+}
+
+function parsePage (data: any): Page {
+    const page = Object.assign({}, data, {
+        created_at: new Date(data.created_at),
+        updated_at: new Date(data.updated_at)
+    });
+
+    if (page.latest) {
+        page.latest = parseVersion(page.latest);
+    }
+
+    if (page.versions) {
+        page.versions = page.versions.map(parseVersion);
+    }
+
+    return page;
+}
+
+function parseVersion (data: any): Version {
+    return Object.assign({}, data, {
+        capture_time: new Date(data.capture_time),
+        created_at: new Date(data.created_at),
+        updated_at: new Date(data.updated_at)
+    });
 }
