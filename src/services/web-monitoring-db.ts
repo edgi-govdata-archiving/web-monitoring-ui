@@ -13,6 +13,7 @@ export interface Version {
     source_metadata: any;
     created_at: Date;
     updated_at: Date;
+    current_annotation?: any;
 }
 
 export interface Page {
@@ -36,6 +37,18 @@ export function getPages () {
     return fetch(`${defaultApiUrl}api/v0/pages`)
         .then(response => response.json())
         .then(data => data.data.map(parsePage));
+}
+
+export function getVersions (pageId: string) {
+    return fetch(`${defaultApiUrl}api/v0/pages/${pageId}/versions`)
+        .then(response => response.json())
+        .then(data => data.data.map(parseVersion));
+}
+
+export function getVersion (pageId: string, versionId: string) {
+    return fetch(`${defaultApiUrl}api/v0/pages/${pageId}/versions/${versionId}`)
+        .then(response => response.json())
+        .then(data => parseVersion(data.data));
 }
 
 function parsePage (data: any): Page {

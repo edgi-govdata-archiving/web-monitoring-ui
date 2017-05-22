@@ -1,50 +1,83 @@
 /* tslint:disable:max-line-length */
 import * as React from 'react';
+import {Version} from '../services/web-monitoring-db';
 
 export interface IAnnotationFormProps {
-    version: any;
+    annotation: any;
+    onChange?: (annotation: any) => void;
 }
 
-export default ({version}: IAnnotationFormProps) => (
-    <form className="row short-view">
-        <div className="col-md-4">
-            <h4>Individual Page Changes</h4>
-            <Checkbox field="indiv_1">Date and time change only</Checkbox>
-            <Checkbox field="indiv_2">Text or numeric content removal or change</Checkbox>
-            <Checkbox field="indiv_3">Image content removal or change</Checkbox>
-            <Checkbox field="indiv_4">Hyperlink removal or change</Checkbox>
-            <Checkbox field="indiv_5">Text-box, entry field, or interactive component removal or change</Checkbox>
-            <Checkbox field="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
-        </div>
-        <div className="col-md-4">
-            <h4>Repeated Changes</h4>
-            <Checkbox field="repeat7">Header menu removal or change</Checkbox>
-            <Checkbox field="repeat8">Template text, page format, or comment field removal or change</Checkbox>
-            <Checkbox field="repeat9">Footer or site map removal or change</Checkbox>
-            <Checkbox field="repeat10">Sidebar removal or change</Checkbox>
-            <Checkbox field="repeat11">Banner/advertisement removal or change</Checkbox>
-            <Checkbox field="repeat12">Scrolling news/reports</Checkbox>
-        </div>
-        <div className="col-md-4">
-            <h4>Significance</h4>
-            <Checkbox field="sig_1">Change related to energy, environment, or climate</Checkbox>
-            <Checkbox field="sig_2">Language is significantly altered</Checkbox>
-            <Checkbox field="sig_3">Content is removed</Checkbox>
-            <Checkbox field="sig_4">Page is removed</Checkbox>
-            <Checkbox field="sig_5">Insignificant</Checkbox>
-            <Checkbox field="sig_6">Repeated Insignificant</Checkbox>
-        </div>
-    </form>
-);
+export default class AnnotationForm extends React.Component<IAnnotationFormProps, null> {
+    constructor (props: IAnnotationFormProps) {
+        super(props);
+        this.onFieldChange = this.onFieldChange.bind(this);
+    }
 
-function Checkbox (props: {field: string, children?: any}) {
-    const fieldNumber = props.field.split('_')[1];
+    render () {
+        const common = {
+            formValues: this.props.annotation,
+            onChange: this.onFieldChange
+        };
+
+        return (
+            <form className="row short-view">
+                <div className="col-md-4">
+                    <h4>Individual Page Changes</h4>
+                    <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
+                    <Checkbox {...common} name="indiv_2">Text or numeric content removal or change</Checkbox>
+                    <Checkbox {...common} name="indiv_3">Image content removal or change</Checkbox>
+                    <Checkbox {...common} name="indiv_4">Hyperlink removal or change</Checkbox>
+                    <Checkbox {...common} name="indiv_5">Text-box, entry field, or interactive component removal or change</Checkbox>
+                    <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
+                </div>
+                <div className="col-md-4">
+                    <h4>Repeated Changes</h4>
+                    <Checkbox {...common} name="repeat_7">Header menu removal or change</Checkbox>
+                    <Checkbox {...common} name="repeat_8">Template text, page format, or comment field removal or change</Checkbox>
+                    <Checkbox {...common} name="repeat_9">Footer or site map removal or change</Checkbox>
+                    <Checkbox {...common} name="repeat_10">Sidebar removal or change</Checkbox>
+                    <Checkbox {...common} name="repeat_11">Banner/advertisement removal or change</Checkbox>
+                    <Checkbox {...common} name="repeat_12">Scrolling news/reports</Checkbox>
+                </div>
+                <div className="col-md-4">
+                    <h4>Significance</h4>
+                    <Checkbox {...common} name="sig_1">Change related to energy, environment, or climate</Checkbox>
+                    <Checkbox {...common} name="sig_2">Language is significantly altered</Checkbox>
+                    <Checkbox {...common} name="sig_3">Content is removed</Checkbox>
+                    <Checkbox {...common} name="sig_4">Page is removed</Checkbox>
+                    <Checkbox {...common} name="sig_5">Insignificant</Checkbox>
+                    <Checkbox {...common} name="sig_6">Repeated Insignificant</Checkbox>
+                </div>
+            </form>
+        );
+    }
+
+    private onFieldChange (valueObject: any) {
+        if (this.props.onChange) {
+            const newAnnotation = Object.assign({}, this.props.annotation, valueObject);
+            this.props.onChange(newAnnotation);
+        }
+    }
+}
+
+interface ICheckboxProps {
+    children?: React.ReactNode;
+    formValues: any;
+    name: string;
+    onChange: (valueObject: any) => void;
+}
+
+function Checkbox ({children, formValues, name, onChange}: ICheckboxProps) {
+    const fieldNumber = name.split('_')[1];
+    const checked = !!(formValues && formValues[name]);
+    const changeHandler = (event: React.FormEvent<HTMLInputElement>) =>
+        onChange({[name]: event.currentTarget.checked});
 
     return (
         <label>
-            <input type="checkbox" name={`cbox_${props.field}`} />
+            <input type="checkbox" name={name} checked={checked} onChange={changeHandler} />
             {fieldNumber}
-            <span className="info-text">= {props.children}</span>
+            <span className="info-text">= {children}</span>
         </label>
     );
 }
