@@ -10,13 +10,15 @@ interface IPageDetailsState {
     page: Page;
     version: Version;
     annotation: any;
+    collapsedView: boolean;
 }
 
 export default class PageDetails extends React.Component<IPageDetailsProps, IPageDetailsState> {
     constructor (props: IPageDetailsProps) {
         super(props);
-        this.state = {annotation: null, page: null, version: null};
+        this.state = {annotation: null, page: null, version: null, collapsedView: true};
         this.updateAnnotation = this.updateAnnotation.bind(this);
+        this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
     }
 
     componentWillMount () {
@@ -41,12 +43,94 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
             return <div>Loading…</div>;
         }
 
+        const page = this.state.page;
+        const version = this.state.version;
+        const viewPreviousPage = () => console.error('View previous not implemented');
+        const viewNextPage = () => console.error('View next not implemented');
+        const updateRecord = () => console.error('updateRecord not implemented');
+        const markAsSignificant = () => console.error('markAsSignificant not implemented');
+        const addToDictionary = () => console.error('markAsSignificant not implemented');
+
+        const diffLinks = [];
+        const versionista = version.source_metadata;
+        if (versionista.diff_with_previous_url) {
+            diffLinks.push(
+                <a href={versionista.diff_with_previous_url} target="_blank" rel="noopener">
+                    Last two diff
+                </a>
+            );
+        }
+        if (versionista.diff_with_first_url) {
+            diffLinks.push(
+                <a href={versionista.diff_with_first_url} target="_blank" rel="noopener">
+                    Last to base diff
+                </a>
+            );
+        }
+
+        // TODO: this HTML should probably be broken up a bit
         return (
-            <div>
-                <h2>Page detail view for {this.state.page.uuid}</h2>
-                <Link to="/">Back to page list</Link>
-                <AnnotationForm annotation={this.state.annotation} onChange={this.updateAnnotation} />
-                <DiffView html="" />
+            <div className="container-fluid container-page-view">
+                <div className="row">
+                    <div className="col-md-9">
+                        <h2 className="diff-title">{version.uuid} - {page.title}</h2>
+                        <a className="diff_page_url" href={page.url} target="_blank" rel="noopener">{page.url}</a>
+                    </div>
+                    <div className="col-md-3">
+                        <nav aria-label="...">
+                            <ul className="pager">
+                                <li>
+                                    <a href="#" onClick={viewPreviousPage} className="pager__previous">
+                                        <i className="fa fa-arrow-left" aria-hidden="true" /> Previous
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onClick={viewNextPage} className="pager__next">
+                                        Next <i className="fa fa-arrow-right" aria-hidden="true" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <i className="fa fa-toggle-on" aria-hidden="true" />
+                        {/* TODO: should be buttons */}
+                        <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
+                        <i className="fa fa-pencil" aria-hidden="true" />
+                        <a className="lnk-action" href="#" onClick={updateRecord}>Update Record</a>
+                        <i className="fa fa-list" aria-hidden="true" />
+                        <Link to="/" className="lnk-action">Back to list view</Link>
+                    </div>
+                    <div className="col-md-6 text-right">
+                        <i className="fa fa-upload" aria-hidden="true" />
+                        <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
+                        <i className="fa fa-database" aria-hidden="true" />
+                        <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
+                    </div>
+                </div>
+
+                <AnnotationForm
+                    annotation={this.state.annotation}
+                    onChange={this.updateAnnotation}
+                    collapsed={this.state.collapsedView}
+                />
+
+                <hr />
+                <div className="row">
+                    <div className="col-md-12">
+                        {diffLinks[0]} || {diffLinks[1]}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <DiffView html="" />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -71,5 +155,9 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
         // TODO: save annotation, etc.
         console.log(`Update annotation on Version ${this.state.version} to:`, newAnnotation);
         this.setState({annotation: newAnnotation});
+    }
+
+    private toggleCollapsedView () {
+        this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
     }
 }

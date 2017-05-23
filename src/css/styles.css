@@ -1,51 +1,112 @@
-body.fixed-to-top-offset {
-    padding-top: 30rem;
+body {
+    background: #136a8a;
+    background: linear-gradient(45deg, #136a8a, #267871);
 }
 
-.navbar .brand {
-    display: block;
-    float: left;
-    padding: 10px 20px 10px;
-    font-size: 3rem;
-    font-weight: 200;
+.container-list-view, .container-page-view {
+    background: white;
+    border-radius: 3px;
+    color: #444;
+    margin: 0 20px;
+}
+
+.container-page-view {
+    padding: 20px;
+}
+
+.lnk-action {
+    margin-right: 17px;
+}
+
+#bootstrap-override .navbar-brand {
+    font-size: 1.4em;
+    margin-right: 6px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
     text-decoration: none;
 }
 
-.info-text {
-    display: none;
+#bootstrap-override .navbar-inverse,
+#bootstrap-override .navbar-inverse a,
+#bootstrap-override .navbar-brand:hover {
+    color: #EEE;
 }
 
+.navbar {
+    border-radius: 0;
+    padding: 10px;
+}
+
+.diff-title {
+    font-size: 20px;
+}
+
+.pager {
+    margin: 10px 0;
+}
 .pager li > a {
-    border-radius: 6px;
+    background-color: #f7f7f7;
+    border-radius: 3px;
 }
 
-#inspectorView {
-    color: white;
+#bootstrap-override .pager li>a:focus {
+    background-color: #f7f7f7;
+}
+
+#bootstrap-override .pager li>a:hover {
+    background-color: rgba(139, 227, 255, 0.46);
+}
+
+
+
+.annotation-form {
     margin-bottom: 10px;
+    margin-top: 10px;
 }
 
-#inspectorView input[type="checkbox"] {
+.annotation-form input[type="checkbox"] {
+    cursor: pointer;
     margin-right: 7px;
 }
 
-#inspectorView label {
+.annotation-form label {
     display: block;
     font-weight: 200;
     font-size: 1.4rem;
     cursor: pointer;
 }
 
-#tbl_list_view tbody tr {
+.annotation-form--collapsed .info-text {
+    display: none;
+}
+
+.annotation-form--collapsed label {
+    float: left;
+    margin-right: 25px;
+}
+
+@media (max-width: 990px) {
+    .annotation-form--collapsed div {
+        clear: both;
+        overflow: auto;
+    }
+}
+
+.container-list-view tbody tr {
     cursor: pointer;
 }
 
-#tbl_list_view tbody tr:hover {
+.container-list-view tbody tr:hover {
     background-color: #EEE;
 }
 
-.short-view label {
-    float: left;
-    margin-right: 25px;
+.pager__previous {
+    width: 50%;
+}
+
+.pager__next {
+    width: 48%;
 }
 
 .navbar-text {
@@ -56,7 +117,8 @@ body.fixed-to-top-offset {
 }
 
 iframe {
-    border: 2px solid black;
+    border: 1px solid #ccc;
+    border-radius: 2px;
     width: 100%;
 }
 
@@ -64,8 +126,17 @@ iframe {
     width: 100%;
 }
 
-#container_page_view {
-    display: none;
+.modal-header {
+    background: linear-gradient(45deg, #136a8a, #267871);
+    color: white;
+}
+
+.close {
+    opacity: .4;
+}
+
+.close:focus, .close:hover {
+    opacity: .7;
 }
 
 .progress .progress-bar.active {

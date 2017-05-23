@@ -4,10 +4,16 @@ import {Version} from '../services/web-monitoring-db';
 
 export interface IAnnotationFormProps {
     annotation: any;
+    collapsed?: boolean;
     onChange?: (annotation: any) => void;
 }
 
 export default class AnnotationForm extends React.Component<IAnnotationFormProps, null> {
+    static defaultProps: IAnnotationFormProps = {
+        annotation: null,
+        collapsed: true
+    };
+
     constructor (props: IAnnotationFormProps) {
         super(props);
         this.onFieldChange = this.onFieldChange.bind(this);
@@ -19,8 +25,13 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
             onChange: this.onFieldChange
         };
 
+        const classes = ['row', 'annotation-form'];
+        if (this.props.collapsed) {
+            classes.push('annotation-form--collapsed');
+        }
+
         return (
-            <form className="row short-view">
+            <form className={classes.join(' ')}>
                 <div className="col-md-4">
                     <h4>Individual Page Changes</h4>
                     <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>

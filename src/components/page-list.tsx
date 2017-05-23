@@ -20,7 +20,7 @@ export default class PageList extends React.Component<IPageListProps, IPageListS
         }
 
         return (
-            <div className="container-fluid">
+            <div className="container-fluid container-list-view">
                 <div className="row">
                     <div className="col-md-12">
                         <table className="table">
@@ -61,6 +61,9 @@ export default class PageList extends React.Component<IPageListProps, IPageListS
 
         const onClick = this.didClickRow.bind(this, record);
 
+        const shortUrl = `${record.url.substr(0, 20)}…`;
+        const rawContentPath = versionistaData.url.replace(/^\w+:\/\/[^\/]+\//, '');
+
         // TODO: click handling
         return (
             <tr key={record.uuid} onClick={onClick}>
@@ -68,8 +71,8 @@ export default class PageList extends React.Component<IPageListProps, IPageListS
                 <td>{record.latest.capture_time.toISOString()}</td>
                 <td>{record.site}</td>
                 <td>{record.title}</td>
-                <td><a href={record.url} target="_blank">{record.url.substr(0, 20)}…</a></td>
-                <td><a href={versionistaData.url} target="_blank">{versionistaData.url.substr(-15)}</a></td>
+                <td><a href={record.url} target="_blank" rel="noopener">{shortUrl}</a></td>
+                <td><a href={versionistaData.url} target="_blank" rel="noopener">{rawContentPath}</a></td>
                 <td>{diffWithPrevious}</td>
                 <td>{diffWithFirst}</td>
             </tr>
