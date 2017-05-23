@@ -4,10 +4,12 @@ import {getPage, getPages, getVersion, Page, Version} from '../services/web-moni
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 
-export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
+// export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
+export interface IPageDetailsProps extends RouteComponentProps<{pageId: string}> {
+    pages: Page[];
+}
 
 interface IPageDetailsState {
-    allPages: Page[];
     page: Page;
     version: Version;
     annotation: any;
@@ -17,22 +19,33 @@ interface IPageDetailsState {
 export default class PageDetails extends React.Component<IPageDetailsProps, IPageDetailsState> {
     constructor (props: IPageDetailsProps) {
         super(props);
-        this.state = {allPages: [], annotation: null, page: null, version: null, collapsedView: true};
+        this.state = {annotation: null, page: null, version: null, collapsedView: true};
         this.updateAnnotation = this.updateAnnotation.bind(this);
         this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
     }
 
     componentWillMount () {
         this.loadPage(this.props.match.params.pageId);
-        getPages().then(pages => {
-            this.setState({allPages: pages});
-        });
+    }
+
+    componentDidMount () {
+        window.addEventListener('keydown', this);
+    }
+
+    componentWillUnmount () {
+        window.removeEventListener('keydown', this);
     }
 
     componentWillReceiveProps (nextProps: IPageDetailsProps) {
         const nextPageId = nextProps.match.params.pageId;
         if (nextPageId !== this.props.match.params.pageId) {
             this.loadPage(nextPageId);
+        }
+    }
+
+    handleEvent (event: KeyboardEvent) {
+        if (event.keyCode === 27) {
+            this.props.history.push(`/`);
         }
     }
 
@@ -125,7 +138,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
     }
 
     private renderPager () {
-        const allPages = this.state.allPages;
+        const allPages = this.props.pages || [];
         const index = allPages.findIndex(page => page.uuid === this.state.page.uuid);
         const previousPage = allPages[index - 1];
         const previousUrl = previousPage ? `/page/${previousPage.uuid}` : '#';
@@ -151,19 +164,32 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
     }
 
     private loadPage (pageId: string) {
-        getPage(pageId)
-            .then(page => {
+        const fromList = this.props.pages && this.props.pages.find(
+            (page: Page) => page.uuid === pageId);
+
+        Promise.resolve(fromList || getPage(pageId))
+            .then((page: Page) => {
                 this.setState({page});
-                return getVersion(page.uuid, page.versions[0].uuid);
-            })
-            .then(version => {
-                if (this.state.page.uuid === version.page_uuid) {
-                    this.setState({
-                        annotation: version.current_annotation,
-                        version
-                    });
-                }
+                this.loadLatestVersion(page);
             });
+    }
+
+    private loadLatestVersion (page: Page) {
+        const latest = page.latest || page.versions[0];
+        if (!latest) {
+            this.loadPage(page.uuid);
+        }
+        else {
+            getVersion(page.uuid, latest.uuid)
+                .then(version => {
+                    if (this.state.page.uuid === version.page_uuid) {
+                        this.setState({
+                            annotation: version.current_annotation,
+                            version
+                        });
+                    }
+                });
+        }
     }
 
     private updateAnnotation (newAnnotation: any) {

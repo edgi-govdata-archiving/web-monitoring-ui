@@ -2,20 +2,18 @@ import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {getPages, Page} from '../services/web-monitoring-db';
 
-export type IPageListProps = RouteComponentProps<{}>;
-
-interface IPageListState {
+// export type IPageListProps = RouteComponentProps<{}>;
+export interface IPageListProps extends RouteComponentProps<{}> {
     pages: Page[];
 }
 
-export default class PageList extends React.Component<IPageListProps, IPageListState> {
+export default class PageList extends React.Component<IPageListProps, null> {
     constructor (props: IPageListProps) {
         super(props);
-        this.state = {pages: null};
     }
 
     render () {
-        if (!this.state.pages) {
+        if (!this.props.pages) {
             return <div>Loading…</div>;
         }
 
@@ -28,7 +26,7 @@ export default class PageList extends React.Component<IPageListProps, IPageListS
                                 {this.renderHeader()}
                             </thead>
                             <tbody>
-                                {this.state.pages.map(page => this.renderRow(page))}
+                                {this.props.pages.map(page => this.renderRow(page))}
                             </tbody>
                         </table>
                     </div>
@@ -92,18 +90,7 @@ export default class PageList extends React.Component<IPageListProps, IPageListS
             return;
         }
 
-        // this.props.onSelectPage(page);
         this.props.history.push(`/page/${page.uuid}`);
-    }
-
-    componentWillMount () {
-        this.loadPages();
-    }
-
-    private loadPages () {
-        getPages().then((pages: Page[]) => {
-            this.setState({pages});
-        });
     }
 }
 
