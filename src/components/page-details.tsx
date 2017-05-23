@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {getPage, getVersion, Page, Version} from '../services/web-monitoring-db';
+import {getPage, getPages, getVersion, Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 
 export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
 
 interface IPageDetailsState {
+    allPages: Page[];
     page: Page;
     version: Version;
     annotation: any;
@@ -16,13 +17,16 @@ interface IPageDetailsState {
 export default class PageDetails extends React.Component<IPageDetailsProps, IPageDetailsState> {
     constructor (props: IPageDetailsProps) {
         super(props);
-        this.state = {annotation: null, page: null, version: null, collapsedView: true};
+        this.state = {allPages: [], annotation: null, page: null, version: null, collapsedView: true};
         this.updateAnnotation = this.updateAnnotation.bind(this);
         this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
     }
 
     componentWillMount () {
         this.loadPage(this.props.match.params.pageId);
+        getPages().then(pages => {
+            this.setState({allPages: pages});
+        });
     }
 
     componentWillReceiveProps (nextProps: IPageDetailsProps) {
@@ -45,8 +49,6 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
 
         const page = this.state.page;
         const version = this.state.version;
-        const viewPreviousPage = () => console.error('View previous not implemented');
-        const viewNextPage = () => console.error('View next not implemented');
         const updateRecord = () => console.error('updateRecord not implemented');
         const markAsSignificant = () => console.error('markAsSignificant not implemented');
         const addToDictionary = () => console.error('markAsSignificant not implemented');
@@ -77,20 +79,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                         <a className="diff_page_url" href={page.url} target="_blank" rel="noopener">{page.url}</a>
                     </div>
                     <div className="col-md-3">
-                        <nav aria-label="...">
-                            <ul className="pager">
-                                <li>
-                                    <a href="#" onClick={viewPreviousPage} className="pager__previous">
-                                        <i className="fa fa-arrow-left" aria-hidden="true" /> Previous
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={viewNextPage} className="pager__next">
-                                        Next <i className="fa fa-arrow-right" aria-hidden="true" />
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        {this.renderPager()}
                     </div>
                 </div>
 
@@ -132,6 +121,32 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                     </div>
                 </div>
             </div>
+        );
+    }
+
+    private renderPager () {
+        const allPages = this.state.allPages;
+        const index = allPages.findIndex(page => page.uuid === this.state.page.uuid);
+        const previousPage = allPages[index - 1];
+        const previousUrl = previousPage ? `/page/${previousPage.uuid}` : '#';
+        const nextPage = index >= 0 ? allPages[index + 1] : null;
+        const nextUrl = nextPage ? `/page/${nextPage.uuid}` : '#';
+
+        return (
+            <nav aria-label="...">
+                <ul className="pager">
+                    <li>
+                        <Link to={previousUrl} className="pager__previous">
+                            <i className="fa fa-arrow-left" aria-hidden="true" /> Previous
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={nextUrl} className="pager__next">
+                            Next <i className="fa fa-arrow-right" aria-hidden="true" />
+                        </Link>
+                    </li>
+                </ul>
+            </nav>
         );
     }
 
