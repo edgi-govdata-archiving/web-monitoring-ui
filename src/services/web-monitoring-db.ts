@@ -1,7 +1,8 @@
 /* tslint:disable interface-name */
 import mockData from '../../data/mock-api-pages';
 
-const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
+// const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
+const defaultApiUrl = 'http://web-monitoring-db.dev/';
 
 export interface Version {
     uuid: string;
@@ -24,7 +25,8 @@ export interface Page {
     site: string;
     created_at: Date;
     updated_at: Date;
-    latest: Version;
+    latest?: Version;
+    versions?: Version[];
 }
 
 interface IApiResponse {
@@ -33,19 +35,25 @@ interface IApiResponse {
     errors?: any[];
 }
 
-export function getPages () {
+export function getPages (): Promise<Page[]> {
     return fetch(`${defaultApiUrl}api/v0/pages`)
         .then(response => response.json())
         .then(data => data.data.map(parsePage));
 }
 
-export function getVersions (pageId: string) {
+export function getPage (pageId: string): Promise<Page> {
+    return fetch(`${defaultApiUrl}api/v0/pages/${pageId}`)
+        .then(response => response.json())
+        .then(data => parsePage(data.data));
+}
+
+export function getVersions (pageId: string): Promise<Version[]> {
     return fetch(`${defaultApiUrl}api/v0/pages/${pageId}/versions`)
         .then(response => response.json())
         .then(data => data.data.map(parseVersion));
 }
 
-export function getVersion (pageId: string, versionId: string) {
+export function getVersion (pageId: string, versionId: string): Promise<Version> {
     return fetch(`${defaultApiUrl}api/v0/pages/${pageId}/versions/${versionId}`)
         .then(response => response.json())
         .then(data => parseVersion(data.data));

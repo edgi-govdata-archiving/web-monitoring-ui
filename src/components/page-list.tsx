@@ -1,13 +1,24 @@
 import * as React from 'react';
-import {Page} from '../services/web-monitoring-db';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {getPages, Page} from '../services/web-monitoring-db';
 
-export interface IPageListProps {
+export type IPageListProps = RouteComponentProps<{}>;
+
+interface IPageListState {
     pages: Page[];
-    onSelectPage: (page: Page) => void;
 }
 
-export default class PageList extends React.Component<IPageListProps, undefined> {
+export default class PageList extends React.Component<IPageListProps, IPageListState> {
+    constructor (props: IPageListProps) {
+        super(props);
+        this.state = {pages: null};
+    }
+
     render () {
+        if (!this.state.pages) {
+            return <div>Loading…</div>;
+        }
+
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -17,7 +28,7 @@ export default class PageList extends React.Component<IPageListProps, undefined>
                                 {this.renderHeader()}
                             </thead>
                             <tbody>
-                                {this.props.pages.map(page => this.renderRow(page))}
+                                {this.state.pages.map(page => this.renderRow(page))}
                             </tbody>
                         </table>
                     </div>
@@ -48,7 +59,7 @@ export default class PageList extends React.Component<IPageListProps, undefined>
         const diffWithPrevious = this.renderDiffLink(versionistaData.diff_with_previous_url);
         const diffWithFirst = this.renderDiffLink(versionistaData.diff_with_first_url);
 
-        const onClick = this.didClickRow.bind(this, event, record);
+        const onClick = this.didClickRow.bind(this, record);
 
         // TODO: click handling
         return (
@@ -57,7 +68,7 @@ export default class PageList extends React.Component<IPageListProps, undefined>
                 <td>{record.latest.capture_time.toISOString()}</td>
                 <td>{record.site}</td>
                 <td>{record.title}</td>
-                <td><a href={`https://${record.url}`} target="_blank">{record.url.substr(0, 20)}…</a></td>
+                <td><a href={record.url} target="_blank">{record.url.substr(0, 20)}…</a></td>
                 <td><a href={versionistaData.url} target="_blank">{versionistaData.url.substr(-15)}</a></td>
                 <td>{diffWithPrevious}</td>
                 <td>{diffWithFirst}</td>
@@ -73,7 +84,32 @@ export default class PageList extends React.Component<IPageListProps, undefined>
         return <em>[Initial Version]</em>;
     }
 
-    didClickRow (event: any, page: Page) {
-        this.props.onSelectPage(page);
+    didClickRow (page: Page, event: React.MouseEvent<HTMLElement>) {
+        if (isInAnchor(event.target)) {
+            return;
+        }
+
+        // this.props.onSelectPage(page);
+        this.props.history.push(`/page/${page.uuid}`);
     }
+
+    componentWillMount () {
+        this.loadPages();
+    }
+
+    private loadPages () {
+        getPages().then((pages: Page[]) => {
+            this.setState({pages});
+        });
+    }
+}
+
+function isInAnchor (node: any): boolean {
+    if (!node) {
+        return false;
+    }
+    else if (node.nodeType === 1 && node.nodeName === 'A') {
+        return true;
+    }
+    return isInAnchor(node.parentNode);
 }

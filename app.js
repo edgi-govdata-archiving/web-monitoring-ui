@@ -19,7 +19,7 @@ app.engine('html', require('ejs').renderFile);
 /**
  * Main view for manual entry
  */
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
     res.render('main.html')
 });
 
