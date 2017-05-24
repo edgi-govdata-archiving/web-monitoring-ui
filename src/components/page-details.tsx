@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import WebMonitoringDb, {Page, Version} from '../services/web-monitoring-db';
+import WebMonitoringDb, {Annotation, Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 
@@ -27,6 +27,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
     constructor (props: IPageDetailsProps) {
         super(props);
         this.state = {annotation: null, page: null, version: null, collapsedView: true};
+        this.saveAnnotation = this.saveAnnotation.bind(this);
         this.updateAnnotation = this.updateAnnotation.bind(this);
         this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
     }
@@ -69,7 +70,6 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
 
         const page = this.state.page;
         const version = this.state.version;
-        const updateRecord = () => console.error('updateRecord not implemented');
         const markAsSignificant = () => console.error('markAsSignificant not implemented');
         const addToDictionary = () => console.error('markAsSignificant not implemented');
 
@@ -111,7 +111,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                         {/* TODO: should be buttons */}
                         <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
                         <i className="fa fa-pencil" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={updateRecord}>Update Record</a>
+                        <a className="lnk-action" href="#" onClick={this.saveAnnotation}>Update Record</a>
                         <i className="fa fa-list" aria-hidden="true" />
                         <Link to="/" className="lnk-action">Back to list view</Link>
                     </div>
@@ -200,9 +200,17 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
     }
 
     private updateAnnotation (newAnnotation: any) {
-        // TODO: save annotation, etc.
-        console.log(`Update annotation on Version ${this.state.version} to:`, newAnnotation);
         this.setState({annotation: newAnnotation});
+    }
+
+    private saveAnnotation (event: React.SyntheticEvent<HTMLElement>) {
+        event.preventDefault();
+        // TODO: display some indicator that saving is happening/complete
+        const version = this.state.version;
+        this.context.api.annotateVersion(version.page_uuid, version.uuid, this.state.annotation)
+            .then((annotationRecord: Annotation) => {
+                this.loadLatestVersion(this.state.page);
+            });
     }
 
     private toggleCollapsedView () {

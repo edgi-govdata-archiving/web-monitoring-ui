@@ -89,7 +89,7 @@ export default class WebMonitoringDb {
             body: JSON.stringify(annotation),
             credentials: 'include',
             headers: new Headers({
-                Authorization: 'Basic ' + btoa(`${this.user}:${this.password}`)
+                Authorization: this.basicAuthHeader()
             }),
             method: 'POST',
             mode: 'cors',
@@ -116,6 +116,10 @@ export default class WebMonitoringDb {
             }
         }
         return url;
+    }
+
+    private basicAuthHeader () {
+        return 'Basic ' + btoa(`${this.user}:${this.password}`);
     }
 }
 
