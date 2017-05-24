@@ -1,10 +1,18 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
-import {getPages, Page} from '../services/web-monitoring-db';
+import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list';
+
+const configuration = (window as any).webMonitoringConfig;
+const api = new WebMonitoringDb({
+    password: configuration.WEB_MONITORING_DB_PASSWORD,
+    url: configuration.WEB_MONITORING_DB_URL,
+    user: configuration.WEB_MONITORING_DB_USER
+});
 
 // Maintain a top-level list of pages to share across the app. We do this
 // here instead of via caching in the web-monitoring-db API because we want any
@@ -16,13 +24,17 @@ export interface IWebMonitoringUiState {
 
 // The WebMonitoringUi represents the root container for the app.
 export default class WebMonitoringUi extends React.Component<undefined, IWebMonitoringUiState> {
+    static childContextTypes = {
+        api: PropTypes.instanceOf(WebMonitoringDb)
+    };
+
     constructor () {
         super();
         this.state = {pages: null};
     }
 
     componentWillMount () {
-        getPages().then((pages: Page[]) => {
+        api.getPages().then((pages: Page[]) => {
             this.setState({pages});
         });
     }
@@ -39,5 +51,9 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
                 </div>
             </Router>
         );
+    }
+
+    getChildContext () {
+        return {api};
     }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {getPages, Page} from '../services/web-monitoring-db';
+import {Page} from '../services/web-monitoring-db';
 
 // export type IPageListProps = RouteComponentProps<{}>;
 export interface IPageListProps extends RouteComponentProps<{}> {

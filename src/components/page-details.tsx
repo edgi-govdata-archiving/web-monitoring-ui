@@ -1,6 +1,7 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {getPage, getPages, getVersion, Page, Version} from '../services/web-monitoring-db';
+import WebMonitoringDb, {Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 
@@ -17,6 +18,12 @@ interface IPageDetailsState {
 }
 
 export default class PageDetails extends React.Component<IPageDetailsProps, IPageDetailsState> {
+    static contextTypes = {
+        api: PropTypes.instanceOf(WebMonitoringDb)
+    };
+
+    context: {api: WebMonitoringDb};
+
     constructor (props: IPageDetailsProps) {
         super(props);
         this.state = {annotation: null, page: null, version: null, collapsedView: true};
@@ -167,7 +174,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
         const fromList = this.props.pages && this.props.pages.find(
             (page: Page) => page.uuid === pageId);
 
-        Promise.resolve(fromList || getPage(pageId))
+        Promise.resolve(fromList || this.context.api.getPage(pageId))
             .then((page: Page) => {
                 this.setState({page});
                 this.loadLatestVersion(page);
@@ -180,7 +187,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
             this.loadPage(page.uuid);
         }
         else {
-            getVersion(page.uuid, latest.uuid)
+            this.context.api.getVersion(page.uuid, latest.uuid)
                 .then(version => {
                     if (this.state.page.uuid === version.page_uuid) {
                         this.setState({
