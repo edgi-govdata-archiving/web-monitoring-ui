@@ -100,5 +100,6 @@ fabric.properties
 archives/.idea/
 
 config.json
+.env
 .vscode/
 .DS_Store
