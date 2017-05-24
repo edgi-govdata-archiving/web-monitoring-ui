@@ -20,7 +20,9 @@ app.engine('html', require('ejs').renderFile);
  * Main view for manual entry
  */
 app.get('*', function (req, res) {
-    res.render('main.html', {configuration: clientConfiguration()});
+    res.render('main.html', {
+        configuration: clientConfiguration()
+    });
 });
 
 app.listen(process.env.PORT || 3000, function () {
@@ -42,6 +44,7 @@ function clientConfiguration () {
     let source = baseEnvironment;
     if (process.env.NODE_ENV !== 'production') {
         const fromFile = require('dotenv').config();
+        // If there is no .env file, don't throw and just use process.env
         if (fromFile.error && fromFile.error.code !== 'ENOENT') {
             throw fromFile.error;
         }
