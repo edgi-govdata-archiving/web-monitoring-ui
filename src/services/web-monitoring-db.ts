@@ -3,7 +3,7 @@ const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
 
 export interface Version {
     uuid: string;
-    page_uuid?: string;
+    page_uuid: string;
     capture_time: Date;
     uri: string;
     version_hash: string;
