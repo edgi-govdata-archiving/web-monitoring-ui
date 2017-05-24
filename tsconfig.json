@@ -1,12 +1,19 @@
 {
   "files": [
-    "src/scripts/main.ts"
+    "src/scripts/main.tsx"
   ],
   "compilerOptions": {
+    "jsx": "react",
+    "lib": [
+      "es2016",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
     "module": "commonjs",
-    "target": "es5",
+    "noImplicitAny": true,
     "sourceMap": true,
-    "noImplicitAny": true
+    "target": "es5"
   },
   "exclude": [
     "node_modules"

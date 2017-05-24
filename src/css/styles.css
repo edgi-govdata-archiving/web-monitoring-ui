@@ -1,0 +1,168 @@
+body {
+    background: #136a8a;
+    background: linear-gradient(45deg, #136a8a, #267871);
+}
+
+.container-list-view, .container-page-view {
+    background: white;
+    border-radius: 3px;
+    color: #444;
+    margin: 0 20px;
+}
+
+.container-page-view {
+    padding: 20px;
+}
+
+.lnk-action {
+    margin-right: 17px;
+}
+
+#bootstrap-override .navbar-brand {
+    font-size: 1.4em;
+    margin-right: 6px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-decoration: none;
+}
+
+#bootstrap-override .navbar-inverse,
+#bootstrap-override .navbar-inverse a,
+#bootstrap-override .navbar-brand:hover {
+    color: #EEE;
+}
+
+.navbar {
+    border-radius: 0;
+    padding: 10px;
+}
+
+.diff-title {
+    font-size: 20px;
+}
+
+.pager {
+    margin: 10px 0;
+}
+.pager li > a {
+    background-color: #f7f7f7;
+    border-radius: 3px;
+}
+
+#bootstrap-override .pager li>a:focus {
+    background-color: #f7f7f7;
+}
+
+#bootstrap-override .pager li>a:hover {
+    background-color: rgba(139, 227, 255, 0.46);
+}
+
+
+
+.annotation-form {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.annotation-form input[type="checkbox"] {
+    cursor: pointer;
+    margin-right: 7px;
+}
+
+.annotation-form label {
+    display: block;
+    font-weight: 200;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.annotation-form--collapsed .info-text {
+    display: none;
+}
+
+.annotation-form--collapsed label {
+    float: left;
+    margin-right: 25px;
+}
+
+@media (max-width: 990px) {
+    .annotation-form--collapsed div {
+        clear: both;
+        overflow: auto;
+    }
+}
+
+.container-list-view tbody tr {
+    cursor: pointer;
+}
+
+.container-list-view tbody tr:hover {
+    background-color: #EEE;
+}
+
+.pager__previous {
+    width: 50%;
+}
+
+.pager__next {
+    width: 48%;
+}
+
+.navbar-text {
+    font-size: 2.2rem;
+}
+.diff {
+    height:100vh;
+}
+
+iframe {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.progress {
+    width: 100%;
+}
+
+.modal-header {
+    background: linear-gradient(45deg, #136a8a, #267871);
+    color: white;
+}
+
+.close {
+    opacity: .4;
+}
+
+.close:focus, .close:hover {
+    opacity: .7;
+}
+
+.progress .progress-bar.active {
+    font-weight: 700;
+    animation: progress-bar-stripes .5s linear infinite;
+}
+
+.dotdotdot:after {
+    font-weight: 300;
+    content: '...';
+    display: inline-block;
+    width: 20px;
+    text-align: left;
+    animation: dotdotdot 1.5s linear infinite;
+}
+
+@keyframes dotdotdot {
+    0%   { content: '...'; }
+    25% { content: ''; }
+    50% { content: '.'; }
+    75% { content: '..'; }
+}
+
+del {
+    background-color: lightcoral;
+}
+ins {
+    background-color: lightgreen;
+}

@@ -3,13 +3,17 @@ var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
 
-gulp.task("default", ["browserify","watch"]);
+gulp.task("default", ["css", "browserify", "watch"]);
+
+gulp.task("css", function () {
+    return gulp.src('src/css/*').pipe(gulp.dest('dist/css'));
+})
 
 gulp.task("browserify", function () {
     return browserify({
         basedir: '.',
         debug: true,
-        entries: ['src/scripts/main.ts'],
+        entries: ['src/scripts/main.tsx'],
         cache: {},
         packageCache: {}
     })
@@ -20,5 +24,6 @@ gulp.task("browserify", function () {
 });
 
 gulp.task("watch", function() {
-    gulp.watch('src/scripts/*.ts', ['browserify']);
+    gulp.watch('src/**/*.{ts,tsx}', ['browserify']);
+    gulp.watch('src/**/*.css', ['css']);
 });

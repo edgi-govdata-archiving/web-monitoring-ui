@@ -4,18 +4,19 @@ This repository is part of the EDGI [Web Monitoring Project](https://github.com/
 
 This component works with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) and [web-monitoring-processing](https://github.com/edgi-govdata-archiving/web-monitoring-processing) to support the next web monitoring workflow.
 
-A node application with the following capabilities:
+It’s a React.js and Typescript-based browser application with a a Node.js backend with the following capabilities:
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://edgi-web-monitor-ui.herokuapp.com)
-    * LIST VIEW shows first 10 records from [web-monitor-db](https://web-monitoring-db.herokuapp.com/pages.json) json endpoint
-    * PAGE VIEW shows basic info about record: site, urls, and links to versionista diffs
-        * paginate through records
+    * LIST VIEW shows first page of records from [web-monitor-db](https://web-monitoring-db.herokuapp.com/api/v0/pages) JSON endpoint
+    * PAGE VIEW shows basic info about the latest version of that page: site, urls, and links to Versionista diffs
+
 
 ## Usage
-* Install node dependencies with `npm install`, 
-* Rename `dist/config.json.example` to `config.json` and supply web-monitoring-db user and pass
-* Run `gulp`
-* Run `node app.js`
+* Install node dependencies with `yarn`,
+* Rename `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
+* Run `gulp` to build the application
+* Run `yarn run start` to start the web server
+
 
 ## Manual view
 Access the main view at `http://localhost:3000`
@@ -23,6 +24,17 @@ Access the main view at `http://localhost:3000`
 Screenshot:
 ![screenshot](screenshot.png)
 
+
 ## Getting Involved
 
-We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with!
+We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
+
+
+## License & Copyright
+
+Copyright (C) <2017> Environmental Data and Governance Initiative (EDGI)
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.0.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the [`LICENSE`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/blob/master/LICENSE) file for details.
