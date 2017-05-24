@@ -1,6 +1,4 @@
 /* tslint:disable interface-name */
-import mockData from '../../data/mock-api-pages';
-
 const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
 
 export interface Version {
