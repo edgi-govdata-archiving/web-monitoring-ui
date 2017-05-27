@@ -11,11 +11,27 @@ It’s a React.js and Typescript-based browser application with a a Node.js back
     * PAGE VIEW shows basic info about the latest version of that page: site, urls, and links to Versionista diffs
 
 
-## Usage
-* Install node dependencies with `yarn`,
-* Rename `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
-* Run `gulp` to build the application
-* Run `yarn run start` to start the web server
+## Installation
+
+1. Ensure you have yarn ([installation instructions](https://yarnpkg.com/en/docs/install))
+2. Close this repo
+3. Install node dependencies with `yarn`
+
+    ```sh
+    yarn install
+    ```
+4. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
+5. Build the application
+
+    ```sh
+    gulp
+    ```
+
+6. Start the web server
+
+    ```sh
+    yarn run start
+    ```
 
 
 ## Manual view
