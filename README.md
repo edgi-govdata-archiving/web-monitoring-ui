@@ -14,12 +14,13 @@ It’s a React.js and Typescript-based browser application with a a Node.js back
 ## Installation
 
 1. Ensure you have yarn ([installation instructions](https://yarnpkg.com/en/docs/install))
-2. Close this repo
+2. Clone this repo
 3. Install node dependencies with `yarn`
 
     ```sh
     yarn install
     ```
+
 4. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
 5. Build the application
 
