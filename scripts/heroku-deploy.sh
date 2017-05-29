@@ -1,8 +1,9 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
-# Takes 2 parameters
-# ${1} - heroku remote name - default: heroku
-# ${2} - deploy from - default: master
+# Create or switch to default 'heroku_deploy' branch
+# and deploy from local branch to heroku remote.
+# @param {string} remote [heroku]       - heroku remote name
+# @param {string} deployFrom [master]   - local branch to deploy
 
 # Check and set defaults
 if [ -z "${1}" ]; then
@@ -18,7 +19,6 @@ else
 fi
 
 deployTo="heroku-deploy"
-
 currentBranch=`git rev-parse --abbrev-ref HEAD`
 
 # create new branch if necessary
@@ -36,5 +36,4 @@ git commit -m "Deploy heroku app"
 git push -f ${remote} ${deployTo}:master
 
 git checkout ${currentBranch}
-
 echo "Done"
