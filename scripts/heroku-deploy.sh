@@ -19,18 +19,20 @@ else
 fi
 
 if [ -z "${3}" ]; then
-    remote="r-gapi"
+    remote="heroku"
 else
     remote=${3}
 fi
 
 exists=`git show-ref refs/heads/${deployTo}`
 if [ -n "$exists" ]; then
-    echo "git checkout ${deployTo}"
+    git checkout ${deployTo}
+    git reset --hard ${deployFrom}
 else
     git checkout -b ${deployTo} ${deployFrom}
-    gulp css browserify
-    git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
-    git commit
-    git push -f ${remote} ${deployTo}:${deployFrom}
 fi
+
+gulp css browserify
+git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
+git commit
+git push -f ${remote} ${deployTo}:${deployFrom}
