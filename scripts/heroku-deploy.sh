@@ -1,29 +1,36 @@
 #!/bin/bash -e
 
 # Takes 2 parameters
-# ${1} - deploy branch name
-# ${2} - heroku remote name
+# ${1} - deploy from - default: master
+# ${2} - deploy to - default: heroku-deploy
+# ${2} - heroku remote name - default: heroku
 
 # Check and set defaults
 if [ -z "${1}" ]; then
-    localBranch="heroku-deploy"
+    deployFrom="master"
 else
-    localBranch=${1}
+    deployFrom=${1}
 fi
 
 if [ -z "${2}" ]; then
-    remote="heroku"
+    deployTo="heroku-deploy"
 else
-    remote=${2}
+    deployTo=${2}
 fi
 
-exists=`git show-ref refs/heads/${1}`
-if [ -n "$exists" ]; then
-    echo "git checkout ${1}"
+if [ -z "${3}" ]; then
+    remote="r-gapi"
 else
-    git checkout -b ${localBranch} master
+    remote=${3}
+fi
+
+exists=`git show-ref refs/heads/${deployTo}`
+if [ -n "$exists" ]; then
+    echo "git checkout ${deployTo}"
+else
+    git checkout -b ${deployTo} ${deployFrom}
     gulp css browserify
     git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
     git commit
-    git push -f ${remote} ${localBranch}:master
+    git push -f ${remote} ${deployTo}:${deployFrom}
 fi
