@@ -4,7 +4,6 @@
 # ${1} - deploy branch name
 # ${2} - heroku remote name
 
-(
 # Check and set defaults
 if [ -z "${1}" ]; then
     localBranch="heroku-deploy"
@@ -18,13 +17,13 @@ else
     remote=${2}
 fi
 
-echo ${localBranch}
-echo ${remote}
-
 exists=`git show-ref refs/heads/${1}`
 if [ -n "$exists" ]; then
     echo "git checkout ${1}"
 else
-    echo "git checkout -b ${1}"
+    git checkout -b ${localBranch}
+    gulp css browserify
+    git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
+    git commit
+    git push -f heroku ${remote}:master
 fi
-)
