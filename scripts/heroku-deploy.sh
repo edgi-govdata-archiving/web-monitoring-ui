@@ -1,23 +1,11 @@
 #!/bin/bash -e
 
-# Create or switch to default 'heroku_deploy' branch
-# and deploy from local branch to heroku remote.
 # @param {string} remote [heroku]       - heroku remote name
 # @param {string} deployFrom [master]   - local branch to deploy
 
 # Check and set defaults
-if [ -z "${1}" ]; then
-    remote="heroku"
-else
-    remote=${1}
-fi
-
-if [ -z "${2}" ]; then
-    deployFrom="master"
-else
-    deployFrom=${2}
-fi
-
+remote=${1:-heroku}
+deployFrom=${2:-master}
 deployTo="heroku-deploy"
 currentBranch=`git rev-parse --abbrev-ref HEAD`
 
