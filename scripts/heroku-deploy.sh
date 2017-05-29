@@ -21,7 +21,7 @@ exists=`git show-ref refs/heads/${1}`
 if [ -n "$exists" ]; then
     echo "git checkout ${1}"
 else
-    git checkout -b ${localBranch}
+    git checkout -b ${localBranch} master
     gulp css browserify
     git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
     git commit
