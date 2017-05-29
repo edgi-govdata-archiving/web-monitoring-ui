@@ -35,4 +35,4 @@ fi
 gulp css browserify
 git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
 git commit
-git push -f ${remote} ${deployTo}:${deployFrom}
+git push -f ${remote} ${deployTo}:master
