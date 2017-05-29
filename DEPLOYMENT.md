@@ -1,6 +1,6 @@
 # Deployment
 
-The web-monitoring-ui is decoupled from the other web monitoring components and interacts only with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) through db's JSON api. Anyone with a free Heroku account and credentials to web-monitoring-db can deploy web-monitoring-ui and have a fully functional instance of the application. You can still deploy without credentials but will not be able to update annotations or make other changes to the web-monitoring-db.
+Web-monitoring-ui is decoupled from the other web monitoring components and interacts only with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) through db's JSON api. Anyone with a free Heroku account and credentials to web-monitoring-db can deploy web-monitoring-ui and have a fully functional instance of the application. You can still deploy without credentials but will not be able to update annotations or make other changes to web-monitoring-db.
 
 This deployment is simple and consists of:
 
