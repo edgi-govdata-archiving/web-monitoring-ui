@@ -36,4 +36,4 @@ git commit -m "Deploy heroku app"
 git push -f ${remote} ${deployTo}:master
 
 git checkout ${currentBranch}
-echo "Done"
+echo "Finished deployment"
