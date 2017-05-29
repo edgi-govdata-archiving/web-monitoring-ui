@@ -25,5 +25,5 @@ else
     gulp css browserify
     git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css
     git commit
-    git push -f heroku ${remote}:master
+    git push -f ${remote} ${localBranch}:master
 fi
