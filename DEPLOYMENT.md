@@ -1,6 +1,6 @@
 # Deployment
 
-Web-monitoring-ui is decoupled from the other web monitoring components and interacts only with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) through db's JSON api. Anyone with a free Heroku account and credentials to web-monitoring-db can deploy web-monitoring-ui and have a fully functional instance of the application. You can still deploy without credentials but will not be able to update annotations or make other changes to web-monitoring-db.
+Web-monitoring-ui is decoupled from the other [web monitoring](https://github.com/edgi-govdata-archiving/web-monitoring) components and interacts only with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) through web-monitoring-db's JSON api. Anyone with a Heroku account and credentials to web-monitoring-db, can deploy web-monitoring-ui and have a fully functional instance of the application. You can still deploy without credentials but will not be able to update annotations or make other changes to web-monitoring-db.
 
 This deployment is simple and consists of:
 
@@ -15,7 +15,7 @@ In our deployment, environment variables are named
 2. `WEB_MONITORING_DB_USER`
 3. `WEB_MONITORING_DB_PASSWORD`
 
-All are optional, but you will need credentials to update annotations.
+All are optional, but you will need credentials to update annotations. This is temporary until we implement a better login system.
 
 ## Shell script
 
