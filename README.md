@@ -33,7 +33,20 @@ It’s a React.js and Typescript-based browser application with a a Node.js back
     ```sh
     yarn run start
     ```
+    
+## Running tests
 
+To run all tests once
+
+    ```sh
+    yarn test
+    ```
+    
+while to start the test runner in watch mode
+
+    ```sh
+    yarn dev
+    ```
 
 ## Manual view
 Access the main view at `http://localhost:3000`
