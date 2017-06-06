@@ -24,5 +24,4 @@ The script takes 2 arguments that are optional.
 1. The name of the heroku remote to deploy to. This is useful if you have multiple heroku remotes or have renamed them. It defaults to `heroku`.
 2. The name of the local branch to be deployed. It defaults to `master`. Supplying this argument is useful if you want to deploy a branch other than master.
 
-WARNING! - The script assumes and pushes from a branch named `heroku-deploy`. It will create one or switch to it if it exists. If you already have a branch named `heroku-deploy`, rename the `deployTo` variable in the script or make sure you don't care what happens to `heroku-deploy` before running.
-
+The script assumes and pushes from a branch named `heroku-deploy`. It will create one or switch to it if it exists. You shouldn't have a branch named `heroku-deploy` that you are working in if you plan on using the script.
