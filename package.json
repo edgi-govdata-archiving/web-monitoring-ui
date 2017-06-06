@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^4.0.4",
     "browserify": "^14.0.0",
     "dotenv": "^4.0.0",
+    "enzyme": "^2.8.2",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.1.6",
     "gulp-util": "^3.0.8",
@@ -24,6 +25,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.1",
+    "react-test-renderer": "^15.5.4",
     "ts-jest": "^20.0.5",
     "tsify": "^3.0.1",
     "tslint": "^5.2.0",
@@ -35,7 +37,8 @@
   "scripts": {
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "start": "node app.js",
-    "test": "./node_modules/.bin/jest"
+    "test": "./node_modules/.bin/jest",
+    "dev": "./node_modules/.bin/jest --watch"
   },
   "jest": {
     "moduleFileExtensions": [
