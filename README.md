@@ -38,15 +38,15 @@ It’s a React.js and Typescript-based browser application with a a Node.js back
 
 To run all tests once
 
-    ```sh
+```sh
     yarn test
-    ```
+```
     
 while to start the test runner in watch mode
 
-    ```sh
+```sh
     yarn dev
-    ```
+```
 
 ## Manual view
 Access the main view at `http://localhost:3000`

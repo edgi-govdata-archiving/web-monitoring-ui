@@ -37,8 +37,8 @@
   "scripts": {
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "start": "node app.js",
-    "test": "./node_modules/.bin/jest",
-    "dev": "./node_modules/.bin/jest --watch"
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "jest": {
     "moduleFileExtensions": [
