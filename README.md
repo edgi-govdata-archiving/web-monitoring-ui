@@ -67,6 +67,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
 | [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
 | [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
+| [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
