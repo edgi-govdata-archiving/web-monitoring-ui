@@ -20,11 +20,14 @@ app.get('/', function (req, res) {
 app.get('/domains/:username', function(req, res) {
     let username = req.params.username;
     //TODO: Figure out how to use custom referrer for API key
-    let domains = gapi.getDomains();
+    let domains = gapi.getDomains(username);
 
     //TODO: add error handling
     domains.then(data => {
         res.json(data);
+    })
+    .catch(err => {
+        res.json(err);
     })
 });
 

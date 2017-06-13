@@ -1,7 +1,7 @@
 var google = require('googleapis');
 var sheets = google.sheets('v4');
 
-function getDomains() {
+function getDomains(username) {
     // TODO: Use env variables
     const credentials = require('./client_secret.json');
     var request = {
@@ -23,9 +23,15 @@ function getDomains() {
             if (err) {
                 reject(err);
             }
-            resolve(response);
+            resolve(findMatch(username, response.values));
         });
     });
+}
+
+function findMatch(username, records) {
+    return records.filter(record => {
+        return username.toLowerCase() === record[0].toLowerCase()
+    })[0].slice(1) || ["No user found"];
 }
 
 exports.getDomains = getDomains;
