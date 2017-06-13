@@ -2,6 +2,7 @@
 
 const express = require('express');
 const app = express();
+const gapi = require('./domains');
 
 app.set('views', __dirname + '/views');
 app.use(express.static('dist'));
@@ -10,10 +11,21 @@ app.engine('html', require('ejs').renderFile);
 /**
  * Main view for manual entry
  */
-app.get('*', function (req, res) {
+app.get('/', function (req, res) {
     res.render('main.html', {
         configuration: clientConfiguration()
     });
+});
+
+app.get('/domains/:username', function(req, res) {
+    let username = req.params.username;
+    //TODO: Figure out how to use custom referrer for API key
+    let domains = gapi.getDomains();
+
+    //TODO: add error handling
+    domains.then(data => {
+        res.json(data);
+    })
 });
 
 app.listen(process.env.PORT || 3000, function () {
