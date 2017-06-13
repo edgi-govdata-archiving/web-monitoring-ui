@@ -5,16 +5,8 @@ function getDomains(username) {
     // TODO: Use env variables
     const credentials = require('./client_secret.json');
     var request = {
-        // The ID of the spreadsheet to retrieve data from.
         spreadsheetId: credentials.installed.sheet_id,
-
-        // The A1 notation of the values to retrieve.
-        range: 'A:ZZ',
-
-        // How values should be represented in the output.
-        // The default render option is ValueRenderOption.FORMATTED_VALUE.
-        valueRenderOption: 'FORMATTED_VALUE',
-
+        range: 'A:ZZZ', // extreme range to get whole spreadsheet
         auth: credentials.installed.api_key
     };
 
@@ -22,16 +14,21 @@ function getDomains(username) {
         sheets.spreadsheets.values.get(request, function(err, response) {
             if (err) {
                 reject(err);
+            } else {
+                resolve({
+                    'domains': findMatch(username, response.values)
+                });
             }
-            resolve(findMatch(username, response.values));
         });
     });
 }
 
 function findMatch(username, records) {
-    return records.filter(record => {
+    let domains = records.filter(record => {
         return username.toLowerCase() === record[0].toLowerCase()
-    })[0].slice(1) || ["No user found"];
+    })[0];
+
+    return domains ? domains.slice(1) : [`${username} not found`];
 }
 
 exports.getDomains = getDomains;
