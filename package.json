@@ -5,7 +5,8 @@
   "main": "views/main.html",
   "dependencies": {
     "ejs": "^2.5.5",
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "googleapis": "^19.0.0"
   },
   "devDependencies": {
     "@types/gapi": "^0.0.30",
