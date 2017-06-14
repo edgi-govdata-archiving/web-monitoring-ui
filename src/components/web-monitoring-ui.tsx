@@ -36,30 +36,15 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     }
 
     componentWillMount () {
-        /* Tasking 1 - if (loggedIn) getDomains, filter over array and return Page[] else */
-        const debug = true;
-        if (debug) {
-            const domains = [
-                'EPA - epa.gov/arc-x',
-                'CDC - ephtracking.cdc.gov - Climate Change',
-                'EPA - epa.gov/climatechange',
-                ];
-            api.getPagesByDomains(domains).then((pages: Page[]) => {
-                this.setState({pages});
-            });
+        /* Tasking 2 - figure out routing */
+        if (typeof loggedIn === 'string' && loggedIn) {
+            const pagesByDomain = getPagesByUser(loggedIn);
+            pagesByDomain.then(pages => this.setState({pages}));
         } else {
             api.getPages().then((pages: Page[]) => {
                 this.setState({pages});
             });
         }
-    }
-
-    componentDidMount () {
-        // TODO: NOT WORKING! GET IT WORKING!
-        const pagesByDomain = getPagesByDomain();
-        pagesByDomain
-        .then(pages => this.setState(pages))
-        .catch(err => console.log(err));
     }
 
     render () {
@@ -81,21 +66,17 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     }
 }
 
-function getPagesByDomain (): Promise<any> {
-    const userName = 'eric@gmail.com';
+function getPagesByUser (userName: string): Promise<any> {
     const url = `${window.location.origin}/domains/${userName}`;
-    const gotStuff = fetch(url)
+    return fetch(url)
         .then(response => response.json())
         .then(data => {
             if (data.domains) {
-                console.log(data.domains);
-                return api.getPagesByDomains(data.domains).then((pages: Page[]) => {
-                    return pages;
-                });
+                return api.getPagesByDomains(data.domains).then(pages => pages);
             } else {
-                return Promise.reject('Nothing found');
+                return Promise.reject(data.error);
             }
         })
+        .then(pages => pages)
         .catch(err => Promise.reject(err));
-    return gotStuff;
 }
