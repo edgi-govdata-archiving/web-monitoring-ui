@@ -34,6 +34,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     }
 
     componentWillMount () {
+        /* Tasking 1 - if (loggedIn) getDomains, filter over array and return Page[] else */
         api.getPages().then((pages: Page[]) => {
             this.setState({pages});
         });

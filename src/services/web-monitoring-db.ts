@@ -72,6 +72,14 @@ export default class WebMonitoringDb {
             .then(data => parsePage(data.data));
     }
 
+    // Tasking 2 - correct query -
+    // https://web-monitoring-db-staging.herokuapp.com/api/v0/pages?site=EPA%20-%20epa.gov&capture_time=2017-05-31..
+    getPageBySite (site: string): Promise<Page> {
+        return fetch(this.createUrl(`pages/${pageId}`))
+            .then(response => response.json())
+            .then(data => parsePage(data.data));
+    }
+
     getVersions (pageId: string): Promise<Version[]> {
         return fetch(this.createUrl(`pages/${pageId}/versions`))
             .then(response => response.json())

@@ -20,6 +20,14 @@ app.get('/', function (req, res) {
     });
 });
 
+// TODO: Remove - Temporary route to test loggedIn state
+app.get('/:username', function (req, res) {
+    let username = req.params.username;
+    res.json({
+        'username': username
+    });
+});
+
 app.get('/domains/:username', function(req, res) {
     let username = req.params.username;
     let domains = gapi.getDomains(username, config);
