@@ -76,11 +76,12 @@ export default class WebMonitoringDb {
     // https://web-monitoring-db-staging.herokuapp.com/api/v0/pages?site=EPA%20-%20epa.gov&capture_time=2017-05-31..
 
     // Time is always 3 days ago
-    // getPageBySite (site: string): Promise<Page> {
-    //     return fetch(this.createUrl(`pages/${pageId}`))
-    //         .then(response => response.json())
-    //         .then(data => parsePage(data.data));
-    // }
+    getPagesByDomains (domains: string[]): Promise<Page[]> {
+        // use Promise.all
+        return fetch(this.createUrl(`pages?site=${encodeURI(domains[0])}`))
+            .then(response => response.json())
+            .then(data => data.data.map(parsePage));
+    }
 
     getVersions (pageId: string): Promise<Version[]> {
         return fetch(this.createUrl(`pages/${pageId}/versions`))

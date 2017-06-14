@@ -67,6 +67,7 @@ function clientConfiguration () {
         source = Object.assign(fromFile.parsed || {}, baseEnvironment);
     }
 
+    // TODO: Create different config for credentials so they don't show up in main.html
     const allowedFields = [
         'WEB_MONITORING_DB_URL',
         'WEB_MONITORING_DB_USER',
