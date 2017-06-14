@@ -72,15 +72,16 @@ export default class WebMonitoringDb {
             .then(data => parsePage(data.data));
     }
 
-    // Tasking 2 - correct query -
-    // https://web-monitoring-db-staging.herokuapp.com/api/v0/pages?site=EPA%20-%20epa.gov&capture_time=2017-05-31..
-
-    // Time is always 3 days ago
     getPagesByDomains (domains: string[]): Promise<Page[]> {
-        // use Promise.all
-        return fetch(this.createUrl(`pages?site=${encodeURI(domains[0])}`))
-            .then(response => response.json())
-            .then(data => data.data.map(parsePage));
+        const daysAgo = 3;
+        const dateEarlier = new Date(new Date().setDate(new Date().getDate() - daysAgo)).toISOString();
+        const fetches = domains.map(domain => {
+            return fetch(this.createUrl(`pages?site=${encodeURI(domain)}&capture_time=${dateEarlier}..`))
+                .then(response => response.json())
+                .then(data => data.data.map(parsePage));
+        });
+        return Promise.all(fetches)
+            .then(data => data.reduce((acc, arr) => acc.concat(arr), []));
     }
 
     getVersions (pageId: string): Promise<Version[]> {
