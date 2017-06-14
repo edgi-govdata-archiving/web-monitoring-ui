@@ -36,7 +36,6 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     }
 
     componentWillMount () {
-        /* Tasking 2 - figure out routing */
         if (typeof loggedIn === 'string' && loggedIn) {
             const pagesByDomain = getPagesByUser(loggedIn);
             pagesByDomain.then(pages => this.setState({pages}));
@@ -55,6 +54,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
                 <div>
                     <NavBar title="EDGI" />
                     <Route exact path="/" render={withPages(PageList)} />
+                    <Route path="/:username" render={withPages(PageList)} />
                     <Route path="/page/:pageId" render={withPages(PageDetails)} />
                 </div>
             </Router>
