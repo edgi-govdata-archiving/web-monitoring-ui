@@ -8,6 +8,8 @@ import PageDetails from './page-details';
 import PageList from './page-list';
 
 const configuration = (window as any).webMonitoringConfig;
+const loggedIn = (window as any).loggedIn;
+
 const api = new WebMonitoringDb({
     password: configuration.WEB_MONITORING_DB_PASSWORD,
     url: configuration.WEB_MONITORING_DB_URL,
@@ -35,6 +37,15 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
 
     componentWillMount () {
         /* Tasking 1 - if (loggedIn) getDomains, filter over array and return Page[] else */
+        if (loggedIn) {
+            const url = `http://${window.location.hostname}:${window.location.port}/domains/${loggedIn}`;
+            console.log(url);
+            fetch(url)
+                .then(data => {
+                    console.log(data);
+                });
+            const a = 'b';
+        }
         api.getPages().then((pages: Page[]) => {
             this.setState({pages});
         });
