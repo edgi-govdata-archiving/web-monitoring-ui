@@ -13,10 +13,13 @@ function getDomains(username, config) {
             if (err) {
                 reject(err);
             } else {
-                resolve({
-                    'domains': findMatch(username, response.values)
-                });
-            }
+                const domains = findMatch(username, response.values);
+                if (domains) {
+                    resolve({ 'domains': domains })
+                } else {
+                    reject({ 'error': `${username} not found.`})
+                }
+            };
         });
     });
 }
@@ -26,7 +29,11 @@ function findMatch(username, records) {
         return username.toLowerCase() === record[0].toLowerCase()
     })[0];
 
-    return domains ? domains.slice(1) : [`${username} not found`];
+    if (domains) {
+        return domains.slice(1);
+    } else {
+        return null;
+    }
 }
 
 exports.getDomains = getDomains;
