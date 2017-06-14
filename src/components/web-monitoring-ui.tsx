@@ -38,17 +38,23 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     componentWillMount () {
         /* Tasking 1 - if (loggedIn) getDomains, filter over array and return Page[] else */
         if (loggedIn) {
-            const url = `http://${window.location.hostname}:${window.location.port}/domains/${loggedIn}`;
-            console.log(url);
+            const url = `${window.location.origin}/domains/${loggedIn}`;
             fetch(url)
+                .then(blob => blob.json())
                 .then(data => {
-                    console.log(data);
-                });
-            const a = 'b';
+                    if (data.domains) {
+                        console.log(data.domains);
+                    } else {
+                        console.log(data.error);
+                    }
+                })
+                .catch(err => console.log(`error:${err}`));
+
+        } else {
+            api.getPages().then((pages: Page[]) => {
+                this.setState({pages});
+            });
         }
-        api.getPages().then((pages: Page[]) => {
-            this.setState({pages});
-        });
     }
 
     render () {
