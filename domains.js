@@ -1,13 +1,11 @@
 var google = require('googleapis');
 var sheets = google.sheets('v4');
 
-function getDomains(username) {
-    // TODO: Use env variables
-    const credentials = require('./client_secret.json');
+function getDomains(username, config) {
     var request = {
-        spreadsheetId: credentials.installed.sheet_id,
+        spreadsheetId: config.TASK_SHEET_ID,
         range: 'A:ZZZ', // extreme range to get whole spreadsheet
-        auth: credentials.installed.api_key
+        auth: config.API_KEY
     };
 
     return new Promise((resolve, reject) => {

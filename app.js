@@ -8,18 +8,21 @@ app.set('views', __dirname + '/views');
 app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 
+let baseEnvironment;
+const config = clientConfiguration();
+
 /**
  * Main view for manual entry
  */
 app.get('/', function (req, res) {
     res.render('main.html', {
-        configuration: clientConfiguration()
+        configuration: config
     });
 });
 
 app.get('/domains/:username', function(req, res) {
     let username = req.params.username;
-    let domains = gapi.getDomains(username);
+    let domains = gapi.getDomains(username, config);
 
     domains
     .then(data => {
@@ -34,8 +37,6 @@ app.listen(process.env.PORT || 3000, function () {
     console.log('Listening on port 3000');
 });
 
-
-let baseEnvironment;
 
 /**
  * Create a configuration object suitable for passing to the client by taking
@@ -60,7 +61,9 @@ function clientConfiguration () {
     const allowedFields = [
         'WEB_MONITORING_DB_URL',
         'WEB_MONITORING_DB_USER',
-        'WEB_MONITORING_DB_PASSWORD'
+        'WEB_MONITORING_DB_PASSWORD',
+        'TASK_SHEET_ID',
+        'API_KEY'
     ];
 
     return allowedFields.reduce((result, field) => {
