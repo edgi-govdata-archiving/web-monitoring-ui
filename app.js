@@ -29,9 +29,12 @@ app.get('/:username', function (req, res) {
     });
 });
 
+/**
+ * Temporary route for gapi user tasking
+ **/
 app.get('/domains/:username', function(req, res) {
     let username = req.params.username;
-    let domains = gapi.getDomains(username, config);
+    let domains = gapi.getDomains(username);
 
     domains
     .then(data => {
@@ -45,7 +48,6 @@ app.get('/domains/:username', function(req, res) {
 app.listen(process.env.PORT || 3000, function () {
     console.log('Listening on port 3000');
 });
-
 
 /**
  * Create a configuration object suitable for passing to the client by taking
@@ -67,13 +69,10 @@ function clientConfiguration () {
         source = Object.assign(fromFile.parsed || {}, baseEnvironment);
     }
 
-    // TODO: Create different config for credentials so they don't show up in main.html
     const allowedFields = [
         'WEB_MONITORING_DB_URL',
         'WEB_MONITORING_DB_USER',
-        'WEB_MONITORING_DB_PASSWORD',
-        'TASK_SHEET_ID',
-        'API_KEY'
+        'WEB_MONITORING_DB_PASSWORD'
     ];
 
     return allowedFields.reduce((result, field) => {

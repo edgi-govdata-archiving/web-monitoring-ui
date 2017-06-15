@@ -1,11 +1,12 @@
 var google = require('googleapis');
 var sheets = google.sheets('v4');
 
-function getDomains(username, config) {
+function getDomains(username) {
+    const credentials = credentialConfiguration();
     var request = {
-        spreadsheetId: config.TASK_SHEET_ID,
+        spreadsheetId: credentials.TASK_SHEET_ID,
         range: 'A:ZZZ', // extreme range to get whole spreadsheet
-        auth: config.API_KEY
+        auth: credentials.API_KEY
     };
 
     return new Promise((resolve, reject) => {
@@ -34,6 +35,38 @@ function findMatch(username, records) {
     } else {
         return null;
     }
+}
+
+let baseEnvironment;
+
+/**
+ * Create a credential object with secret values from process.env.
+ * In development, also read from a file named .env, if present.
+ * @returns {Object}
+ */
+function credentialConfiguration () {
+    baseEnvironment = baseEnvironment || Object.assign({}, process.env);
+
+    let source = baseEnvironment;
+    if (process.env.NODE_ENV !== 'production') {
+        const fromFile = require('dotenv').config();
+        // If there is no .env file, don't throw and just use process.env
+        if (fromFile.error && fromFile.error.code !== 'ENOENT') {
+            throw fromFile.error;
+        }
+
+        source = Object.assign(fromFile.parsed || {}, baseEnvironment);
+    }
+
+    const allowedFields = [
+        'TASK_SHEET_ID',
+        'API_KEY'
+    ];
+
+    return allowedFields.reduce((result, field) => {
+        result[field] = source[field];
+        return result;
+    }, {});
 }
 
 exports.getDomains = getDomains;

@@ -15,11 +15,9 @@
         <script type="text/javascript">
             window.webMonitoringConfig = <%- JSON.stringify(configuration) %>;
 
-            // TODO: re-evaluate stringify
             <% if (locals.loggedIn) { %>
                 window.loggedIn = <%- JSON.stringify(loggedIn) %>;
             <% } %>
-
         </script>
     </head>
     <body id="bootstrap-override">
