@@ -38,7 +38,13 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     componentWillMount () {
         if (typeof loggedIn === 'string' && loggedIn) {
             const pagesByDomain = getPagesByUser(loggedIn);
-            pagesByDomain.then(pages => this.setState({pages}));
+            pagesByDomain
+                .then(pages => this.setState({pages}))
+                .catch(err => {
+                    api.getPages().then((pages: Page[]) => {
+                        this.setState({pages});
+                    });
+                });
         } else {
             api.getPages().then((pages: Page[]) => {
                 this.setState({pages});
