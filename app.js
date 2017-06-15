@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 });
 
 // TODO: Remove - Temporary route to test loggedIn state
-app.get('/:username', function (req, res) {
+app.get('/loggedIn/:username', function (req, res) {
     let username = req.params.username;
     res.render('main.html', {
         configuration: config,

@@ -54,8 +54,8 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
                 <div>
                     <NavBar title="EDGI" />
                     <Route exact path="/" render={withPages(PageList)} />
-                    <Route path="/:username" render={withPages(PageList)} />
                     <Route path="/page/:pageId" render={withPages(PageDetails)} />
+                    <Route path="/loggedIn/:username" render={withPages(PageList)} />
                 </div>
             </Router>
         );
