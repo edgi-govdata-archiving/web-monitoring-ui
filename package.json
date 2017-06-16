@@ -37,6 +37,7 @@
   "scripts": {
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "start": "node app.js",
+    "gulp": "gulp",
     "test": "jest",
     "test-watch": "jest --watch"
   },

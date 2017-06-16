@@ -3,7 +3,7 @@ var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
 
-gulp.task("default", ["css", "browserify", "watch"]);
+gulp.task("default", ["css", "browserify"]);
 
 gulp.task("css", function () {
     return gulp.src('src/css/*').pipe(gulp.dest('dist/css'));
