@@ -1,9 +1,9 @@
-var google = require('googleapis');
-var sheets = google.sheets('v4');
+const google = require('googleapis');
+const sheets = google.sheets('v4');
 
 function getDomains(username) {
     const credentials = credentialConfiguration();
-    var request = {
+    const request = {
         spreadsheetId: credentials.TASK_SHEET_ID,
         range: 'A:ZZZ', // extreme range to get whole spreadsheet
         auth: credentials.API_KEY
