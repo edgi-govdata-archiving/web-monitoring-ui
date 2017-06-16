@@ -35,6 +35,12 @@ It’s a React.js and Typescript-based browser application with a Node.js backen
     ```sh
     yarn run start
     ```
+    
+7. If you are actively developing then use gulp to rebuild application on file changes
+
+   ```sh
+   gulp watch
+   ```
 
 
 ## Manual view
