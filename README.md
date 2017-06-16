@@ -48,6 +48,23 @@ Screenshot:
 
 We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
 
+## Troubleshooting
+
+### `The program 'gulp' is currently not installed`
+
+If your run into `The program 'gulp' is currently not installed` error then you can either:
+    
+1. Use local development install of gulp
+    ```sh
+    yarn run gulp
+    # or
+    npm run gulp    
+    ```
+
+2. Install gulp globally
+   ```sh
+   yarn install --global gulp-cli
+   ```
 
 ## License & Copyright
 
