@@ -11,8 +11,6 @@ It’s a React.js and Typescript-based browser application with a Node.js backen
     * PAGE VIEW shows basic info about the latest version of that page: site, urls, and links to Versionista diffs
         * updates annotations
 
-
-
 ## Installation
 
 1. Ensure you have yarn ([installation instructions](https://yarnpkg.com/en/docs/install))
@@ -42,13 +40,25 @@ It’s a React.js and Typescript-based browser application with a Node.js backen
    gulp watch
    ```
 
+## Running tests
+
+To run all tests once
+
+```sh
+yarn test
+```
+
+while to start the test runner in watch mode
+
+```sh
+yarn dev
+```
 
 ## Manual view
 Access the main view at `http://localhost:3000`
 
 Screenshot:
 ![screenshot](screenshot.png)
-
 
 ## Getting Involved
 
@@ -71,6 +81,33 @@ If your run into `The program 'gulp' is currently not installed` error then you 
    ```sh
    yarn install --global gulp-cli
    ```
+
+## Contributors
+
+This project wouldn’t exist without a lot of amazing people’s help. Thanks to the following for all their contributions!
+
+<!-- ALL-CONTRIBUTORS-LIST:START -->
+| Contributions | Name |
+| :---: | :---: |
+| [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
+| [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
+| [📖](# "Documentation") [📋](# "Organizer") [💬](# "Answering Questions") [👀](# "Reviewer") | [Dan Allan](https://github.com/danielballan) |
+| [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
+| [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
+| [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
+| [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
+| [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Andrew Bergman](https://github.com/ambergman) |
+| [💡](# "Examples") | [@ArcTanSusan](https://github.com/ArcTanSusan) |
+| [💡](# "Examples") | [@AutumnColeman](https://github.com/AutumnColeman) |
+| [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
+| [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
+| [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
+| [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
+| [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+(For a key to the contribution emoji or more info on this format, check out [“All Contributors.”](https://github.com/kentcdodds/all-contributors))
 
 ## License & Copyright
 
