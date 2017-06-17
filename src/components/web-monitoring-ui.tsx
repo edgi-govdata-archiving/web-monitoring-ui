@@ -72,17 +72,13 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     }
 }
 
-function getPagesByUser (userName: string): Promise<any> {
-    const url = `${window.location.origin}/domains/${userName}`;
+function getPagesByUser (userName: string): Promise<Page[]> {
+    const url = `/domains/${userName}`;
     return fetch(url)
         .then(response => response.json())
         .then(data => {
             if (data.domains) {
-                return api.getPagesByDomains(data.domains).then(pages => pages);
-            } else {
-                return Promise.reject(data.error);
+                return api.getPagesByDomains(data.domains);
             }
-        })
-        .then(pages => pages)
-        .catch(err => Promise.reject(err));
+        });
 }
