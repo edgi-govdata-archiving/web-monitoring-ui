@@ -11,15 +11,6 @@ app.engine('html', require('ejs').renderFile);
 let baseEnvironment;
 const config = clientConfiguration();
 
-/**
- * Main view for manual entry
- */
-app.get('/', function (req, res) {
-    res.render('main.html', {
-        configuration: config
-    });
-});
-
 // TODO: Remove - Temporary route to test loggedIn state
 app.get('/loggedIn/:username', function (req, res) {
     let username = req.params.username;
@@ -43,6 +34,15 @@ app.get('/domains/:username', function(req, res) {
     .catch(err => {
         res.json(err);
     })
+});
+
+/**
+ * Main view for manual entry
+ */
+app.get('*', function (req, res) {
+    res.render('main.html', {
+        configuration: config
+    });
 });
 
 app.listen(process.env.PORT || 3000, function () {
