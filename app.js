@@ -8,14 +8,13 @@ app.set('views', __dirname + '/views');
 app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 
-let baseEnvironment;
-const config = clientConfiguration();
+
 
 // TODO: Remove - Temporary route to test loggedIn state
 app.get('/loggedIn/:username', function (req, res) {
     let username = req.params.username;
     res.render('main.html', {
-        configuration: config,
+        configuration: clientConfiguration(),
         loggedIn: username
     });
 });
@@ -41,7 +40,7 @@ app.get('/domains/:username', function(req, res) {
  */
 app.get('*', function (req, res) {
     res.render('main.html', {
-        configuration: config
+        configuration: clientConfiguration()
     });
 });
 
@@ -49,6 +48,7 @@ app.listen(process.env.PORT || 3000, function () {
     console.log('Listening on port 3000');
 });
 
+let baseEnvironment;
 /**
  * Create a configuration object suitable for passing to the client by taking
  * an allow-listed set of keys from process.env.
