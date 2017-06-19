@@ -19,10 +19,7 @@ app.get('/loggedIn/:username', function (req, res) {
     });
 });
 
-/**
- * Temporary route for gapi user tasking
- **/
-app.get('/domains/:username', function(req, res) {
+app.get('/api/domains/:username', function(req, res) {
     let username = req.params.username;
     let domains = gapi.getDomains(username);
 
