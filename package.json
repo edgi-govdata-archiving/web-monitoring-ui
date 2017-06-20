@@ -37,7 +37,7 @@
   },
   "scripts": {
     "lint": "tslint 'src/**/*.{ts,tsx}'",
-    "start": "node app.js",
+    "start": "node server/app.js",
     "test": "jest",
     "test-watch": "jest --watch"
   },
