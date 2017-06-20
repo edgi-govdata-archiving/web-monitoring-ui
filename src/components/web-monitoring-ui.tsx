@@ -37,7 +37,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
 
     componentWillMount () {
         if (typeof loggedIn === 'string' && loggedIn) {
-            const pagesByDomain = getPagesByUser(loggedIn);
+            const pagesByDomain = api.getPagesByUser(loggedIn);
             pagesByDomain
                 .then(pages => this.setState({pages}))
                 .catch(error => {
@@ -71,17 +71,4 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     getChildContext () {
         return {api};
     }
-}
-
-function getPagesByUser (userName: string): Promise<Page[]> {
-    const url = `/api/domains/${userName}`;
-    return fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.domains) {
-                return api.getPagesByDomains(data.domains);
-            } else {
-                return Promise.reject(data.error);
-            }
-        });
 }

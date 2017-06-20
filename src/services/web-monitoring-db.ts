@@ -72,6 +72,19 @@ export default class WebMonitoringDb {
             .then(data => parsePage(data.data));
     }
 
+    getPagesByUser (userName: string): Promise<Page[]> {
+        const url = `/api/domains/${userName}`;
+        return fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.domains) {
+                    return this.getPagesByDomains(data.domains);
+                } else {
+                    return Promise.reject(data.error);
+                }
+            });
+    }
+
     getPagesByDomains (domains: string[]): Promise<Page[]> {
         // TODO: Implement more robust date filtering
         const daysAgo = 3;
