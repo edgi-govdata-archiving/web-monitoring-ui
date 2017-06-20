@@ -77,7 +77,7 @@ export default class WebMonitoringDb {
         const daysAgo = 3;
         const dateEarlier = new Date(new Date().setDate(new Date().getDate() - daysAgo)).toISOString();
         const fetches = domains.map(domain => {
-            return fetch(this.createUrl(`pages?site=${encodeURI(domain)}&capture_time=${dateEarlier}..`))
+            return fetch(this.createUrl(`pages?site=${encodeURIComponent(domain)}&capture_time=${dateEarlier}..`))
                 .then(response => response.json())
                 .then(data => data.data.map(parsePage));
         });
