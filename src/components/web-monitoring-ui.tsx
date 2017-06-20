@@ -2,6 +2,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
+import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
@@ -15,6 +16,8 @@ const api = new WebMonitoringDb({
     url: configuration.WEB_MONITORING_DB_URL,
     user: configuration.WEB_MONITORING_DB_USER
 });
+
+const webApi = new WebMonitoringApi(api);
 
 // Maintain a top-level list of pages to share across the app. We do this
 // here instead of via caching in the web-monitoring-db API because we want any
@@ -37,7 +40,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
 
     componentWillMount () {
         if (typeof loggedIn === 'string' && loggedIn) {
-            const pagesByDomain = api.getPagesByUser(loggedIn);
+            const pagesByDomain = webApi.getPagesByUser(loggedIn);
             pagesByDomain
                 .then(pages => this.setState({pages}))
                 .catch(error => {
