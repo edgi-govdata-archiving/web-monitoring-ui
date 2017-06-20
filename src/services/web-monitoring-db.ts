@@ -73,6 +73,7 @@ export default class WebMonitoringDb {
     }
 
     getPagesByDomains (domains: string[]): Promise<Page[]> {
+        // TODO: implement more robust date filtering
         const daysAgo = 3;
         const dateEarlier = new Date(new Date().setDate(new Date().getDate() - daysAgo)).toISOString();
         const fetches = domains.map(domain => {

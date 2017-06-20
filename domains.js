@@ -11,9 +11,9 @@ function getDomains(username) {
     };
 
     return new Promise((resolve, reject) => {
-        sheets.spreadsheets.values.get(request, function(err, response) {
-            if (err) {
-                reject(err);
+        sheets.spreadsheets.values.get(request, function(error, response) {
+            if (error) {
+                reject(error);
             } else {
                 const domains = findMatch(username, response.values);
                 if (domains) {

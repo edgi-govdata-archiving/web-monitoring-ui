@@ -41,7 +41,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
             pagesByDomain
                 .then(pages => this.setState({pages}))
                 .catch(error => {
-                    console.log(error);
+                    // TODO: Handle 'user not found' in a better way than just showing default list
                     api.getPages().then((pages: Page[]) => {
                         this.setState({pages});
                     });
@@ -80,6 +80,8 @@ function getPagesByUser (userName: string): Promise<Page[]> {
         .then(data => {
             if (data.domains) {
                 return api.getPagesByDomains(data.domains);
+            } else {
+                return Promise.reject(data.error);
             }
         });
 }

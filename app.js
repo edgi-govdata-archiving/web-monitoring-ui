@@ -9,32 +9,32 @@ app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 
 // TODO: Remove - Temporary route to test loggedIn state
-app.get('/loggedIn/:username', function (req, res) {
-    let username = req.params.username;
-    res.render('main.html', {
+app.get('/loggedIn/:username', function (request, response) {
+    let username = request.params.username;
+    response.render('main.html', {
         configuration: clientConfiguration(),
         loggedIn: username
     });
 });
 
-app.get('/api/domains/:username', function(req, res) {
-    let username = req.params.username;
+app.get('/api/domains/:username', function(request, response) {
+    let username = request.params.username;
     let domains = gapi.getDomains(username);
 
     domains
     .then(data => {
-        res.json(data);
+        response.json(data);
     })
-    .catch(err => {
-        res.json(err);
+    .catch(error => {
+        response.json(error);
     })
 });
 
 /**
  * Main view for manual entry
  */
-app.get('*', function (req, res) {
-    res.render('main.html', {
+app.get('*', function (request, response) {
+    response.render('main.html', {
         configuration: clientConfiguration()
     });
 });
