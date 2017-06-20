@@ -22,6 +22,10 @@ function baseConfiguration () {
     return source;
 }
 
+/**
+ * Filters baseConfiguration
+ * @returns {Object}
+ */
 function clientConfiguration() {
     const source = baseConfiguration();
     const allowedFields = [
