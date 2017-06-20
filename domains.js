@@ -27,9 +27,7 @@ function getDomains(username) {
 }
 
 function findMatch(username, records) {
-    let domains = records.filter(record => {
-        return username.toLowerCase() === record[0].toLowerCase()
-    })[0];
+    let domains = records.find(record => username.toLowerCase() === record[0].toLowerCase());
 
     if (domains) {
         return domains.slice(1);
