@@ -73,7 +73,7 @@ export default class WebMonitoringDb {
     }
 
     getPagesByDomains (domains: string[]): Promise<Page[]> {
-        // TODO: implement more robust date filtering
+        // TODO: Implement more robust date filtering
         const daysAgo = 3;
         const dateEarlier = new Date(new Date().setDate(new Date().getDate() - daysAgo)).toISOString();
         const fetches = domains.map(domain => {
@@ -81,6 +81,8 @@ export default class WebMonitoringDb {
                 .then(response => response.json())
                 .then(data => data.data.map(parsePage));
         });
+        /* TODO: Make sure pages are unique, because some are shared across domains.
+                 Will implement when we get some test data. */
         return Promise.all(fetches)
             .then(data => data.reduce((acc, arr) => acc.concat(arr), []));
     }
