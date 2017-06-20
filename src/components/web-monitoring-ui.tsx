@@ -40,8 +40,8 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
 
     componentWillMount () {
         if (typeof loggedIn === 'string' && loggedIn) {
-            const pagesByDomain = webApi.getPagesByUser(loggedIn);
-            pagesByDomain
+            const pagesByUser = webApi.getPagesByUser(loggedIn);
+            pagesByUser
                 .then(pages => this.setState({pages}))
                 .catch(error => {
                     // TODO: Handle 'user not found' in a better way than just showing default list
