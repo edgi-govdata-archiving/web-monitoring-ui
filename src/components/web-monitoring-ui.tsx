@@ -40,7 +40,8 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
             const pagesByDomain = getPagesByUser(loggedIn);
             pagesByDomain
                 .then(pages => this.setState({pages}))
-                .catch(err => {
+                .catch(error => {
+                    console.log(error);
                     api.getPages().then((pages: Page[]) => {
                         this.setState({pages});
                     });
@@ -73,7 +74,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
 }
 
 function getPagesByUser (userName: string): Promise<Page[]> {
-    const url = `/domains/${userName}`;
+    const url = `/api/domains/${userName}`;
     return fetch(url)
         .then(response => response.json())
         .then(data => {

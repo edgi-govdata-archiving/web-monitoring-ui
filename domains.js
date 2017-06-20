@@ -4,9 +4,10 @@ const sheets = google.sheets('v4');
 function getDomains(username) {
     const credentials = credentialConfiguration();
     const request = {
-        spreadsheetId: credentials.TASK_SHEET_ID,
+        spreadsheetId: credentials.GOOGLE_TASK_SHEET_ID,
         range: 'A:ZZZ', // extreme range to get whole spreadsheet
-        auth: credentials.API_KEY
+        auth: credentials.GOOGLE_SHEETS_API_KEY,
+        quotaUser: makeId()
     };
 
     return new Promise((resolve, reject) => {
@@ -37,7 +38,18 @@ function findMatch(username, records) {
     }
 }
 
-let baseEnvironment;
+// Make fake id's to pass to quotaUser, so that we don't hit quota limits on the server
+function makeId()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 
 /**
  * Create a credential object with secret values from process.env.
@@ -45,9 +57,7 @@ let baseEnvironment;
  * @returns {Object}
  */
 function credentialConfiguration () {
-    baseEnvironment = baseEnvironment || Object.assign({}, process.env);
-
-    let source = baseEnvironment;
+    let source = Object.assign({}, process.env);;
     if (process.env.NODE_ENV !== 'production') {
         const fromFile = require('dotenv').config();
         // If there is no .env file, don't throw and just use process.env
@@ -55,18 +65,9 @@ function credentialConfiguration () {
             throw fromFile.error;
         }
 
-        source = Object.assign(fromFile.parsed || {}, baseEnvironment);
+        source = Object.assign(fromFile.parsed || {}, source);
     }
-
-    const allowedFields = [
-        'TASK_SHEET_ID',
-        'API_KEY'
-    ];
-
-    return allowedFields.reduce((result, field) => {
-        result[field] = source[field];
-        return result;
-    }, {});
+    return source;
 }
 
 exports.getDomains = getDomains;

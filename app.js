@@ -8,8 +8,6 @@ app.set('views', __dirname + '/views');
 app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 
-
-
 // TODO: Remove - Temporary route to test loggedIn state
 app.get('/loggedIn/:username', function (req, res) {
     let username = req.params.username;
