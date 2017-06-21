@@ -26,13 +26,9 @@ function baseConfiguration () {
  * Filters baseConfiguration
  * @returns {Object}
  */
-function clientConfiguration() {
+function filterConfiguration(filterArray) {
     const source = baseConfiguration();
-    const allowedFields = [
-        'WEB_MONITORING_DB_URL',
-        'WEB_MONITORING_DB_USER',
-        'WEB_MONITORING_DB_PASSWORD'
-    ];
+    const allowedFields = filterArray;
 
     return allowedFields.reduce((result, field) => {
         result[field] = source[field];
@@ -41,4 +37,4 @@ function clientConfiguration() {
 }
 
 exports.baseConfiguration = baseConfiguration;
-exports.clientConfiguration = clientConfiguration;
+exports.filterConfiguration = filterConfiguration;
