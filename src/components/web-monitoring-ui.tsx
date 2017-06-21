@@ -17,7 +17,7 @@ const api = new WebMonitoringDb({
     user: configuration.WEB_MONITORING_DB_USER
 });
 
-const webApi = new WebMonitoringApi(api);
+const webApi = new WebMonitoringApi();
 
 // Maintain a top-level list of pages to share across the app. We do this
 // here instead of via caching in the web-monitoring-db API because we want any
