@@ -16,7 +16,8 @@
       "trailing-comma": [false],
       "max-line-length": [
         300
-      ]
+      ],
+      "no-bitwise": false
     },
     "rulesDirectory": []
 }
