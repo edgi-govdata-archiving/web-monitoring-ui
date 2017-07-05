@@ -116,7 +116,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <DiffView html="" />
+                        <DiffView currentVersionUUID={version.uuid} currentPageUUID={version.page_uuid}/>
                     </div>
                 </div>
             </div>
