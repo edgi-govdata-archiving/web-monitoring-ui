@@ -13,7 +13,10 @@
       "one-line": [false],
       "quotemark": [true, "single", "jsx-double", "avoid-escape"],
       "space-before-function-paren": [true, "always"],
-      "trailing-comma": [false]
+      "trailing-comma": [false],
+      "max-line-length": [
+        300
+      ]
     },
     "rulesDirectory": []
 }
