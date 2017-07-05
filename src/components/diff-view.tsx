@@ -1,26 +1,38 @@
 import * as React from 'react';
 import {Version} from '../services/web-monitoring-db';
+import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
 
 export interface IDiffViewProps {
-    currentVersionUUID: string;
-    currentPageUUID: string;
+    version: Version;
 }
 
 export default class DiffView extends React.Component<IDiffViewProps, any> {
     constructor (props: IDiffViewProps) {
         super (props);
-        this.state = {versions: []};
+        const diffTypes = ['source', 'rendered', 'text'];
+        this.state = {versions: [], diffTypes};
     }
     componentWillMount () {
-        getVersions(this.props.currentPageUUID, this.props.currentVersionUUID).then((data: Version[]) => {
+        const version = this.props.version;
+        getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
             this.setState({versions: data});
         });
+    }
+
+    componentWillReceiveProps (nextProps: IDiffViewProps) {
+        if (this.props !== nextProps) {
+            const version = nextProps.version;
+            getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
+                this.setState({versions: data});
+            });
+        }
     }
     render () {
         return (
             <div>
-                <em>Diff to be displayed here.</em>
+                <h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>
+                <SelectDiffType diffTypes={this.state.diffTypes} />
                 <SelectVersion versions={this.state.versions} />
             </div>
         );
@@ -86,6 +98,16 @@ if (!Array.prototype.findIndex) {
       return -1;
     }
   });
+}
+
+function getDateString (str: string): string {
+    const date = new Date(str);
+    const options = {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    };
+    return `${date.toLocaleDateString('en-US', options)} ${date.toLocaleTimeString('en-US')}`;
 }
 
 function loadIframe (htmlEmbed: string) {
