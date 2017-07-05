@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {RouteComponentProps} from 'react-router-dom';
 import {Version} from '../services/web-monitoring-db';
 
 export default class SelectVersion extends React.Component<any, any> {
