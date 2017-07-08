@@ -3,12 +3,12 @@ import {Version,Page} from '../services/web-monitoring-db';
 import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
 
-export interface IDiffViewProps {
+export interface IChangeViewProps {
     page: Page;
 }
 
-export default class DiffView extends React.Component<IDiffViewProps, any> {
-    constructor (props: IDiffViewProps) {
+export default class ChangeView extends React.Component<IChangeViewProps, any> {
+    constructor (props: IChangeViewProps) {
         super (props);
         // this.state = {versions: [], diffTypes};
         this.state = { 
@@ -17,6 +17,7 @@ export default class DiffView extends React.Component<IDiffViewProps, any> {
           b : null,
         };
 
+        this.updateDiff = this.updateDiff.bind(this);
         this.handleVersionAChange = this.handleVersionAChange.bind(this);
         this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
@@ -29,7 +30,7 @@ export default class DiffView extends React.Component<IDiffViewProps, any> {
         // });
     }
 
-    componentWillReceiveProps (nextProps: IDiffViewProps) {
+    componentWillReceiveProps (nextProps: IChangeViewProps) {
         // if (this.props !== nextProps) {
         //     const version = nextProps.version;
         //     getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
@@ -38,15 +39,21 @@ export default class DiffView extends React.Component<IDiffViewProps, any> {
         // }
     }
 
-    handleDiffTypeChange(diffType: any) {
-      this.setState({diffType});
+    updateDiff() {
+
     }
 
+    handleDiffTypeChange(diffType: any) {
+      this.setState({diffType});
+      this.updateDiff();
+    }
     handleVersionAChange(version:Version) {
-       this.setState({ a : version });
+      this.setState({ a : version });
+      this.updateDiff();
     }
     handleVersionBChange(version:Version) {
-       this.setState({ b : version });
+      this.setState({ b : version });
+      this.updateDiff();
     }
 
     render () {
@@ -68,6 +75,9 @@ export default class DiffView extends React.Component<IDiffViewProps, any> {
                 <div>
                   <label>After</label>
                   <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
+                </div>
+                <div>
+
                 </div>
             </div>
         );
