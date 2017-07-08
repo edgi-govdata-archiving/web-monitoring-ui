@@ -78,12 +78,18 @@ export default class LoginPannel extends React.Component<ILoginPanelProps, ILogi
 
     private logIn (event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        if (!this.state.email || !this.state.password) {
+            return this.setState({
+                error: 'Please enter an e-mail and password.'
+            });
+        }
+
         this.context.api.logIn(this.state.email, this.state.password)
             .then(userData => {
                 this.props.onLogin(userData);
             })
             .catch(error => {
-                console.error(error);
                 this.setState({error: error.message});
             });
     }
