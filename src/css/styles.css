@@ -189,18 +189,18 @@ ins {
     padding: 1em;
 }
 
-.login-panel {
+.login-form {
     width: 24em;
 }
 
-.login-panel h1 {
+.login-form h1 {
     margin: 0 0 1em;
 }
 
-.login-panel .form-group {
+.login-form .form-group {
     width: 100%;
 }
 
-.login-panel__footer {
+.login-form__footer {
     text-align: right;
 }

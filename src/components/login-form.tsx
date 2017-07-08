@@ -3,25 +3,25 @@ import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 
-export interface ILoginPanelProps {
+export interface ILoginFormProps {
     cancelLogin: () => void;
     onLogin: (user: any) => void;
 }
 
-export interface ILoginPanelState {
+export interface ILoginFormState {
     email: string;
     password: string;
     error: any;
 }
 
-export default class LoginPannel extends React.Component<ILoginPanelProps, ILoginPanelState> {
+export default class LoginPannel extends React.Component<ILoginFormProps, ILoginFormState> {
     static contextTypes = {
         api: PropTypes.instanceOf(WebMonitoringDb)
     };
 
     context: {api: WebMonitoringDb};
 
-    constructor (props: ILoginPanelProps) {
+    constructor (props: ILoginFormProps) {
         super(props);
         this.state = {email: '', password: '', error: null};
         this.updateEmail = this.updateEmail.bind(this);
@@ -32,7 +32,7 @@ export default class LoginPannel extends React.Component<ILoginPanelProps, ILogi
 
     render () {
         return (
-            <form className="login-panel" onSubmit={this.logIn}>
+            <form className="login-form" onSubmit={this.logIn}>
                 <h1>Log In</h1>
 
                 {this.renderError()}
@@ -47,10 +47,10 @@ export default class LoginPannel extends React.Component<ILoginPanelProps, ILogi
                     <input className="form-control" type="password" name="password" onChange={this.updatePassword} />
                 </label>
 
-                <div className="login-panel__footer">
-                    <input className="login-panel__submit btn btn-primary" type="submit" value="Log In" />
+                <div className="login-form__footer">
+                    <input className="login-form__submit btn btn-primary" type="submit" value="Log In" />
                     {' '}
-                    <button className="login-panel__cancel btn btn-default" onClick={this.cancel}>Cancel</button>
+                    <button className="login-form__cancel btn btn-default" onClick={this.cancel}>Cancel</button>
                 </div>
             </form>
         );

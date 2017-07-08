@@ -4,7 +4,7 @@ import * as AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
-import LoginPanel from './login-panel';
+import LoginForm from './login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list';
@@ -95,7 +95,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
                 underlayClass="dialog dialog__underlay"
                 verticallyCenter={true}
             >
-                <LoginPanel cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
+                <LoginForm cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
             </AriaModal>
         );
     }
