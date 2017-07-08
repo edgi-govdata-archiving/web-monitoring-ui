@@ -5,14 +5,14 @@ export default class SelectVersion extends React.Component<any, any> {
     render () {
         const versions = this.props.versions;
         const handleChange = (e: any) => {
-          this.props.onChange(e.target.value);
+          this.props.onChange(versions[e.target.value]);
         }
 
         return (
             <div>
                 <select onChange={handleChange}>
                     <option value="">none</option>
-                    {versions.map((v: Version) => <option key={v.uuid} value={v.uuid}>{getDateString(v.capture_time.toString())}</option>)}
+                    {versions.map((v: Version, i: number) => <option key={v.uuid} value={i}>{getDateString(v.capture_time.toString())}</option>)}
                 </select>
             </div>
         );
