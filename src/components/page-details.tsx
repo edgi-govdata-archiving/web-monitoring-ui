@@ -116,7 +116,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <DiffView version={this.state.version} />
+                        <DiffView page={this.state.page} version={this.state.version} />
                     </div>
                 </div>
             </div>
@@ -210,6 +210,24 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                     }
                 });
         }
+    }
+
+    private loadVersion (page: Page, version: Version) {
+        // const latest = page.latest || page.versions[0];
+        // if (!latest) {
+            // this.loadPage(page.uuid);
+        // }
+        // else {
+            // this.context.api.getVersion(page.uuid, latest.uuid)
+            //     .then(version => {
+            //         if (this.state.page.uuid === version.page_uuid) {
+            //             this.setState({
+            //                 annotation: version.current_annotation,
+            //                 version
+            //             });
+            //         }
+            //     });
+        // }
     }
 
     private updateAnnotation (newAnnotation: any) {
