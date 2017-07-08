@@ -42,6 +42,7 @@ interface IApiResponse {
 
 interface IWebMonitoringDbOptions {
     url?: string;
+    useSavedCredentials?: boolean;
 }
 
 export default class WebMonitoringDb {
@@ -58,10 +59,13 @@ export default class WebMonitoringDb {
             this.url = this.url.slice(0, -1);
         }
 
-        this.loadToken();
-        // Explicit check because https://bugs.chromium.org/p/chromium/issues/detail?id=465666
-        if (this.authToken) {
-            this.verifyToken();
+        const useSavedCredentials = options.useSavedCredentials;
+        if (useSavedCredentials === true || useSavedCredentials == null) {
+            this.loadToken();
+            // Explicit check because https://bugs.chromium.org/p/chromium/issues/detail?id=465666
+            if (this.authToken) {
+                this.verifyToken(true);
+            }
         }
     }
 
@@ -100,6 +104,14 @@ export default class WebMonitoringDb {
         this.userData = null;
     }
 
+    /**
+     * Determine whether this API instance is signed into the API server.
+     *
+     * @param {boolean} [verify=false] Check the validity of this token with
+     *   API server. If the current token has never been verified, this defaults
+     *   to true.
+     * @returns {Promise<boolean>}
+     */
     isLoggedIn (verify: boolean = false): Promise<boolean> {
         if (this.authToken && (verify || !this.isTokenVerfied)) {
             return this.verifyToken()
@@ -111,7 +123,7 @@ export default class WebMonitoringDb {
     }
 
     getPages (): Promise<Page[]> {
-        return fetch(this.createUrl('pages', {source_type: 'versionista'}))
+        return fetch(this.createUrl('pages'))
             .then(response => response.json())
             .then(data => data.data.map(parsePage));
     }
@@ -183,28 +195,39 @@ export default class WebMonitoringDb {
         }
     }
 
-    private verifyToken () {
+    private verifyToken (refresh?: boolean) {
         if (!this.authToken) {
             return Promise.reject(new Error('No token to verify'));
         }
 
         if (!this.tokenVerification) {
-            this.tokenVerification = fetch(this.createUrl(`/users/session`), {
+            const url = refresh ? '/users/sign_in' : '/users/session';
+            this.tokenVerification = fetch(this.createUrl(url), {
                 credentials: 'include',
                 headers: new Headers({
-                    Authorization: this.authHeader()
+                    'Accept': 'application/json',
+                    'Authorization': this.authHeader(),
+                    'Content-Type': 'application/json'
                 }),
+                method: refresh ? 'POST' : 'GET',
                 mode: 'cors',
             })
                 .then(response => response.json())
                 .then(sessionData => {
                     this.tokenVerification = null;
                     this.isTokenVerfied = true;
-                    if (!sessionData.id) {
+
+                    if (!sessionData.user) {
                         this.authToken = null;
                         throw new Error(sessionData.title || sessionData.message || 'Invalid token');
                     }
-                    this.userData = sessionData;
+
+                    // replace our token with a fresh one if provided
+                    if (sessionData.token) {
+                        this.authToken = sessionData.token;
+                    }
+
+                    this.userData = sessionData.user;
                     return sessionData;
                 })
                 .catch(error => {
