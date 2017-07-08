@@ -1,5 +1,6 @@
 /* tslint:disable interface-name */
 const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
+const storageLocation = 'WebMonitoringDb.token';
 
 export interface Version {
     uuid: string;
@@ -41,27 +42,76 @@ interface IApiResponse {
 
 interface IWebMonitoringDbOptions {
     url?: string;
-    user?: string;
-    password?: string;
 }
 
 export default class WebMonitoringDb {
+    userData: any;
+
     private url: string;
-    private user: string;
-    private password: string;
+    private authToken: string;
+    private isTokenVerfied: boolean;
+    private tokenVerification: Promise<any>;
 
     constructor (options: IWebMonitoringDbOptions = {}) {
         this.url = options.url || defaultApiUrl;
-        if (!this.url.endsWith('/')) {
-            this.url += '/';
+        if (this.url.endsWith('/')) {
+            this.url = this.url.slice(0, -1);
         }
 
-        this.user = options.user;
-        this.password = options.password;
+        this.loadToken();
+        // Explicit check because https://bugs.chromium.org/p/chromium/issues/detail?id=465666
+        if (this.authToken) {
+            this.verifyToken();
+        }
+    }
+
+    logIn (user: string, password: string) {
+        return fetch(this.createUrl(`/users/sign_in`), {
+            body: JSON.stringify({
+                user: {
+                    email: user,
+                    password
+                }
+            }),
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }),
+            method: 'POST',
+            mode: 'cors',
+        })
+            .then(response => response.json())
+            .then(sessionData => {
+                if (sessionData.error) {
+                    throw new Error(sessionData.error);
+                }
+
+                this.authToken = sessionData.token;
+                this.saveToken(this.authToken);
+                this.isTokenVerfied = true;
+                this.userData = sessionData.user;
+                return this.userData;
+            });
+    }
+
+    logOut () {
+        this.authToken = null;
+        this.saveToken('');
+        this.userData = null;
+    }
+
+    isLoggedIn (verify: boolean = false): Promise<boolean> {
+        if (this.authToken && (verify || !this.isTokenVerfied)) {
+            return this.verifyToken()
+                .then(data => true)
+                .catch(() => false);
+        }
+
+        return Promise.resolve(false);
     }
 
     getPages (): Promise<Page[]> {
-        return fetch(this.createUrl('pages'))
+        return fetch(this.createUrl('pages', {source_type: 'versionista'}))
             .then(response => response.json())
             .then(data => data.data.map(parsePage));
     }
@@ -89,7 +139,7 @@ export default class WebMonitoringDb {
             body: JSON.stringify(annotation),
             credentials: 'include',
             headers: new Headers({
-                Authorization: this.basicAuthHeader()
+                Authorization: this.authHeader()
             }),
             method: 'POST',
             mode: 'cors',
@@ -99,7 +149,8 @@ export default class WebMonitoringDb {
     }
 
     private createUrl (path: string, query?: any) {
-        let url = `${this.url}api/v0/${path}`;
+        const base = path.startsWith('/') ? '' : '/api/v0/';
+        let url = `${this.url}${base}${path}`;
         if (query) {
             const queryList = [];
             for (const key in query) {
@@ -118,8 +169,59 @@ export default class WebMonitoringDb {
         return url;
     }
 
-    private basicAuthHeader () {
-        return 'Basic ' + btoa(`${this.user}:${this.password}`);
+    private loadToken () {
+        if ('localStorage' in window) {
+            this.authToken = localStorage.getItem(storageLocation);
+            return this.authToken;
+        }
+        return null;
+    }
+
+    private saveToken (token: string) {
+        if ('localStorage' in window) {
+            localStorage.setItem(storageLocation, token);
+        }
+    }
+
+    private verifyToken () {
+        if (!this.authToken) {
+            return Promise.reject(new Error('No token to verify'));
+        }
+
+        if (!this.tokenVerification) {
+            this.tokenVerification = fetch(this.createUrl(`/users/session`), {
+                credentials: 'include',
+                headers: new Headers({
+                    Authorization: this.authHeader()
+                }),
+                mode: 'cors',
+            })
+                .then(response => response.json())
+                .then(sessionData => {
+                    this.tokenVerification = null;
+                    this.isTokenVerfied = true;
+                    if (!sessionData.id) {
+                        this.authToken = null;
+                        throw new Error(sessionData.title || sessionData.message || 'Invalid token');
+                    }
+                    this.userData = sessionData;
+                    return sessionData;
+                })
+                .catch(error => {
+                    this.tokenVerification = null;
+                    return Promise.reject(error);
+                });
+        }
+
+        return this.tokenVerification;
+    }
+
+    private basicAuthHeader (user: string, password: string) {
+        return 'Basic ' + btoa(`${user}:${password}`);
+    }
+
+    private authHeader () {
+        return `Bearer ${this.authToken}`;
     }
 }
 
