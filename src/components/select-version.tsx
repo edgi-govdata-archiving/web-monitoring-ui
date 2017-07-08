@@ -4,9 +4,14 @@ import {Version} from '../services/web-monitoring-db';
 export default class SelectVersion extends React.Component<any, any> {
     render () {
         const versions = this.props.versions;
+        const handleChange = (e: any) => {
+          this.props.onChange(e.target.value);
+        }
+
         return (
             <div>
-                <select>
+                <select onChange={handleChange}>
+                    <option value="">none</option>
                     {versions.map((v: Version) => <option key={v.uuid} value={v.uuid}>{getDateString(v.capture_time.toString())}</option>)}
                 </select>
             </div>

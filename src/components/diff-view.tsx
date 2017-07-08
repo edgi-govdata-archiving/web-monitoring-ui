@@ -4,7 +4,6 @@ import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
 
 export interface IDiffViewProps {
-    version: Version;
     page: Page;
 }
 
@@ -12,8 +11,14 @@ export default class DiffView extends React.Component<IDiffViewProps, any> {
     constructor (props: IDiffViewProps) {
         super (props);
         // this.state = {versions: [], diffTypes};
-        this.state = { diffType: "source" };
+        this.state = { 
+          diffType: "source",
+          a : null,
+          b : null,
+        };
 
+        this.handleVersionAChange = this.handleVersionAChange.bind(this);
+        this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
     }
 
@@ -37,38 +42,53 @@ export default class DiffView extends React.Component<IDiffViewProps, any> {
       this.setState({diffType});
     }
 
+    handleVersionAChange(version:Version) {
+       this.setState({ a : version });
+    }
+    handleVersionBChange(version:Version) {
+       this.setState({ b : version });
+    }
+
     render () {
         const { page } = this.props;
 
         if (!page) {
+          // if haz no page, don't render
           return (<div></div>);
         }
 
         return (
             <div>
-                <h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>
+                {/*<h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>*/}
                 <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
-                <SelectVersion versions={page.versions} />
+                <div>
+                  <label>Before</label>
+                  <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
+                </div>
+                <div>
+                  <label>After</label>
+                  <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
+                </div>
             </div>
         );
     }
 }
 
 
-// function getVersions (currentPageUUID: string, currentVersionUUID: string): Promise<Version[]> {
-//     const dataUrl = `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${currentPageUUID}`;
+function getVersions (currentPageUUID: string, currentVersionUUID: string): Promise<Version[]> {
+    const dataUrl = `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${currentPageUUID}`;
 
-//     return fetch(dataUrl)
-//         .then(blob => blob.json())
-//         .then((json: any) => {
-//             const data = json.data;
-//             const currentIndex = data.versions.findIndex((element: Version) => {
-//                 return element.uuid === currentVersionUUID;
-//             });
-//             data.versions.splice(currentIndex, 1);
-//             return data.versions;
-//         });
-// }
+    return fetch(dataUrl)
+        .then(blob => blob.json())
+        .then((json: any) => {
+            const data = json.data;
+            const currentIndex = data.versions.findIndex((element: Version) => {
+                return element.uuid === currentVersionUUID;
+            });
+            data.versions.splice(currentIndex, 1);
+            return data.versions;
+        });
+}
 
 /* Polyfill for Array.prototype.findIndex */
 // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
