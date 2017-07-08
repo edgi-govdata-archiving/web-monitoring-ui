@@ -91,8 +91,8 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
                 titleText="Log in"
                 onExit={this.hideLogin}
                 applicationNode={document.getElementById('web-monitoring-ui-root')}
-                dialogClass="dialog"
-                underlayClass="dialog__underlay"
+                dialogClass="dialog__body"
+                underlayClass="dialog dialog__underlay"
                 verticallyCenter={true}
             >
                 <LoginPanel cancelLogin={this.hideLogin} onLogin={this.afterLogin} />

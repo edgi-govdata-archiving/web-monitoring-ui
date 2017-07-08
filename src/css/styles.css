@@ -183,7 +183,7 @@ ins {
     background-color: lightgreen;
 }
 
-.dialog {
+.dialog__body {
     background: white;
     border-radius: 3px;
     padding: 1em;
