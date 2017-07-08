@@ -10,6 +10,7 @@ export const diffTypes:DiffTypes = {
   SIDE_BY_SIDE_TEXT: 'side-by-side text',
 }
 
+// TODO - map each diffType to it's corresponding endpoint string
 export const changeDiffTypes = {
   [diffTypes.HIGHLIGHTED_TEXT] : "html_text",
 }
