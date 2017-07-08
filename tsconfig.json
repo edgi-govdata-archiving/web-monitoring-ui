@@ -1,5 +1,6 @@
 {
   "files": [
+    "types/react-aria-modal.d.ts",
     "src/scripts/main.tsx"
   ],
   "compilerOptions": {

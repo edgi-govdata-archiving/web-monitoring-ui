@@ -1,5 +1,6 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import * as AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
@@ -85,13 +86,17 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
     }
 
     renderLoginDialog () {
-        // TODO: replace with a real dialog component that traps/manages focus, sets aria bits, etc.
         return (
-            <div className="dialog">
-                <div className="dialog__body" role="dialog">
-                    <LoginPanel cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
-                </div>
-            </div>
+            <AriaModal
+                titleText="Log in"
+                onExit={this.hideLogin}
+                applicationNode={document.getElementById('web-monitoring-ui-root')}
+                dialogClass="dialog"
+                underlayClass="dialog__underlay"
+                verticallyCenter={true}
+            >
+                <LoginPanel cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
+            </AriaModal>
         );
     }
 
