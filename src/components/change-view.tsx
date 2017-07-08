@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Version,Page} from '../services/web-monitoring-db';
 import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
+import {diffTypes} from '../constants/DiffTypes';
 
 export interface IChangeViewProps {
     page: Page;
@@ -18,6 +19,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         };
 
         this.updateDiff = this.updateDiff.bind(this);
+        this.renderDiffView = this.renderDiffView.bind(this);
         this.handleVersionAChange = this.handleVersionAChange.bind(this);
         this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
@@ -56,6 +58,28 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
       this.updateDiff();
     }
 
+    renderDiffView() { 
+      const { a, b, diffType } = this.state;
+      if (!a || !b || !diffType || !diffTypes[diffType]) {
+        return null;
+      }
+
+      console.log(a,b);
+
+      switch (diffTypes[diffType]) {
+        case diffTypes.SIDE_BY_SIDE_RENDERED:
+          return (
+            <div>
+               <iframe src={a.uri} />
+               <hr />
+               <iframe src={b.uri} />
+            </div>
+          );
+        default:
+          return null;
+      }
+    }
+
     render () {
         const { page } = this.props;
 
@@ -77,7 +101,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                   <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
                 </div>
                 <div>
-
+                  {this.renderDiffView()}
                 </div>
             </div>
         );
