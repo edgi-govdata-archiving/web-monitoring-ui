@@ -3,15 +3,14 @@ import * as React from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
+import LoginPanel from './login-panel';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list';
 
 const configuration = (window as any).webMonitoringConfig;
 const api = new WebMonitoringDb({
-    password: configuration.WEB_MONITORING_DB_PASSWORD,
-    url: configuration.WEB_MONITORING_DB_URL,
-    user: configuration.WEB_MONITORING_DB_USER
+    url: configuration.WEB_MONITORING_DB_URL
 });
 
 // Maintain a top-level list of pages to share across the app. We do this
@@ -20,6 +19,8 @@ const api = new WebMonitoringDb({
 // of pages with the same filters and conditions.
 export interface IWebMonitoringUiState {
     pages?: Page[];
+    showLogin: boolean;
+    user: any;
 }
 
 // The WebMonitoringUi represents the root container for the app.
@@ -30,26 +31,67 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
 
     constructor () {
         super();
-        this.state = {pages: null};
+        this.state = {pages: null, showLogin: false, user: null};
+        this.showLogin = this.showLogin.bind(this);
+        this.hideLogin = this.hideLogin.bind(this);
+        this.afterLogin = this.afterLogin.bind(this);
+        this.logOut = this.logOut.bind(this);
+    }
+
+    showLogin () {
+        this.setState({showLogin: true});
+    }
+
+    hideLogin () {
+        this.setState({showLogin: false, user: api.userData});
+    }
+
+    afterLogin (user: any) {
+        this.hideLogin();
+    }
+
+    logOut () {
+        api.logOut();
+        this.setState({user: api.userData});
     }
 
     componentWillMount () {
-        api.getPages().then((pages: Page[]) => {
-            this.setState({pages});
-        });
+        api.isLoggedIn()
+            .then(loggedIn => {
+                this.setState({user: api.userData});
+            })
+            .then(() => api.getPages())
+            .then((pages: Page[]) => {
+                this.setState({pages});
+            });
     }
 
     render () {
-        const withPages = bindComponent({pages: this.state.pages});
+        const withData = bindComponent({pages: this.state.pages, user: this.state.user});
+        const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
         return (
-            <Router>
-                <div>
-                    <NavBar title="EDGI" />
-                    <Route exact path="/" render={withPages(PageList)} />
-                    <Route path="/page/:pageId" render={withPages(PageDetails)} />
+            <div>
+                <Router>
+                    <div id="application">
+                        <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
+                        <Route exact path="/" render={withData(PageList)} />
+                        <Route path="/page/:pageId" render={withData(PageDetails)} />
+                    </div>
+                </Router>
+                {modal}
+            </div>
+        );
+    }
+
+    renderLoginDialog () {
+        // TODO: replace with a real dialog component that traps/manages focus, sets aria bits, etc.
+        return (
+            <div className="dialog">
+                <div className="dialog__body" role="dialog">
+                    <LoginPanel cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
                 </div>
-            </Router>
+            </div>
         );
     }
 
