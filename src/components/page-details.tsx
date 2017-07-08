@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb, {Annotation, Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
-import DiffView from './diff-view';
+import ChangeView from './change-view';
 
 // export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
 export interface IPageDetailsProps extends RouteComponentProps<{pageId: string}> {
@@ -116,7 +116,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <DiffView page={this.state.page} />
+                        <ChangeView page={this.state.page} />
                     </div>
                 </div>
             </div>
