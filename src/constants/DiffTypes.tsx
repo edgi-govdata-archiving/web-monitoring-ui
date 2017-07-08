@@ -1,4 +1,4 @@
-interface DiffTypes {
+export interface DiffTypes {
   [propName: string]: string;
 }
 
