@@ -1,6 +1,7 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {Version} from '../services/web-monitoring-db';
-import {diffTypes} from '../constants/DiffTypes';
+import WebMonitoringDb, {Version} from '../services/web-monitoring-db';
+import {diffTypes, changeDiffTypes} from '../constants/DiffTypes';
 
 import List from './list';
 import DiffItem from './diff-item';
@@ -14,6 +15,12 @@ export interface IDiffViewProps {
 
 // DiffView encapsulates fetching diffs, and wraps all different kinds of diff view types
 export default class DiffView extends React.Component<IDiffViewProps,any> {
+  static contextTypes = {
+    api: PropTypes.instanceOf(WebMonitoringDb),
+  };
+
+  context: {api: WebMonitoringDb};
+
   constructor(props: IDiffViewProps) {
     super(props);
     this.state = { diff: null }
@@ -34,12 +41,15 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
 
   render() {
     const { a, b, diffType } = this.props;
+    const { diff } = this.state;
 
+    // TODO - once the diff is properly working here switch L48 for this:
+    // if (!diffType || !diffTypes[diffType] || !diff) {
     if (!a || !b || !diffType || !diffTypes[diffType]) {
       return null;
     }
 
-    console.log(a,b);
+    // console.log(a,b);
 
     switch (diffTypes[diffType]) {
       case diffTypes.SIDE_BY_SIDE_RENDERED:
@@ -53,7 +63,8 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
        case diffTypes.HIGHLIGHTED_TEXT:
          return (
            <div>
-             <List data={fakeData.data} component={DiffItem} />
+            {/* TODO - use diff extracted from state */}
+            <List data={fakeData.data} component={DiffItem} />
            </div>
          );
       default:
@@ -67,14 +78,17 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
   }
 
   private loadDiff(pageId: string, aId: string, bId: string, diffType: string) {
+    // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
+    // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
 
-    // Promise.resolve(fromList || this.context.api.getPage(pageId))
-    //     .then((page: Page) => {
-    //         this.setState({page});
-    //         this.loadLatestVersion(page);
-    //     });
+
+    // TODO - fix up once context.api.getDiff returns the proper type(s)
+    Promise.resolve(this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
+        .then((diff: any) => {
+            this.setState({diff});
+        });
   }
 }
 

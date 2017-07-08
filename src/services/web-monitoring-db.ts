@@ -147,6 +147,16 @@ export default class WebMonitoringDb {
             .then(data => parseVersion(data.data));
     }
 
+    getDiff (pageId: string, aId: string, bId: string, diffType: string): Promise<any> {
+        // http://localhost:3000/api/v0/pages/PAGE_UID/changes/VERSION_A_UID..VERSION_B_UID/diff/html_text
+        return fetch(this.createUrl(`/api/v0/pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`))
+            .then(response => response.json())
+            // .then(data => parseDiff(data))
+            // TODO - need to properly parse out diff stuff here, will need to
+            // pull proper diff data out of the response, possibly with a "parseDiff" func
+            .then(data => data.data);
+    }
+
     annotateVersion (pageId: string, versionId: string, annotation: any): Promise<Annotation> {
         return fetch(this.createUrl(`pages/${pageId}/versions/${versionId}/annotations`), {
             body: JSON.stringify(annotation),
