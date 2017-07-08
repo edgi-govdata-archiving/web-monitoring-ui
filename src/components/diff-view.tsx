@@ -1,58 +1,74 @@
 import * as React from 'react';
-import {Version} from '../services/web-monitoring-db';
+import {Version,Page} from '../services/web-monitoring-db';
 import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
 
 export interface IDiffViewProps {
     version: Version;
+    page: Page;
 }
 
 export default class DiffView extends React.Component<IDiffViewProps, any> {
     constructor (props: IDiffViewProps) {
         super (props);
-        const diffTypes = ['source', 'rendered', 'text'];
-        this.state = {versions: [], diffTypes};
+        // this.state = {versions: [], diffTypes};
+        this.state = { diffType: "source" };
+
+        this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
     }
+
     componentWillMount () {
-        const version = this.props.version;
-        getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
-            this.setState({versions: data});
-        });
+        // const version = this.props.version;
+        // getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
+        //     this.setState({versions: data});
+        // });
     }
 
     componentWillReceiveProps (nextProps: IDiffViewProps) {
-        if (this.props !== nextProps) {
-            const version = nextProps.version;
-            getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
-                this.setState({versions: data});
-            });
-        }
+        // if (this.props !== nextProps) {
+        //     const version = nextProps.version;
+        //     getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
+        //         this.setState({versions: data});
+        //     });
+        // }
     }
+
+    handleDiffTypeChange(diffType: any) {
+      this.setState({diffType});
+    }
+
     render () {
+        const { page } = this.props;
+
+        if (!page) {
+          return (<div></div>);
+        }
+
         return (
             <div>
                 <h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>
-                <SelectDiffType diffTypes={this.state.diffTypes} />
-                <SelectVersion versions={this.state.versions} />
+                <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
+                <SelectVersion versions={page.versions} />
             </div>
         );
     }
 }
 
-function getVersions (currentPageUUID: string, currentVersionUUID: string): Promise<Version[]> {
-    const dataUrl = `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${currentPageUUID}`;
 
-    return fetch(dataUrl)
-        .then(blob => blob.json())
-        .then((json: any) => {
-            const data = json.data;
-            const currentIndex = data.versions.findIndex((element: Version) => {
-                return element.uuid === currentVersionUUID;
-            });
-            data.versions.splice(currentIndex, 1);
-            return data.versions;
-        });
-}
+// function getVersions (currentPageUUID: string, currentVersionUUID: string): Promise<Version[]> {
+//     const dataUrl = `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${currentPageUUID}`;
+
+//     return fetch(dataUrl)
+//         .then(blob => blob.json())
+//         .then((json: any) => {
+//             const data = json.data;
+//             const currentIndex = data.versions.findIndex((element: Version) => {
+//                 return element.uuid === currentVersionUUID;
+//             });
+//             data.versions.splice(currentIndex, 1);
+//             return data.versions;
+//         });
+// }
 
 /* Polyfill for Array.prototype.findIndex */
 // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
