@@ -30,6 +30,7 @@ function renderUserInfo (user: any, showLogin: () => void, logOut: () => void) {
         return (
             <span className="auth-status">
                 {user.email}
+                {' '}
                 <button className="btn btn-link" onClick={logOut}>(Log out)</button>
             </span>
         );

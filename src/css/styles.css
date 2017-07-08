@@ -54,7 +54,7 @@ body {
     padding: 0;
     line-height: inherit;
     border: none;
-    margin: 0 0 0 0.5em;
+    margin: 0;
 }
 
 .diff-title {
