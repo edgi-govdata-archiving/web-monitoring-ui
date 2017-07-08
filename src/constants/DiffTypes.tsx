@@ -9,3 +9,7 @@ export const diffTypes:DiffTypes = {
   SIDE_BY_SIDE_RENDERED: 'side-by-side rendered', 
   SIDE_BY_SIDE_TEXT: 'side-by-side text',
 }
+
+export const changeDiffTypes = {
+  [diffTypes.HIGHLIGHTED_TEXT] : "html_text",
+}
