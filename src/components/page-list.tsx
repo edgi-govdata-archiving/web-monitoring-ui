@@ -52,15 +52,18 @@ export default class PageList extends React.Component<IPageListProps, null> {
 
     renderRow (record: Page) {
         const version = record.latest;
-        const versionistaData = version.source_metadata;
+        let versionistaData;
+        if (version.source_type === 'versionista') {
+            versionistaData = version.source_metadata;
+        }
 
-        const diffWithPrevious = this.renderDiffLink(versionistaData.diff_with_previous_url);
-        const diffWithFirst = this.renderDiffLink(versionistaData.diff_with_first_url);
+        const diffWithPrevious = versionistaData && this.renderDiffLink(versionistaData.diff_with_previous_url);
+        const diffWithFirst = versionistaData && this.renderDiffLink(versionistaData.diff_with_first_url);
 
         const onClick = this.didClickRow.bind(this, record);
 
         const shortUrl = `${record.url.substr(0, 20)}…`;
-        const rawContentPath = versionistaData.url.replace(/^\w+:\/\/[^\/]+\//, '');
+        const rawContentPath = versionistaData && versionistaData.url.replace(/^\w+:\/\/[^\/]+\//, '');
 
         // TODO: click handling
         return (
@@ -70,7 +73,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
                 <td>{record.site}</td>
                 <td>{record.title}</td>
                 <td><a href={record.url} target="_blank" rel="noopener">{shortUrl}</a></td>
-                <td><a href={versionistaData.url} target="_blank" rel="noopener">{rawContentPath}</a></td>
+                <td><a href={versionistaData && versionistaData.url} target="_blank" rel="noopener">{rawContentPath}</a></td>
                 <td>{diffWithPrevious}</td>
                 <td>{diffWithFirst}</td>
             </tr>
