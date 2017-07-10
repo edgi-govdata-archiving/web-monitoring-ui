@@ -11,11 +11,11 @@ export default class SelectDiffType extends React.Component<any, any> {
 
         return (
             <select value={this.props.value} onChange={handleChange}>
+              <option value="">none</option>
               {Object.keys(diffTypes).map((key) => {
                 var val = diffTypes[key];
                 return <option key={key} value={key}>{val}</option>
               })}
-              {/*diffTypes.map((diffType: any) => <option key={diffType} value={diffType}>{diffType}</option>)};*/}
             </select>
         );
     }

@@ -13,8 +13,8 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     constructor (props: IChangeViewProps) {
         super (props);
 
-        this.state = { 
-          diffType: "source",
+        this.state = {
+          diffType: undefined,
           a : null,
           b : null,
         };
@@ -59,8 +59,8 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
       this.updateDiff();
     }
 
-    renderDiffView() { 
-      
+    renderDiffView() {
+
     }
 
     render () {
