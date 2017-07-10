@@ -44,9 +44,7 @@ function clientConfiguration () {
     }
 
     const allowedFields = [
-        'WEB_MONITORING_DB_URL',
-        'WEB_MONITORING_DB_USER',
-        'WEB_MONITORING_DB_PASSWORD'
+        'WEB_MONITORING_DB_URL'
     ];
 
     return allowedFields.reduce((result, field) => {

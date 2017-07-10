@@ -8,6 +8,7 @@ import DiffView from './diff-view';
 // export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
 export interface IPageDetailsProps extends RouteComponentProps<{pageId: string}> {
     pages: Page[];
+    user?: any;
 }
 
 interface IPageDetailsState {
@@ -105,29 +106,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
 
                 <hr />
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <i className="fa fa-toggle-on" aria-hidden="true" />
-                        {/* TODO: should be buttons */}
-                        <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
-                        <i className="fa fa-pencil" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={this.saveAnnotation}>Update Record</a>
-                        <i className="fa fa-list" aria-hidden="true" />
-                        <Link to="/" className="lnk-action">Back to list view</Link>
-                    </div>
-                    <div className="col-md-6 text-right">
-                        <i className="fa fa-upload" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
-                        <i className="fa fa-database" aria-hidden="true" />
-                        <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
-                    </div>
-                </div>
-
-                <AnnotationForm
-                    annotation={this.state.annotation}
-                    onChange={this.updateAnnotation}
-                    collapsed={this.state.collapsedView}
-                />
+                {this.renderAnalysisTools(markAsSignificant, addToDictionary)}
 
                 <hr />
                 <div className="row">
@@ -167,6 +146,40 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                     </li>
                 </ul>
             </nav>
+        );
+    }
+
+    private renderAnalysisTools (markAsSignificant: any, addToDictionary: any) {
+        if (!this.props.user) {
+            return <p>Log in to annotate changes.</p>;
+        }
+
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <i className="fa fa-toggle-on" aria-hidden="true" />
+                        {/* TODO: should be buttons */}
+                        <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
+                        <i className="fa fa-pencil" aria-hidden="true" />
+                        <a className="lnk-action" href="#" onClick={this.saveAnnotation}>Update Record</a>
+                        <i className="fa fa-list" aria-hidden="true" />
+                        <Link to="/" className="lnk-action">Back to list view</Link>
+                    </div>
+                    <div className="col-md-6 text-right">
+                        <i className="fa fa-upload" aria-hidden="true" />
+                        <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
+                        <i className="fa fa-database" aria-hidden="true" />
+                        <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
+                    </div>
+                </div>
+
+                <AnnotationForm
+                    annotation={this.state.annotation}
+                    onChange={this.updateAnnotation}
+                    collapsed={this.state.collapsedView}
+                />
+            </div>
         );
     }
 

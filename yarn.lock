@@ -1462,6 +1462,18 @@ flagged-respawn@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/flagged-respawn/-/flagged-respawn-0.3.2.tgz#ff191eddcd7088a675b2610fffc976be9b8074b5"
 
+focus-trap-react@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/focus-trap-react/-/focus-trap-react-3.0.3.tgz#96f934fba39dae9b80a5d2b4839a919c0bc4fa7e"
+  dependencies:
+    focus-trap "^2.0.1"
+
+focus-trap@^2.0.1:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-2.3.0.tgz#07c91964867d346315f4f5f8df88bf96455316e2"
+  dependencies:
+    tabbable "^1.0.3"
+
 for-in@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -3014,6 +3026,10 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+no-scroll@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/no-scroll/-/no-scroll-2.1.0.tgz#f8643b3ddb6a3bf94430e5ff31d26f21d082a695"
+
 node-fetch@^1.0.1:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.6.3.tgz#dc234edd6489982d58e8f0db4f695029abcd8c04"
@@ -3533,6 +3549,18 @@ rc@^1.1.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-aria-modal@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-aria-modal/-/react-aria-modal-2.7.0.tgz#aec0dc223bf46b5ad1b00ef0f4e601c673181140"
+  dependencies:
+    focus-trap-react "^3.0.3"
+    no-scroll "^2.0.0"
+    react-displace "^2.1.4"
+
+react-displace@^2.1.4:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-displace/-/react-displace-2.2.1.tgz#faa21bbcc251cf94825bf6515323dcdcfe9e1796"
 
 react-dom@^15.5.4:
   version "15.5.4"
@@ -4099,6 +4127,10 @@ syntax-error@^1.1.1:
   resolved "https://registry.yarnpkg.com/syntax-error/-/syntax-error-1.3.0.tgz#1ed9266c4d40be75dc55bf9bb1cb77062bb96ca1"
   dependencies:
     acorn "^4.0.3"
+
+tabbable@^1.0.3:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.0.6.tgz#7c26a87ea6f4a25edf5edb619745a0ae740724fc"
 
 tar-pack@^3.4.0:
   version "3.4.0"
