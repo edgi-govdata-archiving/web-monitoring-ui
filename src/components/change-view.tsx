@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {Version,Page} from '../services/web-monitoring-db';
+import WebMonitoringDb, {Annotation, Page, Version} from '../services/web-monitoring-db';
 import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
 import DiffView from './diff-view';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import AnnotationForm from './annotation-form';
 
 
 export interface IChangeViewProps {
@@ -20,10 +22,12 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         };
 
         this.updateDiff = this.updateDiff.bind(this);
-        this.renderDiffView = this.renderDiffView.bind(this);
         this.handleVersionAChange = this.handleVersionAChange.bind(this);
         this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
+        this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
+        this.saveAnnotation = this.saveAnnotation.bind(this);
+        this.updateAnnotation = this.updateAnnotation.bind(this);
     }
 
     componentWillMount () {
@@ -59,12 +63,21 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
       this.updateDiff();
     }
 
-    renderDiffView() {
+    private updateAnnotation (newAnnotation: any) {
+        this.setState({annotation: newAnnotation});
+    }
 
+    private saveAnnotation (event: React.SyntheticEvent<HTMLElement>) {
+        event.preventDefault();
+        // TODO: display some indicator that saving is happening/complete
+        const version = this.state.version;
+        this.context.api.annotateVersion(version.page_uuid, version.uuid, this.state.annotation);
     }
 
     render () {
         const { page } = this.props;
+        const markAsSignificant = () => console.error('markAsSignificant not implemented');
+        const addToDictionary = () => console.error('markAsSignificant not implemented');
 
         if (!page) {
           // if haz no page, don't render
@@ -83,9 +96,46 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                   <label>B</label>
                   <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
                 </div>
+                {renderSubmission()}
+                <AnnotationForm
+                    annotation={this.state.annotation}
+                    onChange={this.updateAnnotation}
+                    collapsed={this.state.collapsedView}
+                />
                 <DiffView pageId={page.uuid} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
         );
+    }
+
+    renderSubmission () {
+        if (!this.props.user) {
+            return <div>Log in to submit annotations.</div>
+        }
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <i className="fa fa-toggle-on" aria-hidden="true" />
+                        {/* TODO: should be buttons */}
+                        <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
+                        <i className="fa fa-pencil" aria-hidden="true" />
+                        <a className="lnk-action" href="#" onClick={this.saveAnnotation}>Update Record</a>
+                        <i className="fa fa-list" aria-hidden="true" />
+                        <Link to="/" className="lnk-action">Back to list view</Link>
+                    </div>
+                    <div className="col-md-6 text-right">
+                        <i className="fa fa-upload" aria-hidden="true" />
+                        <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
+                        <i className="fa fa-database" aria-hidden="true" />
+                        <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
+                    </div>
+                </div>
+            </div>
+        );
+
+
+    private toggleCollapsedView () {
+        this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
     }
 }
 
