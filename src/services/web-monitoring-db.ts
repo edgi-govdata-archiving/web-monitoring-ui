@@ -156,8 +156,8 @@ export default class WebMonitoringDb {
             .then(data => data.data);
     }
 
-    annotateVersion (pageId: string, versionId: string, annotation: any): Promise<Annotation> {
-        return fetch(this.createUrl(`pages/${pageId}/versions/${versionId}/annotations`), {
+    annotateChange (pageId: string, fromVersion: string, toVersion: string, annotation: any): Promise<Annotation> {
+        return fetch(this.createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}/annotations`), {
             body: JSON.stringify(annotation),
             credentials: 'include',
             headers: new Headers({

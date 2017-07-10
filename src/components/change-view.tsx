@@ -9,6 +9,7 @@ import AnnotationForm from './annotation-form';
 
 export interface IChangeViewProps {
     page: Page;
+    annotateChange: any;
 }
 
 export default class ChangeView extends React.Component<IChangeViewProps, any> {
@@ -26,7 +27,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
         this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
-        this.saveAnnotation = this.saveAnnotation.bind(this);
+        this.annotateChange = this.annotateChange.bind(this);
         this.updateAnnotation = this.updateAnnotation.bind(this);
     }
 
@@ -67,11 +68,12 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         this.setState({annotation: newAnnotation});
     }
 
-    private saveAnnotation (event: React.SyntheticEvent<HTMLElement>) {
+    private annotateChange (event: React.SyntheticEvent<HTMLElement>) {
         event.preventDefault();
         // TODO: display some indicator that saving is happening/complete
-        const version = this.state.version;
-        this.context.api.annotateVersion(version.page_uuid, version.uuid, this.state.annotation);
+        const fromVersion = this.state.a.uuid;
+        const toVersion = this.state.b.uuid;
+        this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
     }
 
     render () {
@@ -119,7 +121,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                         {/* TODO: should be buttons */}
                         <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
                         <i className="fa fa-pencil" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={this.saveAnnotation}>Update Record</a>
+                        <a className="lnk-action" href="#" onClick={this.annotateChange}>Update Record</a>
                         <i className="fa fa-list" aria-hidden="true" />
                         <Link to="/" className="lnk-action">Back to list view</Link>
                     </div>
