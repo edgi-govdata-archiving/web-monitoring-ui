@@ -3,9 +3,7 @@ import * as React from 'react';
 import WebMonitoringDb, {Version} from '../services/web-monitoring-db';
 import {diffTypes, changeDiffTypes} from '../constants/DiffTypes';
 
-import List from './list';
-import DiffItem from './diff-item';
-
+import HighlightedTextDiff from './highlighted-text-diff';
 export interface IDiffViewProps {
   pageId: string;
   diffType:string;
@@ -58,9 +56,11 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
         );
        case diffTypes.HIGHLIGHTED_TEXT:
          return (
-           <div>
-            <List data={diff.content.diff} component={DiffItem} />
-           </div>
+            <HighlightedTextDiff diff={diff} />
+         );
+       case diffTypes.HIGHLIGHTED_SOURCE:
+         return (
+            <HighlightedTextDiff diff={diff} />
          );
       default:
         return null;
