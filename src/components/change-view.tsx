@@ -9,6 +9,7 @@ import AnnotationForm from './annotation-form';
 
 export interface IChangeViewProps {
     page: Page;
+    user: any;
     annotateChange: any;
 }
 
@@ -78,8 +79,6 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
 
     render () {
         const { page } = this.props;
-        const markAsSignificant = () => console.error('markAsSignificant not implemented');
-        const addToDictionary = () => console.error('markAsSignificant not implemented');
 
         if (!page) {
           // if haz no page, don't render
@@ -98,7 +97,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                   <label>B</label>
                   <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
                 </div>
-                {renderSubmission()}
+                {this.renderSubmission()}
                 <AnnotationForm
                     annotation={this.state.annotation}
                     onChange={this.updateAnnotation}
@@ -113,6 +112,10 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         if (!this.props.user) {
             return <div>Log in to submit annotations.</div>
         }
+
+        const markAsSignificant = () => console.error('markAsSignificant not implemented');
+        const addToDictionary = () => console.error('addToDictionary not implemented');
+
         return (
             <div>
                 <div className="row">
@@ -134,6 +137,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                 </div>
             </div>
         );
+    }
 
 
     private toggleCollapsedView () {

@@ -81,7 +81,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                         {this.renderPager()}
                     </div>
                 </div>
-            <ChangeView page={this.state.page} annotateChange={this.annotateChange} />
+            <ChangeView page={this.state.page} annotateChange={this.annotateChange} user={this.props.user} />
             </div>
         );
     }
