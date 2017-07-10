@@ -4,6 +4,7 @@ import WebMonitoringDb, {Version} from '../services/web-monitoring-db';
 import {diffTypes, changeDiffTypes} from '../constants/DiffTypes';
 
 import HighlightedTextDiff from './highlighted-text-diff';
+import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 export interface IDiffViewProps {
   pageId: string;
   diffType:string;
@@ -48,11 +49,7 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
     switch (diffTypes[diffType]) {
       case diffTypes.SIDE_BY_SIDE_RENDERED:
         return (
-          <div>
-             <iframe src={a.uri} />
-             <hr />
-             <iframe src={b.uri} />
-          </div>
+            <SideBySideRenderedDiff a={a} b={b} />
         );
        case diffTypes.HIGHLIGHTED_TEXT:
          return (
