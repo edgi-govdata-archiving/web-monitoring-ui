@@ -24,6 +24,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
     constructor (props: IPageDetailsProps) {
         super(props);
         this.state = {page: null};
+        this.annotateChange = this.annotateChange.bind(this);
     }
 
     componentWillMount () {
@@ -51,6 +52,10 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
         }
     }
 
+    annotateChange (fromVersion: string, toVersion: string, annotation: any) {
+        this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
+    }
+
     render () {
         const returnToList = (event: React.MouseEvent<any>) => {
             event.preventDefault();
@@ -76,7 +81,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                         {this.renderPager()}
                     </div>
                 </div>
-            <ChangeView page={this.state.page} />
+            <ChangeView page={this.state.page} annotateChange={this.annotateChange} />
             </div>
         );
     }
