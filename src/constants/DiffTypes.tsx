@@ -13,4 +13,6 @@ export const diffTypes:DiffTypes = {
 // TODO - map each diffType to it's corresponding endpoint string
 export const changeDiffTypes = {
   [diffTypes.HIGHLIGHTED_TEXT] : "html_text",
+  [diffTypes.HIGHLIGHTED_SOURCE] : "html_source",
+  [diffTypes.SIDE_BY_SIDE_RENDERED] : "html_source"  // HACK
 }
