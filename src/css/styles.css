@@ -1,10 +1,12 @@
 @import './diff.css';
 
+/* ===== Global ===== */
 body {
     background: #136a8a;
     background: linear-gradient(45deg, #136a8a, #267871);
 }
 
+/* ===== Containers ===== */
 .container-list-view, .container-page-view {
     background: white;
     border-radius: 3px;
@@ -16,10 +18,7 @@ body {
     padding: 20px;
 }
 
-.lnk-action {
-    margin-right: 17px;
-}
-
+/* ===== Nav Bar ===== */
 #bootstrap-override .navbar-brand {
     font-size: 1.4em;
     margin-right: 6px;
@@ -59,7 +58,17 @@ body {
     margin: 0;
 }
 
-.diff-title {
+/* ===== List View ===== */
+.container-list-view tbody tr {
+    cursor: pointer;
+}
+
+.container-list-view tbody tr:hover {
+    background-color: #EEE;
+}
+
+/* ===== Page Detail View ===== */
+.page-title {
     font-size: 20px;
 }
 
@@ -79,7 +88,18 @@ body {
     background-color: rgba(139, 227, 255, 0.46);
 }
 
+.pager__previous {
+    width: 50%;
+}
 
+.pager__next {
+    width: 48%;
+}
+
+/* ===== Annotation Form ===== */
+.lnk-action {
+    margin-right: 17px;
+}
 
 .annotation-form {
     margin-bottom: 10px;
@@ -114,22 +134,7 @@ body {
     }
 }
 
-.container-list-view tbody tr {
-    cursor: pointer;
-}
-
-.container-list-view tbody tr:hover {
-    background-color: #EEE;
-}
-
-.pager__previous {
-    width: 50%;
-}
-
-.pager__next {
-    width: 48%;
-}
-
+/* ===== Diff View ===== */
 .diff {
     height:100vh;
 }
@@ -140,21 +145,16 @@ iframe {
     width: 100%;
 }
 
+del {
+    background-color: lightcoral;
+}
+ins {
+    background-color: lightgreen;
+}
+
+/* ===== Progress Bar ===== */
 .progress {
     width: 100%;
-}
-
-.modal-header {
-    background: linear-gradient(45deg, #136a8a, #267871);
-    color: white;
-}
-
-.close {
-    opacity: .4;
-}
-
-.close:focus, .close:hover {
-    opacity: .7;
 }
 
 .progress .progress-bar.active {
@@ -178,13 +178,7 @@ iframe {
     75% { content: '..'; }
 }
 
-del {
-    background-color: lightcoral;
-}
-ins {
-    background-color: lightgreen;
-}
-
+/* ===== Login Form ===== */
 .dialog__body {
     background: white;
     border-radius: 3px;

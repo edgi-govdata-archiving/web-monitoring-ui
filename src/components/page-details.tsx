@@ -74,7 +74,7 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
             <div className="container-fluid container-page-view">
                 <div className="row">
                     <div className="col-md-9">
-                        <h2 className="diff-title">{page.title}</h2>
+                        <h2 className="page-title">{page.title}</h2>
                         <a className="diff_page_url" href={page.url} target="_blank" rel="noopener">{page.url}</a>
                     </div>
                     <div className="col-md-3">
