@@ -14,10 +14,6 @@
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             window.webMonitoringConfig = <%- JSON.stringify(configuration) %>;
-
-            <% if (locals.loggedIn) { %>
-                window.loggedIn = <%- JSON.stringify(loggedIn) %>;
-            <% } %>
         </script>
     </head>
     <body id="bootstrap-override">
