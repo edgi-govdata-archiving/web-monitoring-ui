@@ -32,7 +32,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
 
         return (
             <form className={classes.join(' ')}>
-                <div className="col-md-4">
+                <div className="signifier-container">
                     <h5>Individual Page Changes</h5>
                     <ul className="signifier-list">
                         <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
@@ -43,7 +43,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
                         <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
                     </ul>
                 </div>
-                <div className="col-md-4">
+                <div className="signifier-container">
                     <h5>Repeated Changes</h5>
                     <ul className="signifier-list">
                         <Checkbox {...common} name="repeat_7">Header menu removal or change</Checkbox>
@@ -54,7 +54,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
                         <Checkbox {...common} name="repeat_12">Scrolling news/reports</Checkbox>
                     </ul>
                 </div>
-                <div className="col-md-4">
+                <div className="signifier-container">
                     <h5>Significance</h5>
                     <ul className="signifier-list">
                         <Checkbox {...common} name="sig_1">Change related to energy, environment, or climate</Checkbox>
@@ -91,8 +91,8 @@ function Checkbox ({children, formValues, name, onChange}: ICheckboxProps) {
         onChange({[name]: event.currentTarget.checked});
     return (
         <li className="signifier-list-item">
-            <input type="checkbox" className="tgl tgl-skewed" id={name} checked={checked} onChange={changeHandler}/>
-            <label className="tgl-btn" data-tg-on={fieldNumber} htmlFor={name} />
+            <input type="checkbox" className="toggle" id={name} checked={checked} onChange={changeHandler}/>
+            <label className="toggle-btn" data-tg-on={fieldNumber} htmlFor={name} />
             <span className="info-text">= {children}</span>
         </li>
 //         <label>
