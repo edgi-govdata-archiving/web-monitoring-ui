@@ -31,41 +31,44 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
         }
 
         return (
-            <form className={classes.join(' ')}>
-                <div className="signifier-container">
-                    <h5>Individual Page Changes</h5>
-                    <ul className="signifier-list">
-                        <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
-                        <Checkbox {...common} name="indiv_2">Text or numeric content removal or change</Checkbox>
-                        <Checkbox {...common} name="indiv_3">Image content removal or change</Checkbox>
-                        <Checkbox {...common} name="indiv_4">Hyperlink removal or change</Checkbox>
-                        <Checkbox {...common} name="indiv_5">Text-box, entry field, or interactive component removal or change</Checkbox>
-                        <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
-                    </ul>
-                </div>
-                <div className="signifier-container">
-                    <h5>Repeated Changes</h5>
-                    <ul className="signifier-list">
-                        <Checkbox {...common} name="repeat_7">Header menu removal or change</Checkbox>
-                        <Checkbox {...common} name="repeat_8">Template text, page format, or comment field removal or change</Checkbox>
-                        <Checkbox {...common} name="repeat_9">Footer or site map removal or change</Checkbox>
-                        <Checkbox {...common} name="repeat_10">Sidebar removal or change</Checkbox>
-                        <Checkbox {...common} name="repeat_11">Banner/advertisement removal or change</Checkbox>
-                        <Checkbox {...common} name="repeat_12">Scrolling news/reports</Checkbox>
-                    </ul>
-                </div>
-                <div className="signifier-container">
-                    <h5>Significance</h5>
-                    <ul className="signifier-list">
-                        <Checkbox {...common} name="sig_1">Change related to energy, environment, or climate</Checkbox>
-                        <Checkbox {...common} name="sig_2">Language is significantly altered</Checkbox>
-                        <Checkbox {...common} name="sig_3">Content is removed</Checkbox>
-                        <Checkbox {...common} name="sig_4">Page is removed</Checkbox>
-                        <Checkbox {...common} name="sig_5">Insignificant</Checkbox>
-                        <Checkbox {...common} name="sig_6">Repeated Insignificant</Checkbox>
-                    </ul>
-                </div>
-            </form>
+            <div className="annotation-inputs">
+                <form className={classes.join(' ')}>
+                    <div className="signifier-container">
+                        <h5>Individual Page Changes</h5>
+                        <ul className="signifier-list">
+                            <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
+                            <Checkbox {...common} name="indiv_2">Text or numeric content removal or change</Checkbox>
+                            <Checkbox {...common} name="indiv_3">Image content removal or change</Checkbox>
+                            <Checkbox {...common} name="indiv_4">Hyperlink removal or change</Checkbox>
+                            <Checkbox {...common} name="indiv_5">Text-box, entry field, or interactive component removal or change</Checkbox>
+                            <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
+                        </ul>
+                    </div>
+                    <div className="signifier-container">
+                        <h5>Repeated Changes</h5>
+                        <ul className="signifier-list">
+                            <Checkbox {...common} name="repeat_7">Header menu removal or change</Checkbox>
+                            <Checkbox {...common} name="repeat_8">Template text, page format, or comment field removal or change</Checkbox>
+                            <Checkbox {...common} name="repeat_9">Footer or site map removal or change</Checkbox>
+                            <Checkbox {...common} name="repeat_10">Sidebar removal or change</Checkbox>
+                            <Checkbox {...common} name="repeat_11">Banner/advertisement removal or change</Checkbox>
+                            <Checkbox {...common} name="repeat_12">Scrolling news/reports</Checkbox>
+                        </ul>
+                    </div>
+                    <div className="signifier-container">
+                        <h5>Significance</h5>
+                        <ul className="signifier-list">
+                            <Checkbox {...common} name="sig_1">Change related to energy, environment, or climate</Checkbox>
+                            <Checkbox {...common} name="sig_2">Language is significantly altered</Checkbox>
+                            <Checkbox {...common} name="sig_3">Content is removed</Checkbox>
+                            <Checkbox {...common} name="sig_4">Page is removed</Checkbox>
+                            <Checkbox {...common} name="sig_5">Insignificant</Checkbox>
+                            <Checkbox {...common} name="sig_6">Repeated Insignificant</Checkbox>
+                        </ul>
+                    </div>
+                </form>
+                <textarea name="" id="" cols={50} rows={2} />
+            </div>
         );
     }
 

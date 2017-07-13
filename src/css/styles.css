@@ -124,6 +124,16 @@ body {
     margin-top: 10px;
 }
 
+.annotation-inputs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.annotation-inputs textarea{
+    height: 102px;
+    margin: 10px 0;
+}
+
 .signifier-container {
     align-items: flex-end;
     display: flex;
