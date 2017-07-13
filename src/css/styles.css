@@ -183,6 +183,11 @@ body {
   padding: 0;
 }
 
+.signifier-list {
+    display: flex;
+    flex-direction: column;
+}
+
 .signifier-list-item {
     display: flex;
     margin-right: 5px;
@@ -192,6 +197,16 @@ body {
     font-size: 12px;
     margin: 5px 0 0 5px;
 }
+
+/* Hide tooltips when not collapsed */
+.signifier-list > div > div {
+    display: none;
+}
+
+.annotation-form--collapsed .signifier-list > div > div {
+    display: block;
+}
+/* END - hide tooltips when not collapsed */
 
 .annotation-form--collapsed .signifier-list {
     align-items: center;
