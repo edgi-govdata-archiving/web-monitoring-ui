@@ -1,10 +1,11 @@
 import WebMonitoringDb, {Page} from './web-monitoring-db';
 
 export default class WebMonitoringApi {
-    private configuration = (window as any).webMonitoringConfig;
-    private dbApi = new WebMonitoringDb({
-        url: this.configuration.WEB_MONITORING_DB_URL
-    });
+    private dbApi: WebMonitoringDb;
+
+    constructor (dbApi: WebMonitoringDb) {
+        this.dbApi = dbApi;
+    }
 
     getDomainsForUser (username: string): Promise<any> {
         const url = `/api/domains/${username}`;

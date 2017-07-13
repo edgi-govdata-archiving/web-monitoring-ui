@@ -16,7 +16,7 @@ const api = new WebMonitoringDb({
     url: configuration.WEB_MONITORING_DB_URL
 });
 
-const webApi = new WebMonitoringApi();
+const localApi = new WebMonitoringApi(api);
 
 // Maintain a top-level list of pages to share across the app. We do this
 // here instead of via caching in the web-monitoring-db API because we want any
@@ -67,7 +67,7 @@ export default class WebMonitoringUi extends React.Component<undefined, IWebMoni
             .then(loggedIn => {
                 this.setState({user: api.userData});
                 if (loggedIn) {
-                    return webApi.getPagesByUser(api.userData.email)
+                    return localApi.getPagesByUser(api.userData.email)
                         .catch(error => {
                             // TODO: Handle 'user not found' in a better way
                             // than just showing default list
