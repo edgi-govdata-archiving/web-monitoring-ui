@@ -6,6 +6,10 @@ body {
     background: linear-gradient(45deg, #136a8a, #267871);
 }
 
+.fa {
+    margin-right: 0.5em;
+}
+
 /* ===== Containers ===== */
 .container-list-view, .container-page-view {
     background: white;
