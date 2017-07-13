@@ -170,11 +170,6 @@ body {
     order: 1; /* TODO: Remove ordering after @danielballan merges diff view */
 }
 
-.signifier-container {
-    display: flex;
-    flex-direction: column;
-}
-
 .signifier-container h5 {
     font-size: 12px;
     font-weight: 300;
@@ -182,15 +177,20 @@ body {
     width: 12em;
 }
 
-/* Toggle buttons */
 .signifier-list, .signifier-list-item {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.signifier-list {
-    flex-direction: column;
+.signifier-list-item {
+    display: flex;
+    margin-right: 5px;
+}
+
+.info-text {
+    font-size: 12px;
+    margin: 5px 0 0 5px;
 }
 
 .annotation-form--collapsed .signifier-list {
@@ -200,21 +200,11 @@ body {
     text-align: center;
 }
 
-.signifier-list-item {
-    display: flex;
-    margin-right: 5px;
-}
-
-.info-text {
-    align-self: flex-start;
-    font-size: 12px;
-    margin: 5px 0 0 5px;
-}
-
 .annotation-form--collapsed .info-text {
     display: none;
 }
 
+/* Toggle buttons */
 .toggle {
   display: none;
 }

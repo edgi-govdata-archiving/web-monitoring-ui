@@ -1,5 +1,6 @@
 /* tslint:disable:max-line-length */
 import * as React from 'react';
+import {Tooltip} from 'react-lightweight-tooltip';
 import {Version} from '../services/web-monitoring-db';
 
 export interface IAnnotationFormProps {
@@ -30,18 +31,49 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
             classes.push('annotation-form--collapsed');
         }
 
+        // Have to create empty objects because Typescript is a harlot
+        const tooltipStyles = {
+            arrow: {
+                borderTop: 'solid #444 5px'
+            },
+            content: {
+                background: '#444'
+            },
+            gap: {},
+            tooltip: {
+                background: '#444',
+                borderRadius: 3,
+                hack: 'hide'
+            },
+            wrapper: {
+                display: 'block'
+            }
+        };
+
         return (
             <div className="annotation-inputs">
                 <form className={classes.join(' ')}>
                     <div className="signifier-container">
                         <h5>Individual Page Changes</h5>
                         <ul className="signifier-list">
-                            <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
-                            <Checkbox {...common} name="indiv_2">Text or numeric content removal or change</Checkbox>
-                            <Checkbox {...common} name="indiv_3">Image content removal or change</Checkbox>
-                            <Checkbox {...common} name="indiv_4">Hyperlink removal or change</Checkbox>
-                            <Checkbox {...common} name="indiv_5">Text-box, entry field, or interactive component removal or change</Checkbox>
-                            <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
+                            <Tooltip content="Date and time change only" styles={tooltipStyles}>
+                                <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
+                            </Tooltip>
+                            <Tooltip content="Text or numeric content removal or change" styles={tooltipStyles}>
+                                <Checkbox {...common} name="indiv_2">Text or numeric content removal or change</Checkbox>
+                            </Tooltip>
+                            <Tooltip content="Image content removal or change" styles={tooltipStyles}>
+                                <Checkbox {...common} name="indiv_3">Image content removal or change</Checkbox>
+                            </Tooltip>
+                            <Tooltip content="Hyperlink removal or change" styles={tooltipStyles}>
+                                <Checkbox {...common} name="indiv_4">Hyperlink removal or change</Checkbox>
+                            </Tooltip>
+                            <Tooltip content="Text-box, entry field, or interactive component removal or change" styles={tooltipStyles}>
+                                <Checkbox {...common} name="indiv_5">Text-box, entry field, or interactive component removal or change</Checkbox>
+                            </Tooltip>
+                            <Tooltip content="Page removal (whether it has happened in the past or is currently removed)" styles={tooltipStyles}>
+                                <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
+                            </Tooltip>
                         </ul>
                     </div>
                     <div className="signifier-container">

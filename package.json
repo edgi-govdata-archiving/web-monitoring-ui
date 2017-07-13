@@ -27,6 +27,7 @@
     "react": "^15.5.4",
     "react-aria-modal": "^2.7.0",
     "react-dom": "^15.5.4",
+    "react-lightweight-tooltip": "^0.0.4",
     "react-router-dom": "^4.1.1",
     "react-test-renderer": "^15.5.4",
     "ts-jest": "^20.0.5",
