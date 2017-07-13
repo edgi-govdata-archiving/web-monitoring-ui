@@ -69,7 +69,8 @@ body {
 
 /* ===== Page Detail View ===== */
 .page-title {
-    font-size: 20px;
+    font-size: 1.5em;
+    margin-top: 0.3em;
 }
 
 .pager {
@@ -101,6 +102,16 @@ body {
 .change-view-container {
     display: flex;
     flex-direction: column;
+}
+
+/* TODO: Remove ordering after @danielballan merges diff view
+         Using it as a hack to re-order components without changing tsx code.
+*/
+.change-view-container > div:nth-child(4n) {
+    border-top: 1px solid #eee;
+    display: flex;
+    order: 5;
+    padding-top: 1em;
 }
 
 .change-view-actions {
@@ -213,6 +224,7 @@ body {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     background: #e2e1e1;
+    border-radius: 2px;
     display: block;
     cursor: pointer;
     font-family: sans-serif;
