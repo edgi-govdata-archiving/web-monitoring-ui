@@ -112,7 +112,6 @@ body {
     border-radius: 3px;
     color: #555;
     height: 3em;
-    margin-bottom: 1em;
     order: 2; /* TODO: Remove ordering after @danielballan merges diff view */
     padding: 0.5em;
 }
@@ -137,11 +136,15 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 1em 0;
-    order: 3;
+    order: 3; /* TODO: Remove ordering after @danielballan merges diff view */
 }
 
 .selection-inputs > div {
     display: flex;
+}
+
+.selection-inputs > :nth-child(2n) {
+    order: -1;
 }
 
 .selection-inputs > div label {
@@ -168,7 +171,7 @@ body {
 }
 
 .annotation-inputs {
-    margin-bottom: 0.3em;
+    margin: 0.4em 0;
     order: 1; /* TODO: Remove ordering after @danielballan merges diff view */
 }
 
@@ -180,8 +183,7 @@ body {
 .signifier-container h5 {
     font-size: 12px;
     font-weight: 300;
-    margin-bottom: 7px;
-    margin-right: 0.5em;
+    margin: 0 0 7px 0;
     width: 12em;
 }
 
