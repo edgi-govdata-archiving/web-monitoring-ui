@@ -98,6 +98,10 @@ body {
     width: 50%;
 }
 
+.pager__previous .fa {
+    margin-right: 0;
+}
+
 .pager__next {
     width: 48%;
 }
@@ -289,7 +293,7 @@ body {
 /* END - Toggle buttons */
 
 /* Media queries */
-@media (max-width: 990px) {
+@media (max-width: 1000px) {
     .annotation-form, .selection-inputs {
         flex-direction: column;
     }
