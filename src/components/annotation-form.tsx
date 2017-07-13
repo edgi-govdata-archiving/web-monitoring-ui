@@ -92,7 +92,8 @@ function Checkbox ({children, formValues, name, onChange}: ICheckboxProps) {
     return (
         <li className="signifier-list-item">
             <input type="checkbox" className="tgl tgl-skewed" id={name} checked={checked} onChange={changeHandler}/>
-            <label className="tgl-btn" data-tg-off={fieldNumber} data-tg-on={fieldNumber} htmlFor={name} />
+            <label className="tgl-btn" data-tg-on={fieldNumber} htmlFor={name} />
+            <span className="info-text">= {children}</span>
         </li>
 //         <label>
 // -            <input type="checkbox" name={name} checked={checked} onChange={changeHandler} />
