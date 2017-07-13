@@ -103,7 +103,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         }
 
         return (
-            <div className="change-view">
+            <div className="change-view-container">
                 {this.renderVersionSelector(page)}
                 {this.renderSubmission()}
                 <DiffView page={page} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
@@ -139,7 +139,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         const addToDictionary = () => console.error('addToDictionary not implemented');
 
         return (
-            <div>
+            <div className="change-view-actions">
                 <div className="row">
                     <div className="col-md-6">
                         <i className="fa fa-toggle-on" aria-hidden="true" />

@@ -96,11 +96,23 @@ body {
     width: 48%;
 }
 
+/* Change View */
+.change-view-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-view-actions {
+    order: 0;
+}
+
+
 /* Selection Inputs */
 .selection-inputs {
     display: flex;
     justify-content: space-between;
     margin: 1em 0;
+    order: 2;
 }
 
 .selection-inputs > div {
@@ -127,11 +139,13 @@ body {
 .annotation-inputs {
     display: flex;
     justify-content: space-between;
+    order: 1;
 }
 
 .annotation-inputs textarea{
-    height: 102px;
-    margin: 10px 0;
+    height: 7em;
+    margin: 1em 0;
+    width: 24em;
 }
 
 .signifier-container {

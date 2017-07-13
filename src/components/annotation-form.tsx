@@ -67,7 +67,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
                         </ul>
                     </div>
                 </form>
-                <textarea name="" id="" cols={50} rows={2} />
+                <textarea name="" id="" />
             </div>
         );
     }
