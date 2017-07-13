@@ -67,7 +67,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
                         </ul>
                     </div>
                 </form>
-                <textarea name="" id="" />
+                <textarea name="" id="" placeholder="Further notes" />
             </div>
         );
     }

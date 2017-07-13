@@ -89,6 +89,7 @@ body {
 }
 
 .pager__previous {
+    margin-right: 5px;
     width: 50%;
 }
 
@@ -103,9 +104,12 @@ body {
 }
 
 .change-view-actions {
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin: 1em 0 0.5em 0;
     order: 0;
+    padding: 0.7em 0.2em;
 }
-
 
 /* Selection Inputs */
 .selection-inputs {
@@ -137,14 +141,20 @@ body {
 }
 
 .annotation-inputs {
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 0.3em;
     order: 1;
 }
 
 .annotation-inputs textarea{
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+    color: #555;
     height: 7em;
     margin: 1em 0;
+    padding: 0.5em;
     width: 24em;
 }
 
@@ -154,9 +164,12 @@ body {
 }
 
 .signifier-container h5 {
-    margin-right: 1em;
+    font-size: 12px;
+    font-weight: 300;
+    margin-bottom: 12px;
+    margin-right: 0.5em;
     text-align: right;
-    width: 13em;
+    width: 12em;
 }
 
 /* Toggle buttons */
@@ -177,7 +190,7 @@ body {
 }
 
 .signifier-list-item {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .toggle {
@@ -199,7 +212,7 @@ body {
 .toggle + .toggle-btn {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    background: #ccc;
+    background: #e2e1e1;
     display: block;
     cursor: pointer;
     font-family: sans-serif;
@@ -216,14 +229,13 @@ body {
     width: 3.5em;
 }
 .toggle + .toggle-btn:after {
-  color: #fff;
+  color: #5a5959;
   display: inline-block;
   font-weight: bold;
   height: 100%;
   line-height: 2em;
   position: absolute;
   text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   -webkit-transition: all .2s ease;
   transition: all .2s ;
   width: 100%;
@@ -240,6 +252,11 @@ body {
 .toggle:checked + .toggle-btn {
   background: #24a79d;
 }
+
+.toggle:checked + .toggle-btn:after {
+  color: #fff;
+}
+
 /* END - Toggle buttons */
 
 /*.annotation-form input[type="checkbox"] {
