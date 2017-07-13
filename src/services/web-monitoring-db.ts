@@ -119,7 +119,7 @@ export default class WebMonitoringDb {
                 .catch(() => false);
         }
 
-        return Promise.resolve(false);
+        return Promise.resolve(!!this.userData);
     }
 
     getPages (): Promise<Page[]> {
