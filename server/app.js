@@ -16,15 +16,6 @@ const filterArray = [
     'WEB_MONITORING_DB_URL'
 ];
 
-// TODO: Remove - Temporary route to test loggedIn state
-app.get('/loggedIn/:username', function (request, response) {
-    let username = request.params.username;
-    response.render('main.html', {
-        configuration: config.filterConfiguration(filterArray),
-        loggedIn: username
-    });
-});
-
 app.get('/api/domains/:username', function(request, response) {
     const username = request.params.username;
 
