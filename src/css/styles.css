@@ -107,10 +107,20 @@ body {
 /* TODO: Remove ordering after @danielballan merges diff view
          Using it as a hack to re-order components without changing tsx code.
 */
-.change-view-container > div:nth-child(4n) {
+.change-view-container textarea{
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+    color: #555;
+    height: 3em;
+    margin-bottom: 1em;
+    order: 2; /* TODO: Remove ordering after @danielballan merges diff view */
+    padding: 0.5em;
+}
+
+.change-view-container > div:nth-child(5n) {
     border-top: 1px solid #eee;
     display: flex;
-    order: 5;
+    order: 5; /* TODO: Remove ordering after @danielballan merges diff view */
     padding-top: 1em;
 }
 
@@ -118,7 +128,7 @@ body {
     border-bottom: 1px solid #eee;
     border-top: 1px solid #eee;
     margin: 1em 0 0.5em 0;
-    order: 0;
+    order: 0; /* TODO: Remove ordering after @danielballan merges diff view */
     padding: 0.7em 0.2em;
 }
 
@@ -127,7 +137,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 1em 0;
-    order: 2;
+    order: 3;
 }
 
 .selection-inputs > div {
@@ -146,40 +156,32 @@ body {
 
 .annotation-form {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+@media (max-width: 990px) {
+    .annotation-form--collapsed div {
+        clear: both;
+        overflow: auto;
+    }
 }
 
 .annotation-inputs {
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 0.3em;
-    order: 1;
-}
-
-.annotation-inputs textarea{
-    border: 1px solid #c3c3c3;
-    border-radius: 3px;
-    color: #555;
-    height: 7em;
-    margin: 1em 0;
-    padding: 0.5em;
-    width: 24em;
+    order: 1; /* TODO: Remove ordering after @danielballan merges diff view */
 }
 
 .signifier-container {
-    align-items: flex-end;
     display: flex;
+    flex-direction: column;
 }
 
 .signifier-container h5 {
     font-size: 12px;
     font-weight: 300;
-    margin-bottom: 12px;
+    margin-bottom: 7px;
     margin-right: 0.5em;
-    text-align: right;
     width: 12em;
 }
 
@@ -191,17 +193,29 @@ body {
 }
 
 .signifier-list {
-  text-align: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+    flex-direction: column;
+}
+
+.annotation-form--collapsed .signifier-list {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
 }
 
 .signifier-list-item {
-  margin-right: 5px;
+    display: flex;
+    margin-right: 5px;
+}
+
+.info-text {
+    align-self: flex-start;
+    font-size: 11px;
+    margin: 5px 0 0 5px;
+}
+
+.annotation-form--collapsed .info-text {
+    display: none;
 }
 
 .toggle {
@@ -270,33 +284,6 @@ body {
 }
 
 /* END - Toggle buttons */
-
-/*.annotation-form input[type="checkbox"] {
-    cursor: pointer;
-    margin-right: 7px;
-}*/
-
-/*.annotation-form label {
-    display: block;
-    font-weight: 200;
-    font-size: 1.4rem;
-    cursor: pointer;
-}*/
-
-.annotation-form--collapsed .info-text {
-    display: none;
-}
-
-.annotation-form--collapsed label {
-
-}
-
-@media (max-width: 990px) {
-    .annotation-form--collapsed div {
-        clear: both;
-        overflow: auto;
-    }
-}
 
 /* ===== Diff View ===== */
 .diff {

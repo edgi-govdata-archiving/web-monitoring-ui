@@ -25,7 +25,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
             onChange: this.onFieldChange
         };
 
-        const classes = ['row', 'annotation-form'];
+        const classes = ['annotation-form'];
         if (this.props.collapsed) {
             classes.push('annotation-form--collapsed');
         }
@@ -67,7 +67,6 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
                         </ul>
                     </div>
                 </form>
-                <textarea name="" id="" placeholder="Further notes" />
             </div>
         );
     }

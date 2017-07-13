@@ -162,6 +162,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                     onChange={this.updateAnnotation}
                     collapsed={this.state.collapsedView}
                 />
+                <textarea name="further-notes" placeholder="Further notes" />
             </div>
         );
     }
