@@ -116,6 +116,7 @@ body {
     padding: 0.5em;
 }
 
+/* Child selector targeting last div in change view which usually should contain diff */
 .change-view-container > div:nth-child(5n) {
     border-top: 1px solid #eee;
     display: flex;
@@ -143,6 +144,7 @@ body {
     display: flex;
 }
 
+/* TODO: Remove hack targeting diff select after 60-diff-view merge */
 .selection-inputs > :nth-child(2n) {
     order: -1;
 }
@@ -161,13 +163,6 @@ body {
     display: flex;
     justify-content: space-between;
     width: 100%;
-}
-
-@media (max-width: 990px) {
-    .annotation-form--collapsed div {
-        clear: both;
-        overflow: auto;
-    }
 }
 
 .annotation-inputs {
@@ -212,7 +207,7 @@ body {
 
 .info-text {
     align-self: flex-start;
-    font-size: 11px;
+    font-size: 12px;
     margin: 5px 0 0 5px;
 }
 
@@ -284,8 +279,33 @@ body {
 .toggle:checked + .toggle-btn:after {
   color: #fff;
 }
-
 /* END - Toggle buttons */
+
+/* Media queries */
+@media (max-width: 990px) {
+    .annotation-form, .selection-inputs {
+        flex-direction: column;
+    }
+
+    .selection-inputs > * {
+        margin: 0.5em 0;
+    }
+
+    .selection-inputs > select {
+        max-width: 215px;
+        margin-left: 16px;
+        margin-bottom: 10px;
+    }
+
+    .signifier-container h5 {
+        margin-top: 1em;
+    }
+
+    /* TODO: Hacky, can probably clean this up when we remove Bootstrap */
+    .change-view-actions .text-right {
+        text-align: left;
+    }
+}
 
 /* ===== Diff View ===== */
 .diff {
