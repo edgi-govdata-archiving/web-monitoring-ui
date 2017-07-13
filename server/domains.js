@@ -1,3 +1,5 @@
+'use strict';
+
 const google = require('googleapis');
 const config = require('./configuration');
 const sheets = google.sheets('v4');

@@ -1,3 +1,5 @@
+'use strict';
+
 let baseEnvironment;
 /**
  * Create a configuration object suitable for passing to the client by taking
