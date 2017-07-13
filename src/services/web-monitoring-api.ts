@@ -3,9 +3,7 @@ import WebMonitoringDb, {Page} from './web-monitoring-db';
 export default class WebMonitoringApi {
     private configuration = (window as any).webMonitoringConfig;
     private dbApi = new WebMonitoringDb({
-        password: this.configuration.WEB_MONITORING_DB_PASSWORD,
-        url: this.configuration.WEB_MONITORING_DB_URL,
-        user: this.configuration.WEB_MONITORING_DB_USER
+        url: this.configuration.WEB_MONITORING_DB_URL
     });
 
     getDomainsForUser (username: string): Promise<any> {

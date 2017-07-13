@@ -38,6 +38,25 @@ body {
     padding: 10px;
 }
 
+.navbar-text {
+    font-size: 2.2rem;
+}
+
+.navbar .auth-status {
+    border: none;
+    display: block;
+    line-height: 20px;
+    padding: 15px;
+}
+
+.navbar .auth-status button {
+    display: inline;
+    padding: 0;
+    line-height: inherit;
+    border: none;
+    margin: 0;
+}
+
 .diff-title {
     font-size: 20px;
 }
@@ -109,9 +128,6 @@ body {
     width: 48%;
 }
 
-.navbar-text {
-    font-size: 2.2rem;
-}
 .diff {
     height:100vh;
 }
@@ -165,4 +181,26 @@ del {
 }
 ins {
     background-color: lightgreen;
+}
+
+.dialog__body {
+    background: white;
+    border-radius: 3px;
+    padding: 1em;
+}
+
+.login-form {
+    width: 24em;
+}
+
+.login-form h1 {
+    margin: 0 0 1em;
+}
+
+.login-form .form-group {
+    width: 100%;
+}
+
+.login-form__footer {
+    text-align: right;
 }

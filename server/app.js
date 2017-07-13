@@ -6,14 +6,14 @@ const path = require('path');
 const gapi = require('./domains');
 const config = require('./configuration');
 
+const serverPort = process.env.PORT || 3001;
+
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 
 const filterArray = [
-    'WEB_MONITORING_DB_URL',
-    'WEB_MONITORING_DB_USER',
-    'WEB_MONITORING_DB_PASSWORD'
+    'WEB_MONITORING_DB_URL'
 ];
 
 // TODO: Remove - Temporary route to test loggedIn state
@@ -47,6 +47,6 @@ app.get('*', function (request, response) {
     });
 });
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log('Listening on port 3000');
+app.listen(serverPort, function () {
+    console.log(`Listening on port ${serverPort}`);
 });
