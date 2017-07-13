@@ -26,16 +26,11 @@ app.get('/loggedIn/:username', function (request, response) {
 });
 
 app.get('/api/domains/:username', function(request, response) {
-    let username = request.params.username;
-    let domains = gapi.getDomains(username);
+    const username = request.params.username;
 
-    domains
-    .then(data => {
-        response.json(data);
-    })
-    .catch(error => {
-        response.json(error);
-    })
+    gapi.getDomains(username)
+        .then(data => response.json(data))
+        .catch(error => response.status(500).json(error));
 });
 
 /**

@@ -14,7 +14,10 @@ function getDomains(username) {
     return new Promise((resolve, reject) => {
         sheets.spreadsheets.values.get(request, function(error, response) {
             if (error) {
-                reject(error);
+                console.error('GOOGLE API ERROR:', error);
+                reject({
+                    error: `Error retrieving data from Google Sheets: ${error.message}`
+                });
             } else {
                 const domains = findMatch(username, response.values);
                 if (domains) {
