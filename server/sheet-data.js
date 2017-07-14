@@ -29,7 +29,7 @@ function getTaskSheetData (range) {
 }
 
 function getDomains (username) {
-    return getTaskSheetData('A:ZZZ') // extreme range to get whole spreadsheet
+    return getTaskSheetData('A2:ZZZ') // extreme range to get whole spreadsheet
         .then(response => {
             const domains = findUserRecord(username, response.values);
             if (domains) {
@@ -49,7 +49,7 @@ function findUserRecord (username, records) {
 }
 
 function getCurrentTimeframe (date) {
-        return getTaskSheetData('Timeframes!A2:B10000') // extreme range to get whole spreadsheet
+        return getTaskSheetData('Timeframes!A2:B')
         .then(response => {
             const now = date ? date.getTime() : Date.now();
             const frame = findLatestTimeframe(response.values, now);

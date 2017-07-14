@@ -72,17 +72,18 @@ First, create a spreadsheet in Google Docs. It should have two worksheets or tab
 1. `Tasks` (this should be the first tab)
 2. `Timeframes`
 
-The `Tasks` sheet should be formatted such that the first column is a list of usernames/e-mail addresses. The rest of the columns in that row are the names of domains that the user in the first column is assigned (one domain per column). Domains are the `site` attribute of a page in [the API](https://api.monitoring.envirodatagov.org). The sheet might look like:
+**The `Tasks` sheet** should be formatted such that the first column is a list of usernames/e-mail addresses. The rest of the columns in that row are the names of domains that the user in the first column is assigned (one domain per column). Domains are the `site` attribute of a page in [the API](https://api.monitoring.envirodatagov.org). The first row is reserved for column headers. The sheet might look like:
 
 | A | B | C |
 | - | - | - |
+| User/e-mail              | Site                | Site                 | Etc.          |
 | someone@example.com      | DOT - fhwa.dot.gov  | EPA - epa.gov        |               |
 | someone.else@example.com | EPA - epa.gov/arc-x | GAO - Climate Change | DOI - fws.gov |
 | learner@example.com      | DOI - blm.gov       |                      |               |
 
 In this case, someone@example.com is assigned two domains, while learner@example.com is assigned only one. There can be any number of columns on each row.
 
-The `Timeframes` sheet holds information about analysis timeframes. The analysis team currently works on changes in 3-day chunks and this sheet lets you define when those chunks start and end. It should have exactly two columns. The first is a date (in ISO 8601 format) that a timeframe starts on. The second is the duration of that timeframe in seconds (e.g. `259200` for 3 days). Timeframes are assumed to repeat until a new timeframe is started. This sheet might look like:
+**The `Timeframes` sheet** holds information about analysis timeframes. The analysis team currently works on changes in 3-day chunks and this sheet lets you define when those chunks start and end. It should have exactly two columns. The first is a date (in ISO 8601 format) that a timeframe starts on. The second is the duration of that timeframe in seconds (e.g. `259200` for 3 days). Timeframes are assumed to repeat until a new timeframe is started. Like `tasks`, the first row is reserved for column headers. This sheet might look like:
 
 | A | B | C |
 | - | - | - |
