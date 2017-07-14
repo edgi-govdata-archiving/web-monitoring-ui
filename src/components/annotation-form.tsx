@@ -43,7 +43,8 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
             gap: {},
             tooltip: {
                 background: '#444',
-                borderRadius: 3
+                borderRadius: 3,
+                bottom: '110%'
             },
             wrapper: {
                 cursor: 'default',
