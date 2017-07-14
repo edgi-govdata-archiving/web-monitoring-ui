@@ -122,8 +122,8 @@ export default class WebMonitoringDb {
         return Promise.resolve(!!this.userData);
     }
 
-    getPages (): Promise<Page[]> {
-        return fetch(this.createUrl('pages'))
+    getPages (query?: any): Promise<Page[]> {
+        return fetch(this.createUrl('pages', query))
             .then(response => response.json())
             .then(data => data.data.map(parsePage));
     }
@@ -132,21 +132,6 @@ export default class WebMonitoringDb {
         return fetch(this.createUrl(`pages/${pageId}`))
             .then(response => response.json())
             .then(data => parsePage(data.data));
-    }
-
-    getPagesByDomains (domains: string[]): Promise<Page[]> {
-        // TODO: Implement more robust date filtering
-        const daysAgo = 3;
-        const dateEarlier = new Date(new Date().setDate(new Date().getDate() - daysAgo)).toISOString();
-        const fetches = domains.map(domain => {
-            return fetch(this.createUrl(`pages?site=${encodeURIComponent(domain)}&capture_time=${dateEarlier}..`))
-                .then(response => response.json())
-                .then(data => data.data.map(parsePage));
-        });
-        /* TODO: Make sure pages are unique, because some are shared across domains.
-                 Will implement when we get some test data. */
-        return Promise.all(fetches)
-            .then(data => data.reduce((acc, arr) => acc.concat(arr), []));
     }
 
     getVersions (pageId: string): Promise<Version[]> {
