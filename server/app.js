@@ -3,7 +3,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const gapi = require('./domains');
+const sheetData = require('./sheet-data');
 const config = require('./configuration');
 
 const serverPort = process.env.PORT || 3001;
@@ -19,7 +19,13 @@ const filterArray = [
 app.get('/api/domains/:username', function(request, response) {
     const username = request.params.username;
 
-    gapi.getDomains(username)
+    sheetData.getDomains(username)
+        .then(data => response.json(data))
+        .catch(error => response.status(500).json(error));
+});
+
+app.get('/api/timeframe', function(request, response) {
+    sheetData.getCurrentTimeframe()
         .then(data => response.json(data))
         .catch(error => response.status(500).json(error));
 });
