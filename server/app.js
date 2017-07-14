@@ -25,7 +25,8 @@ app.get('/api/domains/:username', function(request, response) {
 });
 
 app.get('/api/timeframe', function(request, response) {
-    sheetData.getCurrentTimeframe()
+    const date = request.query.date && new Date(request.query.date);
+    sheetData.getCurrentTimeframe(date)
         .then(data => response.json(data))
         .catch(error => response.status(500).json(error));
 });

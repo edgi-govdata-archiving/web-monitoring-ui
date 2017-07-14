@@ -48,11 +48,11 @@ function findUserRecord (username, records) {
     return domains ? domains.slice(1) : null;
 }
 
-function getCurrentTimeframe () {
+function getCurrentTimeframe (date) {
         return getTaskSheetData('Timeframes!A2:B10000') // extreme range to get whole spreadsheet
         .then(response => {
-            const frame = findLatestTimeframe(response.values);
-            const now = Date.now();
+            const now = date ? date.getTime() : Date.now();
+            const frame = findLatestTimeframe(response.values, now);
 
             const intervals = Math.floor((now - frame.start) / frame.duration);
             const currentStart = frame.start + (intervals - 1) * frame.duration;
@@ -66,12 +66,11 @@ function getCurrentTimeframe () {
         });
 }
 
-function findLatestTimeframe (rows) {
-    const now = Date.now();
+function findLatestTimeframe (rows, relativeToDate) {
     for (let i = rows.length - 1; i >= 0; i--) {
         const rowDate = new Date(rows[i][0]).getTime();
         const rowDuration = parseFloat(rows[i][1]) * 1000;
-        if (rowDate + rowDuration <= now) {
+        if (rowDate + rowDuration <= relativeToDate) {
             return {
                 start: rowDate,
                 duration: rowDuration
