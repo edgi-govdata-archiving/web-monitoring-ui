@@ -94,6 +94,8 @@ In this case, someone@example.com is assigned two domains, while learner@example
 
 In this example, analysis started going in 3-day chunks from January through April 20th, but then switched to 7 days for a week, then back to 3-day chunks again.
 
+Finally, share the spreadsheet so that “anyone with the link can view.”
+
 Once you have the sheets created, update your `.env` file with to variables:
 
 ```sh
