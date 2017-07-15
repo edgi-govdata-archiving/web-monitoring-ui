@@ -13,7 +13,9 @@ body {
 /* ===== Containers ===== */
 .container-list-view, .container-page-view {
     background: white;
+    border: 1px solid hsla(0, 0%, 0%, .6);
     border-radius: 3px;
+    box-shadow: 3px 3px 7px hsla(0, 0%, 0%, .5);
     color: #444;
     margin: 0 20px;
 }
@@ -184,9 +186,9 @@ body {
 }
 
 .signifier-list, .signifier-list-item {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .signifier-list {
@@ -227,25 +229,25 @@ body {
 
 /* Toggle buttons */
 .toggle {
-  display: none;
+    display: none;
 }
 
 .toggle, .toggle:after, .toggle *, .toggle *:after, .toggle + .toggle-btn {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .toggle::-moz-selection, .toggle:after::-moz-selection, .toggle *::-moz-selection, .toggle *:after::-moz-selection, .toggle + .toggle-btn::-moz-selection {
-  background: none;
+    background: none;
 }
 
 .toggle::selection, .toggle:after::selection, .toggle *::selection, .toggle *:after::selection, .toggle + .toggle-btn::selection {
-  background: none;
+    background: none;
 }
 
 .toggle + .toggle-btn {
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     background: #e2e1e1;
+    border: 1px solid hsla(0, 0%, 20%, 0.1);
     border-radius: 2px;
     display: block;
     cursor: pointer;
@@ -254,41 +256,35 @@ body {
     outline: 0;
     overflow: hidden;
     position: relative;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
-    -webkit-transition: all .2s ease;
-    transition: all .2s ;
+    transition: all .1s;
     width: 3.5em;
 }
 .toggle + .toggle-btn:after {
-  color: #5a5959;
-  display: inline-block;
-  font-weight: bold;
-  height: 100%;
-  line-height: 2em;
-  position: absolute;
-  text-align: center;
-  -webkit-transition: all .2s ease;
-  transition: all .2s ;
-  width: 100%;
+    color: #5a5959;
+    display: inline-block;
+    font-weight: bold;
+    height: 100%;
+    line-height: 2em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
 }
 .toggle + .toggle-btn:after {
-  content: attr(data-tg-on);
-  left: 0;
+    content: attr(data-tg-on);
+    left: 0;
 }
 
 .toggle + .toggle-btn:active {
-  background: #ccc;
+    background: #ccc;
 }
 
 .toggle:checked + .toggle-btn {
-  background: #24a79d;
+    background: #24a79d;
 }
 
 .toggle:checked + .toggle-btn:after {
-  color: #fff;
+    color: #fff;
 }
 /* END - Toggle buttons */
 
