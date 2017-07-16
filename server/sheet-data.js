@@ -96,24 +96,29 @@ function makeId () {
     return text;
 }
 
-function addImportantChange(values) {
+function appendRowGoogleSheet(values, sheetID) {
     const credentials = config.baseConfiguration();
     let jwtClient = new google.auth.JWT(
        credentials.GOOGLE_SERVICE_CLIENT_EMAIL,
        null,
+       // replace \n in .env variable with actual new lines, which the auth client expects
        credentials.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n'),
        ['https://www.googleapis.com/auth/spreadsheets']);
 
-    //authenticate request
     return new Promise((resolve, reject) => {
             jwtClient.authorize(function (err, tokens) {
             if (err) {
                 reject(err);
             } else {
                 var request = {
-                    spreadsheetId: credentials.GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
+                    spreadsheetId: sheetID,
+                    // supply a cell where data exists, Google decides for itself where the data table ends and appends
                     range: 'A10',
-                    resource: values,
+                    resource: {
+                        values: [
+                            values
+                        ]
+                    },
                     valueInputOption: 'RAW',
                     auth: jwtClient,
                 };
@@ -130,4 +135,4 @@ function addImportantChange(values) {
 
 exports.getDomains = getDomains;
 exports.getCurrentTimeframe = getCurrentTimeframe;
-exports.addImportantChange = addImportantChange;
+exports.addImportantChange = appendRowGoogleSheet;

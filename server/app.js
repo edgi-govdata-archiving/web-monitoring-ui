@@ -45,12 +45,9 @@ app.get('/api/timeframe', function(request, response) {
 });
 
 app.get('/api/importantchange', function(request, response) {
-    const values = {
-        "values": [
-            ['hello', 'world']
-        ]
-    }
-    const message = sheetData.addImportantChange(values)
+    const credentials = config.baseConfiguration();
+    const values = [0, 'hello', 'world'];
+    const message = sheetData.addImportantChange(values, credentials.GOOGLE_IMPORTANT_CHANGE_SHEET_ID)
     message.then(data => response.json(data)).catch(data => response.json(data));
 })
 
