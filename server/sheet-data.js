@@ -96,5 +96,26 @@ function makeId () {
     return text;
 }
 
+function addImportantChange() {
+    const credentials = config.baseConfiguration();
+    let jwtClient = new google.auth.JWT(
+       credentials.GOOGLE_SERVICE_CLIENT_EMAIL,
+       null,
+       credentials.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n'),
+       ['https://www.googleapis.com/auth/spreadsheets']);
+
+    //authenticate request
+    return new Promise((resolve, reject) => {
+            jwtClient.authorize(function (err, tokens) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve("Successfully connected!");
+            }
+        });
+    });
+}
+
 exports.getDomains = getDomains;
 exports.getCurrentTimeframe = getCurrentTimeframe;
+exports.addImportantChange = addImportantChange;

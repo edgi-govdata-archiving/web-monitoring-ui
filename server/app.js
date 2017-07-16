@@ -44,6 +44,14 @@ app.get('/api/timeframe', function(request, response) {
         .catch(error => response.status(500).json(error));
 });
 
+app.get('/api/importantchange', function(request, response) {
+    const values = {
+        "values": ['hello', 'world']
+    }
+    const message = sheetData.addImportantChange(values)
+    message.then(data => response.json(data)).catch(data => response.json(data));
+})
+
 /**
  * Main view for manual entry
  */
