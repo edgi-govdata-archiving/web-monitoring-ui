@@ -96,7 +96,7 @@ function makeId () {
     return text;
 }
 
-function addImportantChange() {
+function addImportantChange(values) {
     const credentials = config.baseConfiguration();
     let jwtClient = new google.auth.JWT(
        credentials.GOOGLE_SERVICE_CLIENT_EMAIL,
@@ -110,7 +110,19 @@ function addImportantChange() {
             if (err) {
                 reject(err);
             } else {
-                resolve("Successfully connected!");
+                var request = {
+                    spreadsheetId: credentials.GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
+                    range: 'A10',
+                    resource: values,
+                    valueInputOption: 'RAW',
+                    auth: jwtClient,
+                };
+                sheets.spreadsheets.values.append(request, function(err, response) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve("Successfully UPDATED!");
+                });
             }
         });
     });
