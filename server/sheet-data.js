@@ -96,13 +96,16 @@ function makeId () {
     return text;
 }
 
-function appendRowGoogleSheet(values, sheetID) {
-    const credentials = config.baseConfiguration();
+function appendRowGoogleSheet(values, sheetID, configuration) {
+    const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
+
+    // replaces \n in .env variable with actual new lines, which the auth client expects
+    const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
+
     let jwtClient = new google.auth.JWT(
-       credentials.GOOGLE_SERVICE_CLIENT_EMAIL,
+       clientEmail,
        null,
-       // replace \n in .env variable with actual new lines, which the auth client expects
-       credentials.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n'),
+       privateKey,
        ['https://www.googleapis.com/auth/spreadsheets']);
 
     return new Promise((resolve, reject) => {
@@ -112,14 +115,15 @@ function appendRowGoogleSheet(values, sheetID) {
             } else {
                 var request = {
                     spreadsheetId: sheetID,
-                    // supply a cell where data exists, Google decides for itself where the data table ends and appends
-                    range: 'A10',
+                    // supply a cell where data exists, Google decides for itself where the data table ends and appends, using extreme range again to grab everything
+                    range: 'A1:ZZZ',
                     resource: {
                         values: [
                             values
                         ]
                     },
                     valueInputOption: 'RAW',
+                    insertDataOption: 'INSERT_ROWS',
                     auth: jwtClient,
                 };
                 sheets.spreadsheets.values.append(request, function(err, response) {
@@ -135,4 +139,4 @@ function appendRowGoogleSheet(values, sheetID) {
 
 exports.getDomains = getDomains;
 exports.getCurrentTimeframe = getCurrentTimeframe;
-exports.addImportantChange = appendRowGoogleSheet;
+exports.appendRowGoogleSheet = appendRowGoogleSheet;

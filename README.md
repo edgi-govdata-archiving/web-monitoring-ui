@@ -109,13 +109,19 @@ GOOGLE_TASK_SHEET_ID=AIzaSyAChRujfXXXXXXXXMP5eouRRQ6bxV-1u_o
 ```
 
 
+## Important Changes and Dictionary Sheets
+
+In the current workflow, 2 Google Docs spreadsheets are used to keep track of 'important changes' and 'dictionary' records. The UI at this time posts annotations to DB with these attributes and also push to the spreadsheets. To get them
+
+
 ## Getting Involved
 
 We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
 
+
 ## Troubleshooting
 
-### `The program 'gulp' is currently not installed`
+#### `The program 'gulp' is currently not installed`
 
 If your run into `The program 'gulp' is currently not installed` error then you can either:
 
