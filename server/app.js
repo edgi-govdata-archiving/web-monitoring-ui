@@ -44,10 +44,18 @@ app.get('/api/timeframe', function(request, response) {
         .catch(error => response.status(500).json(error));
 });
 
+// TODO: Remove these test routes.
 app.get('/api/importantchange', function(request, response) {
-    const credentials = config.baseConfiguration();
+    const configuration = config.baseConfiguration();
     const values = [0, 'hello', 'world'];
-    const message = sheetData.addImportantChange(values, credentials.GOOGLE_IMPORTANT_CHANGE_SHEET_ID)
+    const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_IMPORTANT_CHANGE_SHEET_ID, configuration)
+    message.then(data => response.json(data)).catch(data => response.json(data));
+})
+
+app.get('/api/dictionary', function(request, response) {
+    const configuration = config.baseConfiguration();
+    const values = [0, 'dictionary', 'changes'];
+    const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_DICTIONARY_SHEET_ID, configuration)
     message.then(data => response.json(data)).catch(data => response.json(data));
 })
 
