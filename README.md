@@ -111,7 +111,25 @@ GOOGLE_TASK_SHEET_ID=AIzaSyAChRujfXXXXXXXXMP5eouRRQ6bxV-1u_o
 
 ## Important Changes and Dictionary Sheets
 
-In the current workflow, 2 Google Docs spreadsheets are used to keep track of 'important changes' and 'dictionary' records. The UI at this time posts annotations to DB with these attributes and also push to the spreadsheets. To get them
+In the current workflow, 2 Google Docs spreadsheets are used to keep track of 'important changes' and 'dictionary' records. The UI at this time posts annotations to DB with these attributes and also appends records to those spreadsheets. To get this working:
+1) Make copies of these spreadsheets:
+* [Important Changes](https://docs.google.com/spreadsheets/d/1S2mZKuV2v7-uec2eGA0zp3X1v1IAnoCHkLXmL-ChqnM/edit#gid=1804226491)
+
+* [Dictionary](https://docs.google.com/spreadsheets/d/1YRo1uNRRX92eSo2JiGEu50TpPVXYaLchrUVOZ3UW0Bs/edit#gid=554811086)
+
+    Make note the of [sheet IDs](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) of your new spreadsheets.
+
+2) Follow the first half of this [tutorial](http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/) to enable api access and get private key information. During the process, you should have downloaded a .json file with all relevant information.
+
+3) Armed with that information, update your `.env` file with these variables:
+```sh
+GOOGLE_IMPORTANT_CHANGE_SHEET_ID=examplesdf8Za7sdft39a_osnzhJBI2dsftasdf
+GOOGLE_DICTIONARY_SHEET_ID=examplesdf8Za7sdft39a_osnzhJBI2dsftasdf
+
+GOOGLE_SERVICE_CLIENT_EMAIL=73874number-example@developer.gserviceaccount.com
+
+GOOGLE_SHEETS_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\EXAMPLEExampleG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCsBjS7qpN+vUhz\nXRhcL3pwKZtewjZ478rs7FylT+YAJMmy1wOS3ze2FVYaBHelloFromXm9gL82OCSJn1ZThePastuwGA0\npe9oZSAtiB4ujaHhcWCO7ZYZzBvsPRJZR2eo4UokDpmgAS9ExTU7zN+eKTBTFGB4\nKDc7FAxqhk9dBcYFpLU34wuQsS/SZY1j3I/pmqQ7CHnGG+KLhyRiZ6UvlT8KjWejWTFdfMoredksjfGibberishkljfkls+\nkerGibberishll7\n7oU0VVs3xY5nhkjd#r34jkd7vxjknfy3jsdhf5zjkGYfyXFNhVjsl/bJ3AHA/C9Fd5z9JmOCsZE\nyD9Yjy72C50CjOgCp568pse85A==\n-----END PRIVATE KEY-----\n
+```
 
 
 ## Getting Involved
