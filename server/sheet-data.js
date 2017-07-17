@@ -96,6 +96,15 @@ function makeId () {
     return text;
 }
 
+ /**
+ * Appends record to google sheet
+ *
+ * @param {string[]} [values] Column values of row record in an array
+ * @param {string}   [sheetID] Sheet ID of google spreadsheet
+ * @param {Object}   [configuration] baseConfiguration holding .env variables
+ * @returns {Promise<string>} Simple 'ok' message for now
+ */
+
 function appendRowGoogleSheet(values, sheetID, configuration) {
     const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
 
