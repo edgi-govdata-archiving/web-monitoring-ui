@@ -96,7 +96,7 @@ In this example, analysis started going in 3-day chunks from January through Apr
 
 Finally, share the spreadsheet so that “anyone with the link can view.”
 
-Once you have the sheets created, update your `.env` file with to variables:
+Once you have the sheets created, update your `.env` file with two variables:
 
 ```sh
 # Your own API key for access to Google sheets. For details on how to get one, see:
