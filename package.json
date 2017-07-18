@@ -18,6 +18,7 @@
     "browserify": "^14.0.0",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.2",
+    "fetch-mock": "^5.12.1",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.1.6",
     "gulp-util": "^3.0.8",

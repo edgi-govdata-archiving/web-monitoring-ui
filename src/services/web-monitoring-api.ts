@@ -31,6 +31,10 @@ export default class WebMonitoringApi {
     }
 
     getDomainsForUser (username: string): Promise<string[]> {
+        if (!username) {
+            return Promise.reject(new TypeError('The first argument to getDomainsForUser() must be a string.'));
+        }
+
         const url = `/api/domains/${username}`;
         return fetch(url)
             .then(response => response.json())
