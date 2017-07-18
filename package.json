@@ -5,7 +5,8 @@
   "main": "views/main.html",
   "dependencies": {
     "ejs": "^2.5.5",
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "googleapis": "^19.0.0"
   },
   "devDependencies": {
     "@types/gapi": "^0.0.30",
@@ -17,6 +18,7 @@
     "browserify": "^14.0.0",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.2",
+    "fetch-mock": "^5.12.1",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.1.6",
     "gulp-util": "^3.0.8",
@@ -37,8 +39,7 @@
   },
   "scripts": {
     "lint": "tslint 'src/**/*.{ts,tsx}'",
-    "start": "node app.js",
-    "gulp": "gulp",
+    "start": "node server/app.js",
     "test": "jest",
     "test-watch": "jest --watch"
   },

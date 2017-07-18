@@ -33,12 +33,14 @@ It’s a React.js and Typescript-based browser application with a Node.js backen
     ```sh
     yarn run start
     ```
-    
+
 7. If you are actively developing then use gulp to rebuild application on file changes
 
    ```sh
    gulp watch
    ```
+
+8. (Optional) Set up user tasking data in a Google Sheet. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [creating tasking sheets](#creating-tasking-sheets).
 
 ## Running tests
 
@@ -60,6 +62,53 @@ Access the main view at `http://localhost:3000`
 Screenshot:
 ![screenshot](screenshot.png)
 
+
+## Creating Tasking Sheets
+
+User tasking data (analysis timeframes, who is assigned what domains and pages, etc.) is currently kept in a Google Docs spreadsheet for easy manipulation by project admins. To enable tasking in your local build, you’ll need to create your own copy of this spreadsheet.
+
+First, create a spreadsheet in Google Docs. It should have two worksheets or tabs, named:
+
+1. `Tasks` (this should be the first tab)
+2. `Timeframes`
+
+**The `Tasks` sheet** should be formatted such that the first column is a list of usernames/e-mail addresses. The rest of the columns in that row are the names of domains that the user in the first column is assigned (one domain per column). Domains are the `site` attribute of a page in [the API](https://api.monitoring.envirodatagov.org). The first row is reserved for column headers. The sheet might look like:
+
+| A | B | C |
+| - | - | - |
+| User/e-mail              | Site                | Site                 | Etc.          |
+| someone@example.com      | DOT - fhwa.dot.gov  | EPA - epa.gov        |               |
+| someone.else@example.com | EPA - epa.gov/arc-x | GAO - Climate Change | DOI - fws.gov |
+| learner@example.com      | DOI - blm.gov       |                      |               |
+
+In this case, someone@example.com is assigned two domains, while learner@example.com is assigned only one. There can be any number of columns on each row.
+
+**The `Timeframes` sheet** holds information about analysis timeframes. The analysis team currently works on changes in 3-day chunks and this sheet lets you define when those chunks start and end. It should have exactly two columns. The first is a date (in ISO 8601 format) that a timeframe starts on. The second is the duration of that timeframe in seconds (e.g. `259200` for 3 days). Timeframes are assumed to repeat until a new timeframe is started. Like `tasks`, the first row is reserved for column headers. This sheet might look like:
+
+| A | B | C |
+| - | - | - |
+| Start Time           | Duration (seconds) | Comments |
+| 2017-01-20T04:00:00Z | 259200             |          |
+| 2017-04-20T04:00:00Z | 604800             | Take a breather for a few days and change to a 7-day period |
+| 2017-01-27T04:00:00Z | 259200             | Back to normal! |
+
+In this example, analysis started going in 3-day chunks from January through April 20th, but then switched to 7 days for a week, then back to 3-day chunks again.
+
+Finally, share the spreadsheet so that “anyone with the link can view.”
+
+Once you have the sheets created, update your `.env` file with two variables:
+
+```sh
+# Your own API key for access to Google sheets. For details on how to get one, see:
+# https://developers.google.com/api-client-library/javascript/start/start-js#setup
+GOOGLE_SHEETS_API_KEY=1Q8KNlXXXXXXXX3AwBSFteudrz_bnPj3_KeeA37JkPvk
+
+# ID of the Google Sheet we created above. For more on how to get the ID, see:
+# https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id
+GOOGLE_TASK_SHEET_ID=AIzaSyAChRujfXXXXXXXXMP5eouRRQ6bxV-1u_o
+```
+
+
 ## Getting Involved
 
 We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
@@ -69,15 +118,17 @@ We need your help! Please read through the [Web Monitoring Project](https://gith
 ### `The program 'gulp' is currently not installed`
 
 If your run into `The program 'gulp' is currently not installed` error then you can either:
-    
+
 1. Use local development install of gulp
+
     ```sh
     yarn run gulp
     # or
-    npm run gulp    
+    npm run gulp
     ```
 
 2. Install gulp globally
+
    ```sh
    yarn install --global gulp-cli
    ```

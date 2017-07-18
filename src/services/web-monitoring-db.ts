@@ -119,11 +119,11 @@ export default class WebMonitoringDb {
                 .catch(() => false);
         }
 
-        return Promise.resolve(false);
+        return Promise.resolve(!!this.userData);
     }
 
-    getPages (): Promise<Page[]> {
-        return fetch(this.createUrl('pages'))
+    getPages (query?: any): Promise<Page[]> {
+        return fetch(this.createUrl('pages', query))
             .then(response => response.json())
             .then(data => data.data.map(parsePage));
     }

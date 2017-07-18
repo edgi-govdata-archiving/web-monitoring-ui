@@ -1,35 +1,13 @@
 'use strict';
 
-const express = require('express');
-const app = express();
-
-app.set('views', __dirname + '/views');
-app.use(express.static('dist'));
-app.engine('html', require('ejs').renderFile);
-
-/**
- * Main view for manual entry
- */
-app.get('*', function (req, res) {
-    res.render('main.html', {
-        configuration: clientConfiguration()
-    });
-});
-
-app.listen(process.env.PORT || 3001, function () {
-    console.log('Listening on port ' + (process.env.PORT || 3001));
-});
-
-
 let baseEnvironment;
-
 /**
  * Create a configuration object suitable for passing to the client by taking
  * an allow-listed set of keys from process.env.
  * In development, also read from a file named .env, if present.
  * @returns {Object}
  */
-function clientConfiguration () {
+function baseConfiguration () {
     baseEnvironment = baseEnvironment || Object.assign({}, process.env);
 
     let source = baseEnvironment;
@@ -43,12 +21,22 @@ function clientConfiguration () {
         source = Object.assign(fromFile.parsed || {}, baseEnvironment);
     }
 
-    const allowedFields = [
-        'WEB_MONITORING_DB_URL'
-    ];
+    return source;
+}
+
+/**
+ * Filters baseConfiguration
+ * @returns {Object}
+ */
+function filterConfiguration(filterArray) {
+    const source = baseConfiguration();
+    const allowedFields = filterArray;
 
     return allowedFields.reduce((result, field) => {
         result[field] = source[field];
         return result;
     }, {});
 }
+
+exports.baseConfiguration = baseConfiguration;
+exports.filterConfiguration = filterConfiguration;

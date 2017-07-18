@@ -99,7 +99,6 @@ fabric.properties
 .idea/
 archives/.idea/
 
-config.json
 .env
 .vscode/
 .DS_Store
