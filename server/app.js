@@ -21,7 +21,9 @@ app.get('/api/domains/:username', function(request, response) {
 
     sheetData.getDomains(username)
         .then(data => response.json(data))
-        .catch(error => response.status(500).json(error));
+        .catch(error => response
+            .status(error.status || 500)
+            .json(error));
 });
 
 app.get('/api/timeframe', function(request, response) {

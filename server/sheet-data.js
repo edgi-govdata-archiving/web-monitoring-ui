@@ -33,10 +33,13 @@ function getDomains (username) {
         .then(response => {
             const domains = findUserRecord(username, response.values);
             if (domains) {
-                return {'domains': domains};
+                return {domains};
             }
             else {
-                throw {'error': `${username} not found.`};
+                throw {
+                    error: `${username} not found.`,
+                    status: 404
+                };
             }
         });
 }
