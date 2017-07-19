@@ -81,7 +81,11 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                         {this.renderPager()}
                     </div>
                 </div>
-            <ChangeView page={this.state.page} annotateChange={this.annotateChange} user={this.props.user} />
+                <ChangeView
+                    page={this.state.page}
+                    annotateChange={this.annotateChange}
+                    user={this.props.user}
+                />
             </div>
         );
     }
@@ -113,8 +117,9 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
     }
 
     private loadPage (pageId: string) {
+        // TODO: handle the missing `.versions` collection problem better
         const fromList = this.props.pages && this.props.pages.find(
-            (page: Page) => page.uuid === pageId);
+            (page: Page) => page.uuid === pageId && !!page.versions);
 
         Promise.resolve(fromList || this.context.api.getPage(pageId))
             .then((page: Page) => {
