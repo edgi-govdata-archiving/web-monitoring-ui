@@ -79,7 +79,8 @@ export default class WebMonitoringDb {
             }),
             headers: new Headers({
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             }),
             method: 'POST',
             mode: 'cors',
@@ -151,7 +152,8 @@ export default class WebMonitoringDb {
             body: JSON.stringify(annotation),
             credentials: 'include',
             headers: new Headers({
-                Authorization: this.authHeader()
+                'Authorization': this.authHeader(),
+                'X-Requested-With': 'XMLHttpRequest'
             }),
             method: 'POST',
             mode: 'cors',
@@ -207,7 +209,8 @@ export default class WebMonitoringDb {
                 headers: new Headers({
                     'Accept': 'application/json',
                     'Authorization': this.authHeader(),
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }),
                 method: refresh ? 'POST' : 'GET',
                 mode: 'cors',
