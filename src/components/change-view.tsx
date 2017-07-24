@@ -48,19 +48,19 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         // }
     }
 
-    updateDiff() {
+    updateDiff () {
 
     }
 
-    handleDiffTypeChange(diffType: any) {
+    handleDiffTypeChange (diffType: any) {
       this.setState({diffType});
       this.updateDiff();
     }
-    handleVersionAChange(version:Version) {
+    handleVersionAChange (version: Version) {
       this.setState({ a : version });
       this.updateDiff();
     }
-    handleVersionBChange(version:Version) {
+    handleVersionBChange (version: Version) {
       this.setState({ b : version });
       this.updateDiff();
     }
@@ -80,7 +80,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     render () {
         const { page } = this.props;
 
-        if (!page) {
+        if (!page || !page.versions) {
           // if haz no page, don't render
           return (<div></div>);
         }
@@ -98,11 +98,6 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                   <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
                 </div>
                 {this.renderSubmission()}
-                <AnnotationForm
-                    annotation={this.state.annotation}
-                    onChange={this.updateAnnotation}
-                    collapsed={this.state.collapsedView}
-                />
                 <DiffView pageId={page.uuid} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
         );
@@ -135,6 +130,11 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                         <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
                     </div>
                 </div>
+                <AnnotationForm
+                    annotation={this.state.annotation}
+                    onChange={this.updateAnnotation}
+                    collapsed={this.state.collapsedView}
+                />
             </div>
         );
     }
