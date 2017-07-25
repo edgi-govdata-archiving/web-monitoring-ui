@@ -46,16 +46,16 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
       return null;
     }
 
-    switch (diffTypes[diffType]) {
-      case diffTypes.SIDE_BY_SIDE_RENDERED:
+    switch (diff.diff_service) {
+      case changeDiffTypes[diffTypes.SIDE_BY_SIDE_RENDERED]:
         return (
             <SideBySideRenderedDiff a={a} b={b} />
         );
-       case diffTypes.HIGHLIGHTED_TEXT:
+       case changeDiffTypes[diffTypes.HIGHLIGHTED_TEXT]:
          return (
             <HighlightedTextDiff diff={diff} className="diff-text-inline" />
          );
-       case diffTypes.HIGHLIGHTED_SOURCE:
+       case changeDiffTypes[diffTypes.HIGHLIGHTED_SOURCE]:
          return (
             <HighlightedTextDiff diff={diff} className="diff-source-inline" />
          );
