@@ -20,25 +20,25 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
 
   context: {api: WebMonitoringDb};
 
-  constructor(props: IDiffViewProps) {
+  constructor (props: IDiffViewProps) {
     super(props);
     this.state = { diff: null }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     const { props } = this;
     if (this.canFetch(props)){
       this.loadDiff(props.pageId, props.a.uuid, props.b.uuid, props.diffType);
     }
   }
 
-  componentWillReceiveProps(nextProps: IDiffViewProps) {
+  componentWillReceiveProps( nextProps: IDiffViewProps) {
     if (this.canFetch(nextProps)) {
       this.loadDiff(nextProps.pageId, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
     }
   }
 
-  render() {
+  render () {
     const { a, b, diffType } = this.props;
     const { diff } = this.state;
 
@@ -53,11 +53,11 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
         );
        case diffTypes.HIGHLIGHTED_TEXT:
          return (
-            <HighlightedTextDiff diff={diff} />
+            <HighlightedTextDiff diff={diff} className="diff-text-inline" />
          );
        case diffTypes.HIGHLIGHTED_SOURCE:
          return (
-            <HighlightedTextDiff diff={diff} />
+            <HighlightedTextDiff diff={diff} className="diff-source-inline" />
          );
       default:
         return null;
@@ -65,16 +65,15 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
   }
 
   // check to see if this props object has everything necessary to perform a fetch
-  private canFetch(props:IDiffViewProps) {
+  private canFetch (props:IDiffViewProps) {
     return (props.pageId && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
   }
 
-  private loadDiff(pageId: string, aId: string, bId: string, diffType: string) {
+  private loadDiff (pageId: string, aId: string, bId: string, diffType: string) {
     // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
-
 
     Promise.resolve(this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffTypes[diffType]]))
         .then((diff: any) => {

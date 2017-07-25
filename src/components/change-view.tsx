@@ -49,7 +49,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     }
 
     updateDiff () {
-
+        // pass
     }
 
     handleDiffTypeChange (diffType: any) {
@@ -65,18 +65,6 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
       this.updateDiff();
     }
 
-    private updateAnnotation (newAnnotation: any) {
-        this.setState({annotation: newAnnotation});
-    }
-
-    private annotateChange (event: React.SyntheticEvent<HTMLElement>) {
-        event.preventDefault();
-        // TODO: display some indicator that saving is happening/complete
-        const fromVersion = this.state.a.uuid;
-        const toVersion = this.state.b.uuid;
-        this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
-    }
-
     render () {
         const { page } = this.props;
 
@@ -86,20 +74,31 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         }
 
         return (
-            <div>
-                {/*<h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>*/}
-                <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
-                <div>
-                  <label>A</label>
-                  <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
-                </div>
-                <div>
-                  <label>B</label>
-                  <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange}  />
-                </div>
+            <div className="change-view">
+                {this.renderVersionSelector(page)}
                 {this.renderSubmission()}
                 <DiffView pageId={page.uuid} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
+        );
+    }
+
+    renderVersionSelector (page: Page) {
+        return (
+            <form className="version-selector">
+                {/*<h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>*/}
+                <label className="version-selector__item form-group">
+                    <span>Comparison:</span>
+                    <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
+                </label>
+                <label className="version-selector__item form-group">
+                    <span>From:</span>
+                    <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
+                </label>
+                <label className="version-selector__item form-group">
+                    <span>To:</span>
+                    <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange} />
+                </label>
+            </form>
         );
     }
 
@@ -139,9 +138,20 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         );
     }
 
-
     private toggleCollapsedView () {
         this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
+    }
+
+    private updateAnnotation (newAnnotation: any) {
+        this.setState({annotation: newAnnotation});
+    }
+
+    private annotateChange (event: React.SyntheticEvent<HTMLElement>) {
+        event.preventDefault();
+        // TODO: display some indicator that saving is happening/complete
+        const fromVersion = this.state.a.uuid;
+        const toVersion = this.state.b.uuid;
+        this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
     }
 }
 

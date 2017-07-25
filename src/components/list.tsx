@@ -4,13 +4,13 @@ import * as React from 'react';
 // List accepts an array of data, and an item component. It iterates through the
 // data array, creating an item component for each item in the array, passing
 // it a prop "data" with the array element.
-export default class List extends React.Component<any,any> {
+export default class List extends React.Component<any, any> {
   // const List = (props) => {
-  render() {
+  render () {
     // This strange props destructuring is so props.component
     // can be referenced as a jsx component below
     const { data, onSelectItem, className } = this.props;
-    const selectFunc = (fn:any, d:any, i:any) => {
+    const selectFunc = (fn: any, d: any, i: any) => {
       return () => {
         if (fn) {
           fn(i, d);
@@ -18,23 +18,19 @@ export default class List extends React.Component<any,any> {
       };
     };
 
+    const children = data.map((item: any, i: any) => (
+        <this.props.component
+            data={item}
+            key={i}
+            index={i}
+            onSelect={selectFunc(onSelectItem, item, i)}
+        />
+    ));
+
     return (
       <div className={className}>
-        {data.map((item:any, i:any) => <this.props.component data={item} key={i} index={i} onSelect={selectFunc(onSelectItem, item, i)} />)}
+        {children}
       </div>
     );
   }
 }
-
-// List.propTypes = {
-//   data: PropTypes.array,
-//   // eslint-disable-next-line react/no-unused-prop-types
-//   component: PropTypes.func.isRequired,
-//   onSelectItem: PropTypes.func,
-// };
-
-// List.defaultProps = {
-//   data: [],
-//   className: "list",
-// };
-
