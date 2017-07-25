@@ -3,22 +3,31 @@ import {Version} from '../services/web-monitoring-db';
 
 export default class SelectVersion extends React.Component<any, any> {
     render () {
+        const value = this.props.value ? this.props.value.uuid : '';
         const versions = this.props.versions;
         const handleChange = (e: any) => {
-          this.props.onChange(versions[e.target.value]);
-        }
+            const newValue = e.target.value;
+            this.props.onChange(versions.find((v: any) => v.uuid === newValue));
+        };
+
+        const options = versions.map((version: Version, index: number) => {
+            return (
+                <option key={version.uuid} value={version.uuid}>
+                    {getDateString(version.capture_time)}
+                </option>
+            );
+        });
 
         return (
-            <select onChange={handleChange}>
+            <select onChange={handleChange} value={value}>
                 <option value="">none</option>
-                {versions.map((v: Version, i: number) => <option key={v.uuid} value={i}>{getDateString(v.capture_time.toString())}</option>)}
+                {options}
             </select>
         );
     }
 }
 
-function getDateString (str: string): string {
-    const date = new Date(str);
+function getDateString (date: Date): string {
     const options = {
         day: 'numeric',
         month: 'long',
