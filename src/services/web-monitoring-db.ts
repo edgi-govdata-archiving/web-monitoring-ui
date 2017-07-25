@@ -34,6 +34,26 @@ export interface Annotation {
     updated_at: Date;
 }
 
+export interface Change {
+    uuid: string;
+    uuid_from: string;
+    uuid_to: string;
+    priority?: number;
+    current_annotation: any;
+    created_at?: Date;
+    updated_at?: Date;
+    significance?: number;
+}
+
+export interface ChangeDiff {
+    page_id: string;
+    from_version_id: string;
+    to_version_id: string;
+    diff_service: string;
+    diff_service_version: string;
+    content: any;
+}
+
 interface IApiResponse {
     links?: {};
     data?: {}|any[];
@@ -147,14 +167,19 @@ export default class WebMonitoringDb {
             .then(data => parseVersion(data.data));
     }
 
-    getDiff (pageId: string, aId: string, bId: string, diffType: string): Promise<any> {
-        // http://localhost:3000/api/v0/pages/PAGE_UID/changes/VERSION_A_UID..VERSION_B_UID/diff/html_text
-        return fetch(this.createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`))
+    getChange (pageId: string, fromVersion: string, toVersion: string): Promise<Change> {
+        fromVersion = fromVersion || '';
+        toVersion = toVersion || '';
+        return fetch(this.createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
             .then(response => response.json())
-            // .then(data => parseDiff(data))
-            // TODO - need to properly parse out diff stuff here, will need to
-            // pull proper diff data out of the response, possibly with a "parseDiff" func
-            .then(data => data.data);
+            .then(data => parseChange(data.data));
+    }
+
+    getDiff (pageId: string, aId: string, bId: string, diffType: string): Promise<ChangeDiff> {
+        // http://localhost:3000/api/v0/pages/PAGE_UID/changes/VERSION_A_UID..VERSION_B_UID/diff/html_text
+        return fetch(this.createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
+            .then(response => response.json())
+            .then(data => parseDiff(data.data));
     }
 
     annotateChange (pageId: string, fromVersion: string, toVersion: string, annotation: any): Promise<Annotation> {
@@ -291,4 +316,23 @@ function parseAnnotation (data: any): Annotation {
         created_at: new Date(data.created_at),
         updated_at: new Date(data.updated_at)
     });
+}
+
+function parseChange (data: any): Change {
+    const updatedValues: any = {uuid: `${data.uuid_from}..${data.uuid_to}`};
+    if (data.created_at) {
+        updatedValues.created_at = new Date(data.created_at);
+    }
+    if (data.updated_at) {
+        updatedValues.updated_at = new Date(data.updated_at);
+    }
+    return Object.assign({}, data, updatedValues);
+}
+
+function parseDiff (data: any): ChangeDiff {
+    // temporarily massage old diff format into new diff format
+    if (data.content && data.content.data) {
+        data.content = {diff: data.content.data};
+    }
+    return data;
 }
