@@ -1,11 +1,11 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import WebMonitoringDb, {Annotation, Page, Version} from '../services/web-monitoring-db';
+import {Link} from 'react-router-dom';
+import WebMonitoringDb, {Annotation, Change, Page, Version} from '../services/web-monitoring-db';
+import AnnotationForm from './annotation-form';
+import DiffView from './diff-view';
 import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
-import DiffView from './diff-view';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import AnnotationForm from './annotation-form';
-
 
 export interface IChangeViewProps {
     page: Page;
@@ -14,14 +14,26 @@ export interface IChangeViewProps {
 }
 
 export default class ChangeView extends React.Component<IChangeViewProps, any> {
+    static contextTypes = {
+        api: PropTypes.instanceOf(WebMonitoringDb)
+    };
+
+    context: {api: WebMonitoringDb};
+
     constructor (props: IChangeViewProps) {
         super (props);
 
         this.state = {
-          diffType: undefined,
-          a : null,
-          b : null,
+          a: null,
+          b: null,
+          change: null,
+          diffType: undefined
         };
+        const page = this.props.page;
+        if (page.versions && page.versions.length > 1) {
+            this.state.a = page.versions[1];
+            this.state.b = page.versions[0];
+        }
 
         this.updateDiff = this.updateDiff.bind(this);
         this.handleVersionAChange = this.handleVersionAChange.bind(this);
@@ -33,10 +45,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     }
 
     componentWillMount () {
-        // const version = this.props.version;
-        // getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
-        //     this.setState({versions: data});
-        // });
+        this.updateChange();
     }
 
     componentWillReceiveProps (nextProps: IChangeViewProps) {
@@ -57,12 +66,12 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
       this.updateDiff();
     }
     handleVersionAChange (version: Version) {
-      this.setState({ a : version });
-      this.updateDiff();
+        this.updateChange(version, null);
+        this.updateDiff();
     }
     handleVersionBChange (version: Version) {
-      this.setState({ b : version });
-      this.updateDiff();
+        this.updateChange(null, version);
+        this.updateDiff();
     }
 
     render () {
@@ -153,22 +162,36 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         const toVersion = this.state.b.uuid;
         this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
     }
+
+    private updateChange (from?: Version, to?: Version) {
+        from = from || this.state.a;
+        to = to || this.state.b;
+
+        if (!from || !to || changeMatches(this.state.change, {a: from, b: to})) {
+            return;
+        }
+
+        this.setState({a: from, b: to, annotation: null, change: null});
+
+        this.context.api.getChange(this.props.page.uuid, from.uuid, to.uuid)
+            .then((change: Change) => {
+                // only update state.change if what we want is still the same
+                // and we don't already have it
+                if (!changeMatches(change, this.state.change) && changeMatches(change, this.state)) {
+                    this.setState({
+                        annotation: Object.assign({}, change.current_annotation),
+                        change
+                    });
+                }
+            });
+    }
 }
 
-
-function getVersions (currentPageUUID: string, currentVersionUUID: string): Promise<Version[]> {
-    const dataUrl = `https://web-monitoring-db-staging.herokuapp.com/api/v0/pages/${currentPageUUID}`;
-
-    return fetch(dataUrl)
-        .then(blob => blob.json())
-        .then((json: any) => {
-            const data = json.data;
-            const currentIndex = data.versions.findIndex((element: Version) => {
-                return element.uuid === currentVersionUUID;
-            });
-            data.versions.splice(currentIndex, 1);
-            return data.versions;
-        });
+function changeMatches (change: Change, state: any) {
+    if (!state) { return false; }
+    const uuidFrom = state.a ? state.a.uuid : state.uuid_from;
+    const uuidTo = state.b ? state.b.uuid : state.uuid_to;
+    return change && change.uuid_from === uuidFrom && change.uuid_to === uuidTo;
 }
 
 /* Polyfill for Array.prototype.findIndex */
