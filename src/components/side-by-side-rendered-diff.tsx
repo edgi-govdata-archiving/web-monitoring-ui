@@ -7,7 +7,7 @@ export default class SideBySideRenderedDiff extends React.Component<any,any> {
       return null;
     }
     return (
-      <div>
+      <div className="side-by-side-render">
         <iframe src={this.props.a.uri} />
         <hr />
         <iframe src={this.props.b.uri} />

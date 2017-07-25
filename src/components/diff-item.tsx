@@ -14,16 +14,23 @@ export default class DiffItem extends React.Component<any,any> {
     let diffTypeClass:string = "unchanged";
     var itemType:number;
     var itemText:string;
-    [itemType, itemText] = data;
+    if (data.constructor === Array) {
+        [itemType, itemText] = data;
+    }
+    else {
+        itemType = data.Type;
+        itemText = data.Text;
+    }
+
 
     // this data comes from https://github.com/edgi-govdata-archiving/go-calc-diff
     // it may be necessary to adjust the "data.Type" inspections based on differ
     if (itemType == -1) {
-      diffTypeClass = "removed"
-      styles.background = "red";
+      diffTypeClass = "removed";
+      styles.background = "#ffc0cb";
     } else if (itemType == 1) {
-      diffTypeClass = "added"
-      styles.background = "green";
+      diffTypeClass = "added";
+      styles.background = "#90ee90";
     }
 
     return (

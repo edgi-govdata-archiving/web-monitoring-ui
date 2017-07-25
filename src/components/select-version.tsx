@@ -9,12 +9,10 @@ export default class SelectVersion extends React.Component<any, any> {
         }
 
         return (
-            <div>
-                <select onChange={handleChange}>
-                    <option value="">none</option>
-                    {versions.map((v: Version, i: number) => <option key={v.uuid} value={i}>{getDateString(v.capture_time.toString())}</option>)}
-                </select>
-            </div>
+            <select onChange={handleChange}>
+                <option value="">none</option>
+                {versions.map((v: Version, i: number) => <option key={v.uuid} value={i}>{getDateString(v.capture_time.toString())}</option>)}
+            </select>
         );
     }
 }

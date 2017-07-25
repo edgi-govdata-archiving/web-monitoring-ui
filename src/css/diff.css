@@ -4,3 +4,28 @@ del {
 ins {
     background-color: lightgreen !important;
 }
+
+.side-by-side-render {
+    display: flex;
+}
+
+.side-by-side-render > iframe {
+    margin: 0.5em;
+    min-height: 40em;
+}
+
+.diff-source-inline {
+    background: #eee;
+    border: 1px solid #ccc;
+    font-family: monospace;
+    overflow: auto;
+    padding: 1em;
+    white-space: pre;
+}
+
+.diff-text-inline {
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 1em;
+    white-space: pre-wrap;
+}

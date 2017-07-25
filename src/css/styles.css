@@ -1,3 +1,5 @@
+@import './diff.css';
+
 body {
     background: #136a8a;
     background: linear-gradient(45deg, #136a8a, #267871);
@@ -203,4 +205,18 @@ ins {
 
 .login-form__footer {
     text-align: right;
+}
+
+.version-selector {
+    display: flex;
+}
+
+.version-selector__item {
+    font-weight: normal;
+    margin-right: 2em;
+}
+
+.version-selector__item > span {
+    font-weight: bold;
+    margin-right: 0.5em;
 }
