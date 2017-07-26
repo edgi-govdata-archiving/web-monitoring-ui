@@ -7,6 +7,8 @@ import DiffView from './diff-view';
 import SelectDiffType from './select-diffType';
 import SelectVersion from './select-version';
 
+const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
+
 export interface IChangeViewProps {
     page: Page;
     user: any;
@@ -27,12 +29,18 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
           a: null,
           b: null,
           change: null,
+          collapsedView: true,
           diffType: undefined
         };
         const page = this.props.page;
         if (page.versions && page.versions.length > 1) {
             this.state.a = page.versions[1];
             this.state.b = page.versions[0];
+        }
+        if ('sessionStorage' in window) {
+            this.state.collapsedView = sessionStorage.getItem(
+                collapsedViewStorage
+            ) !== 'false';
         }
 
         this.updateDiff = this.updateDiff.bind(this);
@@ -55,6 +63,15 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         //         this.setState({versions: data});
         //     });
         // }
+    }
+
+    componentDidUpdate () {
+        if ('sessionStorage' in window) {
+            sessionStorage.setItem(
+                collapsedViewStorage,
+                this.state.collapsedView.toString()
+            );
+        }
     }
 
     updateDiff () {
@@ -147,7 +164,8 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         );
     }
 
-    private toggleCollapsedView () {
+    private toggleCollapsedView (event: any) {
+        event.preventDefault();
         this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
     }
 
