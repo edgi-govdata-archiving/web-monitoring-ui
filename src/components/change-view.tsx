@@ -32,11 +32,14 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
           collapsedView: true,
           diffType: undefined
         };
+
+        // TODO: unify this default state logic with componentWillReceiveProps
         const page = this.props.page;
         if (page.versions && page.versions.length > 1) {
             this.state.a = page.versions[1];
             this.state.b = page.versions[0];
         }
+
         if ('sessionStorage' in window) {
             this.state.collapsedView = sessionStorage.getItem(
                 collapsedViewStorage
@@ -57,12 +60,10 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     }
 
     componentWillReceiveProps (nextProps: IChangeViewProps) {
-        // if (this.props !== nextProps) {
-        //     const version = nextProps.version;
-        //     getVersions(version.page_uuid, version.uuid).then((data: Version[]) => {
-        //         this.setState({versions: data});
-        //     });
-        // }
+        const nextVersions = nextProps.page.versions;
+        if (nextVersions && nextVersions.length > 1) {
+            this.updateChange(nextVersions[1], nextVersions[0]);
+        }
     }
 
     componentDidUpdate () {
