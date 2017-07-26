@@ -86,7 +86,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
             <div className="change-view">
                 {this.renderVersionSelector(page)}
                 {this.renderSubmission()}
-                <DiffView pageId={page.uuid} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
+                <DiffView page={page} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
         );
     }
