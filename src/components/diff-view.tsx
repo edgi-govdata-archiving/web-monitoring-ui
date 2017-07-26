@@ -1,13 +1,13 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import WebMonitoringDb, {Version} from '../services/web-monitoring-db';
+import WebMonitoringDb, {Page, Version} from '../services/web-monitoring-db';
 import {diffTypes, changeDiffTypes} from '../constants/DiffTypes';
 
 import HighlightedTextDiff from './highlighted-text-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 export interface IDiffViewProps {
-  pageId: string;
-  diffType:string;
+  page: Page;
+  diffType: string;
   a: Version;
   b: Version;
 }
@@ -22,19 +22,19 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
 
   constructor (props: IDiffViewProps) {
     super(props);
-    this.state = { diff: null }
+    this.state = {diff: null};
   }
 
   componentWillMount () {
     const { props } = this;
     if (this.canFetch(props)){
-      this.loadDiff(props.pageId, props.a.uuid, props.b.uuid, props.diffType);
+      this.loadDiff(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
     }
   }
 
-  componentWillReceiveProps( nextProps: IDiffViewProps) {
+  componentWillReceiveProps (nextProps: IDiffViewProps) {
     if (this.canFetch(nextProps)) {
-      this.loadDiff(nextProps.pageId, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
+      this.loadDiff(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
     }
   }
 
@@ -49,7 +49,7 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
     switch (diff.diff_service) {
       case changeDiffTypes[diffTypes.SIDE_BY_SIDE_RENDERED]:
         return (
-            <SideBySideRenderedDiff a={a} b={b} />
+            <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
         );
        case changeDiffTypes[diffTypes.HIGHLIGHTED_TEXT]:
          return (
@@ -65,8 +65,8 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
   }
 
   // check to see if this props object has everything necessary to perform a fetch
-  private canFetch (props:IDiffViewProps) {
-    return (props.pageId && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
+  private canFetch (props: IDiffViewProps) {
+    return (props.page.uuid && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
   }
 
   private loadDiff (pageId: string, aId: string, bId: string, diffType: string) {
