@@ -46,6 +46,9 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
       return null;
     }
 
+    // TODO: if we have multiple ways to render content from a single service
+    // in the future (e.g. inline vs. side-by-side text), we need a better
+    // way to ensure we use the correct rendering and avoid race conditions
     switch (diff.diff_service) {
       case changeDiffTypes[diffTypes.SIDE_BY_SIDE_RENDERED]:
         return (
