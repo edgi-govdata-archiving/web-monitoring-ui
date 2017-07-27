@@ -1,7 +1,16 @@
 import * as React from 'react';
 import {Version} from '../services/web-monitoring-db';
 
-export default class SelectVersion extends React.Component<any, any> {
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    month: 'long',
+    second: 'numeric',
+    year: 'numeric'
+});
+
+export default class SelectVersion extends React.PureComponent<any, any> {
     render () {
         const value = this.props.value ? this.props.value.uuid : '';
         const versions = this.props.versions;
@@ -13,7 +22,7 @@ export default class SelectVersion extends React.Component<any, any> {
         const options = versions.map((version: Version, index: number) => {
             return (
                 <option key={version.uuid} value={version.uuid}>
-                    {getDateString(version.capture_time)}
+                    {dateFormatter.format(version.capture_time)}
                 </option>
             );
         });
@@ -25,13 +34,4 @@ export default class SelectVersion extends React.Component<any, any> {
             </select>
         );
     }
-}
-
-function getDateString (date: Date): string {
-    const options = {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    };
-    return `${date.toLocaleDateString('en-US', options)} ${date.toLocaleTimeString('en-US')}`;
 }
