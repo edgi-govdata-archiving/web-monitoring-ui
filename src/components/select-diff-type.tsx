@@ -6,8 +6,8 @@ export default class SelectDiffType extends React.Component<any, any> {
     render () {
         // const diffTypes = this.props.diffTypes;
         const handleChange = (e: any) => {
-          this.props.onChange(e.target.value);
-        }
+            this.props.onChange(e.target.value);
+        };
 
         return (
             <select value={this.props.value} onChange={handleChange}>

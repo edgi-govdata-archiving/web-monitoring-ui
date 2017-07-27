@@ -1,9 +1,5 @@
 /* tslint:disable interface-name */
 
-// TODO: consider whether we need to support multiple ways to visualize a
-// particular diff (e.g. render text diffs side-by-side or inline -- do those
-// need separate diff type constants that correspond to the same diff algorithm,
-// `html_text`)
 export interface DiffTypes {
     [propName: string]: string;
 }
@@ -19,6 +15,7 @@ export const diffTypes: DiffTypes = {
 // TODO - map each diffType to it's corresponding endpoint string
 export const changeDiffTypes = {
     [diffTypes.HIGHLIGHTED_TEXT]: 'html_text',
+    // Commented out because this differ has some issues right now
     // [diffTypes.HIGHLIGHTED_SOURCE]: 'html_source',
     [diffTypes.HIGHLIGHTED_SOURCE]: 'source',
     [diffTypes.SIDE_BY_SIDE_RENDERED]: 'html_source'  // HACK
