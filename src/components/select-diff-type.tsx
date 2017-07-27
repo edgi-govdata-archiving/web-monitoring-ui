@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {diffTypes} from '../constants/DiffTypes';
+import {diffTypes} from '../constants/diff-types';
 
 export default class SelectDiffType extends React.Component<any, any> {
 

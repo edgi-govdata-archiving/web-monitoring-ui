@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import WebMonitoringDb, {Page, Version} from '../services/web-monitoring-db';
-import {diffTypes, changeDiffTypes} from '../constants/DiffTypes';
+import {diffTypes, changeDiffTypes} from '../constants/diff-types';
 
 import HighlightedTextDiff from './highlighted-text-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
