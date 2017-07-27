@@ -33,7 +33,7 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
   }
 
   componentWillReceiveProps (nextProps: IDiffViewProps) {
-    if (this.canFetch(nextProps)) {
+    if (this.canFetch(nextProps) && !this.propsSpecifySameDiff(nextProps)) {
       this.loadDiff(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
     }
   }
@@ -62,6 +62,13 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
       default:
         return null;
     }
+  }
+
+  private propsSpecifySameDiff (newProps: IDiffViewProps, props?: IDiffViewProps) {
+      props = props || this.props;
+      return props.a.uuid === newProps.a.uuid
+        && props.b.uuid === newProps.b.uuid
+        && props.diffType === newProps.diffType;
   }
 
   // check to see if this props object has everything necessary to perform a fetch
