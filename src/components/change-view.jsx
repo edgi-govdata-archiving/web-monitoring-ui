@@ -7,6 +7,7 @@ import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
+import VersionTimelineSelector from './version-timeline-selector';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
@@ -26,14 +27,15 @@ const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
  */
 export default class ChangeView extends React.Component {
     constructor (props) {
-        super (props);
+        super(props);
 
         this.state = {
           a: null,
           b: null,
           change: null,
           collapsedView: true,
-          diffType: undefined
+          diffType: undefined,
+          showTimeline: false,
         };
 
         // TODO: unify this default state logic with componentWillReceiveProps
@@ -55,6 +57,7 @@ export default class ChangeView extends React.Component {
         this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
         this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
+        this._toggleTimeline = this._toggleTimeline.bind(this);
         this._annotateChange = this._annotateChange.bind(this);
         this._updateAnnotation = this._updateAnnotation.bind(this);
     }
@@ -104,9 +107,22 @@ export default class ChangeView extends React.Component {
           return (<div></div>);
         }
 
+        let timeline;
+        if (this.state.showTimeline) {
+            timeline = (
+                <VersionTimelineSelector
+                    versions={page.versions}
+                    onSelect={this._updateChange.bind(this)}
+                    selectedFromVersion={this.state.a}
+                    selectedToVersion={this.state.b}
+                />
+            );
+        }
+
         return (
             <div className="change-view">
                 {this.renderVersionSelector(page)}
+                {timeline}
                 {this.renderSubmission()}
                 <DiffView page={page} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
@@ -116,18 +132,21 @@ export default class ChangeView extends React.Component {
     renderVersionSelector (page) {
         return (
             <form className="version-selector">
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>Comparison:</span>
                     <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
                 </label>
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>From:</span>
                     <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
                 </label>
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>To:</span>
                     <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange} />
                 </label>
+                <button className="btn btn-link" onClick={this._toggleTimeline}>
+                    {this.state.showTimeline ? 'Hide' : 'Show'} Timeline
+                </button>
             </form>
         );
     }
@@ -171,6 +190,11 @@ export default class ChangeView extends React.Component {
     _toggleCollapsedView (event) {
         event.preventDefault();
         this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
+    }
+
+    _toggleTimeline (event) {
+        event.preventDefault();
+        this.setState(previousState => ({showTimeline: !previousState.showTimeline}));
     }
 
     _updateAnnotation (newAnnotation) {

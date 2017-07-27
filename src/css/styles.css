@@ -209,6 +209,7 @@ ins {
 
 .version-selector {
     display: flex;
+    margin: 0.5em 0 0.1em;
 }
 
 .version-selector__item {
@@ -219,4 +220,76 @@ ins {
 .version-selector__item > span {
     font-weight: bold;
     margin-right: 0.5em;
+}
+
+.version-selector > button {
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+.version-timeline-selector {}
+
+.version-timeline-selector__list {
+    align-items: center;
+    display: flex;
+    list-style-type: none;
+    margin: 0 0 1em;
+    padding: 0 0 1em;
+    flex-direction: row-reverse;
+    overflow: auto;
+    position: relative;
+}
+
+.version-timeline-selector__list::before {
+    background: #aaa;
+    content: '';
+    height: 3px;
+    left: 0;
+    position: absolute;
+    right: 1em;
+    top: calc(50% - 2px - 0.5em);
+}
+
+.version-timeline-selector__list > li {
+    background: white;
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    display: block;
+    position: relative;
+    flex: 0 0 auto;
+    border: 2px solid #aaa;
+    margin: 1em;
+}
+
+.version-timeline-selector__list > li.error-version {
+    border: none;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.version-timeline-selector__list > li.error-version::before {
+    content: '!';
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    line-height: 1.5em;
+    color: #999;
+}
+
+.version-timeline-selector__list > li.selected {
+    border: 3px solid #66aaff;
+}
+
+.version-timeline-selector__list > li.provisionally-selected {
+    border: 3px dashed #66aaff;
+}
+
+.version-timeline-selector__label {
+    color: #666;
+    position: absolute;
+    bottom: -1.6em;
+    left: -1em;
+    right: -1em;text-align: center;
 }
