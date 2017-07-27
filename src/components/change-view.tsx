@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import WebMonitoringDb, {Annotation, Change, Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
-import SelectDiffType from './select-diffType';
+import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
