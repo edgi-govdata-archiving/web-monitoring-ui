@@ -112,7 +112,6 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     renderVersionSelector (page: Page) {
         return (
             <form className="version-selector">
-                {/*<h3>Current version: {getDateString(this.props.version.capture_time.toString())}</h3>*/}
                 <label className="version-selector__item form-group">
                     <span>Comparison:</span>
                     <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
@@ -257,34 +256,4 @@ if (!Array.prototype.findIndex) {
       return -1;
     }
   });
-}
-
-function getDateString (str: string): string {
-    const date = new Date(str);
-    const options = {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    };
-    return `${date.toLocaleDateString('en-US', options)} ${date.toLocaleTimeString('en-US')}`;
-}
-
-function loadIframe (htmlEmbed: string) {
-    // inject html
-    const iframe = document.getElementById('diff_view');
-    iframe.setAttribute('srcdoc', htmlEmbed);
-
-    iframe.onload = () => {
-        // inject diff.css to highlight <ins> and <del> elements
-        const frm = (frames as any).diff_view.contentDocument;
-        const otherhead = frm.getElementsByTagName('head')[0];
-        const link = frm.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('type', 'text/css');
-        link.setAttribute('href', `${window.location.origin}/css/diff.css`);
-        otherhead.appendChild(link);
-
-        // set iframe height = frame content
-        iframe.setAttribute('height', (iframe as any).contentWindow.document.body.scrollHeight);
-    };
 }
