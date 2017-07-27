@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
+import {diffTypes} from '../constants/diff-types';
 import WebMonitoringDb, {Annotation, Change, Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
@@ -38,6 +39,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         if (page.versions && page.versions.length > 1) {
             this.state.a = page.versions[1];
             this.state.b = page.versions[0];
+            this.state.diffType = 'SIDE_BY_SIDE_RENDERED';
         }
 
         if ('sessionStorage' in window) {
