@@ -13,7 +13,7 @@
       "scripthost"
     ],
     "module": "commonjs",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": true,
     "target": "es6"
   },

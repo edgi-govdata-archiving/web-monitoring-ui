@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
-import ChangeView from './change-view';
+import ChangeView from './change-view.jsx';
 
 // export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
 export interface IPageDetailsProps extends RouteComponentProps<{pageId: string}> {

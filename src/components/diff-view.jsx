@@ -1,40 +1,45 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import WebMonitoringDb, {Page, Version} from '../services/web-monitoring-db';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import {diffTypes, changeDiffTypes} from '../constants/diff-types';
 
-import HighlightedTextDiff from './highlighted-text-diff';
+import HighlightedTextDiff from './highlighted-text-diff.jsx';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
-export interface IDiffViewProps {
-  page: Page;
-  diffType: string;
-  a: Version;
-  b: Version;
-}
 
-// DiffView encapsulates fetching diffs, and wraps all different kinds of diff view types
-export default class DiffView extends React.Component<IDiffViewProps,any> {
-  static contextTypes = {
-    api: PropTypes.instanceOf(WebMonitoringDb),
-  };
+/**
+ * @typedef DiffViewProps
+ * @property {Page} page
+ * @property {string} diffType
+ * @property {Version} a
+ * @property {Version} b
+ */
 
-  context: {api: WebMonitoringDb};
-
-  constructor (props: IDiffViewProps) {
+/**
+ * Fetches and renders all sorts of diffs between two versions (props a and b)
+ *
+ * @class DiffView
+ * @extends {React.Component}
+ * @param {DiffViewProps} props
+ */
+export default class DiffView extends React.Component {
+  constructor (props) {
     super(props);
     this.state = {diff: null};
   }
 
   componentWillMount () {
     const { props } = this;
-    if (this.canFetch(props)){
-      this.loadDiff(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
+    if (this._canFetch(props)){
+      this._loadDiff(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
     }
   }
 
-  componentWillReceiveProps (nextProps: IDiffViewProps) {
-    if (this.canFetch(nextProps) && !this.propsSpecifySameDiff(nextProps)) {
-      this.loadDiff(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
+  /**
+   * @param {DiffViewProps} nextProps
+   */
+  componentWillReceiveProps (nextProps) {
+    if (this._canFetch(nextProps) && !this._propsSpecifySameDiff(nextProps)) {
+      this._loadDiff(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
     }
   }
 
@@ -67,27 +72,45 @@ export default class DiffView extends React.Component<IDiffViewProps,any> {
     }
   }
 
-  private propsSpecifySameDiff (newProps: IDiffViewProps, props?: IDiffViewProps) {
+  /**
+   * Determine whether a set of props specifies the same diff as another set of
+   * props (or the current props, if omitted).
+   *
+   * @private
+   * @param {DiffViewProps} newProps The new props to check
+   * @param {DiffViewProps} [props=this.props] The current props to compare to
+   * @returns {boolean}
+   */
+  _propsSpecifySameDiff (newProps, props) {
       props = props || this.props;
       return props.a.uuid === newProps.a.uuid
         && props.b.uuid === newProps.b.uuid
         && props.diffType === newProps.diffType;
   }
 
-  // check to see if this props object has everything necessary to perform a fetch
-  private canFetch (props: IDiffViewProps) {
+  /**
+   * Check whether this props object has everything needed to perform a fetch
+   * @private
+   * @param {DiffViewProps} props
+   * @returns  {boolean}
+   */
+  _canFetch (props) {
     return (props.page.uuid && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
   }
 
-  private loadDiff (pageId: string, aId: string, bId: string, diffType: string) {
+  _loadDiff (pageId, aId, bId, diffType) {
     // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
 
     Promise.resolve(this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffTypes[diffType]]))
-        .then((diff: any) => {
+        .then((diff) => {
             this.setState({diff});
         });
   }
 }
+
+DiffView.contextTypes = {
+    api: PropTypes.instanceOf(WebMonitoringDb),
+};

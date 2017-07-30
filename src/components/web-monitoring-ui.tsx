@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
-import LoginForm from './login-form';
+import LoginForm from './login-form.jsx';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list';
