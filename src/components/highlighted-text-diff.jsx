@@ -1,6 +1,6 @@
 import * as React from 'react';
-import DiffItem from './diff-item.jsx';
-import List from './list.jsx';
+import DiffItem from './diff-item';
+import List from './list';
 
 /**
  * Display a plaintext diff with additions and removals inline.

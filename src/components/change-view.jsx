@@ -3,10 +3,10 @@ import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {diffTypes} from '../constants/diff-types';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import AnnotationForm from './annotation-form.jsx';
-import DiffView from './diff-view.jsx';
-import SelectDiffType from './select-diff-type.jsx';
-import SelectVersion from './select-version.jsx';
+import AnnotationForm from './annotation-form';
+import DiffView from './diff-view';
+import SelectDiffType from './select-diff-type';
+import SelectVersion from './select-version';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
