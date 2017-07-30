@@ -2,7 +2,6 @@ const gulp = require('gulp');
 const babelify = require('babelify');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
-const tsify = require('tsify');
 
 gulp.task('default', ['css', 'browserify']);
 
@@ -14,11 +13,11 @@ gulp.task('browserify', function () {
     return browserify({
         basedir: '.',
         debug: true,
-        entries: ['src/scripts/main.tsx'],
+        entries: ['src/scripts/main.jsx'],
+        extensions: ['.jsx'],
         cache: {},
         packageCache: {}
     })
-        .plugin(tsify)
         .transform(babelify)
         .bundle()
         .pipe(source('bundle.js'))
@@ -26,6 +25,6 @@ gulp.task('browserify', function () {
 });
 
 gulp.task('watch', function() {
-    gulp.watch('src/**/*.{ts,tsx}', ['browserify']);
+    gulp.watch('src/**/*.{js,jsx}', ['browserify']);
     gulp.watch('src/**/*.css', ['css']);
 });

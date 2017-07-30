@@ -4,7 +4,7 @@ This repository is part of the EDGI [Web Monitoring Project](https://github.com/
 
 This component works with [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db) and [web-monitoring-processing](https://github.com/edgi-govdata-archiving/web-monitoring-processing) to support the next web monitoring workflow.
 
-It’s a React.js and Typescript-based browser application with a Node.js backend with the following capabilities:
+It’s a React.js-based browser application with a Node.js backend with the following capabilities:
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://edgi-web-monitor-ui.herokuapp.com)
     * LIST VIEW shows first page of records from [web-monitor-db](https://web-monitoring-db.herokuapp.com/api/v0/pages) JSON endpoint
