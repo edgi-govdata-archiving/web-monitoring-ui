@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import WebMonitoringUi from '../components/web-monitoring-ui';
+import WebMonitoringUi from '../components/web-monitoring-ui.jsx';
 
 ReactDOM.render(
     <WebMonitoringUi />,

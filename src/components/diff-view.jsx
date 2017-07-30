@@ -4,7 +4,7 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 import {diffTypes, changeDiffTypes} from '../constants/diff-types';
 
 import HighlightedTextDiff from './highlighted-text-diff.jsx';
-import SideBySideRenderedDiff from './side-by-side-rendered-diff';
+import SideBySideRenderedDiff from './side-by-side-rendered-diff.jsx';
 
 /**
  * @typedef DiffViewProps

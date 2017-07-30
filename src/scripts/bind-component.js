@@ -22,13 +22,13 @@ import * as React from 'react';
  *     <FancyComponent c="another prop" />
  *
  *
- * @param {*} props
- * @param {React.ComponentClass<any>} [Component]
- * @returns {React.StatelessComponent<any> | (React.ComponentClass<any>) => React.StatelessComponent<any>}
+ * @param {Object} props Props to bind
+ * @param {React.ComponentClass} [Component] The component to bind to
+ * @returns {React.StatelessComponent | (React.ComponentClass) => React.StatelessComponent}
  */
-export default function bindComponent (props: any, Component?: React.ComponentClass<any>) {
+export default function bindComponent (props, Component) {
     if (!Component) {
         return bindComponent.bind(null, props);
     }
-    return (addedProps: any) => React.createElement(Component, {...props, ...addedProps});
+    return (addedProps) => React.createElement(Component, {...props, ...addedProps});
 }

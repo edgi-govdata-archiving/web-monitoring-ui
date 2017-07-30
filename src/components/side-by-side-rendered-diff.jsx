@@ -1,9 +1,25 @@
 import * as React from 'react';
 import {Page} from '../services/web-monitoring-db';
 
-export default class SideBySideRenderedDiff extends React.Component<any, any> {
-    private frameA: HTMLIFrameElement;
-    private frameB: HTMLIFrameElement;
+/**
+ * @typedef {Object} SideBySideRenderedDiffProps
+ * @property {Version} a The "from" version
+ * @property {Version} b The "to" version
+ */
+
+/**
+ * Display two versions of a page, side-by-side.
+ *
+ * @class SideBySideRenderedDiff
+ * @extends {React.Component}
+ * @params {SideBySideRenderedDiffProps} props
+ */
+export default class SideBySideRenderedDiff extends React.Component {
+    constructor (props) {
+        super(props);
+        this.frameA = null;
+        this.frameB = null;
+    }
 
     // Simplistic rendering with remote content
     // render () {
@@ -34,19 +50,24 @@ export default class SideBySideRenderedDiff extends React.Component<any, any> {
         );
     }
 
-    shouldComponentUpdate (nextProps: any, nextState: any) {
+    /**
+     * @param {SideBySideRenderedDiffProps} nextProps
+     * @param {Object} nextState
+     * @returns {boolean}
+     */
+    shouldComponentUpdate (nextProps, nextState) {
         return nextProps.a !== this.props.a || nextProps.b !== this.props.b;
     }
 
     componentDidMount () {
-        this.updateContent();
+        this._updateContent();
     }
 
     componentDidUpdate () {
-        this.updateContent();
+        this._updateContent();
     }
 
-    private updateContent () {
+    _updateContent () {
         fetch(this.props.a.uri)
             .then(response => response.text())
             .then(rawSource => processSource(rawSource, this.props.page))
@@ -62,7 +83,15 @@ export default class SideBySideRenderedDiff extends React.Component<any, any> {
     }
 }
 
-function processSource (source: string, page: Page) {
+/**
+ * Process HTML source code so that it renders nicely. This includes things like
+ * adding a `<base>` tag so subresources are properly fetched.
+ *
+ * @param {string} source
+ * @param {Page} page
+ * @returns {string}
+ */
+function processSource (source, page) {
     // <meta charset> tags don't work unless they are first, so if one is
     // present, modify <head> content *after* it.
     const hasCharsetTag = /<meta charset[^>]+>/.test(source);

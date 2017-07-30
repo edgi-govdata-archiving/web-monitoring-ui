@@ -5,8 +5,8 @@ import {diffTypes} from '../constants/diff-types';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form.jsx';
 import DiffView from './diff-view.jsx';
-import SelectDiffType from './select-diff-type';
-import SelectVersion from './select-version';
+import SelectDiffType from './select-diff-type.jsx';
+import SelectVersion from './select-version.jsx';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 

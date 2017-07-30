@@ -1,6 +1,6 @@
 import WebMonitoringApi from '../web-monitoring-api';
 import WebMonitoringDb from '../web-monitoring-db';
-import * as fetch from 'fetch-mock';
+import fetch from 'fetch-mock';
 
 describe('WebMonitoringApi', () => {
     let api;
@@ -17,7 +17,7 @@ describe('WebMonitoringApi', () => {
                     }
                     return true;
                 })))
-        } as WebMonitoringDb);
+        });
     });
 
     afterEach(() => {
@@ -82,7 +82,5 @@ describe('WebMonitoringApi', () => {
             {url: 'a', site: 'first'}
         ]);
     });
-
-
 
 });

@@ -1,20 +1,28 @@
-/* tslint:disable interface-name */
 import WebMonitoringDb, {Page} from './web-monitoring-db';
 
-export interface AnalysisTimeframe {
-    start: Date;
-    end: Date;
-    duration: number;
-}
+/**
+ * @typedef {Object} AnalysisTimeframe
+ * @property {Date} start
+ * @property {Date} end
+ * @property {number} duration length of the timeframe in milliseconds
+ */
 
+/**
+ * Access the UI-specific tasking and management API
+ * @class WebMonitoringApi
+ * @param {WebMonitoringDb} dbApi Remote DB API instance to wrap
+ */
 export default class WebMonitoringApi {
-    private dbApi: WebMonitoringDb;
-
-    constructor (dbApi: WebMonitoringDb) {
+    constructor (dbApi) {
+        /** @property {WebMonitoringDb} dbApi */
         this.dbApi = dbApi;
     }
 
-    getCurrentTimeframe (): Promise<AnalysisTimeframe> {
+    /**
+     * Get the current analysis timeframe a user should be working on.
+     * @returns {Promise<AnalysisTimeframe>}
+     */
+    getCurrentTimeframe () {
         return fetch(`/api/timeframe?date=${new Date().toISOString()}`)
             .then(response => response.json())
             .then(timeframe => {
@@ -30,7 +38,12 @@ export default class WebMonitoringApi {
             });
     }
 
-    getDomainsForUser (username: string): Promise<string[]> {
+    /**
+     * Get a list of domains assigned to a given user.
+     * @param {string} username
+     * @returns {Promise<string[]>}
+     */
+    getDomainsForUser (username) {
         if (!username) {
             return Promise.reject(new TypeError('The first argument to getDomainsForUser() must be a string.'));
         }
@@ -47,20 +60,28 @@ export default class WebMonitoringApi {
             });
     }
 
-    getPagesForUser (username: string, timeframe?: AnalysisTimeframe): Promise<Page[]> {
+    /**
+     * Get a list of pages a user should analyze based on their assigned
+     * domains and the analysis timeframe.
+     *
+     * @param {string} username
+     * @param {AnalysisTimeframe} [timeframe] If omitted, defaults to current
+     * @returns {Promise<Page[]>}
+     */
+    getPagesForUser (username, timeframe) {
         const domainsRequest = this.getDomainsForUser(username);
         const timeframeRequest = Promise.resolve(timeframe || this.getCurrentTimeframe());
 
         return Promise.all([domainsRequest, timeframeRequest])
-            .then(([domains, timeframe]) => this.getPagesByDomains(
+            .then(([domains, timeframe]) => this._getPagesByDomains(
                 domains,
-                this.dateRangeString(timeframe)
+                this._dateRangeString(timeframe)
             ));
     }
 
-    private getPagesByDomains (domains: string[], dateRange?: string): Promise<Page[]> {
+    _getPagesByDomains (domains, dateRange) {
         const fetches = domains.map(domain => {
-            const query: any = {site: domain};
+            const query = {site: domain};
             if (dateRange) {
                 query.capture_time = dateRange;
             }
@@ -74,7 +95,7 @@ export default class WebMonitoringApi {
             .then(data => data.reduce((acc, arr) => acc.concat(arr), []));
     }
 
-    private dateRangeString (timeframe: {start?: Date, end?: Date}): string {
+    _dateRangeString (timeframe) {
         if (!timeframe) {
             return null;
         }

@@ -1,79 +1,88 @@
-/* tslint:disable interface-name */
 const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
 const storageLocation = 'WebMonitoringDb.token';
 
-export interface Version {
-    uuid: string;
-    page_uuid: string;
-    capture_time: Date;
-    uri: string;
-    version_hash: string;
-    source_type: string;
-    source_metadata: any;
-    created_at: Date;
-    updated_at: Date;
-    current_annotation?: any;
-}
+/**
+ * @typedef {Object} Version
+ * @property {string} uuid
+ * @property {string} page_uuid
+ * @property {Date} capture_time
+ * @property {string} uri
+ * @property {string} version_hash
+ * @property {string} source_type
+ * @property {Object} source_metadata
+ * @property {Date} created_at
+ * @property {Date} updated_at
+ */
 
-export interface Page {
-    uuid: string;
-    url: string;
-    title: string;
-    agency: string;
-    site: string;
-    created_at: Date;
-    updated_at: Date;
-    latest?: Version;
-    versions?: Version[];
-}
+/**
+ * @typedef {Object} Page
+ * @property {string} uuid
+ * @property {string} url
+ * @property {string} title
+ * @property {string} agency
+ * @property {string} site
+ * @property {Date} created_at
+ * @property {Date} updated_at
+ * @property {Version} [latest]
+ * @property {Version[]} [versions]
+ */
 
-export interface Annotation {
-    annotation: any;
-    author: any;
-    created_at: Date;
-    updated_at: Date;
-}
+/**
+ * @typedef {Object} Annotation
+ * @property {Object} annotation
+ * @property {Object} author
+ * @property {Date} created_at
+ * @property {Date} updated_at
+ */
 
-export interface Change {
-    uuid: string;
-    uuid_from: string;
-    uuid_to: string;
-    priority?: number;
-    current_annotation: any;
-    created_at?: Date;
-    updated_at?: Date;
-    significance?: number;
-}
+/**
+ * @typedef {Object} Change
+ * @property {string} uuid_from
+ * @property {string} uuid_to
+ * @property {number} [priority]
+ * @property {number} [significance]
+ * @property {Object} current_annotation
+ * @property {Date} created_at
+ * @property {Date} updated_at
+ */
 
-export interface ChangeDiff {
-    page_id: string;
-    from_version_id: string;
-    to_version_id: string;
-    diff_service: string;
-    diff_service_version: string;
-    content: any;
-}
+/**
+ * @typedef {Object} ChangeDiff
+ * @property {string} page_id
+ * @property {string} from_version_id
+ * @property {string} to_version_id
+ * @property {string} diff_service
+ * @property {string} diff_service_version
+ * @property {*} content
+ */
 
-interface IApiResponse {
-    links?: {};
-    data?: {}|any[];
-    errors?: any[];
-}
+/**
+ * @typedef ApiResponse
+ * @property {Object} [links]
+ * @property {Object|Array} [data]
+ * @property {Array} [errors]
+ */
 
-interface IWebMonitoringDbOptions {
-    url?: string;
-    useSavedCredentials?: boolean;
-}
-
+/**
+ * API wrapper for accessing information from the public Web Monitoring Database
+ * @class WebMonitoringDb
+ *
+ * @param {Object} [options]
+ * @param {string} [options.url] URL of the DB instance to contact.
+ *   Defaults to staging.
+ * @param {boolean} [options.useSavedCredentials=true] Use credentials stored
+ *   in the browser's localstorage
+ */
 export default class WebMonitoringDb {
-    userData: any;
+    /**
+     * @property {Object} userdata
+     * @property {string} url
+     * @property {string} authToken
+     * @property {boolean} isTokenVerified
+     * @property {Promise} tokenVerification
+     */
 
-    private url: string;
-    private authToken: string;
-    private isTokenVerfied: boolean;
-    private tokenVerification: Promise<any>;
-
-    constructor (options: IWebMonitoringDbOptions = {}) {
+    constructor (options) {
         this.url = options.url || defaultApiUrl;
         if (this.url.endsWith('/')) {
             this.url = this.url.slice(0, -1);
@@ -81,16 +90,22 @@ export default class WebMonitoringDb {
 
         const useSavedCredentials = options.useSavedCredentials;
         if (useSavedCredentials === true || useSavedCredentials == null) {
-            this.loadToken();
+            this._loadToken();
             // Explicit check because https://bugs.chromium.org/p/chromium/issues/detail?id=465666
             if (this.authToken) {
-                this.verifyToken(true);
+                this._verifyToken(true);
             }
         }
     }
 
-    logIn (user: string, password: string) {
-        return fetch(this.createUrl(`/users/sign_in`), {
+    /**
+     * Log into the API. Returns a promise for user info
+     * @param {string} user
+     * @param {string} password
+     * @returns {Promise<Object>}
+     */
+    logIn (user, password) {
+        return fetch(this._createUrl(`/users/sign_in`), {
             body: JSON.stringify({
                 user: {
                     email: user,
@@ -112,16 +127,19 @@ export default class WebMonitoringDb {
                 }
 
                 this.authToken = sessionData.token;
-                this.saveToken(this.authToken);
+                this._saveToken(this.authToken);
                 this.isTokenVerfied = true;
                 this.userData = sessionData.user;
                 return this.userData;
             });
     }
 
+    /**
+     * Log out of the API and dump any saved session tokens.
+     */
     logOut () {
         this.authToken = null;
-        this.saveToken('');
+        this._saveToken('');
         this.userData = null;
     }
 
@@ -133,9 +151,9 @@ export default class WebMonitoringDb {
      *   to true.
      * @returns {Promise<boolean>}
      */
-    isLoggedIn (verify: boolean = false): Promise<boolean> {
+    isLoggedIn (verify) {
         if (this.authToken && (verify || !this.isTokenVerfied)) {
-            return this.verifyToken()
+            return this._verifyToken()
                 .then(data => true)
                 .catch(() => false);
         }
@@ -143,51 +161,94 @@ export default class WebMonitoringDb {
         return Promise.resolve(!!this.userData);
     }
 
-    getPages (query?: any): Promise<Page[]> {
-        return fetch(this.createUrl('pages', query))
+    /**
+     * Get pages.
+     * @param {Object} [query]
+     * @returns {Promise<Page[]>}
+     */
+    getPages (query) {
+        return fetch(this._createUrl('pages', query))
             .then(response => response.json())
             .then(data => data.data.map(parsePage));
     }
 
-    getPage (pageId: string): Promise<Page> {
-        return fetch(this.createUrl(`pages/${pageId}`))
+    /**
+     * Get a single page.
+     * @param {string} pageId
+     * @returns {Promise<Page>}
+     */
+    getPage (pageId) {
+        return fetch(this._createUrl(`pages/${pageId}`))
             .then(response => response.json())
             .then(data => parsePage(data.data));
     }
 
-    getVersions (pageId: string): Promise<Version[]> {
-        return fetch(this.createUrl(`pages/${pageId}/versions`))
+    /**
+     * Get a list of versions of a given page.
+     * @param {string} pageId
+     * @returns {Promise<Version[]>}
+     */
+    getVersions (pageId) {
+        return fetch(this._createUrl(`pages/${pageId}/versions`))
             .then(response => response.json())
             .then(data => data.data.map(parseVersion));
     }
 
-    getVersion (pageId: string, versionId: string): Promise<Version> {
-        return fetch(this.createUrl(`pages/${pageId}/versions/${versionId}`))
+    /**
+     * Get a single version of a page.
+     * @param {string} pageId
+     * @param {string} versionId
+     * @returns {Promise<Version>}
+     */
+    getVersion (pageId, versionId) {
+        return fetch(this._createUrl(`pages/${pageId}/versions/${versionId}`))
             .then(response => response.json())
             .then(data => parseVersion(data.data));
     }
 
-    getChange (pageId: string, fromVersion: string, toVersion: string): Promise<Change> {
+    /**
+     * Get details on a change between two versions
+     * @param {string} pageId
+     * @param {string} fromVersion
+     * @param {string} toVersion
+     * @returns {Promise<Change>}
+     */
+    getChange (pageId, fromVersion, toVersion) {
         fromVersion = fromVersion || '';
         toVersion = toVersion || '';
-        return fetch(this.createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
+        return fetch(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
             .then(response => response.json())
             .then(data => parseChange(data.data));
     }
 
-    getDiff (pageId: string, aId: string, bId: string, diffType: string): Promise<ChangeDiff> {
-        // http://localhost:3000/api/v0/pages/PAGE_UID/changes/VERSION_A_UID..VERSION_B_UID/diff/html_text
-        return fetch(this.createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
+    /**
+     * Get a diff between any two versions of a page.
+     * @param {string} pageId
+     * @param {string} aId
+     * @param {string} bId
+     * @param {string} diffType
+     * @returns {Promise<ChangeDiff>}
+     */
+    getDiff (pageId, aId, bId, diffType) {
+        return fetch(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
             .then(response => response.json())
             .then(data => parseDiff(data.data));
     }
 
-    annotateChange (pageId: string, fromVersion: string, toVersion: string, annotation: any): Promise<Annotation> {
-        return fetch(this.createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}/annotations`), {
+    /**
+     * Annotate a change with an object full of freeform data.
+     * @param {string} pageId
+     * @param {string} fromVersion
+     * @param {string} toVersion
+     * @param {Object} annotation
+     * @returns {Promise<Annotation>}
+     */
+    annotateChange (pageId, fromVersion, toVersion, annotation) {
+        return fetch(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}/annotations`), {
             body: JSON.stringify(annotation),
             credentials: 'include',
             headers: new Headers({
-                'Authorization': this.authHeader(),
+                'Authorization': this._authHeader(),
                 'X-Requested-With': 'XMLHttpRequest'
             }),
             method: 'POST',
@@ -197,7 +258,7 @@ export default class WebMonitoringDb {
             .then(data => parseAnnotation(data.data));
     }
 
-    private createUrl (path: string, query?: any) {
+    _createUrl (path, query) {
         const base = path.startsWith('/') ? '' : '/api/v0/';
         let url = `${this.url}${base}${path}`;
         if (query) {
@@ -218,7 +279,7 @@ export default class WebMonitoringDb {
         return url;
     }
 
-    private loadToken () {
+    _loadToken () {
         if ('localStorage' in window) {
             this.authToken = localStorage.getItem(storageLocation);
             return this.authToken;
@@ -226,24 +287,24 @@ export default class WebMonitoringDb {
         return null;
     }
 
-    private saveToken (token: string) {
+    _saveToken (token) {
         if ('localStorage' in window) {
             localStorage.setItem(storageLocation, token);
         }
     }
 
-    private verifyToken (refresh?: boolean) {
+    _verifyToken (refresh) {
         if (!this.authToken) {
             return Promise.reject(new Error('No token to verify'));
         }
 
         if (!this.tokenVerification) {
             const url = refresh ? '/users/sign_in' : '/users/session';
-            this.tokenVerification = fetch(this.createUrl(url), {
+            this.tokenVerification = fetch(this._createUrl(url), {
                 credentials: 'include',
                 headers: new Headers({
                     'Accept': 'application/json',
-                    'Authorization': this.authHeader(),
+                    'Authorization': this._authHeader(),
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 }),
@@ -277,16 +338,16 @@ export default class WebMonitoringDb {
         return this.tokenVerification;
     }
 
-    private basicAuthHeader (user: string, password: string) {
+    _basicAuthHeader (user, password) {
         return 'Basic ' + btoa(`${user}:${password}`);
     }
 
-    private authHeader () {
+    _authHeader () {
         return `Bearer ${this.authToken}`;
     }
 }
 
-function parsePage (data: any): Page {
+function parsePage (data) {
     const page = Object.assign({}, data, {
         created_at: new Date(data.created_at),
         updated_at: new Date(data.updated_at)
@@ -303,7 +364,7 @@ function parsePage (data: any): Page {
     return page;
 }
 
-function parseVersion (data: any): Version {
+function parseVersion (data) {
     return Object.assign({}, data, {
         capture_time: new Date(data.capture_time),
         created_at: new Date(data.created_at),
@@ -311,15 +372,15 @@ function parseVersion (data: any): Version {
     });
 }
 
-function parseAnnotation (data: any): Annotation {
+function parseAnnotation (data) {
     return Object.assign({}, data, {
         created_at: new Date(data.created_at),
         updated_at: new Date(data.updated_at)
     });
 }
 
-function parseChange (data: any): Change {
-    const updatedValues: any = {uuid: `${data.uuid_from}..${data.uuid_to}`};
+function parseChange (data) {
+    const updatedValues = {uuid: `${data.uuid_from}..${data.uuid_to}`};
     if (data.created_at) {
         updatedValues.created_at = new Date(data.created_at);
     }
@@ -329,7 +390,7 @@ function parseChange (data: any): Change {
     return Object.assign({}, data, updatedValues);
 }
 
-function parseDiff (data: any): ChangeDiff {
+function parseDiff (data) {
     // temporarily massage old diff format into new diff format
     if (data.content && data.content.data) {
         data.content = {diff: data.content.data};

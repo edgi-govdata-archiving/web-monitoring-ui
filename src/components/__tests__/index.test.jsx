@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {shallow} from 'enzyme';
-import NavBar from '../nav-bar';
+import NavBar from '../nav-bar.jsx';
 
 test('navbar holds title and username', () => {
   const navbar = shallow(<NavBar title="ohhai" user={{email: 'me'}} />);

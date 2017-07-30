@@ -1,12 +1,21 @@
 import * as React from 'react';
 import {diffTypes} from '../constants/diff-types';
 
-export default class SelectDiffType extends React.Component<any, any> {
-
+/**
+ * A dropdown select box for types of diffs
+ *
+ * @class SelectDiffType
+ * @extends {React.Component}
+ * @param {Object} props
+ * @param {string} value Identifier for the selected diff type
+ * @param {Function} onChange Callback when a new value is selected. Signature:
+ *                            `string => void`
+ */
+export default class SelectDiffType extends React.Component {
     render () {
         // const diffTypes = this.props.diffTypes;
-        const handleChange = (e: any) => {
-            this.props.onChange(e.target.value);
+        const handleChange = (event) => {
+            this.props.onChange(event.target.value);
         };
 
         return (
