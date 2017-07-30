@@ -1,5 +1,3 @@
-import WebMonitoringDb, {Page} from './web-monitoring-db';
-
 /**
  * @typedef {Object} AnalysisTimeframe
  * @property {Date} start

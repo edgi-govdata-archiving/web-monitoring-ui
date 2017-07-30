@@ -134,7 +134,7 @@ export default class ChangeView extends React.Component {
 
     renderSubmission () {
         if (!this.props.user) {
-            return <div>Log in to submit annotations.</div>
+            return <div>Log in to submit annotations.</div>;
         }
 
         const markAsSignificant = () => console.error('markAsSignificant not implemented');

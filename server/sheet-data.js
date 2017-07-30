@@ -23,7 +23,7 @@ function getTaskSheetData (range) {
             }
             else {
                 resolve(response);
-            };
+            }
         });
     });
 }

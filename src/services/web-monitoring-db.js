@@ -105,7 +105,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<Object>}
      */
     logIn (user, password) {
-        return fetch(this._createUrl(`/users/sign_in`), {
+        return fetch(this._createUrl('/users/sign_in'), {
             body: JSON.stringify({
                 user: {
                     email: user,
@@ -154,7 +154,7 @@ export default class WebMonitoringDb {
     isLoggedIn (verify) {
         if (this.authToken && (verify || !this.isTokenVerfied)) {
             return this._verifyToken()
-                .then(data => true)
+                .then(() => true)
                 .catch(() => false);
         }
 

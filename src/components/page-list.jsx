@@ -67,7 +67,7 @@ export default class PageList extends React.Component {
         const onClick = this.didClickRow.bind(this, record);
 
         const shortUrl = `${record.url.substr(0, 20)}…`;
-        const rawContentPath = versionistaData && versionistaData.url.replace(/^\w+:\/\/[^\/]+\//, '');
+        const rawContentPath = versionistaData && versionistaData.url.replace(/^\w+:\/\/[^/]+\//, '');
 
         // TODO: click handling
         return (

@@ -7,7 +7,7 @@ gulp.task('default', ['css', 'browserify']);
 
 gulp.task('css', function () {
     return gulp.src('src/css/*').pipe(gulp.dest('dist/css'));
-})
+});
 
 gulp.task('browserify', function () {
     return browserify({

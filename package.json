@@ -16,6 +16,8 @@
     "browserify": "^14.0.0",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.2",
+    "eslint": "^4.3.0",
+    "eslint-plugin-react": "^7.1.0",
     "fetch-mock": "^5.12.1",
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.8",
@@ -30,6 +32,7 @@
     "watchify": "^3.9.0"
   },
   "scripts": {
+    "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
     "start": "node server/app.js",
     "test": "jest",
     "test-watch": "jest --watch"

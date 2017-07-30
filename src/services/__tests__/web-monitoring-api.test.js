@@ -1,5 +1,6 @@
+/* eslint-env jest */
+
 import WebMonitoringApi from '../web-monitoring-api';
-import WebMonitoringDb from '../web-monitoring-db';
 import fetch from 'fetch-mock';
 
 describe('WebMonitoringApi', () => {

@@ -23,7 +23,7 @@ export default class SelectDiffType extends React.Component {
               <option value="">none</option>
               {Object.keys(diffTypes).map((key) => {
                 var val = diffTypes[key];
-                return <option key={key} value={key}>{val}</option>
+                return <option key={key} value={key}>{val}</option>;
               })}
             </select>
         );

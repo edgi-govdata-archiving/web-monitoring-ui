@@ -53,7 +53,7 @@ export default class PageDetails extends React.Component {
      */
     handleEvent (event) {
         if (event.keyCode === 27) {
-            this.props.history.push(`/`);
+            this.props.history.push('/');
         }
     }
 
