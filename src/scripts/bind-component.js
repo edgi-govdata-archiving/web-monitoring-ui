@@ -30,5 +30,5 @@ export default function bindComponent (props, Component) {
     if (!Component) {
         return bindComponent.bind(null, props);
     }
-    return (addedProps) => React.createElement(Component, {...props, ...addedProps});
+    return (addedProps) => React.createElement(Component, Object.assign({}, props, addedProps));
 }
