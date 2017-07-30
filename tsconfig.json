@@ -4,6 +4,7 @@
     "src/scripts/main.tsx"
   ],
   "compilerOptions": {
+    "allowJs": true,
     "jsx": "react",
     "lib": [
       "es2016",
@@ -14,7 +15,7 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "sourceMap": true,
-    "target": "es5"
+    "target": "es6"
   },
   "exclude": [
     "node_modules"

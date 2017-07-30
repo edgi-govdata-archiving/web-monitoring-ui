@@ -1,5 +1,5 @@
 import * as React from 'react';
-import List from './list';
+import List from './list.jsx';
 import DiffItem from './diff-item';
 
 export default class HighlightedTextDiff extends React.Component<any, any> {
