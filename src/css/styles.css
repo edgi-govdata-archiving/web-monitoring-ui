@@ -114,23 +114,11 @@ body {
     flex-direction: column;
 }
 
-/* TODO: Remove ordering after @danielballan merges diff view
-         Using it as a hack to re-order components without changing tsx code.
-*/
-.change-view-container textarea{
-    border: 1px solid #c3c3c3;
-    border-radius: 3px;
-    color: #555;
-    height: 3em;
-    order: 2; /* TODO: Remove ordering after @danielballan merges diff view */
-    padding: 0.5em;
-}
-
 /* Child selector targeting last div in change view which usually should contain diff */
+/* FIXME: diff view should have a class we can select on */
 .change-view-container > div:nth-child(5n) {
     border-top: 1px solid #eee;
     display: flex;
-    order: 5; /* TODO: Remove ordering after @danielballan merges diff view */
     padding-top: 1em;
 }
 
@@ -138,7 +126,6 @@ body {
     border-bottom: 1px solid #eee;
     border-top: 1px solid #eee;
     margin: 1em 0 0.5em 0;
-    order: 0; /* TODO: Remove ordering after @danielballan merges diff view */
     padding: 0.7em 0.2em;
 }
 
@@ -147,16 +134,10 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 1em 0;
-    order: 3; /* TODO: Remove ordering after @danielballan merges diff view */
 }
 
 .selection-inputs > div {
     display: flex;
-}
-
-/* TODO: Remove hack targeting diff select after 60-diff-view merge */
-.selection-inputs > :nth-child(2n) {
-    order: -1;
 }
 
 .selection-inputs > div label {
@@ -169,7 +150,7 @@ body {
     margin-right: 17px;
 }
 
-.annotation-form {
+.annotation-form__signifiers {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -177,7 +158,15 @@ body {
 
 .annotation-inputs {
     margin: 0.4em 0;
-    order: 1; /* TODO: Remove ordering after @danielballan merges diff view */
+}
+
+.annotation-form textarea {
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+    color: #555;
+    height: 3em;
+    padding: 0.5em;
+    width: 100%;
 }
 
 .signifier-container h5 {
@@ -290,7 +279,7 @@ body {
 
 /* Media queries */
 @media (max-width: 1000px) {
-    .annotation-form, .selection-inputs {
+    .annotation-form__signifiers, .selection-inputs {
         flex-direction: column;
     }
 

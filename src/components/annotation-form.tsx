@@ -1,6 +1,5 @@
 /* tslint:disable:max-line-length */
 import * as React from 'react';
-// Using this component I found: https://github.com/mcumpl/react-lightweight-tooltip
 import {Tooltip} from 'react-lightweight-tooltip';
 import {Version} from '../services/web-monitoring-db';
 
@@ -19,11 +18,13 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
     constructor (props: IAnnotationFormProps) {
         super(props);
         this.onFieldChange = this.onFieldChange.bind(this);
+        this.onNotesChange = this.onNotesChange.bind(this);
     }
 
     render () {
+        const annotation = this.props.annotation || {};
         const common = {
-            formValues: this.props.annotation,
+            formValues: annotation,
             onChange: this.onFieldChange
         };
 
@@ -52,9 +53,12 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
             }
         };
 
+        // FIXME: should probably remove .annotation-inputs, since it is
+        // redundant with the <form>
         return (
             <div className="annotation-inputs">
                 <form className={classes.join(' ')}>
+                    <div className="annotation-form__signifiers">
                     <div className="signifier-container">
                         <h5>Individual Page Changes</h5>
                         <ul className="signifier-list">
@@ -124,6 +128,14 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
                             </Tooltip>
                         </ul>
                     </div>
+                    </div>
+
+                    <textarea
+                        name="further-notes"
+                        placeholder="Further notes"
+                        onChange={this.onNotesChange}
+                        value={annotation.notes || ''}
+                    />
                 </form>
             </div>
         );
@@ -134,6 +146,10 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
             const newAnnotation = Object.assign({}, this.props.annotation, valueObject);
             this.props.onChange(newAnnotation);
         }
+    }
+
+    private onNotesChange (event: any) {
+        this.onFieldChange({notes: event.target.value});
     }
 }
 
