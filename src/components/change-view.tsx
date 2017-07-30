@@ -132,39 +132,43 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
 
     renderSubmission () {
         if (!this.props.user) {
-            return <div>Log in to submit annotations.</div>
+            return <div>Log in to submit annotations.</div>;
         }
 
         const markAsSignificant = () => console.error('markAsSignificant not implemented');
         const addToDictionary = () => console.error('addToDictionary not implemented');
 
-        return (
-            <div className="change-view-actions">
-                <div className="row">
-                    <div className="col-md-6">
-                        <i className="fa fa-toggle-on" aria-hidden="true" />
-                        {/* TODO: should be buttons */}
-                        <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
-                        <i className="fa fa-pencil" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={this.annotateChange}>Update Record</a>
-                        <i className="fa fa-list" aria-hidden="true" />
-                        <Link to="/" className="lnk-action">Back to list view</Link>
-                    </div>
-                    <div className="col-md-6 text-right">
-                        <i className="fa fa-upload" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
-                        <i className="fa fa-database" aria-hidden="true" />
-                        <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
+        return [
+            (
+                <div className="change-view-actions">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <i className="fa fa-toggle-on" aria-hidden="true" />
+                            {/* TODO: should be buttons */}
+                            <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
+                            <i className="fa fa-pencil" aria-hidden="true" />
+                            <a className="lnk-action" href="#" onClick={this.annotateChange}>Update Record</a>
+                            <i className="fa fa-list" aria-hidden="true" />
+                            <Link to="/" className="lnk-action">Back to list view</Link>
+                        </div>
+                        <div className="col-md-6 text-right">
+                            <i className="fa fa-upload" aria-hidden="true" />
+                            <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
+                            <i className="fa fa-database" aria-hidden="true" />
+                            <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
+                        </div>
                     </div>
                 </div>
+            ),
+            (
                 <AnnotationForm
                     annotation={this.state.annotation}
                     onChange={this.updateAnnotation}
                     collapsed={this.state.collapsedView}
                 />
-                <textarea name="further-notes" placeholder="Further notes" />
-            </div>
-        );
+            ),
+            <textarea name="further-notes" placeholder="Further notes" />
+        ];
     }
 
     private toggleCollapsedView (event: any) {
