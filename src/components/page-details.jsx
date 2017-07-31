@@ -4,31 +4,28 @@ import {Link, RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 
-// export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
-export interface IPageDetailsProps extends RouteComponentProps<{pageId: string}> {
-    pages: Page[];
-    user?: any;
-}
+/**
+ * @typedef {Object} PageDetailsProps
+ * @property {Page[]} pages
+ * @property {Object} user
+ */
 
-interface IPageDetailsState {
-    page: Page;
-}
-
-export default class PageDetails extends React.Component<IPageDetailsProps, IPageDetailsState> {
-    static contextTypes = {
-        api: PropTypes.instanceOf(WebMonitoringDb)
-    };
-
-    context: {api: WebMonitoringDb};
-
-    constructor (props: IPageDetailsProps) {
+/**
+ * Renders detailed, full-screen view of a page and its versions, changes, etc.
+ *
+ * @class PageDetails
+ * @extends {React.Component}
+ * @param {PageDetailsProps} props
+ */
+export default class PageDetails extends React.Component {
+    constructor (props) {
         super(props);
         this.state = {page: null};
-        this.annotateChange = this.annotateChange.bind(this);
+        this._annotateChange = this._annotateChange.bind(this);
     }
 
     componentWillMount () {
-        this.loadPage(this.props.match.params.pageId);
+        this._loadPage(this.props.match.params.pageId);
     }
 
     componentDidMount () {
@@ -39,29 +36,39 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
         window.removeEventListener('keydown', this);
     }
 
-    componentWillReceiveProps (nextProps: IPageDetailsProps) {
+    /**
+     * @param {PageDetailsProps} nextProps
+     */
+    componentWillReceiveProps (nextProps) {
         const nextPageId = nextProps.match.params.pageId;
         if (nextPageId !== this.props.match.params.pageId) {
-            this.loadPage(nextPageId);
+            this._loadPage(nextPageId);
         }
     }
 
-    handleEvent (event: KeyboardEvent) {
+    /**
+     * This is part of the DOM event handler interface
+     * @private
+     * @param {DOMEvent} event
+     */
+    handleEvent (event) {
         if (event.keyCode === 27) {
-            this.props.history.push(`/`);
+            this.props.history.push('/');
         }
     }
 
-    annotateChange (fromVersion: string, toVersion: string, annotation: any) {
+    /**
+     * Save an annotation on a change
+     *
+     * @param {string} fromVersion ID of the `from` version of the change
+     * @param {string} toVersion ID of the `to` version of the change
+     * @param {Object} annotation
+     */
+    _annotateChange (fromVersion, toVersion, annotation) {
         this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
     }
 
     render () {
-        const returnToList = (event: React.MouseEvent<any>) => {
-            event.preventDefault();
-
-        };
-
         // TODO: should factor out a loading view
         if (!(this.state.page)) {
             return <div>Loading…</div>;
@@ -78,19 +85,19 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
                         <a className="diff_page_url" href={page.url} target="_blank" rel="noopener">{page.url}</a>
                     </div>
                     <div className="col-md-3">
-                        {this.renderPager()}
+                        {this._renderPager()}
                     </div>
                 </div>
                 <ChangeView
                     page={this.state.page}
-                    annotateChange={this.annotateChange}
+                    annotateChange={this._annotateChange}
                     user={this.props.user}
                 />
             </div>
         );
     }
 
-    private renderPager () {
+    _renderPager () {
         const allPages = this.props.pages || [];
         const index = allPages.findIndex(page => page.uuid === this.state.page.uuid);
         const previousPage = allPages[index - 1];
@@ -116,15 +123,19 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
         );
     }
 
-    private loadPage (pageId: string) {
+    _loadPage (pageId) {
         // TODO: handle the missing `.versions` collection problem better
         const fromList = this.props.pages && this.props.pages.find(
-            (page: Page) => page.uuid === pageId && !!page.versions);
+            (page) => page.uuid === pageId && !!page.versions);
 
         Promise.resolve(fromList || this.context.api.getPage(pageId))
-            .then((page: Page) => {
+            .then((page) => {
                 this.setState({page});
             });
     }
 
 }
+
+PageDetails.contextTypes = {
+    api: PropTypes.instanceOf(WebMonitoringDb)
+};

@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": false
+  },
+  // TODO: Consider using recommended React rules once we've got the basics down
+  // "extends": ["plugin:react/recommended"],
+  "rules": {
+    // Core JSX requirements
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
+  }
+}

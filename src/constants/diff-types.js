@@ -1,10 +1,4 @@
-/* tslint:disable interface-name */
-
-export interface DiffTypes {
-    [propName: string]: string;
-}
-
-export const diffTypes: DiffTypes = {
+export const diffTypes = {
     HIGHLIGHTED_TEXT: 'highlighted text',
     HIGHLIGHTED_SOURCE: 'highlighted source',
     HIGLIGHTED_RENDERED: 'higlighted rendered',

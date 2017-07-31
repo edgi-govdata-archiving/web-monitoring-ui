@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {diffTypes} from '../constants/diff-types';
-import WebMonitoringDb, {Annotation, Change, Page, Version} from '../services/web-monitoring-db';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
@@ -10,20 +10,22 @@ import SelectVersion from './select-version';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
-export interface IChangeViewProps {
-    page: Page;
-    user: any;
-    annotateChange: any;
-}
+/**
+ * @typedef ChangeViewProps
+ * @property {Page} page
+ * @property {Object} user
+ * @property {Function} _annotateChange
+ */
 
-export default class ChangeView extends React.Component<IChangeViewProps, any> {
-    static contextTypes = {
-        api: PropTypes.instanceOf(WebMonitoringDb)
-    };
-
-    context: {api: WebMonitoringDb};
-
-    constructor (props: IChangeViewProps) {
+/**
+ * Display a change between two versions of a page.
+ *
+ * @class ChangeView
+ * @extends {React.Component}
+ * @param {ChangeViewProps} props
+ */
+export default class ChangeView extends React.Component {
+    constructor (props) {
         super (props);
 
         this.state = {
@@ -52,19 +54,19 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         this.handleVersionAChange = this.handleVersionAChange.bind(this);
         this.handleVersionBChange = this.handleVersionBChange.bind(this);
         this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
-        this.toggleCollapsedView = this.toggleCollapsedView.bind(this);
-        this.annotateChange = this.annotateChange.bind(this);
-        this.updateAnnotation = this.updateAnnotation.bind(this);
+        this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
+        this._annotateChange = this._annotateChange.bind(this);
+        this._updateAnnotation = this._updateAnnotation.bind(this);
     }
 
     componentWillMount () {
-        this.updateChange();
+        this._updateChange();
     }
 
-    componentWillReceiveProps (nextProps: IChangeViewProps) {
+    componentWillReceiveProps (nextProps) {
         const nextVersions = nextProps.page.versions;
         if (nextVersions && nextVersions.length > 1) {
-            this.updateChange(nextVersions[1], nextVersions[0]);
+            this._updateChange(nextVersions[1], nextVersions[0]);
         }
     }
 
@@ -81,16 +83,16 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         // pass
     }
 
-    handleDiffTypeChange (diffType: any) {
+    handleDiffTypeChange (diffType) {
       this.setState({diffType});
       this.updateDiff();
     }
-    handleVersionAChange (version: Version) {
-        this.updateChange(version, null);
+    handleVersionAChange (version) {
+        this._updateChange(version, null);
         this.updateDiff();
     }
-    handleVersionBChange (version: Version) {
-        this.updateChange(null, version);
+    handleVersionBChange (version) {
+        this._updateChange(null, version);
         this.updateDiff();
     }
 
@@ -111,7 +113,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         );
     }
 
-    renderVersionSelector (page: Page) {
+    renderVersionSelector (page) {
         return (
             <form className="version-selector">
                 <label className="version-selector__item form-group">
@@ -132,7 +134,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
 
     renderSubmission () {
         if (!this.props.user) {
-            return <div>Log in to submit annotations.</div>
+            return <div>Log in to submit annotations.</div>;
         }
 
         const markAsSignificant = () => console.error('markAsSignificant not implemented');
@@ -144,9 +146,9 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                     <div className="col-md-6">
                         <i className="fa fa-toggle-on" aria-hidden="true" />
                         {/* TODO: should be buttons */}
-                        <a className="lnk-action" href="#" onClick={this.toggleCollapsedView}>Toggle Signifiers</a>
+                        <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
                         <i className="fa fa-pencil" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={this.annotateChange}>Update Record</a>
+                        <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
                         <i className="fa fa-list" aria-hidden="true" />
                         <Link to="/" className="lnk-action">Back to list view</Link>
                     </div>
@@ -159,23 +161,23 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
                 </div>
                 <AnnotationForm
                     annotation={this.state.annotation}
-                    onChange={this.updateAnnotation}
+                    onChange={this._updateAnnotation}
                     collapsed={this.state.collapsedView}
                 />
             </div>
         );
     }
 
-    private toggleCollapsedView (event: any) {
+    _toggleCollapsedView (event) {
         event.preventDefault();
         this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
     }
 
-    private updateAnnotation (newAnnotation: any) {
+    _updateAnnotation (newAnnotation) {
         this.setState({annotation: newAnnotation});
     }
 
-    private annotateChange (event: React.SyntheticEvent<HTMLElement>) {
+    _annotateChange (event) {
         event.preventDefault();
         // TODO: display some indicator that saving is happening/complete
         const fromVersion = this.state.a.uuid;
@@ -183,7 +185,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
     }
 
-    private updateChange (from?: Version, to?: Version) {
+    _updateChange (from, to) {
         from = from || this.state.a;
         to = to || this.state.b;
 
@@ -194,7 +196,7 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
         this.setState({a: from, b: to, annotation: null, change: null});
 
         this.context.api.getChange(this.props.page.uuid, from.uuid, to.uuid)
-            .then((change: Change) => {
+            .then(change => {
                 // only update state.change if what we want is still the same
                 // and we don't already have it
                 if (!changeMatches(change, this.state.change) && changeMatches(change, this.state)) {
@@ -207,7 +209,11 @@ export default class ChangeView extends React.Component<IChangeViewProps, any> {
     }
 }
 
-function changeMatches (change: Change, state: any) {
+ChangeView.contextTypes = {
+    api: PropTypes.instanceOf(WebMonitoringDb)
+};
+
+function changeMatches (change, state) {
     if (!state) { return false; }
     const uuidFrom = state.a ? state.a.uuid : state.uuid_from;
     const uuidTo = state.b ? state.b.uuid : state.uuid_to;
@@ -218,7 +224,7 @@ function changeMatches (change: Change, state: any) {
 // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
 if (!Array.prototype.findIndex) {
   Object.defineProperty(Array.prototype, 'findIndex', {
-    value (predicate: any) {
+    value (predicate) {
      // 1. Let O be ? ToObject(this value).
       if (this == null) {
         throw new TypeError('"this" is null or not defined');

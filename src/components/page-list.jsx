@@ -2,16 +2,20 @@ import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {Page} from '../services/web-monitoring-db';
 
-// export type IPageListProps = RouteComponentProps<{}>;
-export interface IPageListProps extends RouteComponentProps<{}> {
-    pages: Page[];
-}
+/**
+ * These props also inherit from React Router's RouteComponent props
+ * @typedef {Object} PageListProps
+ * @property {Page[]} pages
+ */
 
-export default class PageList extends React.Component<IPageListProps, null> {
-    constructor (props: IPageListProps) {
-        super(props);
-    }
-
+/**
+ * Display a list of pages.
+ *
+ * @class PageList
+ * @extends {React.Component}
+ * @param {PageListProps} props
+ */
+export default class PageList extends React.Component {
     render () {
         if (!this.props.pages) {
             return <div>Loading…</div>;
@@ -50,7 +54,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
         );
     }
 
-    renderRow (record: Page) {
+    renderRow (record) {
         const version = record.latest;
         let versionistaData;
         if (version.source_type === 'versionista') {
@@ -63,7 +67,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
         const onClick = this.didClickRow.bind(this, record);
 
         const shortUrl = `${record.url.substr(0, 20)}…`;
-        const rawContentPath = versionistaData && versionistaData.url.replace(/^\w+:\/\/[^\/]+\//, '');
+        const rawContentPath = versionistaData && versionistaData.url.replace(/^\w+:\/\/[^/]+\//, '');
 
         // TODO: click handling
         return (
@@ -80,7 +84,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
         );
     }
 
-    renderDiffLink (url: string) {
+    renderDiffLink (url) {
         if (url) {
             return <a href={url} target="_blank">{url.substr(-15)}</a>;
         }
@@ -88,7 +92,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
         return <em>[Initial Version]</em>;
     }
 
-    didClickRow (page: Page, event: React.MouseEvent<HTMLElement>) {
+    didClickRow (page, event) {
         if (isInAnchor(event.target)) {
             return;
         }
@@ -97,7 +101,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
     }
 }
 
-function isInAnchor (node: any): boolean {
+function isInAnchor (node) {
     if (!node) {
         return false;
     }

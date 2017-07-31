@@ -1,28 +1,31 @@
-/* tslint:disable:max-line-length */
 import * as React from 'react';
 import {Version} from '../services/web-monitoring-db';
 
-export interface IAnnotationFormProps {
-    annotation: any;
-    collapsed?: boolean;
-    onChange?: (annotation: any) => void;
-}
+/**
+ * @typedef {Object} AnnotationFormProps
+ * @property {Object} annotation
+ * @property {boolean} [collapsed=true]
+ * @property {Function} [onChange] Callback for changes to the annotation. It
+ *   should be of the signature `(annotation) => void`
+ */
 
-export default class AnnotationForm extends React.Component<IAnnotationFormProps, null> {
-    static defaultProps: IAnnotationFormProps = {
-        annotation: null,
-        collapsed: true
-    };
-
-    constructor (props: IAnnotationFormProps) {
+/**
+ * Form layout for marking/viewing simple annotations of changes.
+ *
+ * @class AnnotationForm
+ * @extends {React.Component}
+ * @param {AnnotationFormProps} props
+ */
+export default class AnnotationForm extends React.Component {
+    constructor (props) {
         super(props);
-        this.onFieldChange = this.onFieldChange.bind(this);
+        this._onFieldChange = this._onFieldChange.bind(this);
     }
 
     render () {
         const common = {
             formValues: this.props.annotation,
-            onChange: this.onFieldChange
+            onChange: this._onFieldChange
         };
 
         const classes = ['row', 'annotation-form'];
@@ -63,7 +66,7 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
         );
     }
 
-    private onFieldChange (valueObject: any) {
+    _onFieldChange (valueObject) {
         if (this.props.onChange) {
             const newAnnotation = Object.assign({}, this.props.annotation, valueObject);
             this.props.onChange(newAnnotation);
@@ -71,17 +74,15 @@ export default class AnnotationForm extends React.Component<IAnnotationFormProps
     }
 }
 
-interface ICheckboxProps {
-    children?: React.ReactNode;
-    formValues: any;
-    name: string;
-    onChange: (valueObject: any) => void;
-}
+AnnotationForm.defaultProps = {
+    annotation: null,
+    collapsed: true
+};
 
-function Checkbox ({children, formValues, name, onChange}: ICheckboxProps) {
+function Checkbox ({children, formValues, name, onChange}) {
     const fieldNumber = name.split('_')[1];
     const checked = !!(formValues && formValues[name]);
-    const changeHandler = (event: React.FormEvent<HTMLInputElement>) =>
+    const changeHandler = (event) =>
         onChange({[name]: event.currentTarget.checked});
 
     return (

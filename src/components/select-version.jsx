@@ -10,16 +10,26 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     year: 'numeric'
 });
 
-export default class SelectVersion extends React.PureComponent<any, any> {
+/**
+ * A select dropdown listing page versions
+ *
+ * @class SelectVersion
+ * @extends {React.PureComponent}
+ * @param {Object} props
+ * @param {Version} [props.value] The currently selected version
+ * @param {Version[]} props.versions The list of versions to display
+ * @param {Version} props.onChange Callback for new selection. `Version => void`
+ */
+export default class SelectVersion extends React.PureComponent {
     render () {
         const value = this.props.value ? this.props.value.uuid : '';
         const versions = this.props.versions;
-        const handleChange = (e: any) => {
-            const newValue = e.target.value;
-            this.props.onChange(versions.find((v: any) => v.uuid === newValue));
+        const handleChange = event => {
+            const newValue = event.target.value;
+            this.props.onChange(versions.find(v => v.uuid === newValue));
         };
 
-        const options = versions.map((version: Version, index: number) => {
+        const options = versions.map((version, index) => {
             return (
                 <option key={version.uuid} value={version.uuid}>
                     {dateFormatter.format(version.capture_time)}
