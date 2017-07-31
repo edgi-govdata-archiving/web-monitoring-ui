@@ -1,16 +1,19 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
-// TODO: once we have a proper user object, this should not be a string
-export interface INavBarProps {
-    logOut: () => void;
-    showLogin: () => void;
-    title?: string;
-    user?: any;
-}
+/**
+ * @typedef {Object} NavBarProps
+ * @property {Function} logOut Callback requesting the user be logged out
+ * @property {Function} showLogin Callback requesting a login form to show
+ * @property {string} title
+ * @property {Object} user
+ */
 
-// TODO: this will get a lot more complex to be able to trigger navigation, etc.
-export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut}: INavBarProps) => (
+/**
+ * The NavBar component renders an app title, user info, links, etc.
+ * @param {NavBarProps} props
+ */
+export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut}) => (
     <nav className="navbar navbar-inverse">
         <div className="container-fluid">
             <div className="navbar-header">
@@ -25,7 +28,7 @@ export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut}:
     </nav>
 );
 
-function renderUserInfo (user: any, showLogin: () => void, logOut: () => void) {
+function renderUserInfo (user, showLogin, logOut) {
     if (user) {
         return (
             <span className="auth-status">

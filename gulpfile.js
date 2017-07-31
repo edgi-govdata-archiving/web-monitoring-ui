@@ -1,29 +1,30 @@
-var gulp = require("gulp");
-var browserify = require("browserify");
-var source = require('vinyl-source-stream');
-var tsify = require("tsify");
+const gulp = require('gulp');
+const babelify = require('babelify');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
 
-gulp.task("default", ["css", "browserify"]);
+gulp.task('default', ['css', 'browserify']);
 
-gulp.task("css", function () {
+gulp.task('css', function () {
     return gulp.src('src/css/*').pipe(gulp.dest('dist/css'));
-})
+});
 
-gulp.task("browserify", function () {
+gulp.task('browserify', function () {
     return browserify({
         basedir: '.',
         debug: true,
-        entries: ['src/scripts/main.tsx'],
+        entries: ['src/scripts/main.jsx'],
+        extensions: ['.jsx'],
         cache: {},
         packageCache: {}
     })
-        .plugin(tsify)
+        .transform(babelify)
         .bundle()
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest("dist"));
+        .pipe(gulp.dest('dist'));
 });
 
-gulp.task("watch", function() {
-    gulp.watch('src/**/*.{ts,tsx}', ['browserify']);
+gulp.task('watch', function() {
+    gulp.watch('src/**/*.{js,jsx}', ['browserify']);
     gulp.watch('src/**/*.css', ['css']);
 });

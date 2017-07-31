@@ -1,8 +1,17 @@
 import * as React from 'react';
-import List from './list';
 import DiffItem from './diff-item';
+import List from './list';
 
-export default class HighlightedTextDiff extends React.Component<any, any> {
+/**
+ * Display a plaintext diff with additions and removals inline.
+ *
+ * @class HighlightedTextDiff
+ * @extends {React.Component}
+ * @param {Object} props
+ * @param {ChangeDiff} props.diff
+ * @param {string} props.className
+ */
+export default class HighlightedTextDiff extends React.Component {
     render () {
         if (!this.props) {
             return null;

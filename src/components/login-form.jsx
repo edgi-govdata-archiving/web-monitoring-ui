@@ -3,60 +3,64 @@ import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 
-export interface ILoginFormProps {
-    cancelLogin: () => void;
-    onLogin: (user: any) => void;
-}
+/**
+ * @typedef {Object} LoginFormProps
+ * @property {Function} cancelLogin Should match `() => void`
+ * @property {Function} onLogin Callback when a user has logged in successfully.
+ *   Its signature should match `user => void`
+ */
 
-export interface ILoginFormState {
-    email: string;
-    password: string;
-    error: any;
-}
+/**
+ * @typedef LoginFormState
+ * @property {string} email
+ * @property {string} password
+ * @property {Object} [error]
+ */
 
-export default class LoginPannel extends React.Component<ILoginFormProps, ILoginFormState> {
-    static contextTypes = {
-        api: PropTypes.instanceOf(WebMonitoringDb)
-    };
-
-    context: {api: WebMonitoringDb};
-
-    constructor (props: ILoginFormProps) {
+/**
+ * Displays a login form and communicates with the API to obtain and save
+ * session tokens for the user when they log in.
+ *
+ * @class LoginPannel
+ * @extends {React.Component}
+ */
+export default class LoginPanel extends React.Component {
+    constructor (props) {
         super(props);
         this.state = {email: '', password: '', error: null};
-        this.updateEmail = this.updateEmail.bind(this);
-        this.updatePassword = this.updatePassword.bind(this);
-        this.logIn = this.logIn.bind(this);
-        this.cancel = this.cancel.bind(this);
+        this._updateEmail = this._updateEmail.bind(this);
+        this._updatePassword = this._updatePassword.bind(this);
+        this._logIn = this._logIn.bind(this);
+        this._cancel = this._cancel.bind(this);
     }
 
     render () {
         return (
-            <form className="login-form" onSubmit={this.logIn}>
+            <form className="login-form" onSubmit={this._logIn}>
                 <h1>Log In</h1>
 
-                {this.renderError()}
+                {this._renderError()}
 
                 <label className="form-group">
                     <span className="info-text">E-mail Address:</span>
-                    <input className="form-control" type="text" name="email" onChange={this.updateEmail} />
+                    <input className="form-control" type="text" name="email" onChange={this._updateEmail} />
                 </label>
 
                 <label className="form-group">
                     <span className="info-text">Password:</span>
-                    <input className="form-control" type="password" name="password" onChange={this.updatePassword} />
+                    <input className="form-control" type="password" name="password" onChange={this._updatePassword} />
                 </label>
 
                 <div className="login-form__footer">
                     <input className="login-form__submit btn btn-primary" type="submit" value="Log In" />
                     {' '}
-                    <button className="login-form__cancel btn btn-default" onClick={this.cancel}>Cancel</button>
+                    <button className="login-form__cancel btn btn-default" onClick={this._cancel}>Cancel</button>
                 </div>
             </form>
         );
     }
 
-    renderError () {
+    _renderError () {
         if (!this.state.error) {
             return;
         }
@@ -68,15 +72,15 @@ export default class LoginPannel extends React.Component<ILoginFormProps, ILogin
         );
     }
 
-    private updateEmail (event: React.FormEvent<HTMLInputElement>) {
+    _updateEmail (event) {
         this.setState({email: event.currentTarget.value});
     }
 
-    private updatePassword (event: React.FormEvent<HTMLInputElement>) {
+    _updatePassword (event) {
         this.setState({password: event.currentTarget.value});
     }
 
-    private logIn (event: React.FormEvent<HTMLFormElement>) {
+    _logIn (event) {
         event.preventDefault();
 
         if (!this.state.email || !this.state.password) {
@@ -94,8 +98,12 @@ export default class LoginPannel extends React.Component<ILoginFormProps, ILogin
             });
     }
 
-    private cancel (event: React.MouseEvent<HTMLElement>) {
+    _cancel (event) {
         event.preventDefault();
         this.props.cancelLogin();
     }
 }
+
+LoginPanel.contextTypes = {
+    api: PropTypes.instanceOf(WebMonitoringDb)
+};
