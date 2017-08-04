@@ -116,10 +116,11 @@ export default class WebMonitoringUi extends React.Component {
     }
 
     getChildContext () {
-        return {api};
+        return {api, localApi};
     }
 }
 
 WebMonitoringUi.childContextTypes = {
-    api: PropTypes.instanceOf(WebMonitoringDb)
+    api: PropTypes.instanceOf(WebMonitoringDb),
+    localApi: PropTypes.instanceOf(WebMonitoringApi)
 };

@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {diffTypes} from '../constants/diff-types';
 import WebMonitoringDb from '../services/web-monitoring-db';
+import WebMonitoringApi from '../services/web-monitoring-api';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
@@ -57,6 +58,8 @@ export default class ChangeView extends React.Component {
         this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
         this._annotateChange = this._annotateChange.bind(this);
         this._updateAnnotation = this._updateAnnotation.bind(this);
+        this._markAsSignificant = this._markAsSignificant.bind(this);
+        this._addToDictionary = this._addToDictionary.bind(this);
     }
 
     componentWillMount () {
@@ -137,8 +140,9 @@ export default class ChangeView extends React.Component {
             return <div>Log in to submit annotations.</div>;
         }
 
-        const markAsSignificant = () => console.error('markAsSignificant not implemented');
-        const addToDictionary = () => console.error('addToDictionary not implemented');
+        // TODO: when we make these buttons, this should set the disabled attr
+        const markSignificantClasses = ['lnk-action', this.state.addingToImportant ? 'disabled' : ''];
+        const addToDictionaryClasses = [this.state.addingToDictionary ? 'disabled' : ''];
 
         return (
             <div>
@@ -154,9 +158,21 @@ export default class ChangeView extends React.Component {
                     </div>
                     <div className="col-md-6 text-right">
                         <i className="fa fa-upload" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
+                        <a
+                          className={markSignificantClasses.join(' ')}
+                          href="#"
+                          onClick={this._markAsSignificant}
+                        >
+                          Add Important Change
+                        </a>
                         <i className="fa fa-database" aria-hidden="true" />
-                        <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
+                        <a
+                          className={addToDictionaryClasses.join(' ')}
+                          href="#"
+                          onClick={this._addToDictionary}
+                        >
+                          Add to Dictionary
+                        </a>
                     </div>
                 </div>
                 <AnnotationForm
@@ -171,6 +187,38 @@ export default class ChangeView extends React.Component {
     _toggleCollapsedView (event) {
         event.preventDefault();
         this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
+    }
+
+    _markAsSignificant (event) {
+      event.preventDefault();
+      if (isDisabled(event.currentTarget)) return;
+
+      this.setState({addingToImportant: true});
+      const onComplete = () => this.setState({addingToImportant: false});
+
+      this.context.localApi.addChangeToImportant(
+        this.props.page,
+        this.state.a,
+        this.state.b,
+        this.state.annotation
+      )
+        .then(onComplete, onComplete);
+    }
+
+    _addToDictionary (event) {
+      event.preventDefault();
+      if (isDisabled(event.currentTarget)) return;
+
+      this.setState({addingToDictionary: true});
+      const onComplete = () => this.setState({addingToDictionary: false});
+
+      this.context.localApi.addChangeToDictionary(
+        this.props.page,
+        this.state.a,
+        this.state.b,
+        this.state.annotation
+      )
+        .then(onComplete, onComplete);
     }
 
     _updateAnnotation (newAnnotation) {
@@ -210,7 +258,8 @@ export default class ChangeView extends React.Component {
 }
 
 ChangeView.contextTypes = {
-    api: PropTypes.instanceOf(WebMonitoringDb)
+    api: PropTypes.instanceOf(WebMonitoringDb),
+    localApi: PropTypes.instanceOf(WebMonitoringApi)
 };
 
 function changeMatches (change, state) {
@@ -218,6 +267,10 @@ function changeMatches (change, state) {
     const uuidFrom = state.a ? state.a.uuid : state.uuid_from;
     const uuidTo = state.b ? state.b.uuid : state.uuid_to;
     return change && change.uuid_from === uuidFrom && change.uuid_to === uuidTo;
+}
+
+function isDisabled (element) {
+  return element.disabled || element.classList.contains('disabled');
 }
 
 /* Polyfill for Array.prototype.findIndex */
