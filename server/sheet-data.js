@@ -5,26 +5,17 @@ const config = require('./configuration');
 const sheets = google.sheets('v4');
 
 function getTaskSheetData (range) {
-    const credentials = config.baseConfiguration();
-    const request = {
-        range,
-        spreadsheetId: credentials.GOOGLE_TASK_SHEET_ID,
-        auth: credentials.GOOGLE_SHEETS_API_KEY,
-        quotaUser: makeId()
-    };
-
-    return new Promise((resolve, reject) => {
-        sheets.spreadsheets.values.get(request, (error, response) => {
-            if (error) {
-                console.error('GOOGLE API ERROR:', error);
-                reject({
-                    error: `Error retrieving data from Google Sheets: ${error.message}`
-                });
-            }
-            else {
-                resolve(response);
-            }
-        });
+  const configuration = config.baseConfiguration();
+  return addAuthentication({
+    range,
+    spreadsheetId: configuration.GOOGLE_TASK_SHEET_ID
+  })
+    .then(promisable(sheets.spreadsheets.values.get))
+    .catch(error => {
+      console.error('GOOGLE API ERROR:', error);
+      throw {
+          error: `Error retrieving data from Google Sheets: ${error.message}`
+      };
     });
 }
 
@@ -84,19 +75,7 @@ function findLatestTimeframe (rows, relativeToDate) {
     throw {error: 'No timeframes contain the current date.'};
 }
 
-// Make fake id's to pass to quotaUser, so that we don't hit quota limits on the server
-function makeId () {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (var i = 0; i < 5; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-}
-
- /**
+/**
  * Appends record to google sheet
  *
  * @param {string[]} [values] Column values of row record in an array
@@ -104,46 +83,79 @@ function makeId () {
  * @param {Object}   [configuration] baseConfiguration holding .env variables
  * @returns {Promise<string>} Simple 'ok' message for now
  */
+function appendRowGoogleSheet(values, sheetID) {
+  return addAuthentication({
+    spreadsheetId: sheetID,
+    // supply a cell where data exists, Google decides for itself where the data table ends and appends, using extreme range again to grab everything
+    range: 'B3:ZZZ',
+    resource: {
+      values: [
+        values
+      ]
+    },
+    valueInputOption: 'RAW',
+    insertDataOption: 'INSERT_ROWS'
+  })
+    .then(promisable(sheets.spreadsheets.values.append))
+    .then(() => 'Successfully UPDATED!');
+}
 
-function appendRowGoogleSheet(values, sheetID, configuration) {
-    const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
 
-    // replaces \n in .env variable with actual new lines, which the auth client expects
-    const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
+// ------------------- PRIVATE UTILITIES -----------------------
 
-    let jwtClient = new google.auth.JWT(
-       clientEmail,
-       null,
-       privateKey,
-       ['https://www.googleapis.com/auth/spreadsheets']);
+let authTokens;
+let authClient;
 
+/**
+ * Add authentication information to a request object for Google API calls.
+ * If there is an authenticated client on hand, it will be used. Otherwise,
+ * a new authenticated client will be created and logged in before returning
+ * the object with authentication information.
+ * @private
+ * @param {Object} requestData
+ * @returns {Promise<Object>} requestData modified with auth client
+ */
+function addAuthentication (requestData) {
+  return new Promise((resolve, reject) => {
+    if (!authTokens || Date.now() > authTokens.expiry_date - 30000) {
+      const configuration = config.baseConfiguration();
+      const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
+      // replaces \n in .env variable with actual new lines, which the auth client expects
+      const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
+
+      authClient = new google.auth.JWT(
+        clientEmail,
+        null,
+        privateKey,
+        ['https://www.googleapis.com/auth/spreadsheets']);
+
+      authClient.authorize((error, tokens) => {
+        if (error) return reject(error);
+        authTokens = tokens;
+        resolve(Object.assign({auth: authClient}, requestData));
+      });
+    }
+    else {
+      resolve(Object.assign({auth: authClient}, requestData));
+    }
+  });
+}
+
+/**
+ * Convert a callback-based async function into a promise-based function.
+ * @param {Function} functionWithCallback
+ * @returns {Function} Function that returns a promise
+ */
+function promisable (functionWithCallback) {
+  return (...input) => {
     return new Promise((resolve, reject) => {
-            jwtClient.authorize(function (err, tokens) {
-            if (err) {
-                reject(err);
-            } else {
-                var request = {
-                    spreadsheetId: sheetID,
-                    // supply a cell where data exists, Google decides for itself where the data table ends and appends, using extreme range again to grab everything
-                    range: 'A1:ZZZ',
-                    resource: {
-                        values: [
-                            values
-                        ]
-                    },
-                    valueInputOption: 'RAW',
-                    insertDataOption: 'INSERT_ROWS',
-                    auth: jwtClient,
-                };
-                sheets.spreadsheets.values.append(request, function(err, response) {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve("Successfully UPDATED!");
-                });
-            }
-        });
+      const callback = (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      };
+      functionWithCallback.apply(null, [...input, callback]);
     });
+  };
 }
 
 exports.getDomains = getDomains;
