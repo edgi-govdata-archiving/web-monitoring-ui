@@ -75,29 +75,173 @@ function findLatestTimeframe (rows, relativeToDate) {
   throw {error: 'No timeframes contain the current date.'};
 }
 
+function addChangeToDictionary (data) {
+  const versionista = data.to_version.source_type === 'versionista'
+    && data.to_version.source_metadata;
+
+  const row = [
+    // Index
+    '',
+    // UUID
+    `${data.from_version.uuid}..${data.to_version.uuid}`,
+    // Output Date/Time
+    formatDate(),
+    // Agency
+    data.page.agency,
+    // Site Name
+    data.page.site,
+    // Page Name
+    data.page.title,
+    // URL
+    data.page.url,
+    // Page View URL
+    // TODO: should these all be the web-monitoring-ui URLs instead?
+    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}` : '',
+    // Last Two - Side by Side
+    versionista ? versionista.diff_with_previous_url : '',
+    // Latest to Base - Side by Side
+    versionista ? versionista.diff_with_first_url : '',
+    // Date Found - Latest
+    formatDate(data.from_version.capture_time),
+    // Date Found - Base
+    '', // we don't have this information
+    // Diff Hash
+    versionista ? versionista.diff_hash : '',
+    // Diff Length
+    versionista ? versionista.diff_length : '',
+    // Who Found This?
+    data.user,
+    // Classification
+    '',
+    // Description
+    data.annotation && data.annotation.notes || ''
+  ];
+
+  return appendRowToSheet(
+    row,
+    config.baseConfiguration().GOOGLE_DICTIONARY_SHEET_ID
+  )
+    .then(() => 'Successfully appended');
+}
+
+function addChangeToImportant (data) {
+  const versionista = data.to_version.source_type === 'versionista'
+    && data.to_version.source_metadata;
+  const annotation = data.annotation || {};
+
+  const row = [
+    // Checked
+    '',
+    // Index
+    '',
+    // Unique ID
+    `${data.from_version.uuid}..${data.to_version.uuid}`,
+    // Output Date/Time
+    formatDate(),
+    // Agency
+    data.page.agency,
+    // Site Name
+    data.page.site,
+    // Page Name
+    data.page.title,
+    // URL
+    data.page.url,
+    // Page View URL
+    // TODO: should these all be the web-monitoring-ui URLs instead?
+    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}` : '',
+    // Last Two - Side by Side
+    versionista ? versionista.diff_with_previous_url : '',
+    // Latest to Base - Side by Side
+    versionista ? versionista.diff_with_first_url : '',
+    // Date Found - Latest
+    formatDate(data.from_version.capture_time),
+    // Date Found - Base
+    '', // we don't have this information
+    // Diff Length
+    versionista ? versionista.diff_length : '',
+    // Diff Hash
+    versionista ? versionista.diff_hash : '',
+    // Text diff length
+    versionista ? versionista.diff_text_length : '',
+    // Text diff hash
+    versionista ? versionista.diff_text_hash : '',
+    // Who Found This?
+    data.user,
+    // 1
+    annotation.indiv_1 ? 'y' : '',
+    // 2
+    annotation.indiv_2 ? 'y' : '',
+    // 3
+    annotation.indiv_3 ? 'y' : '',
+    // 4
+    annotation.indiv_4 ? 'y' : '',
+    // 5
+    annotation.indiv_5 ? 'y' : '',
+    // 6
+    annotation.indiv_6 ? 'y' : '',
+    // 7
+    annotation.repeat_7 ? 'y' : '',
+    // 8
+    annotation.repeat_8 ? 'y' : '',
+    // 9
+    annotation.repeat_9 ? 'y' : '',
+    // 10
+    annotation.repeat_10 ? 'y' : '',
+    // 11
+    annotation.repeat_11 ? 'y' : '',
+    // 12
+    annotation.repeat_12 ? 'y' : '',
+    // 1
+    annotation.sig_1 ? 'y' : '',
+    // 2
+    annotation.sig_2 ? 'y' : '',
+    // 3
+    annotation.sig_3 ? 'y' : '',
+    // 4
+    annotation.sig_4 ? 'y' : '',
+    // 5
+    annotation.sig_5 ? 'y' : '',
+    // 6
+    annotation.sig_6 ? 'y' : '',
+    // Choose from drop down menu (2 columns)
+    '', '',
+    // Leave blank (used on Patterns sheet)
+    '',
+    // Further Notes
+    annotation.notes || ''
+  ];
+
+  return appendRowToSheet(
+    row,
+    config.baseConfiguration().GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
+    'A6:AN6'
+  )
+    .then(() => 'Successfully appended');
+}
+
 /**
- * Appends record to google sheet
+ * Append a row to a google sheet
  *
- * @param {string[]} [values] Column values of row record in an array
- * @param {string}   [sheetID] Sheet ID of google spreadsheet
- * @param {Object}   [configuration] baseConfiguration holding .env variables
- * @returns {Promise<string>} Simple 'ok' message for now
+ * @param {string[]} values Column values of row  to append
+ * @param {string}   spreadsheedId ID of Google sheet to append to
+ * @param {string}   [range] Range identifying the data to append to in sheet,
+ *   e.g. `A3:Z3`. This is NOT the range after which to append -- Google sheets
+ *   identifies a continuous series of rows that intersect with this range and
+ *   appends *after those rows.*
+ * @returns {Promise<Object>} Response data from Google Sheets
  */
-function appendRowGoogleSheet(values, sheetID) {
+function appendRowToSheet(values, spreadsheetId, range = 'A3:ZZZ') {
   return addAuthentication({
-    spreadsheetId: sheetID,
+    spreadsheetId,
     // supply a cell where data exists, Google decides for itself where the data table ends and appends, using extreme range again to grab everything
-    range: 'B3:ZZZ',
+    range,
     resource: {
-      values: [
-        values
-      ]
+      values: [values]
     },
     valueInputOption: 'RAW',
     insertDataOption: 'INSERT_ROWS'
   })
-    .then(promisable(sheets.spreadsheets.values.append))
-    .then(() => 'Successfully UPDATED!');
+    .then(promisable(sheets.spreadsheets.values.append));
 }
 
 
@@ -158,6 +302,22 @@ function promisable (functionWithCallback) {
   };
 }
 
+function formatDate (date) {
+  if (!date) {
+    date = new Date();
+  }
+  else if (typeof date === 'string') {
+    date = new Date(date);
+  }
+
+  return date
+    .toISOString()
+    .replace('T', ' ')
+    .replace(/(\d\d)\.\d+/, '$1')
+    .replace('Z', ' GMT');
+}
+
 exports.getDomains = getDomains;
 exports.getCurrentTimeframe = getCurrentTimeframe;
-exports.appendRowGoogleSheet = appendRowGoogleSheet;
+exports.addChangeToDictionary = addChangeToDictionary;
+exports.addChangeToImportant = addChangeToImportant;

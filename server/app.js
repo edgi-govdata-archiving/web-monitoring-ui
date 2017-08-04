@@ -62,27 +62,15 @@ function validateChangeBody (request, response, next) {
 }
 
 app.post('/api/importantchange', validateChangeBody, function(request, response) {
-  const configuration = config.baseConfiguration();
-  const body = request.body;
-  // TODO: fill in with appropriate values
-  const values = [
-    `${body.from_version.uuid}..${body.to_version.uuid}`,
-    'Test test yeah!'
-  ];
-  const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_IMPORTANT_CHANGE_SHEET_ID, configuration);
-  message.then(data => response.json(data)).catch(data => response.json(data));
+  sheetData.addChangeToImportant(request.body)
+    .then(data => response.json(data))
+    .catch(error => response.status(500).json(error));
 });
 
 app.post('/api/dictionary', validateChangeBody, function(request, response) {
-  const configuration = config.baseConfiguration();
-  const body = request.body;
-  // TODO: fill in with appropriate values
-  const values = [
-    `${body.from_version.uuid}..${body.to_version.uuid}`,
-    'Test test yeah!'
-  ];
-  const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_DICTIONARY_SHEET_ID, configuration);
-  message.then(data => response.json(data)).catch(data => response.json(data));
+  sheetData.addChangeToDictionary(request.body)
+    .then(data => response.json(data))
+    .catch(error => response.status(500).json(error));
 });
 
 /**
