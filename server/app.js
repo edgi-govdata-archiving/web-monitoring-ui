@@ -9,19 +9,19 @@ const config = require('./configuration');
 
 const serverPort = process.env.PORT || 3001;
 const filterArray = [
-    'WEB_MONITORING_DB_URL'
+  'WEB_MONITORING_DB_URL'
 ];
 
 if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
-    app.use((request, response, next) => {
-        if (request.secure || request.headers['x-forwarded-proto'] === 'https') {
-            return next();
-        }
-        response.redirect(
-            301,
-            `https://${request.headers.host}${request.originalUrl}`
-        );
-    });
+  app.use((request, response, next) => {
+    if (request.secure || request.headers['x-forwarded-proto'] === 'https') {
+      return next();
+    }
+    response.redirect(
+      301,
+      `https://${request.headers.host}${request.originalUrl}`
+    );
+  });
 }
 
 app.set('views', path.join(__dirname, '../views'));
@@ -30,20 +30,20 @@ app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 
 app.get('/api/domains/:username', function(request, response) {
-    const username = request.params.username;
+  const username = request.params.username;
 
-    sheetData.getDomains(username)
-        .then(data => response.json(data))
-        .catch(error => response
-            .status(error.status || 500)
-            .json(error));
+  sheetData.getDomains(username)
+    .then(data => response.json(data))
+    .catch(error => response
+      .status(error.status || 500)
+      .json(error));
 });
 
 app.get('/api/timeframe', function(request, response) {
-    const date = request.query.date && new Date(request.query.date);
-    sheetData.getCurrentTimeframe(date)
-        .then(data => response.json(data))
-        .catch(error => response.status(500).json(error));
+  const date = request.query.date && new Date(request.query.date);
+  sheetData.getCurrentTimeframe(date)
+    .then(data => response.json(data))
+    .catch(error => response.status(500).json(error));
 });
 
 function validateChangeBody (request, response, next) {
@@ -69,7 +69,7 @@ app.post('/api/importantchange', validateChangeBody, function(request, response)
     `${body.from_version.uuid}..${body.to_version.uuid}`,
     'Test test yeah!'
   ];
-  const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_IMPORTANT_CHANGE_SHEET_ID, configuration)
+  const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_IMPORTANT_CHANGE_SHEET_ID, configuration);
   message.then(data => response.json(data)).catch(data => response.json(data));
 });
 
@@ -81,7 +81,7 @@ app.post('/api/dictionary', validateChangeBody, function(request, response) {
     `${body.from_version.uuid}..${body.to_version.uuid}`,
     'Test test yeah!'
   ];
-  const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_DICTIONARY_SHEET_ID, configuration)
+  const message = sheetData.appendRowGoogleSheet(values, configuration.GOOGLE_DICTIONARY_SHEET_ID, configuration);
   message.then(data => response.json(data)).catch(data => response.json(data));
 });
 
@@ -89,11 +89,11 @@ app.post('/api/dictionary', validateChangeBody, function(request, response) {
  * Main view for manual entry
  */
 app.get('*', function (request, response) {
-    response.render('main.html', {
-        configuration: config.filterConfiguration(filterArray)
-    });
+  response.render('main.html', {
+    configuration: config.filterConfiguration(filterArray)
+  });
 });
 
 app.listen(serverPort, function () {
-    console.log(`Listening on port ${serverPort}`);
+  console.log(`Listening on port ${serverPort}`);
 });

@@ -14,65 +14,65 @@ function getTaskSheetData (range) {
     .catch(error => {
       console.error('GOOGLE API ERROR:', error);
       throw {
-          error: `Error retrieving data from Google Sheets: ${error.message}`
+        error: `Error retrieving data from Google Sheets: ${error.message}`
       };
     });
 }
 
 function getDomains (username) {
-    return getTaskSheetData('A2:ZZZ') // extreme range to get whole spreadsheet
-        .then(response => {
-            const domains = findUserRecord(username, response.values);
-            if (domains) {
-                return {domains};
-            }
-            else {
-                throw {
-                    error: `${username} not found.`,
-                    status: 404
-                };
-            }
-        });
+  return getTaskSheetData('A2:ZZZ') // extreme range to get whole spreadsheet
+    .then(response => {
+      const domains = findUserRecord(username, response.values);
+      if (domains) {
+        return {domains};
+      }
+      else {
+        throw {
+          error: `${username} not found.`,
+          status: 404
+        };
+      }
+    });
 }
 
 function findUserRecord (username, records) {
-    const lowerName = username.toLowerCase();
-    const domains = records.find(record => lowerName === record[0].toLowerCase());
+  const lowerName = username.toLowerCase();
+  const domains = records.find(record => lowerName === record[0].toLowerCase());
 
-    return domains ? domains.slice(1) : null;
+  return domains ? domains.slice(1) : null;
 }
 
 function getCurrentTimeframe (date) {
-        return getTaskSheetData('Timeframes!A2:B')
-        .then(response => {
-            const now = date ? date.getTime() : Date.now();
-            const frame = findLatestTimeframe(response.values, now);
+  return getTaskSheetData('Timeframes!A2:B')
+    .then(response => {
+      const now = date ? date.getTime() : Date.now();
+      const frame = findLatestTimeframe(response.values, now);
 
-            const intervals = Math.floor((now - frame.start) / frame.duration);
-            const currentStart = frame.start + (intervals - 1) * frame.duration;
-            const currentEnd = currentStart + frame.duration;
+      const intervals = Math.floor((now - frame.start) / frame.duration);
+      const currentStart = frame.start + (intervals - 1) * frame.duration;
+      const currentEnd = currentStart + frame.duration;
 
-            return {
-                start: (new Date(currentStart)).toISOString(),
-                end: (new Date(currentEnd)).toISOString(),
-                duration: frame.duration
-            };
-        });
+      return {
+        start: (new Date(currentStart)).toISOString(),
+        end: (new Date(currentEnd)).toISOString(),
+        duration: frame.duration
+      };
+    });
 }
 
 function findLatestTimeframe (rows, relativeToDate) {
-    for (let i = rows.length - 1; i >= 0; i--) {
-        const rowDate = new Date(rows[i][0]).getTime();
-        const rowDuration = parseFloat(rows[i][1]) * 1000;
-        if (rowDate + rowDuration <= relativeToDate) {
-            return {
-                start: rowDate,
-                duration: rowDuration
-            };
-        }
+  for (let i = rows.length - 1; i >= 0; i--) {
+    const rowDate = new Date(rows[i][0]).getTime();
+    const rowDuration = parseFloat(rows[i][1]) * 1000;
+    if (rowDate + rowDuration <= relativeToDate) {
+      return {
+        start: rowDate,
+        duration: rowDuration
+      };
     }
+  }
 
-    throw {error: 'No timeframes contain the current date.'};
+  throw {error: 'No timeframes contain the current date.'};
 }
 
 /**
