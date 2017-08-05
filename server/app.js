@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const makeRequest = require('request');
 const app = express();
 const path = require('path');
 const sheetData = require('./sheet-data');
@@ -61,17 +62,53 @@ function validateChangeBody (request, response, next) {
   next();
 }
 
-app.post('/api/importantchange', validateChangeBody, function(request, response) {
-  sheetData.addChangeToImportant(request.body)
-    .then(data => response.json(data))
-    .catch(error => response.status(500).json(error));
-});
+function authorizeRequest (request, response, next) {
+  if (!request.headers.authorization) {
+    return response.status(401).json({error: 'You must include authorization headers'});
+  }
 
-app.post('/api/dictionary', validateChangeBody, function(request, response) {
-  sheetData.addChangeToDictionary(request.body)
-    .then(data => response.json(data))
-    .catch(error => response.status(500).json(error));
-});
+  let host = config.baseConfiguration().WEB_MONITORING_DB_URL;
+  if (!host.endsWith('/')) {
+    host += '/';
+  }
+
+  makeRequest({
+    url: `${host}users/session`,
+    headers: {Authorization: request.headers.authorization},
+    callback (error, authResponse, body) {
+      if (error) {
+        console.error(error);
+        return response.status(500).json({error: 'Authentication Error'});
+      }
+      else if (authResponse.statusCode !== 200) {
+        return response.status(authResponse.statusCode).end(body);
+      }
+      next();
+    }
+  });
+}
+
+app.post(
+  '/api/importantchange',
+  authorizeRequest,
+  validateChangeBody,
+  function(request, response) {
+    sheetData.addChangeToImportant(request.body)
+      .then(data => response.json(data))
+      .catch(error => response.status(500).json(error));
+  }
+);
+
+app.post(
+  '/api/dictionary',
+  authorizeRequest,
+  validateChangeBody,
+  function(request, response) {
+    sheetData.addChangeToDictionary(request.body)
+      .then(data => response.json(data))
+      .catch(error => response.status(500).json(error));
+  }
+);
 
 /**
  * Main view for manual entry
