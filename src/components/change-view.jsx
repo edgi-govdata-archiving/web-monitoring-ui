@@ -137,23 +137,52 @@ export default class ChangeView extends React.Component {
 
     renderSubmission () {
         if (!this.props.user) {
-            return <div>Log in to submit annotations.</div>;
+          return <div>Log in to submit annotations.</div>;
         }
 
         const annotation = this.state.annotation || {};
 
-        // TODO: when we make these buttons, this should set the disabled attr
-        const markSignificantClasses = [
-          'lnk-action',
-          (this.state.addingToImportant || annotation.significance >= 0.5) ? 'disabled' : ''
-        ];
-        const addToDictionaryClasses = [
-          (this.state.addingToDictionary || annotation.isDictionary) ? 'disabled' : ''
-        ];
+        let markSignificant;
+        if (annotation.significance >= 0.5) {
+          markSignificant = <span className="status lnk-action">Significant</span>;
+        }
+        else {
+          markSignificant = (
+            <span className="lnk-action">
+              <i className="fa fa-upload" aria-hidden="true" />
+              <button
+                className="btn btn-link"
+                disabled={this.state.addingToImportant}
+                onClick={this._markAsSignificant}
+              >
+                Add Important Change
+              </button>
+            </span>
+          );
+        }
+
+        let addToDictionary;
+        if (annotation.isDictionary) {
+          addToDictionary = <span className="status">In dictionary</span>;
+        }
+        else {
+          addToDictionary = (
+            <span>
+              <i className="fa fa-database" aria-hidden="true" />
+              <button
+                className="btn btn-link"
+                disabled={this.state.addingToDictionary}
+                onClick={this._addToDictionary}
+              >
+                Add to Dictionary
+              </button>
+            </span>
+          );
+        }
 
         return (
             <div>
-                <div className="row">
+                <div className="row change-view-actions">
                     <div className="col-md-6">
                         <i className="fa fa-toggle-on" aria-hidden="true" />
                         {/* TODO: should be buttons */}
@@ -164,22 +193,8 @@ export default class ChangeView extends React.Component {
                         <Link to="/" className="lnk-action">Back to list view</Link>
                     </div>
                     <div className="col-md-6 text-right">
-                        <i className="fa fa-upload" aria-hidden="true" />
-                        <a
-                          className={markSignificantClasses.join(' ')}
-                          href="#"
-                          onClick={this._markAsSignificant}
-                        >
-                          Add Important Change
-                        </a>
-                        <i className="fa fa-database" aria-hidden="true" />
-                        <a
-                          className={addToDictionaryClasses.join(' ')}
-                          href="#"
-                          onClick={this._addToDictionary}
-                        >
-                          Add to Dictionary
-                        </a>
+                        {markSignificant}
+                        {addToDictionary}
                     </div>
                 </div>
                 <AnnotationForm
