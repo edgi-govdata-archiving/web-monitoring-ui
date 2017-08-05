@@ -116,16 +116,16 @@ export default class ChangeView extends React.Component {
     renderVersionSelector (page) {
         return (
             <form className="version-selector">
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>From:</span>
                     <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
                 </label>
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>Comparison:</span>
                     <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
                 </label>
 
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>To:</span>
                     <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange} />
                 </label>

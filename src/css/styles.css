@@ -13,11 +13,8 @@ body {
 /* ===== Containers ===== */
 .container-list-view, .container-page-view {
     background: white;
-    border: 1px solid hsla(0, 0%, 0%, .6);
-    border-radius: 3px;
-    box-shadow: 3px 3px 7px hsla(0, 0%, 0%, .5);
     color: #444;
-    margin: 0 20px;
+    margin: 0.5em;
 }
 
 .container-page-view {
@@ -42,7 +39,7 @@ body {
 
 .navbar {
     border-radius: 0;
-    padding: 10px;
+    margin-bottom: 0;
 }
 
 .navbar-text {
@@ -80,7 +77,7 @@ body {
 }
 
 .pager {
-    margin: 10px 0;
+    margin: 0;
 }
 .pager li > a {
     background-color: #f7f7f7;
@@ -114,14 +111,6 @@ body {
     flex-direction: column;
 }
 
-/* Child selector targeting last div in change view which usually should contain diff */
-/* FIXME: diff view should have a class we can select on */
-.change-view-container > div:nth-child(5n) {
-    border-top: 1px solid #eee;
-    display: flex;
-    padding-top: 1em;
-}
-
 .change-view-actions {
     border-bottom: 1px solid #eee;
     border-top: 1px solid #eee;
@@ -150,14 +139,15 @@ body {
     margin-right: 17px;
 }
 
+.annotation-form {
+    margin: 0.4em 0;
+}
+
 .annotation-form__signifiers {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 0.5em;
     width: 100%;
-}
-
-.annotation-inputs {
-    margin: 0.4em 0;
 }
 
 .annotation-form textarea {
@@ -183,6 +173,11 @@ body {
 .signifier-list {
     display: flex;
     flex-direction: column;
+}
+
+/* Remove margin from last signifier button  */
+.signifier-list > div:last-child > li {
+    margin: 0;
 }
 
 .signifier-list-item {
@@ -314,13 +309,6 @@ iframe {
     width: 100%;
 }
 
-del {
-    background-color: lightcoral;
-}
-ins {
-    background-color: lightgreen;
-}
-
 /* ===== Progress Bar ===== */
 .progress {
     width: 100%;
@@ -373,7 +361,7 @@ ins {
 .version-selector {
     display: flex;
     justify-content: space-between;
-    margin-top: 0.5em;
+    margin-top: 1em;
 }
 
 .version-selector__item {
