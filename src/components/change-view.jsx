@@ -140,9 +140,16 @@ export default class ChangeView extends React.Component {
             return <div>Log in to submit annotations.</div>;
         }
 
+        const annotation = this.state.annotation || {};
+
         // TODO: when we make these buttons, this should set the disabled attr
-        const markSignificantClasses = ['lnk-action', this.state.addingToImportant ? 'disabled' : ''];
-        const addToDictionaryClasses = [this.state.addingToDictionary ? 'disabled' : ''];
+        const markSignificantClasses = [
+          'lnk-action',
+          (this.state.addingToImportant || annotation.significance >= 0.5) ? 'disabled' : ''
+        ];
+        const addToDictionaryClasses = [
+          (this.state.addingToDictionary || annotation.isDictionary) ? 'disabled' : ''
+        ];
 
         return (
             <div>
@@ -176,7 +183,7 @@ export default class ChangeView extends React.Component {
                     </div>
                 </div>
                 <AnnotationForm
-                    annotation={this.state.annotation}
+                    annotation={annotation}
                     onChange={this._updateAnnotation}
                     collapsed={this.state.collapsedView}
                 />
@@ -193,44 +200,63 @@ export default class ChangeView extends React.Component {
       event.preventDefault();
       if (isDisabled(event.currentTarget)) return;
 
-      this.setState({addingToImportant: true});
-      const onComplete = () => this.setState({addingToImportant: false});
+      let annotation = this.state.annotation;
+      if (!annotation.significance || annotation.significance < 0.5) {
+        annotation = Object.assign({}, annotation, {significance: 0.5});
+        this._updateAnnotation(annotation);
+        this._saveAnnotation(annotation);
 
-      this.context.localApi.addChangeToImportant(
-        this.props.page,
-        this.state.a,
-        this.state.b,
-        this.state.annotation
-      )
-        .then(onComplete, onComplete);
+        this.setState({addingToImportant: true});
+        const onComplete = () => this.setState({addingToImportant: false});
+
+        this.context.localApi.addChangeToImportant(
+          this.props.page,
+          this.state.a,
+          this.state.b,
+          this.state.annotation
+        )
+          .then(onComplete, onComplete);
+      }
     }
 
     _addToDictionary (event) {
       event.preventDefault();
       if (isDisabled(event.currentTarget)) return;
 
-      this.setState({addingToDictionary: true});
-      const onComplete = () => this.setState({addingToDictionary: false});
+      let annotation = this.state.annotation;
+      if (!annotation.isDictionary) {
+        annotation = Object.assign({}, annotation, {isDictionary: true});
+        this._updateAnnotation(annotation);
+        this._saveAnnotation(annotation);
 
-      this.context.localApi.addChangeToDictionary(
-        this.props.page,
-        this.state.a,
-        this.state.b,
-        this.state.annotation
-      )
-        .then(onComplete, onComplete);
+        this.setState({addingToDictionary: true});
+        const onComplete = () => this.setState({addingToDictionary: false});
+
+        this.context.localApi.addChangeToDictionary(
+          this.props.page,
+          this.state.a,
+          this.state.b,
+          this.state.annotation
+        )
+          .then(onComplete, onComplete);
+      }
     }
 
     _updateAnnotation (newAnnotation) {
-        this.setState({annotation: newAnnotation});
+      this.setState({annotation: newAnnotation});
     }
 
     _annotateChange (event) {
-        event.preventDefault();
-        // TODO: display some indicator that saving is happening/complete
-        const fromVersion = this.state.a.uuid;
-        const toVersion = this.state.b.uuid;
-        this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
+      event.preventDefault();
+      this._saveAnnotation();
+    }
+
+    _saveAnnotation (annotation) {
+      // TODO: display some indicator that saving is happening/complete
+      annotation = annotation || this.state.annotation;
+      const fromVersion = this.state.a.uuid;
+      const toVersion = this.state.b.uuid;
+      this.props.annotateChange(fromVersion, toVersion, annotation);
     }
 
     _updateChange (from, to) {
