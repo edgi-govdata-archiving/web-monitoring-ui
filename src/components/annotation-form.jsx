@@ -136,7 +136,7 @@ export default class AnnotationForm extends React.Component {
                     <textarea
                         name="further-notes"
                         placeholder="Further notes"
-                        onChange={this.onNotesChange}
+                        onChange={this._onNotesChange}
                         value={annotation.notes || ''}
                     />
                 </form>
