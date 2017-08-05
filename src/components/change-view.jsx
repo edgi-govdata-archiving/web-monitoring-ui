@@ -106,8 +106,8 @@ export default class ChangeView extends React.Component {
 
         return (
             <div className="change-view-container">
-                {this.renderVersionSelector(page)}
                 {this.renderSubmission()}
+                {this.renderVersionSelector(page)}
                 <DiffView page={page} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
         );
@@ -117,13 +117,14 @@ export default class ChangeView extends React.Component {
         return (
             <form className="version-selector">
                 <label className="version-selector__item form-group">
-                    <span>Comparison:</span>
-                    <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
-                </label>
-                <label className="version-selector__item form-group">
                     <span>From:</span>
                     <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
                 </label>
+                <label className="version-selector__item form-group">
+                    <span>Comparison:</span>
+                    <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
+                </label>
+
                 <label className="version-selector__item form-group">
                     <span>To:</span>
                     <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange} />

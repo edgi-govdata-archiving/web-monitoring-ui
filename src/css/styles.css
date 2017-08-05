@@ -372,11 +372,12 @@ ins {
 
 .version-selector {
     display: flex;
+    justify-content: space-between;
+    margin-top: 0.5em;
 }
 
 .version-selector__item {
     font-weight: normal;
-    margin-right: 2em;
 }
 
 .version-selector__item > span {
