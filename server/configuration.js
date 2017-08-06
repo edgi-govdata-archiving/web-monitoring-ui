@@ -1,5 +1,9 @@
 'use strict';
 
+const defaultValues = {
+  WEB_MONITORING_DB_URL: 'https://api-staging.monitoring.envirodatagov.org'
+};
+
 let baseEnvironment;
 /**
  * Create a configuration object suitable for passing to the client by taking
@@ -8,7 +12,11 @@ let baseEnvironment;
  * @returns {Object}
  */
 function baseConfiguration () {
-  baseEnvironment = baseEnvironment || Object.assign({}, process.env);
+  baseEnvironment = baseEnvironment || Object.assign(
+    {},
+    defaultValues,
+    process.env
+  );
 
   let source = baseEnvironment;
   if (process.env.NODE_ENV !== 'production') {
