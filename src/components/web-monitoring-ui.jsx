@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import * as AriaModal from 'react-aria-modal';
+import AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
