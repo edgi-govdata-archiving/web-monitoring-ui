@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import DiffItem from './diff-item';
 import List from './list';
 
