@@ -262,8 +262,8 @@ let authClient;
 function addAuthentication (requestData) {
   return new Promise((resolve, reject) => {
     // If tokens expire in 30 seconds or less, refresh them.
-    const practicalExpirationDate = authTokens.expiry_date - 30000;
-    if (!authTokens || Date.now() > practicalExpirationDate) {
+    const expirationLeeway = 30000;
+    if (!authTokens || Date.now() > authTokens.expiry_date - expirationLeeway) {
       const configuration = config.baseConfiguration();
       const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
       // Replace `\n` in ENV variable with actual line breaks.
