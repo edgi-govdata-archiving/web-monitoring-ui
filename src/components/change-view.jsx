@@ -33,8 +33,11 @@ export default class ChangeView extends React.Component {
           a: null,
           b: null,
           change: null,
+          annotation: {},
           collapsedView: true,
-          diffType: undefined
+          diffType: undefined,
+          addingToDictionary: false,
+          addingToImportant: false
         };
 
         // TODO: unify this default state logic with componentWillReceiveProps
@@ -228,7 +231,7 @@ export default class ChangeView extends React.Component {
           this.props.page,
           this.state.a,
           this.state.b,
-          this.state.annotation
+          annotation
         )
           .then(onComplete, onComplete);
       }
@@ -251,7 +254,7 @@ export default class ChangeView extends React.Component {
           this.props.page,
           this.state.a,
           this.state.b,
-          this.state.annotation
+          annotation
         )
           .then(onComplete, onComplete);
       }

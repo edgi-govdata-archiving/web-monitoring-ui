@@ -261,10 +261,12 @@ let authClient;
  */
 function addAuthentication (requestData) {
   return new Promise((resolve, reject) => {
-    if (!authTokens || Date.now() > authTokens.expiry_date - 30000) {
+    // If tokens expire in 30 seconds or less, refresh them.
+    const practicalExpirationDate = authTokens.expiry_date - 30000;
+    if (!authTokens || Date.now() > practicalExpirationDate) {
       const configuration = config.baseConfiguration();
       const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
-      // replaces \n in .env variable with actual new lines, which the auth client expects
+      // Replace `\n` in ENV variable with actual line breaks.
       const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
 
       authClient = new google.auth.JWT(
