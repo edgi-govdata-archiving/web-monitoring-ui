@@ -81,7 +81,7 @@ In the next two sections, you’ll create the 3 sheets.
 
 User tasking data (analysis timeframes, who is assigned what domains and pages, etc.) is currently kept in a Google Docs spreadsheet for easy manipulation by project admins. To enable tasking in your local build, you’ll need to create your own copy of this spreadsheet.
 
-First, create a spreadsheet in Google Docs. It should have two worksheets or tabs, named:
+You can start off by making a copy of [this example tasking sheet](https://docs.google.com/spreadsheets/d/1l5TAoJBbX6xV7ZYF9g5TnryJ4-SsatXvb-6cWuTMW5A/). Otherwise, you can create one from scratch: create a spreadsheet in Google Docs. It should have two worksheets or tabs, named:
 
 1. `Tasks` (this should be the first tab)
 2. `Timeframes`
