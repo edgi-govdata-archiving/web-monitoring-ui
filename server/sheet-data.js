@@ -121,7 +121,7 @@ function addChangeToDictionary (data) {
     row,
     config.baseConfiguration().GOOGLE_DICTIONARY_SHEET_ID
   )
-    .then(() => 'Successfully appended');
+    .then(() => ({success: 'appended'}));
 }
 
 function addChangeToImportant (data) {
@@ -216,7 +216,7 @@ function addChangeToImportant (data) {
     config.baseConfiguration().GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
     'A6:AN6'
   )
-    .then(() => 'Successfully appended');
+    .then(() => ({success: 'appended'}));
 }
 
 /**
