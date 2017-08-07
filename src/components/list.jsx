@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // Basic list component taken from http://github.com/datatogether/context
 // List accepts an array of data, and an item component. It iterates through the

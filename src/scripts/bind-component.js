@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 /**
  * Similar to function.bind, but binds props to component types. Returns a
