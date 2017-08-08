@@ -289,15 +289,15 @@ body {
 
 /* Media queries */
 @media (max-width: 1000px) {
-    .annotation-form__signifiers, .selection-inputs {
+    .annotation-form__signifiers, .version-selector {
         flex-direction: column;
     }
 
-    .selection-inputs > * {
+    .version-selector > * {
         margin: 0.5em 0;
     }
 
-    .selection-inputs > select {
+    .version-selector > select {
         max-width: 215px;
         margin-left: 16px;
         margin-bottom: 10px;
