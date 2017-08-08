@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {Tooltip} from 'react-lightweight-tooltip';
 import {Version} from '../services/web-monitoring-db';
 

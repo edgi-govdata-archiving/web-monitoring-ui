@@ -1,5 +1,9 @@
 'use strict';
 
+const defaultValues = {
+  WEB_MONITORING_DB_URL: 'https://api-staging.monitoring.envirodatagov.org'
+};
+
 let baseEnvironment;
 /**
  * Create a configuration object suitable for passing to the client by taking
@@ -8,20 +12,24 @@ let baseEnvironment;
  * @returns {Object}
  */
 function baseConfiguration () {
-    baseEnvironment = baseEnvironment || Object.assign({}, process.env);
+  baseEnvironment = baseEnvironment || Object.assign(
+    {},
+    defaultValues,
+    process.env
+  );
 
-    let source = baseEnvironment;
-    if (process.env.NODE_ENV !== 'production') {
-        const fromFile = require('dotenv').config();
-        // If there is no .env file, don't throw and just use process.env
-        if (fromFile.error && fromFile.error.code !== 'ENOENT') {
-            throw fromFile.error;
-        }
-        // process.env will have been
-        source = Object.assign(fromFile.parsed || {}, baseEnvironment);
+  let source = baseEnvironment;
+  if (process.env.NODE_ENV !== 'production') {
+    const fromFile = require('dotenv').config();
+    // If there is no .env file, don't throw and just use process.env
+    if (fromFile.error && fromFile.error.code !== 'ENOENT') {
+      throw fromFile.error;
     }
+    // process.env will have been
+    source = Object.assign(fromFile.parsed || {}, baseEnvironment);
+  }
 
-    return source;
+  return source;
 }
 
 /**
@@ -29,13 +37,13 @@ function baseConfiguration () {
  * @returns {Object}
  */
 function filterConfiguration(filterArray) {
-    const source = baseConfiguration();
-    const allowedFields = filterArray;
+  const source = baseConfiguration();
+  const allowedFields = filterArray;
 
-    return allowedFields.reduce((result, field) => {
-        result[field] = source[field];
-        return result;
-    }, {});
+  return allowedFields.reduce((result, field) => {
+    result[field] = source[field];
+    return result;
+  }, {});
 }
 
 exports.baseConfiguration = baseConfiguration;

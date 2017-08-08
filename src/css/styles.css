@@ -372,3 +372,12 @@ iframe {
     font-weight: bold;
     margin-right: 0.5em;
 }
+
+.change-view-actions .btn-link {
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  display: inline;
+  line-height: inherit;
+  vertical-align: baseline;
+}

@@ -1,8 +1,9 @@
-import * as PropTypes from 'prop-types';
-import * as React from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {diffTypes} from '../constants/diff-types';
 import WebMonitoringDb from '../services/web-monitoring-db';
+import WebMonitoringApi from '../services/web-monitoring-api';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
@@ -32,8 +33,11 @@ export default class ChangeView extends React.Component {
           a: null,
           b: null,
           change: null,
+          annotation: {},
           collapsedView: true,
-          diffType: undefined
+          diffType: undefined,
+          addingToDictionary: false,
+          addingToImportant: false
         };
 
         // TODO: unify this default state logic with componentWillReceiveProps
@@ -57,6 +61,8 @@ export default class ChangeView extends React.Component {
         this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
         this._annotateChange = this._annotateChange.bind(this);
         this._updateAnnotation = this._updateAnnotation.bind(this);
+        this._markAsSignificant = this._markAsSignificant.bind(this);
+        this._addToDictionary = this._addToDictionary.bind(this);
     }
 
     componentWillMount () {
@@ -133,42 +139,78 @@ export default class ChangeView extends React.Component {
         );
     }
 
+    // TODO: change-view.jsx is becoming very unwieldy with multiple render methods and custom components.
+    // We should re-factor out some of these renders and the 'markSignificant' and 'addToDictionary' components below.
     renderSubmission () {
         if (!this.props.user) {
-            return <div>Log in to submit annotations.</div>;
+          return <div>Log in to submit annotations.</div>;
         }
 
-        const markAsSignificant = () => console.error('markAsSignificant not implemented');
-        const addToDictionary = () => console.error('addToDictionary not implemented');
+        const annotation = this.state.annotation || {};
 
+        let markSignificant;
+        if (annotation.significance >= 0.5) {
+          markSignificant = <span className="status lnk-action">Significant</span>;
+        }
+        else {
+          markSignificant = (
+            <span className="lnk-action">
+              <i className="fa fa-upload" aria-hidden="true" />
+              <button
+                className="btn btn-link"
+                disabled={this.state.addingToImportant}
+                onClick={this._markAsSignificant}
+              >
+                Add Important Change
+              </button>
+            </span>
+          );
+        }
+
+        let addToDictionary;
+        if (annotation.isDictionary) {
+          addToDictionary = <span className="status">In dictionary</span>;
+        }
+        else {
+          addToDictionary = (
+            <span>
+              <i className="fa fa-database" aria-hidden="true" />
+              <button
+                className="btn btn-link"
+                disabled={this.state.addingToDictionary}
+                onClick={this._addToDictionary}
+              >
+                Add to Dictionary
+              </button>
+            </span>
+          );
+        }
+
+        // Returning array of controls because using a container div screws up styles. 'change-view-actions' and <AnnotationForm> don't belong in a div together.
         return [
             (
-                <div className="change-view-actions">
-                    <div className="row">
-                        <div className="col-md-6">
-                            <i className="fa fa-toggle-on" aria-hidden="true" />
-                            {/* TODO: should be buttons */}
-                            <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
-                            <i className="fa fa-pencil" aria-hidden="true" />
-                            <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
-                            <i className="fa fa-list" aria-hidden="true" />
-                            <Link to="/" className="lnk-action">Back to list view</Link>
-                        </div>
-                        <div className="col-md-6 text-right">
-                            <i className="fa fa-upload" aria-hidden="true" />
-                            <a className="lnk-action" href="#" onClick={markAsSignificant}>Add Important Change</a>
-                            <i className="fa fa-database" aria-hidden="true" />
-                            <a href="#" onClick={addToDictionary}>Add to Dictionary</a>
-                        </div>
-                    </div>
-                </div>
+              <div className="row change-view-actions">
+                  <div className="col-md-6">
+                      <i className="fa fa-toggle-on" aria-hidden="true" />
+                      {/* TODO: should be buttons */}
+                      <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
+                      <i className="fa fa-pencil" aria-hidden="true" />
+                      <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
+                      <i className="fa fa-list" aria-hidden="true" />
+                      <Link to="/" className="lnk-action">Back to list view</Link>
+                  </div>
+                  <div className="col-md-6 text-right">
+                      {markSignificant}
+                      {addToDictionary}
+                  </div>
+              </div>
             ),
             (
-                <AnnotationForm
-                    annotation={this.state.annotation}
-                    onChange={this._updateAnnotation}
-                    collapsed={this.state.collapsedView}
-                />
+              <AnnotationForm
+                  annotation={annotation}
+                  onChange={this._updateAnnotation}
+                  collapsed={this.state.collapsedView}
+              />
             )
         ];
     }
@@ -178,16 +220,67 @@ export default class ChangeView extends React.Component {
         this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
     }
 
+    _markAsSignificant (event) {
+      event.preventDefault();
+      if (isDisabled(event.currentTarget)) return;
+
+      let annotation = this.state.annotation;
+      if (!annotation.significance || annotation.significance < 0.5) {
+        annotation = Object.assign({}, annotation, {significance: 0.5});
+        this._updateAnnotation(annotation);
+        this._saveAnnotation(annotation);
+
+        this.setState({addingToImportant: true});
+        const onComplete = () => this.setState({addingToImportant: false});
+
+        this.context.localApi.addChangeToImportant(
+          this.props.page,
+          this.state.a,
+          this.state.b,
+          annotation
+        )
+          .then(onComplete, onComplete);
+      }
+    }
+
+    _addToDictionary (event) {
+      event.preventDefault();
+      if (isDisabled(event.currentTarget)) return;
+
+      let annotation = this.state.annotation;
+      if (!annotation.isDictionary) {
+        annotation = Object.assign({}, annotation, {isDictionary: true});
+        this._updateAnnotation(annotation);
+        this._saveAnnotation(annotation);
+
+        this.setState({addingToDictionary: true});
+        const onComplete = () => this.setState({addingToDictionary: false});
+
+        this.context.localApi.addChangeToDictionary(
+          this.props.page,
+          this.state.a,
+          this.state.b,
+          annotation
+        )
+          .then(onComplete, onComplete);
+      }
+    }
+
     _updateAnnotation (newAnnotation) {
-        this.setState({annotation: newAnnotation});
+      this.setState({annotation: newAnnotation});
     }
 
     _annotateChange (event) {
-        event.preventDefault();
-        // TODO: display some indicator that saving is happening/complete
-        const fromVersion = this.state.a.uuid;
-        const toVersion = this.state.b.uuid;
-        this.props.annotateChange(fromVersion, toVersion, this.state.annotation);
+      event.preventDefault();
+      this._saveAnnotation();
+    }
+
+    _saveAnnotation (annotation) {
+      // TODO: display some indicator that saving is happening/complete
+      annotation = annotation || this.state.annotation;
+      const fromVersion = this.state.a.uuid;
+      const toVersion = this.state.b.uuid;
+      this.props.annotateChange(fromVersion, toVersion, annotation);
     }
 
     _updateChange (from, to) {
@@ -215,7 +308,8 @@ export default class ChangeView extends React.Component {
 }
 
 ChangeView.contextTypes = {
-    api: PropTypes.instanceOf(WebMonitoringDb)
+    api: PropTypes.instanceOf(WebMonitoringDb),
+    localApi: PropTypes.instanceOf(WebMonitoringApi)
 };
 
 function changeMatches (change, state) {
@@ -223,6 +317,10 @@ function changeMatches (change, state) {
     const uuidFrom = state.a ? state.a.uuid : state.uuid_from;
     const uuidTo = state.b ? state.b.uuid : state.uuid_to;
     return change && change.uuid_from === uuidFrom && change.uuid_to === uuidTo;
+}
+
+function isDisabled (element) {
+  return element.disabled || element.classList.contains('disabled');
 }
 
 /* Polyfill for Array.prototype.findIndex */

@@ -1,5 +1,5 @@
-import * as PropTypes from 'prop-types';
-import * as React from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
@@ -116,10 +116,11 @@ export default class WebMonitoringUi extends React.Component {
     }
 
     getChildContext () {
-        return {api};
+        return {api, localApi};
     }
 }
 
 WebMonitoringUi.childContextTypes = {
-    api: PropTypes.instanceOf(WebMonitoringDb)
+    api: PropTypes.instanceOf(WebMonitoringDb),
+    localApi: PropTypes.instanceOf(WebMonitoringApi)
 };

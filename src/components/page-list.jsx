@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {Page} from '../services/web-monitoring-db';
 
