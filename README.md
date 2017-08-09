@@ -57,7 +57,7 @@ yarn dev
 ```
 
 ## Manual view
-Access the main view at `http://localhost:3000`
+Access the main view at `http://localhost:3001`
 
 Screenshot:
 ![screenshot](screenshot.png)
