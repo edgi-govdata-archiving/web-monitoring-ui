@@ -206,12 +206,12 @@ body {
 }
 
 /* Hide tooltips when not collapsed */
-.signifier-list > div > div {
-    display: none;
+.__react_component_tooltip {
+    display: none!important;
 }
 
-.annotation-form--collapsed .signifier-list > div > div {
-    display: block;
+.annotation-form--collapsed .__react_component_tooltip {
+    display: block!important;
 }
 /* END - hide tooltips when not collapsed */
 
