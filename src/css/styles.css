@@ -191,7 +191,7 @@ body {
 }
 
 /* Remove margin from last signifier button  */
-.signifier-list > div:last-child > li {
+.signifier-list > li:last-child {
     margin: 0;
 }
 

@@ -140,7 +140,7 @@ export default class ChangeView extends React.Component {
     }
 
     // TODO: change-view.jsx is becoming very unwieldy with multiple render methods and custom components.
-    // We should re-factor out some of these renders and the 'markSignificant' and 'addToDictionary' components below.
+    // We should extract out some of these renders and the 'markSignificant' and 'addToDictionary' components below.
     renderSubmission () {
         if (!this.props.user) {
           return <div>Log in to submit annotations.</div>;
@@ -186,10 +186,10 @@ export default class ChangeView extends React.Component {
           );
         }
 
-        // Returning array of controls because using a container div screws up styles. 'change-view-actions' and <AnnotationForm> don't belong in a div together.
+        // Returning array of controls so that we don't have an extraneous containing div
         return [
             (
-              <div className="row change-view-actions">
+              <div className="row change-view-actions" key="change-view-actions">
                   <div className="col-md-6">
                       <i className="fa fa-toggle-on" aria-hidden="true" />
                       {/* TODO: should be buttons */}
@@ -210,6 +210,7 @@ export default class ChangeView extends React.Component {
                   annotation={annotation}
                   onChange={this._updateAnnotation}
                   collapsed={this.state.collapsedView}
+                  key="annotation-form"
               />
             )
         ];
