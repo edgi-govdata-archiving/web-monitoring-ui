@@ -16,7 +16,7 @@ ins {
     width: 100%;
 }
 
-.side-by-side-render > iframe:first-child {
+.side-by-side-render > iframe:first-of-type {
     margin-right: 0.5em;
 }
 

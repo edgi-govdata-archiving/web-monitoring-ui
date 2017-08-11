@@ -24,7 +24,7 @@ export default class AnnotationForm extends React.Component {
     this._onNotesChange = this._onNotesChange.bind(this);
   }
 
-  render() {
+  render () {
     const annotation = this.props.annotation || {};
     const common = {
       formValues: annotation,
@@ -91,14 +91,14 @@ export default class AnnotationForm extends React.Component {
     );
   }
 
-  _onFieldChange(valueObject) {
+  _onFieldChange (valueObject) {
     if (this.props.onChange) {
       const newAnnotation = Object.assign({}, this.props.annotation, valueObject);
       this.props.onChange(newAnnotation);
     }
   }
 
-  _onNotesChange(event) {
+  _onNotesChange (event) {
     this._onFieldChange({ notes: event.target.value });
   }
 }
@@ -108,7 +108,7 @@ AnnotationForm.defaultProps = {
   collapsed: true
 };
 
-function Checkbox({ children, formValues, name, onChange }) {
+function Checkbox ({ children, formValues, name, onChange }) {
   const fieldNumber = name.split('_')[1];
   const checked = !!(formValues && formValues[name]);
   const changeHandler = (event) =>
