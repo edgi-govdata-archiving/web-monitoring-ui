@@ -39,8 +39,8 @@ export default class AnnotationForm extends React.Component {
     return (
       <form className={classes.join(' ')}>
         <div className="annotation-form__signifiers">
-          <div className="signifier-container">
-            <h5>Individual Page Changes</h5>
+          <fieldset>
+            <legend>Individual Page Changes</legend>
             <ul className="signifier-list">
               <Checkbox {...common} name="indiv_1">Date and time change only</Checkbox>
               <Checkbox {...common} name="indiv_2">Text or numeric content removal or change</Checkbox>
@@ -50,9 +50,9 @@ export default class AnnotationForm extends React.Component {
               <Checkbox {...common} name="indiv_6">Page removal (whether it has happened in the past or is currently removed)</Checkbox>
 
             </ul>
-          </div>
-          <div className="signifier-container">
-            <h5>Repeated Changes</h5>
+          </fieldset>
+          <fieldset>
+            <legend>Repeated Changes</legend>
             <ul className="signifier-list">
               <Checkbox {...common} name="repeat_7">Header menu removal or change</Checkbox>
               <Checkbox {...common} name="repeat_8">Template text, page format, or comment field removal or change</Checkbox>
@@ -61,9 +61,9 @@ export default class AnnotationForm extends React.Component {
               <Checkbox {...common} name="repeat_11">Banner/advertisement removal or change</Checkbox>
               <Checkbox {...common} name="repeat_12">Scrolling news/reports</Checkbox>
             </ul>
-          </div>
-          <div className="signifier-container">
-            <h5>Significance</h5>
+          </fieldset>
+          <fieldset>
+            <legend>Significance</legend>
             <ul className="signifier-list">
               <Checkbox {...common} name="sig_1">Change related to energy, environment, or climate</Checkbox>
               <Checkbox {...common} name="sig_2">Language is significantly altered</Checkbox>
@@ -72,7 +72,7 @@ export default class AnnotationForm extends React.Component {
               <Checkbox {...common} name="sig_5">Insignificant</Checkbox>
               <Checkbox {...common} name="sig_6">Repeated Insignificant</Checkbox>
             </ul>
-          </div>
+          </fieldset>
         </div>
 
         <textarea
@@ -116,15 +116,16 @@ function Checkbox ({ children, formValues, name, onChange }) {
   return (
     <li className="signifier-list-item">
       <input
-        type="checkbox"
+        checked={checked}
         className="toggle"
         id={name}
-        checked={checked}
-        onChange={changeHandler} />
+        onChange={changeHandler}
+        type="checkbox"
+        />
       <label
-        data-tip={children}
-        data-for="annotation-tooltip"
         className="toggle-btn"
+        data-for="annotation-tooltip"
+        data-tip={children}
         data-tg-on={fieldNumber}
         htmlFor={name} />
       <span className="info-text">{children}</span>

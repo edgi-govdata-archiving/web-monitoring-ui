@@ -174,9 +174,12 @@ body {
     width: 100%;
 }
 
-.signifier-container h5 {
-    font-size: 12px;
-    margin: 0 0 7px 0;
+legend {
+    border: 0;
+    color: inherit;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin: 0 0 0.5em 0;
 }
 
 .signifier-list, .signifier-list-item {
@@ -293,7 +296,7 @@ body {
         margin-bottom: 10px;
     }
 
-    .signifier-container h5 {
+    legend {
         margin-top: 1em;
     }
 
