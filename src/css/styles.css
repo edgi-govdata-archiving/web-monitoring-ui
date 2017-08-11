@@ -221,7 +221,8 @@ legend {
 
 /* Toggle buttons */
 .toggle {
-    display: none;
+    opacity: 0;
+    width: 0;
 }
 
 .toggle, .toggle:after, .toggle *, .toggle *:after, .toggle + .toggle-btn {
@@ -243,6 +244,7 @@ legend {
     border-radius: 2px;
     display: block;
     cursor: pointer;
+    flex-shrink: 0;
     font-family: sans-serif;
     height: 2em;
     outline: 0;
