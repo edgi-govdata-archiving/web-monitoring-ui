@@ -205,16 +205,6 @@ body {
     margin: 5px 0 0 5px;
 }
 
-/* Hide tooltips when not collapsed */
-.__react_component_tooltip {
-    display: none!important;
-}
-
-.annotation-form--collapsed .__react_component_tooltip {
-    display: block!important;
-}
-/* END - hide tooltips when not collapsed */
-
 .annotation-form--collapsed .signifier-list {
     align-items: center;
     display: flex;

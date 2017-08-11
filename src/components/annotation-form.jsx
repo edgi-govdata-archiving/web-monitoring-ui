@@ -76,11 +76,17 @@ export default class AnnotationForm extends React.Component {
         </div>
 
         <textarea
-          name="further-notes"
+          name="notes"
           placeholder="Further notes"
           onChange={this._onNotesChange}
           value={annotation.notes || ''}
         />
+
+        <Tooltip
+          id="annotation-tooltip"
+          place="top"
+          disable={!this.props.collapsed}
+          effect="solid" />
       </form>
     );
   }
@@ -109,10 +115,19 @@ function Checkbox({ children, formValues, name, onChange }) {
     onChange({ [name]: event.currentTarget.checked });
   return (
     <li className="signifier-list-item">
-      <input type="checkbox" className="toggle" id={name} checked={checked} onChange={changeHandler} />
-      <label data-tip={children} data-for={`${name}-tip`} className="toggle-btn" data-tg-on={fieldNumber} htmlFor={name} />
+      <input
+        type="checkbox"
+        className="toggle"
+        id={name}
+        checked={checked}
+        onChange={changeHandler} />
+      <label
+        data-tip={children}
+        data-for="annotation-tooltip"
+        className="toggle-btn"
+        data-tg-on={fieldNumber}
+        htmlFor={name} />
       <span className="info-text">{children}</span>
-      <Tooltip id={`${name}-tip`} place="top" />
     </li>
   );
 }
