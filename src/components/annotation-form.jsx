@@ -111,6 +111,7 @@ AnnotationForm.defaultProps = {
 function Checkbox ({ children, formValues, name, onChange, collapsed }) {
   const fieldNumber = name.split('_')[1];
   const checked = !!(formValues && formValues[name]);
+  const uuid = getUUID();
   const changeHandler = (event) =>
     onChange({ [name]: event.currentTarget.checked });
   return (
@@ -118,7 +119,7 @@ function Checkbox ({ children, formValues, name, onChange, collapsed }) {
       <input
         checked={checked}
         className="toggle"
-        id={name}
+        id={uuid}
         onChange={changeHandler}
         type="checkbox"
         />
@@ -127,9 +128,12 @@ function Checkbox ({ children, formValues, name, onChange, collapsed }) {
         data-for="annotation-tooltip"
         data-tip={children}
         data-fieldNumber={fieldNumber}
-        htmlFor={name}>
+        htmlFor={uuid}>
           { collapsed ? "" : <span>{children}</span> }
       </label>
     </li>
   );
 }
+
+// Unique IDs - https://gist.github.com/jed/982883
+function getUUID(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,getUUID)}
