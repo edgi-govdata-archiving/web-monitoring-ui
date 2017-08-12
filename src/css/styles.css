@@ -107,11 +107,6 @@ body {
 }
 
 /* Change View */
-.change-view-container {
-    display: flex;
-    flex-direction: column;
-}
-
 .change-view-actions {
     border-bottom: 1px solid #eee;
     border-top: 1px solid #eee;
@@ -203,20 +198,11 @@ legend {
     margin-right: 5px;
 }
 
-.info-text {
-    font-size: 12px;
-    margin: 5px 0 0 5px;
-}
-
 .annotation-form--collapsed .signifier-list {
     align-items: center;
     display: flex;
     flex-direction: row;
     text-align: center;
-}
-
-.annotation-form--collapsed .info-text {
-    display: none;
 }
 
 /* Toggle buttons */
@@ -225,65 +211,48 @@ legend {
     width: 0;
 }
 
-.toggle, .toggle:after, .toggle *, .toggle *:after, .toggle + .toggle-btn {
-    box-sizing: border-box;
+.toggle-btn {
+    cursor: pointer;
 }
 
-.toggle::-moz-selection, .toggle:after::-moz-selection, .toggle *::-moz-selection, .toggle *:after::-moz-selection, .toggle + .toggle-btn::-moz-selection {
-    background: none;
-}
-
-.toggle::selection, .toggle:after::selection, .toggle *::selection, .toggle *:after::selection, .toggle + .toggle-btn::selection {
-    background: none;
-}
-
-.toggle + .toggle-btn {
-    backface-visibility: hidden;
+.toggle + .toggle-btn::before {
     background: #e2e1e1;
     border: 1px solid hsla(0, 0%, 20%, 0.1);
     border-radius: 2px;
-    display: block;
+    color: #5a5959;
+    content: attr(data-fieldNumber);
+    display: inline-block;
     cursor: pointer;
     flex-shrink: 0;
     font-family: sans-serif;
+    font-weight: bold;
     height: 2em;
-    outline: 0;
-    overflow: hidden;
-    position: relative;
-    user-select: none;
+    line-height: 2em;
+    text-align: center;
     transition: all .1s;
     width: 3.5em;
 }
-.toggle + .toggle-btn:after {
-    color: #5a5959;
-    display: inline-block;
-    font-weight: bold;
-    height: 100%;
-    line-height: 2em;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-}
-.toggle + .toggle-btn:after {
-    content: attr(data-tg-on);
-    left: 0;
-}
 
-.toggle + .toggle-btn:active {
-    background: #ccc;
-}
-
-.toggle:checked + .toggle-btn {
+.toggle:checked + .toggle-btn::before {
     background: #24a79d;
 }
 
-.toggle:checked + .toggle-btn:after {
+.toggle:checked + .toggle-btn:before {
     color: #fff;
+}
+
+.toggle-btn span {
+    font-size: 12px;
+    font-weight: 400;
+    margin: 5px 0 0 5px;
 }
 /* END - Toggle buttons */
 
 /* Media queries */
 @media (max-width: 1000px) {
+    .page-title {
+        margin-bottom: 10px;
+    }
     .annotation-form__signifiers, .version-selector {
         flex-direction: column;
     }

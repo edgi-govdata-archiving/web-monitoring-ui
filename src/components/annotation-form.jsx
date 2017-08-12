@@ -28,7 +28,8 @@ export default class AnnotationForm extends React.Component {
     const annotation = this.props.annotation || {};
     const common = {
       formValues: annotation,
-      onChange: this._onFieldChange
+      onChange: this._onFieldChange,
+      collapsed: this.props.collapsed
     };
 
     const classes = ['annotation-form'];
@@ -107,7 +108,7 @@ AnnotationForm.defaultProps = {
   collapsed: true
 };
 
-function Checkbox ({ children, formValues, name, onChange }) {
+function Checkbox ({ children, formValues, name, onChange, collapsed }) {
   const fieldNumber = name.split('_')[1];
   const checked = !!(formValues && formValues[name]);
   const changeHandler = (event) =>
@@ -125,9 +126,10 @@ function Checkbox ({ children, formValues, name, onChange }) {
         className="toggle-btn"
         data-for="annotation-tooltip"
         data-tip={children}
-        data-tg-on={fieldNumber}
-        htmlFor={name} />
-      <span className="info-text">{children}</span>
+        data-fieldNumber={fieldNumber}
+        htmlFor={name}>
+          { collapsed ? "" : <span>{children}</span> }
+      </label>
     </li>
   );
 }
