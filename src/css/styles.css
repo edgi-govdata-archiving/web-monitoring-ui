@@ -78,11 +78,19 @@ body {
 }
 
 .pager {
+    display: flex;
     margin: 0;
 }
+
+.pager li {
+    display: flex;
+    flex: 1;
+}
+
 .pager li > a {
     background-color: #f7f7f7;
     border-radius: 3px;
+    flex: 1;
 }
 
 #bootstrap-override .pager li>a:focus {
@@ -95,15 +103,10 @@ body {
 
 .pager__previous {
     margin-right: 5px;
-    width: 50%;
 }
 
 .pager__previous .fa {
     margin-right: 0;
-}
-
-.pager__next {
-    width: 48%;
 }
 
 /* Change View */
