@@ -18,7 +18,7 @@ import { Version } from '../services/web-monitoring-db';
  * @param {AnnotationFormProps} props
  */
 export default class AnnotationForm extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this._onFieldChange = this._onFieldChange.bind(this);
     this._onNotesChange = this._onNotesChange.bind(this);
@@ -122,18 +122,19 @@ function Checkbox ({ children, formValues, name, onChange, collapsed }) {
         id={uuid}
         onChange={changeHandler}
         type="checkbox"
-        />
+      />
       <label
         className="toggle-btn"
         data-for="annotation-tooltip"
         data-tip={children}
         data-fieldNumber={fieldNumber}
-        htmlFor={uuid}>
-          { collapsed ? "" : <span>{children}</span> }
+        htmlFor={uuid}
+      >
+        {collapsed ? "" : <span>{children}</span>}
       </label>
     </li>
   );
 }
 
 // Unique IDs - https://gist.github.com/jed/982883
-function getUUID(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,getUUID)}
+function getUUID (a) { return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, getUUID) }
