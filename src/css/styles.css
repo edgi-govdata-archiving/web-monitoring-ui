@@ -240,8 +240,14 @@ legend {
     background: #24a79d;
 }
 
-.toggle:checked + .toggle-btn:before {
+.toggle:checked + .toggle-btn::before {
     color: #fff;
+}
+
+.toggle:focus + .toggle-btn::before {
+    outline: rgb(59, 153, 252) auto 2px;
+    outline: -moz-mac-focusring auto 3px;
+    outline: -webkit-focus-ring-color auto 5px;
 }
 
 .toggle-btn span {
