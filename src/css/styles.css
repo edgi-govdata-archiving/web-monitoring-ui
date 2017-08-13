@@ -1,25 +1,27 @@
 @import './diff.css';
 
+/* ===== Global ===== */
 body {
     background: #136a8a;
     background: linear-gradient(45deg, #136a8a, #267871);
 }
 
+.fa {
+    margin-right: 0.5em;
+}
+
+/* ===== Containers ===== */
 .container-list-view, .container-page-view {
     background: white;
-    border-radius: 3px;
     color: #444;
-    margin: 0 20px;
+    margin: 5px 0 ;
 }
 
 .container-page-view {
-    padding: 20px;
+    padding: 15px;
 }
 
-.lnk-action {
-    margin-right: 17px;
-}
-
+/* ===== Nav Bar ===== */
 #bootstrap-override .navbar-brand {
     font-size: 1.4em;
     margin-right: 6px;
@@ -37,7 +39,7 @@ body {
 
 .navbar {
     border-radius: 0;
-    padding: 10px;
+    margin-bottom: 0;
 }
 
 .navbar-text {
@@ -59,16 +61,36 @@ body {
     margin: 0;
 }
 
-.diff-title {
-    font-size: 20px;
+/* ===== List View ===== */
+.container-list-view tbody tr {
+    cursor: pointer;
+}
+
+.container-list-view tbody tr:hover {
+    background-color: #EEE;
+}
+
+/* ===== Page Detail View ===== */
+.page-title {
+    font-size: 1.5em;
+    margin-bottom: 0;
+    margin-top: 0.3em;
 }
 
 .pager {
-    margin: 10px 0;
+    display: flex;
+    margin: 0;
 }
+
+.pager li {
+    display: flex;
+    flex: 1;
+}
+
 .pager li > a {
     background-color: #f7f7f7;
     border-radius: 3px;
+    flex: 1;
 }
 
 #bootstrap-override .pager li>a:focus {
@@ -79,57 +101,192 @@ body {
     background-color: rgba(139, 227, 255, 0.46);
 }
 
+.pager__previous {
+    margin-right: 5px;
+}
 
+.pager__previous .fa {
+    margin-right: 0;
+}
+
+/* Change View */
+.change-view-actions {
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin: 1em 0 0.5em 0;
+    padding: 0.7em 0.2em;
+}
+
+.change-view-actions > div {
+    padding: 0;
+}
+
+.change-view-actions .btn-link {
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    display: inline;
+    line-height: inherit;
+    vertical-align: baseline;
+}
+
+/* Version Selector */
+.version-selector {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5em 0;
+}
+
+.version-selector__item {
+    font-weight: normal;
+}
+
+.version-selector__item > span {
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+/* END - Version Selector */
+
+/* ===== Annotation Form ===== */
+.lnk-action {
+    margin-right: 17px;
+}
 
 .annotation-form {
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin: 0.4em 0;
 }
 
-.annotation-form input[type="checkbox"] {
+.annotation-form__signifiers {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5em;
+    width: 100%;
+}
+
+.annotation-form textarea {
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+    color: #555;
+    height: 3em;
+    padding: 0.5em;
+    width: 100%;
+}
+
+legend {
+    border: 0;
+    color: inherit;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin: 0 0 0.5em 0;
+}
+
+.signifier-list, .signifier-list-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.signifier-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Remove margin from last signifier button  */
+.signifier-list > li:last-child {
+    margin: 0;
+}
+
+.signifier-list-item {
+    display: flex;
+    margin-right: 5px;
+}
+
+.annotation-form--collapsed .signifier-list {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+/* Toggle buttons */
+.toggle {
+    opacity: 0;
+    width: 0;
+}
+
+.toggle-btn {
     cursor: pointer;
-    margin-right: 7px;
 }
 
-.annotation-form label {
-    display: block;
-    font-weight: 200;
-    font-size: 1.4rem;
+.toggle + .toggle-btn::before {
+    background: #e2e1e1;
+    border: 1px solid hsla(0, 0%, 20%, 0.1);
+    border-radius: 2px;
+    color: #5a5959;
+    content: attr(data-fieldNumber);
+    display: inline-block;
     cursor: pointer;
+    flex-shrink: 0;
+    font-family: sans-serif;
+    font-weight: bold;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+    transition: all .1s;
+    width: 3.5em;
 }
 
-.annotation-form--collapsed .info-text {
-    display: none;
+.toggle:checked + .toggle-btn::before {
+    background: #24a79d;
 }
 
-.annotation-form--collapsed label {
-    float: left;
-    margin-right: 25px;
+.toggle:checked + .toggle-btn::before {
+    color: #fff;
 }
 
-@media (max-width: 990px) {
-    .annotation-form--collapsed div {
-        clear: both;
-        overflow: auto;
+.toggle:focus + .toggle-btn::before {
+    outline: rgb(59, 153, 252) auto 2px;
+    outline: -moz-mac-focusring auto 3px;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.toggle-btn span {
+    font-size: 12px;
+    font-weight: 400;
+    margin: 5px 0 0 5px;
+}
+/* END - Toggle buttons */
+
+/* Media queries */
+@media (max-width: 1000px) {
+    .page-title {
+        margin-bottom: 10px;
+    }
+    .annotation-form__signifiers, .version-selector {
+        flex-direction: column;
+    }
+
+    .version-selector > * {
+        margin: 0.5em 0;
+    }
+
+    .version-selector > select {
+        max-width: 215px;
+        margin-left: 16px;
+        margin-bottom: 10px;
+    }
+
+    legend {
+        margin-top: 1em;
+    }
+
+    /* TODO: Hacky, can probably clean this up when we remove Bootstrap */
+    .change-view-actions .text-right {
+        text-align: left;
     }
 }
 
-.container-list-view tbody tr {
-    cursor: pointer;
-}
-
-.container-list-view tbody tr:hover {
-    background-color: #EEE;
-}
-
-.pager__previous {
-    width: 50%;
-}
-
-.pager__next {
-    width: 48%;
-}
-
+/* ===== Diff View ===== */
 .diff {
     height:100vh;
 }
@@ -140,21 +297,9 @@ iframe {
     width: 100%;
 }
 
+/* ===== Progress Bar ===== */
 .progress {
     width: 100%;
-}
-
-.modal-header {
-    background: linear-gradient(45deg, #136a8a, #267871);
-    color: white;
-}
-
-.close {
-    opacity: .4;
-}
-
-.close:focus, .close:hover {
-    opacity: .7;
 }
 
 .progress .progress-bar.active {
@@ -178,13 +323,7 @@ iframe {
     75% { content: '..'; }
 }
 
-del {
-    background-color: lightcoral;
-}
-ins {
-    background-color: lightgreen;
-}
-
+/* ===== Login Form ===== */
 .dialog__body {
     background: white;
     border-radius: 3px;
@@ -205,27 +344,4 @@ ins {
 
 .login-form__footer {
     text-align: right;
-}
-
-.version-selector {
-    display: flex;
-}
-
-.version-selector__item {
-    font-weight: normal;
-    margin-right: 2em;
-}
-
-.version-selector__item > span {
-    font-weight: bold;
-    margin-right: 0.5em;
-}
-
-.change-view-actions .btn-link {
-  border: none;
-  padding: 0;
-  font-size: inherit;
-  display: inline;
-  line-height: inherit;
-  vertical-align: baseline;
 }

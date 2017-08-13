@@ -44,7 +44,6 @@ export default class SideBySideRenderedDiff extends React.Component {
         return (
             <div className="side-by-side-render">
                 <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameA = frame} />
-                <hr />
                 <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameB = frame} />
             </div>
         );

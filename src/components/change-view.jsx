@@ -112,8 +112,8 @@ export default class ChangeView extends React.Component {
 
         return (
             <div className="change-view">
-                {this.renderVersionSelector(page)}
                 {this.renderSubmission()}
+                {this.renderVersionSelector(page)}
                 <DiffView page={page} diffType={this.state.diffType} a={this.state.a} b={this.state.b} />
             </div>
         );
@@ -122,15 +122,16 @@ export default class ChangeView extends React.Component {
     renderVersionSelector (page) {
         return (
             <form className="version-selector">
-                <label className="version-selector__item form-group">
-                    <span>Comparison:</span>
-                    <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
-                </label>
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
                     <span>From:</span>
                     <SelectVersion versions={page.versions} value={this.state.a} onChange={this.handleVersionAChange} />
                 </label>
-                <label className="version-selector__item form-group">
+                <label className="version-selector__item">
+                    <span>Comparison:</span>
+                    <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
+                </label>
+
+                <label className="version-selector__item">
                     <span>To:</span>
                     <SelectVersion versions={page.versions} value={this.state.b} onChange={this.handleVersionBChange} />
                 </label>
@@ -138,6 +139,8 @@ export default class ChangeView extends React.Component {
         );
     }
 
+    // TODO: change-view.jsx is becoming very unwieldy with multiple render methods and custom components.
+    // We should extract out some of these renders and the 'markSignificant' and 'addToDictionary' components below.
     renderSubmission () {
         if (!this.props.user) {
           return <div>Log in to submit annotations.</div>;
@@ -183,30 +186,34 @@ export default class ChangeView extends React.Component {
           );
         }
 
-        return (
-            <div>
-                <div className="row change-view-actions">
-                    <div className="col-md-6">
-                        <i className="fa fa-toggle-on" aria-hidden="true" />
-                        {/* TODO: should be buttons */}
-                        <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
-                        <i className="fa fa-pencil" aria-hidden="true" />
-                        <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
-                        <i className="fa fa-list" aria-hidden="true" />
-                        <Link to="/" className="lnk-action">Back to list view</Link>
-                    </div>
-                    <div className="col-md-6 text-right">
-                        {markSignificant}
-                        {addToDictionary}
-                    </div>
-                </div>
-                <AnnotationForm
-                    annotation={annotation}
-                    onChange={this._updateAnnotation}
-                    collapsed={this.state.collapsedView}
-                />
-            </div>
-        );
+        // Returning array of controls so that we don't have an extraneous containing div
+        return [
+            (
+              <div className="row change-view-actions" key="change-view-actions">
+                  <div className="col-md-6">
+                      <i className="fa fa-toggle-on" aria-hidden="true" />
+                      {/* TODO: should be buttons */}
+                      <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
+                      <i className="fa fa-pencil" aria-hidden="true" />
+                      <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
+                      <i className="fa fa-list" aria-hidden="true" />
+                      <Link to="/" className="lnk-action">Back to list view</Link>
+                  </div>
+                  <div className="col-md-6 text-right">
+                      {markSignificant}
+                      {addToDictionary}
+                  </div>
+              </div>
+            ),
+            (
+              <AnnotationForm
+                  annotation={annotation}
+                  onChange={this._updateAnnotation}
+                  collapsed={this.state.collapsedView}
+                  key="annotation-form"
+              />
+            )
+        ];
     }
 
     _toggleCollapsedView (event) {
