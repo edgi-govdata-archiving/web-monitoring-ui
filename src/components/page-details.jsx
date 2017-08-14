@@ -66,7 +66,7 @@ export default class PageDetails extends React.Component {
    * @param {Object} annotation
    */
   _annotateChange (fromVersion, toVersion, annotation) {
-      this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
+    this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
   }
 
   render () {
@@ -181,7 +181,7 @@ export default class PageDetails extends React.Component {
 
     Promise.resolve(fromList || this.context.api.getPage(pageId))
       .then((page) => {
-          this.setState({page});
+        this.setState({page});
       });
   }
 

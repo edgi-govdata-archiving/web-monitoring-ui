@@ -19,12 +19,12 @@ export default class List extends React.Component {
     };
 
     const children = data.map((item, i) => (
-        <this.props.component
-            data={item}
-            key={i}
-            index={i}
-            onSelect={selectFunc(onSelectItem, item, i)}
-        />
+      <this.props.component
+        data={item}
+        key={i}
+        index={i}
+        onSelect={selectFunc(onSelectItem, item, i)}
+      />
     ));
 
     return (

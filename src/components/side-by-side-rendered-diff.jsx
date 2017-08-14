@@ -15,71 +15,71 @@ import {Page} from '../services/web-monitoring-db';
  * @params {SideBySideRenderedDiffProps} props
  */
 export default class SideBySideRenderedDiff extends React.Component {
-    constructor (props) {
-        super(props);
-        this.frameA = null;
-        this.frameB = null;
+  constructor (props) {
+    super(props);
+    this.frameA = null;
+    this.frameB = null;
+  }
+
+  // Simplistic rendering with remote content
+  // render () {
+  //     if (!this.props) {
+  //         return null;
+  //     }
+
+  //     return (
+  //         <div className="side-by-side-render">
+  //             <iframe src={this.props.a.uri} sandbox="allow-forms allow-scripts" />
+  //             <hr />
+  //             <iframe src={this.props.b.uri} sandbox="allow-forms allow-scripts" />
+  //         </div>
+  //     );
+  // }
+
+  render () {
+    if (!this.props) {
+      return null;
     }
 
-    // Simplistic rendering with remote content
-    // render () {
-    //     if (!this.props) {
-    //         return null;
-    //     }
+    return (
+      <div className="side-by-side-render">
+        <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameA = frame} />
+        <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameB = frame} />
+      </div>
+    );
+  }
 
-    //     return (
-    //         <div className="side-by-side-render">
-    //             <iframe src={this.props.a.uri} sandbox="allow-forms allow-scripts" />
-    //             <hr />
-    //             <iframe src={this.props.b.uri} sandbox="allow-forms allow-scripts" />
-    //         </div>
-    //     );
-    // }
-
-    render () {
-        if (!this.props) {
-            return null;
-        }
-
-        return (
-            <div className="side-by-side-render">
-                <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameA = frame} />
-                <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameB = frame} />
-            </div>
-        );
-    }
-
-    /**
+  /**
      * @param {SideBySideRenderedDiffProps} nextProps
      * @param {Object} nextState
      * @returns {boolean}
      */
-    shouldComponentUpdate (nextProps, nextState) {
-        return nextProps.a !== this.props.a || nextProps.b !== this.props.b;
-    }
+  shouldComponentUpdate (nextProps, nextState) {
+    return nextProps.a !== this.props.a || nextProps.b !== this.props.b;
+  }
 
-    componentDidMount () {
-        this._updateContent();
-    }
+  componentDidMount () {
+    this._updateContent();
+  }
 
-    componentDidUpdate () {
-        this._updateContent();
-    }
+  componentDidUpdate () {
+    this._updateContent();
+  }
 
-    _updateContent () {
-        fetch(this.props.a.uri)
-            .then(response => response.text())
-            .then(rawSource => processSource(rawSource, this.props.page))
-            .then(source => {
-                this.frameA.setAttribute('srcdoc', source);
-            });
-        fetch(this.props.b.uri)
-            .then(response => response.text())
-            .then(rawSource => processSource(rawSource, this.props.page))
-            .then(source => {
-                this.frameB.setAttribute('srcdoc', source);
-            });
-    }
+  _updateContent () {
+    fetch(this.props.a.uri)
+      .then(response => response.text())
+      .then(rawSource => processSource(rawSource, this.props.page))
+      .then(source => {
+        this.frameA.setAttribute('srcdoc', source);
+      });
+    fetch(this.props.b.uri)
+      .then(response => response.text())
+      .then(rawSource => processSource(rawSource, this.props.page))
+      .then(source => {
+        this.frameB.setAttribute('srcdoc', source);
+      });
+  }
 }
 
 /**
@@ -91,13 +91,13 @@ export default class SideBySideRenderedDiff extends React.Component {
  * @returns {string}
  */
 function processSource (source, page) {
-    // <meta charset> tags don't work unless they are first, so if one is
-    // present, modify <head> content *after* it.
-    const hasCharsetTag = /<meta charset[^>]+>/.test(source);
-    const headMatcher = hasCharsetTag ? /<meta charset[^>]+>/ : /<head[^>]*>/;
-    const result = source.replace(headMatcher, followTag => {
-        return `${followTag}\n<base href="${page.url}">\n`;
-    });
+  // <meta charset> tags don't work unless they are first, so if one is
+  // present, modify <head> content *after* it.
+  const hasCharsetTag = /<meta charset[^>]+>/.test(source);
+  const headMatcher = hasCharsetTag ? /<meta charset[^>]+>/ : /<head[^>]*>/;
+  const result = source.replace(headMatcher, followTag => {
+    return `${followTag}\n<base href="${page.url}">\n`;
+  });
 
-    return result;
+  return result;
 }

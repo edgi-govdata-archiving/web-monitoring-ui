@@ -55,20 +55,20 @@ export default class DiffView extends React.Component {
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
     switch (diff.diff_service) {
-      case changeDiffTypes[diffTypes.SIDE_BY_SIDE_RENDERED]:
-        return (
-            <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
-        );
-       case changeDiffTypes[diffTypes.HIGHLIGHTED_TEXT]:
-         return (
-            <HighlightedTextDiff diff={diff} className="diff-text-inline" />
-         );
-       case changeDiffTypes[diffTypes.HIGHLIGHTED_SOURCE]:
-         return (
-            <HighlightedTextDiff diff={diff} className="diff-source-inline" />
-         );
-      default:
-        return null;
+    case changeDiffTypes[diffTypes.SIDE_BY_SIDE_RENDERED]:
+      return (
+        <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
+      );
+    case changeDiffTypes[diffTypes.HIGHLIGHTED_TEXT]:
+      return (
+        <HighlightedTextDiff diff={diff} className="diff-text-inline" />
+      );
+    case changeDiffTypes[diffTypes.HIGHLIGHTED_SOURCE]:
+      return (
+        <HighlightedTextDiff diff={diff} className="diff-source-inline" />
+      );
+    default:
+      return null;
     }
   }
 
@@ -82,8 +82,8 @@ export default class DiffView extends React.Component {
    * @returns {boolean}
    */
   _propsSpecifySameDiff (newProps, props) {
-      props = props || this.props;
-      return props.a.uuid === newProps.a.uuid
+    props = props || this.props;
+    return props.a.uuid === newProps.a.uuid
         && props.b.uuid === newProps.b.uuid
         && props.diffType === newProps.diffType;
   }
@@ -105,12 +105,12 @@ export default class DiffView extends React.Component {
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
 
     Promise.resolve(this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffTypes[diffType]]))
-        .then((diff) => {
-            this.setState({diff});
-        });
+      .then((diff) => {
+        this.setState({diff});
+      });
   }
 }
 
 DiffView.contextTypes = {
-    api: PropTypes.instanceOf(WebMonitoringDb),
+  api: PropTypes.instanceOf(WebMonitoringDb),
 };

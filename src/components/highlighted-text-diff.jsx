@@ -12,17 +12,17 @@ import List from './list';
  * @param {string} props.className
  */
 export default class HighlightedTextDiff extends React.Component {
-    render () {
-        if (!this.props) {
-            return null;
-        }
-
-        return (
-            <List
-                data={this.props.diff.content.diff}
-                component={DiffItem}
-                className={this.props.className}
-            />
-        );
+  render () {
+    if (!this.props) {
+      return null;
     }
+
+    return (
+      <List
+        data={this.props.diff.content.diff}
+        component={DiffItem}
+        className={this.props.className}
+      />
+    );
+  }
 }

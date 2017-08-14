@@ -2,12 +2,12 @@ import React from 'react';
 import {Version} from '../services/web-monitoring-db';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    month: 'long',
-    second: 'numeric',
-    year: 'numeric'
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  month: 'long',
+  second: 'numeric',
+  year: 'numeric'
 });
 
 /**
@@ -21,27 +21,27 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
  * @param {Version} props.onChange Callback for new selection. `Version => void`
  */
 export default class SelectVersion extends React.PureComponent {
-    render () {
-        const value = this.props.value ? this.props.value.uuid : '';
-        const versions = this.props.versions;
-        const handleChange = event => {
-            const newValue = event.target.value;
-            this.props.onChange(versions.find(v => v.uuid === newValue));
-        };
+  render () {
+    const value = this.props.value ? this.props.value.uuid : '';
+    const versions = this.props.versions;
+    const handleChange = event => {
+      const newValue = event.target.value;
+      this.props.onChange(versions.find(v => v.uuid === newValue));
+    };
 
-        const options = versions.map((version, index) => {
-            return (
-                <option key={version.uuid} value={version.uuid}>
-                    {dateFormatter.format(version.capture_time)}
-                </option>
-            );
-        });
+    const options = versions.map((version, index) => {
+      return (
+        <option key={version.uuid} value={version.uuid}>
+          {dateFormatter.format(version.capture_time)}
+        </option>
+      );
+    });
 
-        return (
-            <select onChange={handleChange} value={value}>
-                <option value="">none</option>
-                {options}
-            </select>
-        );
-    }
+    return (
+      <select onChange={handleChange} value={value}>
+        <option value="">none</option>
+        {options}
+      </select>
+    );
+  }
 }
