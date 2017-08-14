@@ -1,5 +1,4 @@
 import React from 'react';
-import {Page} from '../services/web-monitoring-db';
 
 /**
  * @typedef {Object} SideBySideRenderedDiffProps

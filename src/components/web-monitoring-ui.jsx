@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
-import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
@@ -63,7 +63,7 @@ export default class WebMonitoringUi extends React.Component {
         this.setState({user: api.userData});
         if (loggedIn) {
           return localApi.getPagesForUser(api.userData.email)
-            .catch(error => {
+            .catch(() => {
               // TODO: Handle 'user not found' in a better way
               // than just showing default list
               return api.getPages();

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 
 /**
