@@ -19,11 +19,11 @@ export default class DiffItem extends React.Component {
     var itemType;
     var itemText;
     if (data.constructor === Array) {
-        [itemType, itemText] = data;
+      [itemType, itemText] = data;
     }
     else {
-        itemType = data.Type;
-        itemText = data.Text;
+      itemType = data.Type;
+      itemText = data.Text;
     }
 
     // this data comes from https://github.com/edgi-govdata-archiving/go-calc-diff
@@ -37,13 +37,13 @@ export default class DiffItem extends React.Component {
     }
 
     return (
-        <span
-            className={`diff item ${diffTypeClass}`}
-            style={styles}
-            onClick={onSelect}
-        >
-            {itemText}
-        </span>
+      <span
+        className={`diff item ${diffTypeClass}`}
+        style={styles}
+        onClick={onSelect}
+      >
+        {itemText}
+      </span>
     );
   }
 }

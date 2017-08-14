@@ -27,8 +27,8 @@ import React from 'react';
  * @returns {React.StatelessComponent | (React.ComponentClass) => React.StatelessComponent}
  */
 export default function bindComponent (props, Component) {
-    if (!Component) {
-        return bindComponent.bind(null, props);
-    }
-    return (addedProps) => React.createElement(Component, Object.assign({}, props, addedProps));
+  if (!Component) {
+    return bindComponent.bind(null, props);
+  }
+  return (addedProps) => React.createElement(Component, Object.assign({}, props, addedProps));
 }

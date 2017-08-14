@@ -12,20 +12,20 @@ import {diffTypes} from '../constants/diff-types';
  *                            `string => void`
  */
 export default class SelectDiffType extends React.Component {
-    render () {
-        // const diffTypes = this.props.diffTypes;
-        const handleChange = (event) => {
-            this.props.onChange(event.target.value);
-        };
+  render () {
+    // const diffTypes = this.props.diffTypes;
+    const handleChange = (event) => {
+      this.props.onChange(event.target.value);
+    };
 
-        return (
-            <select value={this.props.value} onChange={handleChange}>
-              <option value="">none</option>
-              {Object.keys(diffTypes).map((key) => {
-                var val = diffTypes[key];
-                return <option key={key} value={key}>{val}</option>;
-              })}
-            </select>
-        );
-    }
+    return (
+      <select value={this.props.value} onChange={handleChange}>
+        <option value="">none</option>
+        {Object.keys(diffTypes).map((key) => {
+          var val = diffTypes[key];
+          return <option key={key} value={key}>{val}</option>;
+        })}
+      </select>
+    );
+  }
 }
