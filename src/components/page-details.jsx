@@ -82,8 +82,16 @@ export default class PageDetails extends React.Component {
       <div className="container-fluid container-page-view">
         <div className="row">
           <div className="col-md-9">
-            <h2 className="diff-title">{page.title}</h2>
-            <a className="diff_page_url" href={page.url} target="_blank" rel="noopener">{page.url}</a>
+            <h2 className="page-title">
+              <a
+                className="diff_page_url"
+                href={page.url}
+                target="_blank"
+                rel="noopener"
+              >
+                {page.title}
+              </a>
+            </h2>
           </div>
           <div className="col-md-3">
             {this._renderPager()}
