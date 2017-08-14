@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import WebMonitoringDb, { Page } from '../services/web-monitoring-db';
+import {Link, Redirect} from 'react-router-dom';
+import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 
 /**
@@ -22,6 +22,7 @@ export default class PageDetails extends React.Component {
     super(props);
     this.state = { page: null };
     this._annotateChange = this._annotateChange.bind(this);
+    this._navigateToChange = this._navigateToChange.bind(this);
   }
 
   componentWillMount () {
@@ -65,7 +66,7 @@ export default class PageDetails extends React.Component {
    * @param {Object} annotation
    */
   _annotateChange (fromVersion, toVersion, annotation) {
-    this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
+      this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
   }
 
   render () {
@@ -96,11 +97,7 @@ export default class PageDetails extends React.Component {
             {this._renderPager()}
           </div>
         </div>
-        <ChangeView
-          page={this.state.page}
-          annotateChange={this._annotateChange}
-          user={this.props.user}
-        />
+        {this._renderChange()}
       </div>
     );
   }
@@ -131,6 +128,52 @@ export default class PageDetails extends React.Component {
     );
   }
 
+  /**
+   * When possible, render the appropriate ChangeView. Otherwise:
+   * - Redirect to a URL specifying a valid change (if there wasn't one)
+   * - Render a message indicating no change to render (if there's no
+   *   valid change we could navigate to)
+   * @private
+   * @returns {React.Component}
+   */
+  _renderChange () {
+    const page = this.state.page;
+
+    // TODO: should we show 404 for bad versions? (null vs. undefined here)
+    const versionData = this._versionsToRender();
+    if (!versionData) {
+      let [to, from] = page.versions;
+      from = from || to;
+
+      if (from && to) {
+        return <Redirect to={this._getChangeUrl(from, to)} />;
+      }
+
+      return <div className="error">No saved versions of this page</div>;
+    }
+
+    return (
+      <ChangeView
+        {...versionData}
+        page={this.state.page}
+        annotateChange={this._annotateChange}
+        user={this.props.user}
+        onChangeSelectedVersions={this._navigateToChange}
+      />
+    );
+  }
+
+  // NOTE: returns `null` when specified change is invalid, `undefined` when
+  // no change specified at all. (This is subtle; design could be better.)
+  _versionsToRender () {
+    if (this.props.match.params.change) {
+      const [fromId, toId] = this.props.match.params.change.split('..');
+      const from = this.state.page.versions.find(v => v.uuid === fromId);
+      const to = this.state.page.versions.find(v => v.uuid === toId);
+      return (from && to) ? {from, to} : null;
+    }
+  }
+
   _loadPage (pageId) {
     // TODO: handle the missing `.versions` collection problem better
     const fromList = this.props.pages && this.props.pages.find(
@@ -138,8 +181,19 @@ export default class PageDetails extends React.Component {
 
     Promise.resolve(fromList || this.context.api.getPage(pageId))
       .then((page) => {
-        this.setState({ page });
+          this.setState({page});
       });
+  }
+
+  _getChangeUrl (from, to, page) {
+    const changeId = (from && to) ? `${from.uuid}..${to.uuid}` : '';
+    const pageId = page && page.uuid || this.props.match.params.pageId;
+    return `/page/${pageId}/${changeId}`;
+  }
+
+  _navigateToChange (from, to, page, replace = false) {
+    const url = this._getChangeUrl(from, to, page);
+    this.props.history[replace ? 'replace' : 'push'](url);
   }
 }
 
