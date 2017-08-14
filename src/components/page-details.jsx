@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import WebMonitoringDb, {Page} from '../services/web-monitoring-db';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 
 /**
@@ -134,7 +134,7 @@ export default class PageDetails extends React.Component {
    * - Render a message indicating no change to render (if there's no
    *   valid change we could navigate to)
    * @private
-   * @returns {React.Component}
+   * @returns {JSX.Element}
    */
   _renderChange () {
     const page = this.state.page;

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {diffTypes} from '../constants/diff-types';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import AnnotationForm from './annotation-form';

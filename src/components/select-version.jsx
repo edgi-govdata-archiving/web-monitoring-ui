@@ -1,5 +1,4 @@
 import React from 'react';
-import {Version} from '../services/web-monitoring-db';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
@@ -29,7 +28,7 @@ export default class SelectVersion extends React.PureComponent {
       this.props.onChange(versions.find(v => v.uuid === newValue));
     };
 
-    const options = versions.map((version, index) => {
+    const options = versions.map(version => {
       return (
         <option key={version.uuid} value={version.uuid}>
           {dateFormatter.format(version.capture_time)}

@@ -1,6 +1,5 @@
 import React from 'react';
 import Tooltip from 'react-tooltip';
-import { Version } from '../services/web-monitoring-db';
 
 /**
  * @typedef {Object} AnnotationFormProps

@@ -1,6 +1,4 @@
 import React from 'react';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Page} from '../services/web-monitoring-db';
 
 /**
  * These props also inherit from React Router's RouteComponent props

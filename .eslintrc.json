@@ -17,6 +17,12 @@
       "error",
       "unix"
     ],
+    "no-unused-vars": [
+      "error",
+      // Allow functions to include the full signature of a protocol they adhere
+      // to, even if they don’t use some args.
+      {"args": "none"}
+    ],
     "quotes": [
       "error",
       "single"
