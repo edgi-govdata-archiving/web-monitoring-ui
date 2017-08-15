@@ -55,24 +55,24 @@ export default class DiffView extends React.Component {
     // TODO: if we have multiple ways to render content from a single service
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
-    switch (diff.diff_service) {
-    case changeDiffTypes[diffTypes.SIDE_BY_SIDE_RENDERED]:
+    switch (diffType) {
+    case "SIDE_BY_SIDE_RENDERED":
       return (
         <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
       );
-    case changeDiffTypes[diffTypes.HIGHLIGHTED_TEXT]:
+    case "HIGHLIGHTED_TEXT":
       return (
         <HighlightedTextDiff diff={diff} className="diff-text-inline" />
       );
-    case changeDiffTypes[diffTypes.HIGHLIGHTED_SOURCE]:
+    case "HIGHLIGHTED_SOURCE":
       return (
         <HighlightedTextDiff diff={diff} className="diff-source-inline" />
       );
-    case changeDiffTypes[diffTypes.CHANGES_ONLY_TEXT]:
+    case "CHANGES_ONLY_TEXT":
       return (
         <ChangesOnlyDiff diff={diff} className="diff-text-inline" />
       );
-    case changeDiffTypes[diffTypes.CHANGES_ONLY_SOURCE]:
+    case "CHANGES_ONLY_SOURCE":
       return (
         <ChangesOnlyDiff diff={diff} className="diff-source-inline" />
        );
