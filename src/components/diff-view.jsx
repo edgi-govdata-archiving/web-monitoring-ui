@@ -5,6 +5,7 @@ import {diffTypes, changeDiffTypes} from '../constants/diff-types';
 
 import HighlightedTextDiff from './highlighted-text-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
+import ChangesOnlyDiff from './changes-only-diff';
 
 /**
  * @typedef DiffViewProps
@@ -67,6 +68,14 @@ export default class DiffView extends React.Component {
       return (
         <HighlightedTextDiff diff={diff} className="diff-source-inline" />
       );
+    case changeDiffTypes[diffTypes.CHANGES_ONLY_TEXT]:
+      return (
+        <ChangesOnlyDiff diff={diff} className="diff-text-inline" />
+      );
+    case changeDiffTypes[diffTypes.CHANGES_ONLY_SOURCE]:
+      return (
+        <ChangesOnlyDiff diff={diff} className="diff-source-inline" />
+       );
     default:
       return null;
     }
