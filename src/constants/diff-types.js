@@ -16,5 +16,5 @@ export const changeDiffTypes = {
   [diffTypes.HIGHLIGHTED_SOURCE]: 'source',
   [diffTypes.SIDE_BY_SIDE_RENDERED]: 'html_source',  // HACK
   [diffTypes.CHANGES_ONLY_TEXT]: 'html_text',
-  [diffTypes.CHANGES_ONLY_SOURCE]: 'html_source'
+  [diffTypes.CHANGES_ONLY_SOURCE]: 'source'
 };
