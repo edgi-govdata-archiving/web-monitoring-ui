@@ -39,22 +39,7 @@ export default class ChangesOnlyDiff extends React.Component {
    * @returns {[number, string]}
    */
 function getContextualDiff (currentValue, index, diffs) {
-  let itemType;
-  let itemText;
-  // QUESTION: This logic comes from diff-item.jsx.
-  // Different services return slightly different json results,
-  // with what would be corresponding values switched and in different format???
-  // `html_text`: array of array values [number, string]
-  // `source`: array of objects {Text<string>, Type<number>}
-  // Should this be normalized?
-  if (currentValue.constructor === Array) {
-    [itemType, itemText] = currentValue;
-  }
-  else {
-    itemType = currentValue.Type;
-    itemText = currentValue.Text;
-  }
-
+  let [itemType, itemText] = currentValue;
   if (itemType !== 0) return currentValue;
 
   // Naive approach, needs massive improvement
