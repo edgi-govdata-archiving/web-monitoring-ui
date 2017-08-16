@@ -1,22 +1,4 @@
 export const diffTypes = {
-  HIGHLIGHTED_TEXT: 'highlighted text',
-  HIGHLIGHTED_SOURCE: 'highlighted source',
-  HIGHLIGHTED_RENDERED: 'highlighted rendered',
-  SIDE_BY_SIDE_RENDERED: 'side-by-side rendered',
-  SIDE_BY_SIDE_TEXT: 'side-by-side text',
-  CHANGES_ONLY_TEXT: 'changes only text',
-  CHANGES_ONLY_SOURCE: 'changes only source'
-};
-
-export const changeDiffTypes = {
-  [diffTypes.HIGHLIGHTED_TEXT]: 'html_text',
-  [diffTypes.HIGHLIGHTED_SOURCE]: 'source',
-  [diffTypes.SIDE_BY_SIDE_RENDERED]: 'html_source',  // HACK, real side-by-side doesn't exist yet
-  [diffTypes.CHANGES_ONLY_TEXT]: 'html_text',
-  [diffTypes.CHANGES_ONLY_SOURCE]: 'source'
-};
-
-export const diffTypesNew = {
   HIGHLIGHTED_TEXT: {
     description: 'highlighted text',
     diff_service: 'html_text',

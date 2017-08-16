@@ -1,5 +1,5 @@
 import React from 'react';
-import {diffTypesNew} from '../constants/diff-types';
+import {diffTypes} from '../constants/diff-types';
 
 /**
  * A dropdown select box for types of diffs
@@ -21,15 +21,10 @@ export default class SelectDiffType extends React.Component {
     return (
       <select value={this.props.value} onChange={handleChange}>
         <option value="">none</option>
-        {Object.keys(diffTypesNew).map(key => {
-          const diffType = diffTypesNew[key];
+        {Object.keys(diffTypes).map(key => {
+          const diffType = diffTypes[key];
           return <option key={diffType.value} value={diffType.value}>{diffType.description}</option>;
         })}
-
-        {/* {Object.keys(diffTypesNew).map((key) => {
-          var val = diffTypes[key];
-          return <option key={key} value={key}>{val}</option>;
-        })} */}
       </select>
     );
   }
