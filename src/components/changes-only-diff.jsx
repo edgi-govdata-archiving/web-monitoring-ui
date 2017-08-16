@@ -17,11 +17,13 @@ export default class ChangesOnlyDiff extends React.Component {
       return null;
     }
 
-    const contextDiff = this.props.diff.content.diff.map(getContextualDiff);
+    const changesOnly = this.props.diff.content.diff.filter(currentValue => {
+      return currentValue[0] !== 0;
+    });
 
     return (
       <List
-        data={contextDiff}
+        data={changesOnly}
         component={DiffItem}
         className={this.props.className}
       />
@@ -29,7 +31,8 @@ export default class ChangesOnlyDiff extends React.Component {
   }
 }
 
-/**
+
+/** TODO: Putting contextual diffs off until after v0
    * Truncating function to process changes-only diffs.
    * If `currentValue` is an insertion or deletion we return it as is.
    * If it's not, we truncate it depending on if changes occured in entries before or after it.
