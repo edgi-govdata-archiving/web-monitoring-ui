@@ -1,20 +1,55 @@
 export const diffTypes = {
   HIGHLIGHTED_TEXT: 'highlighted text',
   HIGHLIGHTED_SOURCE: 'highlighted source',
-  HIGLIGHTED_RENDERED: 'higlighted rendered',
+  HIGHLIGHTED_RENDERED: 'highlighted rendered',
   SIDE_BY_SIDE_RENDERED: 'side-by-side rendered',
   SIDE_BY_SIDE_TEXT: 'side-by-side text',
   CHANGES_ONLY_TEXT: 'changes only text',
   CHANGES_ONLY_SOURCE: 'changes only source'
 };
 
-// TODO - map each diffType to it's corresponding endpoint string
 export const changeDiffTypes = {
   [diffTypes.HIGHLIGHTED_TEXT]: 'html_text',
-  // Commented out because this differ has some issues right now
-  // [diffTypes.HIGHLIGHTED_SOURCE]: 'html_source',
   [diffTypes.HIGHLIGHTED_SOURCE]: 'source',
-  [diffTypes.SIDE_BY_SIDE_RENDERED]: 'html_source',  // HACK
+  [diffTypes.SIDE_BY_SIDE_RENDERED]: 'html_source',  // HACK, real side-by-side doesn't exist yet
   [diffTypes.CHANGES_ONLY_TEXT]: 'html_text',
   [diffTypes.CHANGES_ONLY_SOURCE]: 'source'
 };
+
+export const diffTypesNew = {
+  HIGHLIGHTED_TEXT: {
+    description: 'highlighted text',
+    diff_service: 'html_text',
+    value: 'HIGHLIGHTED_TEXT'
+  },
+  HIGHLIGHTED_SOURCE: {
+    description: 'highlighted source',
+    diff_service: 'html_source',
+    value: 'HIGHLIGHTED_SOURCE'
+  },
+  HIGHLIGHTED_RENDERED: {
+    description: 'highlighted rendered',
+    diff_service: 'TODO',
+    value: 'HIGHLIGHTED_RENDERED'
+  },
+  SIDE_BY_SIDE_RENDERED: {
+    description: 'side-by-side rendered',
+    diff_service: 'html_source',  // HACK, real side-by-side doesn't exist yet
+    value: 'SIDE_BY_SIDE_RENDERED'
+  },
+  SIDE_BY_SIDE_TEXT: {
+    description: 'side-by-side text',
+    diff_service: 'TODO',
+    value: 'SIDE_BY_SIDE_TEXT'
+  },
+  CHANGES_ONLY_TEXT: {
+    description: 'changes only text',
+    diff_service: 'html_text',
+    value: 'CHANGES_ONLY_TEXT'
+  },
+  CHANGES_ONLY_SOURCE: {
+    description :'changes only source',
+    diff_service: 'html_source',
+    value: 'CHANGES_ONLY_SOURCE'
+  }
+}
