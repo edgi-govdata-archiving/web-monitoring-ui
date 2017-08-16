@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import {diffTypes, changeDiffTypes} from '../constants/diff-types';
+import {diffTypesNew} from '../constants/diff-types';
 
 import HighlightedTextDiff from './highlighted-text-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
@@ -48,7 +48,7 @@ export default class DiffView extends React.Component {
     const { a, b, diffType } = this.props;
     const { diff } = this.state;
 
-    if (!diffType || !diffTypes[diffType] || !diff) {
+    if (!diffType || !diffTypesNew[diffType] || !diff) {
       return null;
     }
 
@@ -113,7 +113,7 @@ export default class DiffView extends React.Component {
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
 
-    Promise.resolve(this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffTypes[diffType]]))
+    Promise.resolve(this.context.api.getDiff(pageId, aId, bId, diffTypesNew[diffType].diff_service))
       .then((diff) => {
         this.setState({diff});
       });
