@@ -52,7 +52,6 @@ export default class ChangeView extends React.Component {
       ) !== 'false';
     }
 
-    this.updateDiff = this.updateDiff.bind(this);
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
@@ -83,21 +82,14 @@ export default class ChangeView extends React.Component {
     }
   }
 
-  updateDiff () {
-    // pass
-  }
-
   handleDiffTypeChange (diffType) {
     this.setState({diffType});
-    this.updateDiff();
   }
   handleFromVersionChange (version) {
     this._changeSelectedVersions(version, null);
-    this.updateDiff();
   }
   handleToVersionChange (version) {
     this._changeSelectedVersions(null, version);
-    this.updateDiff();
   }
 
   render () {
