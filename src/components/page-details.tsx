@@ -4,6 +4,7 @@ import {Link, RouteComponentProps} from 'react-router-dom';
 import WebMonitoringDb, {Annotation, Page, Version} from '../services/web-monitoring-db';
 import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
+import Loading from './loading'
 
 // export type IPageDetailsProps = RouteComponentProps<{pageId: string}>;
 export interface IPageDetailsProps extends RouteComponentProps<{pageId: string}> {
@@ -64,9 +65,8 @@ export default class PageDetails extends React.Component<IPageDetailsProps, IPag
 
         };
 
-        // TODO: should factor out a loading view
         if (!(this.state.page && this.state.version)) {
-            return <div>Loading…</div>;
+            return (<Loading />)
         }
 
         const page = this.state.page;

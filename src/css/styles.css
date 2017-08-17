@@ -204,3 +204,10 @@ ins {
 .login-form__footer {
     text-align: right;
 }
+
+.loading {
+  margin-left: 20px;
+  height: 70px;
+  background-image: url(../img/infinity-loader.svg);
+  background-repeat: no-repeat;
+}

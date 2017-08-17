@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {Page} from '../services/web-monitoring-db';
+import Loading from './loading'
 
 // export type IPageListProps = RouteComponentProps<{}>;
 export interface IPageListProps extends RouteComponentProps<{}> {
@@ -14,7 +15,7 @@ export default class PageList extends React.Component<IPageListProps, null> {
 
     render () {
         if (!this.props.pages) {
-            return <div>Loading…</div>;
+            return (<Loading />)
         }
 
         return (
