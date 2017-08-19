@@ -1,4 +1,5 @@
 import React from 'react';
+import Loading from './loading'
 
 /**
  * These props also inherit from React Router's RouteComponent props
@@ -16,7 +17,7 @@ import React from 'react';
 export default class PageList extends React.Component {
   render () {
     if (!this.props.pages) {
-      return <div>Loading…</div>;
+      return (<Loading />);
     }
 
     return (

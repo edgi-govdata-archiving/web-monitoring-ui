@@ -9,6 +9,12 @@ gulp.task('css', function () {
   return gulp.src('src/css/*').pipe(gulp.dest('dist/css'));
 });
 
+gulp.task("default", ["css", "img", "browserify"]);
+
+gulp.task("img", function () {
+  return gulp.src('src/img/*').pipe(gulp.dest('dist/img'));
+});
+
 gulp.task('browserify', function () {
   return browserify({
     basedir: '.',
@@ -27,4 +33,5 @@ gulp.task('browserify', function () {
 gulp.task('watch', function() {
   gulp.watch('src/**/*.{js,jsx}', ['browserify']);
   gulp.watch('src/**/*.css', ['css']);
+  gulp.watch('src/img/*', ['img']);
 });
