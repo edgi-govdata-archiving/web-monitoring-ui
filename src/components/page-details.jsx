@@ -3,6 +3,7 @@ import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
+import Loading from './loading'
 
 /**
  * @typedef {Object} PageDetailsProps
@@ -70,9 +71,8 @@ export default class PageDetails extends React.Component {
   }
 
   render () {
-    // TODO: should factor out a loading view
     if (!(this.state.page)) {
-      return <div>Loading…</div>;
+      return (<Loading />);
     }
 
     const page = this.state.page;
