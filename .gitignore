@@ -102,3 +102,4 @@ archives/.idea/
 .env
 .vscode/
 .DS_Store
+dist
