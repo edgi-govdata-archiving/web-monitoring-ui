@@ -297,6 +297,23 @@ iframe {
     width: 100%;
 }
 
+/* ===== Progress bar ===== */
+.dotdotdot:after {
+  font-weight: 300;
+  content: '...';
+  display: inline-block;
+  width: 20px;
+  text-align: left;
+  animation: dotdotdot 1.5s linear infinite;
+}
+
+@keyframes dotdotdot {
+  0%   { content: '...'; }
+  25% { content: ''; }
+  50% { content: '.'; }
+  75% { content: '..'; }
+}
+
 /* ===== Login Form ===== */
 .dialog__body {
     background: white;
@@ -321,7 +338,7 @@ iframe {
 }
 
 .loading {
-  margin-left: 20px;
+  background-position-x: center;
   height: 70px;
   background-image: url(../img/infinity-loader.svg);
   background-repeat: no-repeat;
