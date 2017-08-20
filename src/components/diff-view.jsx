@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import {diffTypes} from '../constants/diff-types';
+import Loading from './loading';
 
 import HighlightedTextDiff from './highlighted-text-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
@@ -46,40 +47,41 @@ export default class DiffView extends React.Component {
 
   render () {
     const { a, b } = this.props;
+    const chosenDiffType = this.props.diffType;
     const { diff, loadDiffType } = this.state;
+
+    if (chosenDiffType && diffTypes[chosenDiffType].diff_service === 'TODO') {
+      return <div>No diff for '{diffTypes[chosenDiffType].description}' yet</div>;
+    }
 
     if (!loadDiffType ||
         !diff ||
         loadDiffType !== this.props.diffType)
     {
-      return <div>Loading<span className='dotdotdot'></span></div>;
-    }
-
-    if (!diffTypes[loadDiffType].diff_service === 'TODO') {
-      return <div>No diff yet</div>;
+      return <Loading />;
     }
 
     // TODO: if we have multiple ways to render content from a single service
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
     switch (loadDiffType) {
-    case 'SIDE_BY_SIDE_RENDERED':
+    case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
         <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
       );
-    case 'HIGHLIGHTED_TEXT':
+    case diffTypes.HIGHLIGHTED_TEXT.value:
       return (
         <HighlightedTextDiff diff={diff} className='diff-text-inline' />
       );
-    case 'HIGHLIGHTED_SOURCE':
+    case diffTypes.HIGHLIGHTED_SOURCE.value:
       return (
         <HighlightedTextDiff diff={diff} className='diff-source-inline' />
       );
-    case 'CHANGES_ONLY_TEXT':
+    case diffTypes.CHANGES_ONLY_TEXT.value:
       return (
         <ChangesOnlyDiff diff={diff} className='diff-text-inline' />
       );
-    case 'CHANGES_ONLY_SOURCE':
+    case diffTypes.CHANGES_ONLY_SOURCE.value:
       return (
         <ChangesOnlyDiff diff={diff} className='diff-source-inline' />
       );
