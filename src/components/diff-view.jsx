@@ -25,7 +25,7 @@ import ChangesOnlyDiff from './changes-only-diff';
 export default class DiffView extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {diff: null};
+    this.state = {diff: null, loadDiffType: null};
   }
 
   componentWillMount () {
@@ -45,37 +45,44 @@ export default class DiffView extends React.Component {
   }
 
   render () {
-    const { a, b, diffType } = this.props;
-    const { diff } = this.state;
+    const { a, b } = this.props;
+    const { diff, loadDiffType } = this.state;
 
-    if (!diffType || !diffTypes[diffType] || !diff) {
-      return null;
+    if (!loadDiffType ||
+        !diff ||
+        loadDiffType !== this.props.diffType)
+    {
+      return <div>Loading<span className='dotdotdot'></span></div>;
+    }
+
+    if (!diffTypes[loadDiffType].diff_service === 'TODO') {
+      return <div>No diff yet</div>;
     }
 
     // TODO: if we have multiple ways to render content from a single service
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
-    switch (diffType) {
-    case "SIDE_BY_SIDE_RENDERED":
+    switch (loadDiffType) {
+    case 'SIDE_BY_SIDE_RENDERED':
       return (
         <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
       );
-    case "HIGHLIGHTED_TEXT":
+    case 'HIGHLIGHTED_TEXT':
       return (
-        <HighlightedTextDiff diff={diff} className="diff-text-inline" />
+        <HighlightedTextDiff diff={diff} className='diff-text-inline' />
       );
-    case "HIGHLIGHTED_SOURCE":
+    case 'HIGHLIGHTED_SOURCE':
       return (
-        <HighlightedTextDiff diff={diff} className="diff-source-inline" />
+        <HighlightedTextDiff diff={diff} className='diff-source-inline' />
       );
-    case "CHANGES_ONLY_TEXT":
+    case 'CHANGES_ONLY_TEXT':
       return (
-        <ChangesOnlyDiff diff={diff} className="diff-text-inline" />
+        <ChangesOnlyDiff diff={diff} className='diff-text-inline' />
       );
-    case "CHANGES_ONLY_SOURCE":
+    case 'CHANGES_ONLY_SOURCE':
       return (
-        <ChangesOnlyDiff diff={diff} className="diff-source-inline" />
-       );
+        <ChangesOnlyDiff diff={diff} className='diff-source-inline' />
+      );
     default:
       return null;
     }
@@ -115,7 +122,10 @@ export default class DiffView extends React.Component {
 
     Promise.resolve(this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diff_service))
       .then((diff) => {
-        this.setState({diff});
+        this.setState({
+          diff: diff,
+          loadDiffType: diffType
+        });
       });
   }
 }
