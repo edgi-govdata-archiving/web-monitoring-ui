@@ -395,7 +395,7 @@ function parseDiff (data) {
   if (data.content && data.content.data) {
     let objectFormat = data.content.data;
     let arrayFormat = objectFormat.map(value => {
-      return [value.Type, value.Text]
+      return [value.Type, value.Text];
     });
     data.content = {diff: arrayFormat};
   }

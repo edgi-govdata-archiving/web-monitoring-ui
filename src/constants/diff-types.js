@@ -34,4 +34,4 @@ export const diffTypes = {
     diff_service: 'html_source',
     value: 'CHANGES_ONLY_SOURCE'
   }
-}
+};

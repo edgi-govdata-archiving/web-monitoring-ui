@@ -41,19 +41,19 @@ export default class ChangesOnlyDiff extends React.Component {
    * @param {diff[]} diffs
    * @returns {[number, string]}
    */
-function getContextualDiff (currentValue, index, diffs) {
-  let [itemType, itemText] = currentValue;
-  if (itemType !== 0) return currentValue;
+// function getContextualDiff (currentValue, index, diffs) {
+//   let [itemType, itemText] = currentValue;
+//   if (itemType !== 0) return currentValue;
 
-  // Naive approach, needs massive improvement
-  const contextLength = 50;
-  let strContext = '';
+//   // Naive approach, needs massive improvement
+//   const contextLength = 50;
+//   let strContext = '';
 
-  if (diffs[index - 1] && diffs[index - 1][0] !== 0) {
-    strContext += `${itemText.substring(0, contextLength)}\n`;
-  }
-  if (diffs[index + 1] && diffs[index + 1][0] !== 0) {
-    strContext += `\n${itemText.substring(itemText.length - contextLength)}`
-  }
-  return [itemType, strContext];
-}
+//   if (diffs[index - 1] && diffs[index - 1][0] !== 0) {
+//     strContext += `${itemText.substring(0, contextLength)}\n`;
+//   }
+//   if (diffs[index + 1] && diffs[index + 1][0] !== 0) {
+//     strContext += `\n${itemText.substring(itemText.length - contextLength)}`;
+//   }
+//   return [itemType, strContext];
+// }
