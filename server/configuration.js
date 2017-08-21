@@ -4,6 +4,10 @@ const defaultValues = {
   WEB_MONITORING_DB_URL: 'https://api-staging.monitoring.envirodatagov.org'
 };
 
+const clientFields = [
+  'WEB_MONITORING_DB_URL'
+];
+
 const processEnvironment = Object.assign({}, process.env);
 
 /**
@@ -37,18 +41,17 @@ function baseConfiguration () {
 }
 
 /**
- * Filters baseConfiguration
+ * Get a configuration object that is safe to pass to client code.
  * @returns {Object}
  */
-function filterConfiguration(filterArray) {
+function clientConfiguration () {
   const source = baseConfiguration();
-  const allowedFields = filterArray;
 
-  return allowedFields.reduce((result, field) => {
+  return clientFields.reduce((result, field) => {
     result[field] = source[field];
     return result;
   }, {});
 }
 
 exports.baseConfiguration = baseConfiguration;
-exports.filterConfiguration = filterConfiguration;
+exports.clientConfiguration = clientConfiguration;
