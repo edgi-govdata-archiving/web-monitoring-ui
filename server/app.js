@@ -9,9 +9,6 @@ const sheetData = require('./sheet-data');
 const config = require('./configuration');
 
 const serverPort = process.env.PORT || 3001;
-const filterArray = [
-  'WEB_MONITORING_DB_URL'
-];
 
 if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
   app.use((request, response, next) => {
@@ -115,7 +112,7 @@ app.post(
  */
 app.get('*', function (request, response) {
   response.render('main.html', {
-    configuration: config.filterConfiguration(filterArray)
+    configuration: config.clientConfiguration()
   });
 });
 
