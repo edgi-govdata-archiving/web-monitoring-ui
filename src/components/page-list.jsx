@@ -23,19 +23,29 @@ export default class PageList extends React.Component {
   }
 
   componentWillMount () {
-    console.log(`will mount - ${this.props.pages}`)
-  }
-  componentDidMount () {
-    console.log(`did mount - ${this.props.pages}`)
-  }
-
-  componentWillReceiveProps (nextProps) {
-    console.log(`getting props - ${nextProps.pages}`);
-    if (this.props.mydomains) {
-      console.log('mydomains')
+    if (this.props.mydomains && !this.state.loaded) {
+      this.setState({loaded: true})
+      this.props.loadPages(false);
     }
   }
+  componentWillReceiveProps (nextProps) {
+    // console.log(`thisStateReceived - ${this.state.loaded}, getting props - ${JSON.stringify(this.props.pages[0])}`);
+  }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // if (!this.state.loaded) {
+    //   return false
+    // }
+    return true
+
+    // console.log(`thisState - ${this.state.load}, thisProps - ${this.props.pages}`)
+    // console.log(`nextState - ${nextState.loaded}, nextProps - ${nextProps.pages}`)
+    // if (this.props.mydomains && nextState.loaded && nextProps.pages) {
+    //   return true
+    // }
+    // return false
+
+  }
   render () {
     if (!this.props.pages) {
       return (<Loading />);
