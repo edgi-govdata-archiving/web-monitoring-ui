@@ -9,9 +9,9 @@ gulp.task('css', function () {
   return gulp.src('src/css/*').pipe(gulp.dest('dist/css'));
 });
 
-gulp.task("default", ["css", "img", "browserify"]);
+gulp.task('default', ['css', 'img', 'browserify']);
 
-gulp.task("img", function () {
+gulp.task('img', function () {
   return gulp.src('src/img/*').pipe(gulp.dest('dist/img'));
 });
 

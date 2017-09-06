@@ -3,7 +3,7 @@ import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
-import Loading from './loading'
+import Loading from './loading';
 
 /**
  * @typedef {Object} PageDetailsProps

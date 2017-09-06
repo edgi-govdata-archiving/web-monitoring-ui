@@ -63,7 +63,7 @@ export default class WebMonitoringUi extends React.Component {
       .then(loggedIn => {
         this.setState({user: api.userData});
         if (showAll) {
-          return api.getPages()
+          return api.getPages();
         }
         else if (loggedIn) {
           return localApi.getPagesForUser(api.userData.email)
@@ -82,7 +82,19 @@ export default class WebMonitoringUi extends React.Component {
       });
   }
 
+  loadUser () {
+    api.isLoggedIn()
+      .then(loggedIn => {
+        this.setState({user: api.userData});
+      });
+  }
+
+  componentWillMount () {
+    this.loadUser();
+  }
+
   render () {
+    const withData = bindComponent({pages: this.state.pages, user: this.state.user});
     const withDataAll = bindComponent({
       pages: this.state.pages,
       user: this.state.user,
@@ -102,10 +114,12 @@ export default class WebMonitoringUi extends React.Component {
         <Router>
           <div id="application">
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
-            <Route exact path="/" render={withDataAll(PageList)} />
-            <Route exact path="/all" render={withDataAll(PageList)} />
-            <Route exact path="/mydomains" render={withDataMyDomains(PageList)} />
-            <Route path="/page/:pageId/:change?" render={withDataAll(PageDetails)} />
+            <Switch>
+              <Route exact path="/" render={withDataAll(PageList)} />
+              <Route exact path="/all" render={withDataAll(PageList)} />
+              <Route exact path="/mydomains" render={withDataMyDomains(PageList)} />
+              <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
+            </Switch>
           </div>
         </Router>
         {modal}
