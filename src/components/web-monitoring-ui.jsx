@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
@@ -87,7 +87,13 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   render () {
-    const withData = bindComponent({pages: this.state.pages, user: this.state.user, loadPages: this.loadPages});
+    const withData = bindComponent({pages: this.state.pages, user: this.state.user});
+    const withDataMyDomains = bindComponent({
+      pages: this.state.pages,
+      user: this.state.user,
+      loadPages: this.loadPages,
+      mydomains: true,
+    });
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
@@ -96,7 +102,7 @@ export default class WebMonitoringUi extends React.Component {
           <div id="application">
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
             <Route exact path="/" render={withData(PageList)} />
-            <Route path="/mydomains" render={bindComponent({mydomains: true}, withData(PageList))} />
+            <Route exact path="/mydomains" render={withDataMyDomains(PageList)} />
             <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
           </div>
         </Router>

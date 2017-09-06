@@ -22,17 +22,20 @@ export default class PageList extends React.Component {
     }
   }
 
+  componentWillMount () {
+    console.log(`will mount - ${this.props.pages}`)
+  }
+  componentDidMount () {
+    console.log(`did mount - ${this.props.pages}`)
+  }
+
   componentWillReceiveProps (nextProps) {
-    console.log('getting props');
-    if (nextProps.pages) {
-      this.setState({loaded: true})
+    console.log(`getting props - ${nextProps.pages}`);
+    if (this.props.mydomains) {
+      console.log('mydomains')
     }
-
   }
 
-  componentWillUpdate (nextProps, nextState) {
-    console.log(`will update - ${nextState.loaded}`)
-  }
   render () {
     if (!this.props.pages) {
       return (<Loading />);
