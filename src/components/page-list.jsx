@@ -15,37 +15,10 @@ import Loading from './loading'
  * @param {PageListProps} props
  */
 export default class PageList extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      loaded: false
-    }
-  }
-
   componentWillMount () {
-    if (this.props.mydomains && !this.state.loaded) {
-      this.setState({loaded: true})
-      this.props.loadPages(false);
-    }
-  }
-  componentWillReceiveProps (nextProps) {
-    // console.log(`thisStateReceived - ${this.state.loaded}, getting props - ${JSON.stringify(this.props.pages[0])}`);
+    this.props.loadPages(this.props.showAll);
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // if (!this.state.loaded) {
-    //   return false
-    // }
-    return true
-
-    // console.log(`thisState - ${this.state.load}, thisProps - ${this.props.pages}`)
-    // console.log(`nextState - ${nextState.loaded}, nextProps - ${nextProps.pages}`)
-    // if (this.props.mydomains && nextState.loaded && nextProps.pages) {
-    //   return true
-    // }
-    // return false
-
-  }
   render () {
     if (!this.props.pages) {
       return (<Loading />);
