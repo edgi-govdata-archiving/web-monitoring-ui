@@ -36,6 +36,7 @@ export default class WebMonitoringUi extends React.Component {
     this.hideLogin = this.hideLogin.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.loadPages = this.loadPages.bind(this);
   }
 
   showLogin () {
@@ -48,20 +49,23 @@ export default class WebMonitoringUi extends React.Component {
 
   afterLogin (user) {
     this.hideLogin();
-    this.loadPages();
+    this.loadPages(false);
   }
 
   logOut () {
     api.logOut();
     this.setState({user: api.userData});
-    this.loadPages();
+    this.loadPages(true);
   }
 
-  loadPages () {
+  loadPages (showAll) {
     api.isLoggedIn()
       .then(loggedIn => {
         this.setState({user: api.userData});
-        if (loggedIn) {
+        if (showAll) {
+          return api.getPages()
+        }
+        else if (loggedIn) {
           return localApi.getPagesForUser(api.userData.email)
             .catch(() => {
               // TODO: Handle 'user not found' in a better way
@@ -79,7 +83,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   componentWillMount () {
-    this.loadPages();
+    this.loadPages(true);
   }
 
   render () {
@@ -92,6 +96,7 @@ export default class WebMonitoringUi extends React.Component {
           <div id="application">
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
             <Route exact path="/" render={withData(PageList)} />
+            <Route path="/mydomains" render={withData(PageList)} />
             <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
           </div>
         </Router>
