@@ -61,7 +61,6 @@ export default class WebMonitoringUi extends React.Component {
   loadPages (showAll) {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData});
         if (showAll) {
           return api.getPages();
         }
