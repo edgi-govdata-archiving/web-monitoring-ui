@@ -87,7 +87,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   render () {
-    const withData = bindComponent({pages: this.state.pages, user: this.state.user});
+    const withData = bindComponent({pages: this.state.pages, user: this.state.user, loadPages: this.loadPages});
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
@@ -96,7 +96,7 @@ export default class WebMonitoringUi extends React.Component {
           <div id="application">
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
             <Route exact path="/" render={withData(PageList)} />
-            <Route path="/mydomains" render={withData(PageList)} />
+            <Route path="/mydomains" render={bindComponent({mydomains: true}, withData(PageList))} />
             <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
           </div>
         </Router>
