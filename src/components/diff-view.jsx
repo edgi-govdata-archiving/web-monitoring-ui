@@ -50,7 +50,7 @@ export default class DiffView extends React.Component {
     const chosenDiffType = this.props.diffType;
     const { diff, loadDiffType } = this.state;
 
-    if (chosenDiffType && diffTypes[chosenDiffType].diff_service === 'TODO') {
+    if (chosenDiffType && diffTypes[chosenDiffType].diffService === 'TODO') {
       return <div>No diff for '{diffTypes[chosenDiffType].description}' yet</div>;
     }
 
@@ -122,7 +122,7 @@ export default class DiffView extends React.Component {
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
 
-    Promise.resolve(this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diff_service))
+    Promise.resolve(this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService))
       .then((diff) => {
         this.setState({
           diff: diff,
