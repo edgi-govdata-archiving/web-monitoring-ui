@@ -54,17 +54,14 @@ export default class DiffView extends React.Component {
       return <div>No diff for '{diffTypes[chosenDiffType].description}' yet</div>;
     }
 
-    if (!loadDiffType ||
-        !diff ||
-        loadDiffType !== this.props.diffType)
-    {
+    if (!diff || loadDiffType !== this.props.diffType) {
       return <Loading />;
     }
 
     // TODO: if we have multiple ways to render content from a single service
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
-    switch (loadDiffType) {
+    switch (chosenDiffType) {
     case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
         <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
