@@ -7,6 +7,7 @@ import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
+import Loading from './loading';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
@@ -37,7 +38,8 @@ export default class ChangeView extends React.Component {
       collapsedView: true,
       diffType: undefined,
       addingToDictionary: false,
-      addingToImportant: false
+      addingToImportant: false,
+      updating: false
     };
 
     // TODO: unify this default state logic with componentWillReceiveProps
@@ -134,6 +136,10 @@ export default class ChangeView extends React.Component {
   renderSubmission () {
     if (!this.props.user) {
       return <div>Log in to submit annotations.</div>;
+    }
+
+    if (this.state.updating) {
+      return <Loading />
     }
 
     const annotation = this.state.annotation || {};
@@ -267,11 +273,12 @@ export default class ChangeView extends React.Component {
   }
 
   _saveAnnotation (annotation) {
-    // TODO: display some indicator that saving is happening/complete
+    this.setState({ updating: true })
     annotation = annotation || this.state.annotation;
     const fromVersion = this.props.from.uuid;
     const toVersion = this.props.to.uuid;
-    this.props.annotateChange(fromVersion, toVersion, annotation);
+    this.props.annotateChange(fromVersion, toVersion, annotation)
+        .then(() => this.setState({ updating: false }))
   }
 
   _changeSelectedVersions (from, to) {

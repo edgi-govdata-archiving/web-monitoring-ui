@@ -21,7 +21,7 @@ import Loading from './loading';
 export default class PageDetails extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { page: null, updating: false };
+    this.state = { page: null };
     this._annotateChange = this._annotateChange.bind(this);
     this._navigateToChange = this._navigateToChange.bind(this);
   }
@@ -67,13 +67,12 @@ export default class PageDetails extends React.Component {
    * @param {Object} annotation
    */
   _annotateChange (fromVersion, toVersion, annotation) {
-    this.setState({ updating: true })
-    this.context.api.annotateChange(
+    return this.context.api.annotateChange(
       this.state.page.uuid,
       fromVersion,
       toVersion,
       annotation
-    ).then(() => this.setState({ updating: false }))
+    )
   }
 
   render () {
@@ -87,7 +86,6 @@ export default class PageDetails extends React.Component {
     return (
       <div className="container-fluid container-page-view">
         <div className="row">
-          { this.state.updating ? (<Loading />) : '' }
           <div className="col-md-9">
             <h2 className="page-title">
               <a

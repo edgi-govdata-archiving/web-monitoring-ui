@@ -340,13 +340,6 @@ iframe {
 .loading {
   background-position-x: center;
   height: 70px;
-  width: 140px;
   background-image: url(../img/infinity-loader.svg);
   background-repeat: no-repeat;
-}
-
-.loading-overlay {
-  position: absolute;
-  left: 45%;
-  z-index: 999;
 }
