@@ -393,7 +393,11 @@ function parseChange (data) {
 function parseDiff (data) {
   // temporarily massage old diff format into new diff format
   if (data.content && data.content.data) {
-    data.content = {diff: data.content.data};
+    let objectFormat = data.content.data;
+    let arrayFormat = objectFormat.map(value => {
+      return [value.Type, value.Text];
+    });
+    data.content = {diff: arrayFormat};
   }
   return data;
 }
