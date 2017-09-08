@@ -1,16 +1,34 @@
 export const diffTypes = {
-  HIGHLIGHTED_TEXT: 'highlighted text',
-  HIGHLIGHTED_SOURCE: 'highlighted source',
-  HIGLIGHTED_RENDERED: 'higlighted rendered',
-  SIDE_BY_SIDE_RENDERED: 'side-by-side rendered',
-  SIDE_BY_SIDE_TEXT: 'side-by-side text',
+  HIGHLIGHTED_TEXT: {
+    description: 'Highlighted Text',
+    diffService: 'html_text',
+  },
+  HIGHLIGHTED_SOURCE: {
+    description: 'Highlighted Source',
+    diffService: 'source',
+  },
+  HIGHLIGHTED_RENDERED: {
+    description: 'Highlighted Rendered',
+    diffService: 'TODO',
+  },
+  SIDE_BY_SIDE_RENDERED: {
+    description: 'Side-by-Side Rendered',
+    diffService: 'html_source',  // HACK, real side-by-side doesn't exist yet
+  },
+  SIDE_BY_SIDE_TEXT: {
+    description: 'Side-by-Side Text',
+    diffService: 'TODO',
+  },
+  CHANGES_ONLY_TEXT: {
+    description: 'Changes Only Text',
+    diffService: 'html_text',
+  },
+  CHANGES_ONLY_SOURCE: {
+    description: 'Changes Only Source',
+    diffService: 'source',
+  }
 };
 
-// TODO - map each diffType to it's corresponding endpoint string
-export const changeDiffTypes = {
-  [diffTypes.HIGHLIGHTED_TEXT]: 'html_text',
-  // Commented out because this differ has some issues right now
-  // [diffTypes.HIGHLIGHTED_SOURCE]: 'html_source',
-  [diffTypes.HIGHLIGHTED_SOURCE]: 'source',
-  [diffTypes.SIDE_BY_SIDE_RENDERED]: 'html_source'  // HACK
-};
+for (let key in diffTypes) {
+  diffTypes[key].value = key;
+}

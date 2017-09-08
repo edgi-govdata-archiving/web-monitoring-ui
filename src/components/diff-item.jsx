@@ -15,15 +15,7 @@ export default class DiffItem extends React.Component {
     // styles with the class and remove the "styles" object entirely.
     const styles = {};
     let diffTypeClass = 'unchanged';
-    var itemType;
-    var itemText;
-    if (data.constructor === Array) {
-      [itemType, itemText] = data;
-    }
-    else {
-      itemType = data.Type;
-      itemText = data.Text;
-    }
+    let [itemType, itemText] = data;
 
     // this data comes from https://github.com/edgi-govdata-archiving/go-calc-diff
     // it may be necessary to adjust the "data.Type" inspections based on differ
