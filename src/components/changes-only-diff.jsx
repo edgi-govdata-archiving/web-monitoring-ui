@@ -22,7 +22,8 @@ export default class ChangesOnlyDiff extends React.Component {
       return null;
     }
 
-    const changesOnly = this.props.diff.content.diff.map(getContextualDiff);
+    const changesOnly = this.props.diff.content.diff.reduce(
+      getContextualDiff, []);
 
     return (
       <List
@@ -40,32 +41,36 @@ export default class ChangesOnlyDiff extends React.Component {
  * lines or characters on the ends adjacent to actual changes.
  * If `currentValue` is an insertion or deletion we return it as is.
  * If it's not, we truncate it depending on if changes occured in entries before or after it.
+ * @param {Array.<[number, string]>} newDiff
  * @param {[number, string]} currentValue
  * @param {number} index
- * @param {Array.<[number, string]>} diffs
- * @returns {[number, string]}
+ * @param {Array.<[number, string]>} diff
+ * @returns {Array.<[number, string]>}
  */
-function getContextualDiff (currentValue, index, diffs) {
+function getContextualDiff (newDiff, currentValue, index, diff) {
   let [itemType, itemText] = currentValue;
-  if (itemType !== 0) return currentValue;
+  if (itemType !== 0) return newDiff.concat([currentValue]);
 
   // Determine whether there is content that actually needs trimming
   let lines = itemText.split('\n');
   const singleLine = lines.length === 1;
-  if (!singleLine && lines.length <= maxContextLines) return currentValue;
+  if (!singleLine && lines.length <= maxContextLines) {
+    return newDiff.concat([currentValue]);
+  }
 
-  const hasPreviousChange = diffs[index - 1] && diffs[index - 1][0] !== 0;
-  const hasNextChange = diffs[index + 1] && diffs[index + 1][0] !== 0;
+  const hasPreviousChange = diff[index - 1] && diff[index - 1][0] !== 0;
+  const hasNextChange = diff[index + 1] && diff[index + 1][0] !== 0;
 
   let contextLength = singleLine ? maxContextLineLength : maxContextLines;
   if (hasPreviousChange && hasNextChange) {
     contextLength *= 2;
   }
   if ((singleLine ? lines[0] : lines).length <= contextLength) {
-    return currentValue;
+    return newDiff.concat([currentValue]);
   }
 
   // ...and actually do the trimming
+  let newEntries = [];
   let newText = [];
   if (hasPreviousChange) {
     if (singleLine) {
@@ -83,10 +88,12 @@ function getContextualDiff (currentValue, index, diffs) {
       newText.push(newLines.join('\n') + '\n');
     }
   }
+  newEntries.push([itemType, newText.join('')]);
 
   // Just divide with an ellipsis for now, could be fancier in the future
-  newText.push('…');
+  newEntries.push([itemType, '…']);
 
+  newText = [];
   if (hasNextChange) {
     if (singleLine) {
       newText.push(lines[0].slice(-maxContextLineLength));
@@ -107,6 +114,7 @@ function getContextualDiff (currentValue, index, diffs) {
       newText.push('\n' + newLines.join('\n'));
     }
   }
+  newEntries.push([itemType, newText.join('')]);
 
-  return [itemType, newText.join('')];
+  return newDiff.concat(newEntries);
 }
