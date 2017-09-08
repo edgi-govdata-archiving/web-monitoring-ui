@@ -26,7 +26,7 @@ import ChangesOnlyDiff from './changes-only-diff';
 export default class DiffView extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {diff: null, loadDiffType: null};
+    this.state = {diff: null};
   }
 
   componentWillMount () {
@@ -48,13 +48,13 @@ export default class DiffView extends React.Component {
   render () {
     const { a, b } = this.props;
     const chosenDiffType = this.props.diffType;
-    const { diff, loadDiffType } = this.state;
+    const { diff } = this.state;
 
     if (chosenDiffType && diffTypes[chosenDiffType].diffService === 'TODO') {
       return <div>No diff for '{diffTypes[chosenDiffType].description}' yet</div>;
     }
 
-    if (!diff || loadDiffType !== this.props.diffType) {
+    if (!diff) {
       return <Loading />;
     }
 
@@ -62,28 +62,28 @@ export default class DiffView extends React.Component {
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
     switch (chosenDiffType) {
-    case diffTypes.SIDE_BY_SIDE_RENDERED.value:
-      return (
-        <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
-      );
-    case diffTypes.HIGHLIGHTED_TEXT.value:
-      return (
-        <HighlightedTextDiff diff={diff} className='diff-text-inline' />
-      );
-    case diffTypes.HIGHLIGHTED_SOURCE.value:
-      return (
-        <HighlightedTextDiff diff={diff} className='diff-source-inline' />
-      );
-    case diffTypes.CHANGES_ONLY_TEXT.value:
-      return (
-        <ChangesOnlyDiff diff={diff} className='diff-text-inline' />
-      );
-    case diffTypes.CHANGES_ONLY_SOURCE.value:
-      return (
-        <ChangesOnlyDiff diff={diff} className='diff-source-inline' />
-      );
-    default:
-      return null;
+      case diffTypes.SIDE_BY_SIDE_RENDERED.value:
+        return (
+          <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
+        );
+      case diffTypes.HIGHLIGHTED_TEXT.value:
+        return (
+          <HighlightedTextDiff diff={diff} className='diff-text-inline' />
+        );
+      case diffTypes.HIGHLIGHTED_SOURCE.value:
+        return (
+          <HighlightedTextDiff diff={diff} className='diff-source-inline' />
+        );
+      case diffTypes.CHANGES_ONLY_TEXT.value:
+        return (
+          <ChangesOnlyDiff diff={diff} className='diff-text-inline' />
+        );
+      case diffTypes.CHANGES_ONLY_SOURCE.value:
+        return (
+          <ChangesOnlyDiff diff={diff} className='diff-source-inline' />
+        );
+      default:
+        return null;
     }
   }
 
@@ -118,12 +118,11 @@ export default class DiffView extends React.Component {
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
-
+    this.setState({diff: null});
     this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService)
       .then((diff) => {
         this.setState({
-          diff: diff,
-          loadDiffType: diffType
+          diff: diff
         });
       });
   }
