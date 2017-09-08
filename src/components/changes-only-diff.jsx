@@ -72,7 +72,15 @@ function getContextualDiff (currentValue, index, diffs) {
       newText.push(lines[0].slice(0, maxContextLineLength));
     }
     else {
-      newText.push(lines.slice(0, maxContextLines).join('\n') + '\n');
+      const newLines = lines
+        .slice(0, maxContextLines)
+        .map(line => {
+          if (line.length > maxContextLineLength) {
+            return line.slice(0, maxContextLineLength) + '…';
+          }
+          return line;
+        });
+      newText.push(newLines.join('\n') + '\n');
     }
   }
 
@@ -84,7 +92,19 @@ function getContextualDiff (currentValue, index, diffs) {
       newText.push(lines[0].slice(-maxContextLineLength));
     }
     else {
-      newText.push('\n' + lines.slice(-maxContextLines).join('\n'));
+      const newLines = lines
+        .slice(0, maxContextLines)
+        .map((line, index, lines) => {
+          if (line.length > maxContextLineLength) {
+            // If this is the last line preceding a change, trim at the start.
+            if (lines[index + 1] == null) {
+              return '…' + line.slice(-maxContextLineLength);
+            }
+            return line.slice(0, maxContextLineLength) + '…';
+          }
+          return line;
+        });
+      newText.push('\n' + newLines.join('\n'));
     }
   }
 
