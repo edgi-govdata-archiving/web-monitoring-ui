@@ -71,8 +71,9 @@ function getContextualDiff (newDiff, currentValue, index, diff) {
 
   // ...and actually do the trimming
   let newEntries = [];
-  let newText = [];
   if (hasPreviousChange) {
+    const newText = [];
+
     if (singleLine) {
       newText.push(lines[0].slice(0, maxContextLineLength));
     }
@@ -87,14 +88,16 @@ function getContextualDiff (newDiff, currentValue, index, diff) {
         });
       newText.push(newLines.join('\n') + '\n');
     }
+
+    newEntries.push([itemType, newText.join('')]);
   }
-  newEntries.push([itemType, newText.join('')]);
 
   // Just divide with an ellipsis for now, could be fancier in the future
   newEntries.push([itemType, '…']);
 
-  newText = [];
   if (hasNextChange) {
+    const newText = [];
+
     if (singleLine) {
       newText.push(lines[0].slice(-maxContextLineLength));
     }
@@ -113,8 +116,9 @@ function getContextualDiff (newDiff, currentValue, index, diff) {
         });
       newText.push('\n' + newLines.join('\n'));
     }
+
+    newEntries.push([itemType, newText.join('')]);
   }
-  newEntries.push([itemType, newText.join('')]);
 
   return newDiff.concat(newEntries);
 }
