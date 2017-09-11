@@ -67,11 +67,16 @@ export default class PageDetails extends React.Component {
    * @param {Object} annotation
    */
   _annotateChange (fromVersion, toVersion, annotation) {
-    this.context.api.annotateChange(this.state.page.uuid, fromVersion, toVersion, annotation);
+    return this.context.api.annotateChange(
+      this.state.page.uuid,
+      fromVersion,
+      toVersion,
+      annotation
+    )
   }
 
   render () {
-    if (!(this.state.page)) {
+    if (!this.state.page) {
       return (<Loading />);
     }
 
