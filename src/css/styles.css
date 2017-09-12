@@ -61,6 +61,13 @@ body {
     margin: 0;
 }
 
+.navbar .auth-status a {
+  background-color: #337ab7;
+  border-radius: 2px;
+  margin: 5px;
+  padding: 5px;
+}
+
 /* ===== List View ===== */
 .container-list-view tbody tr {
     cursor: pointer;

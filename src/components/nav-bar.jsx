@@ -32,6 +32,8 @@ function renderUserInfo (user, showLogin, logOut) {
   if (user) {
     return (
       <span className="auth-status">
+        <Link to="/mydomains">My Domains</Link>
+        <Link to="/all">All</Link>
         {user.email}
         {' '}
         <button className="btn btn-link" onClick={logOut}>(Log out)</button>
