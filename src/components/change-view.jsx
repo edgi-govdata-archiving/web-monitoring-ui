@@ -7,6 +7,7 @@ import AnnotationForm from './annotation-form';
 import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
+import Loading from './loading';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
@@ -37,7 +38,8 @@ export default class ChangeView extends React.Component {
       collapsedView: true,
       diffType: undefined,
       addingToDictionary: false,
-      addingToImportant: false
+      addingToImportant: false,
+      updating: false
     };
 
     // TODO: unify this default state logic with componentWillReceiveProps
@@ -52,7 +54,6 @@ export default class ChangeView extends React.Component {
       ) !== 'false';
     }
 
-    this.updateDiff = this.updateDiff.bind(this);
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
@@ -83,21 +84,14 @@ export default class ChangeView extends React.Component {
     }
   }
 
-  updateDiff () {
-    // pass
-  }
-
   handleDiffTypeChange (diffType) {
     this.setState({diffType});
-    this.updateDiff();
   }
   handleFromVersionChange (version) {
     this._changeSelectedVersions(version, null);
-    this.updateDiff();
   }
   handleToVersionChange (version) {
     this._changeSelectedVersions(null, version);
-    this.updateDiff();
   }
 
   render () {
@@ -142,6 +136,10 @@ export default class ChangeView extends React.Component {
   renderSubmission () {
     if (!this.props.user) {
       return <div>Log in to submit annotations.</div>;
+    }
+
+    if (this.state.updating) {
+      return <Loading />
     }
 
     const annotation = this.state.annotation || {};
@@ -275,11 +273,12 @@ export default class ChangeView extends React.Component {
   }
 
   _saveAnnotation (annotation) {
-    // TODO: display some indicator that saving is happening/complete
+    this.setState({ updating: true })
     annotation = annotation || this.state.annotation;
     const fromVersion = this.props.from.uuid;
     const toVersion = this.props.to.uuid;
-    this.props.annotateChange(fromVersion, toVersion, annotation);
+    this.props.annotateChange(fromVersion, toVersion, annotation)
+        .then(() => this.setState({ updating: false }))
   }
 
   _changeSelectedVersions (from, to) {
@@ -333,50 +332,4 @@ function changeMatches (change, other) {
 
 function isDisabled (element) {
   return element.disabled || element.classList.contains('disabled');
-}
-
-/* Polyfill for Array.prototype.findIndex */
-// https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
-if (!Array.prototype.findIndex) {
-  Object.defineProperty(Array.prototype, 'findIndex', {
-    value (predicate) {
-      // 1. Let O be ? ToObject(this value).
-      if (this == null) {
-        throw new TypeError('"this" is null or not defined');
-      }
-
-      const o = Object(this);
-
-      // 2. Let len be ? ToLength(? Get(O, "length")).
-      const len = o.length >>> 0;
-
-      // 3. If IsCallable(predicate) is false, throw a TypeError exception.
-      if (typeof predicate !== 'function') {
-        throw new TypeError('predicate must be a function');
-      }
-
-      // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
-      const thisArg = arguments[1];
-
-      // 5. Let k be 0.
-      let k = 0;
-
-      // 6. Repeat, while k < len
-      while (k < len) {
-        // a. Let Pk be ! ToString(k).
-        // b. Let kValue be ? Get(O, Pk).
-        // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
-        // d. If testResult is true, return k.
-        const kValue = o[k];
-        if (predicate.call(thisArg, kValue, k, o)) {
-          return k;
-        }
-        // e. Increase k by 1.
-        k++;
-      }
-
-      // 7. Return -1.
-      return -1;
-    }
-  });
 }
