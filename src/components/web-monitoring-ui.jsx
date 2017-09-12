@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
+import Loading from './loading';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
@@ -31,7 +32,12 @@ const localApi = new WebMonitoringApi(api);
 export default class WebMonitoringUi extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {pages: null, showLogin: false, user: null};
+    this.state = {
+      pages: null,
+      showLogin: false,
+      user: null,
+      loading: false,
+    };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
@@ -84,16 +90,21 @@ export default class WebMonitoringUi extends React.Component {
   loadUser () {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData});
+        this.setState({user: api.userData, loading: false});
       });
   }
 
   componentWillMount () {
     this.loadUser();
+    this.setState({loading: true});
   }
 
   render () {
-    const withData = bindComponent({pages: this.state.pages, user: this.state.user});
+    // TODO: There's probably a way to compose these objects to cut down on repetition
+    const withData = bindComponent({
+      pages: this.state.pages,
+      user: this.state.user,
+    });
     const withDataAll = bindComponent({
       pages: this.state.pages,
       user: this.state.user,
@@ -108,15 +119,25 @@ export default class WebMonitoringUi extends React.Component {
     });
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
+    if (this.state.loading) {
+      return <Loading />
+    }
+
     return (
       <div>
         <Router>
           <div id="application">
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
             <Switch>
-              <Route exact path="/" render={withDataAll(PageList)} />
-              <Route exact path="/all" render={withDataAll(PageList)} />
-              <Route exact path="/mydomains" render={withDataMyDomains(PageList)} />
+              <Route exact path="/" render={() => (
+                this.state.user ? (
+                  <Redirect to="/mydomains" />
+                ) : (
+                  <Redirect to="/all" />
+                )
+              )}/>
+              <Route path="/all" render={withDataAll(PageList)} />
+              <Route path="/mydomains" render={withDataMyDomains(PageList)} />
               <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
             </Switch>
           </div>
