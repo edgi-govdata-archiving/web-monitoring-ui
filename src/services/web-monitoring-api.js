@@ -64,16 +64,18 @@ export default class WebMonitoringApi {
      *
      * @param {string} username
      * @param {AnalysisTimeframe} [timeframe] If omitted, defaults to current
+     * @param {object} [query] Additional query options for getting pages
      * @returns {Promise<Page[]>}
      */
-  getPagesForUser (username, timeframe) {
+  getPagesForUser (username, timeframe, query = {}) {
     const domainsRequest = this.getDomainsForUser(username);
     const timeframeRequest = Promise.resolve(timeframe || this.getCurrentTimeframe());
 
     return Promise.all([domainsRequest, timeframeRequest])
       .then(([domains, timeframe]) => this._getPagesByDomains(
         domains,
-        this._dateRangeString(timeframe)
+        this._dateRangeString(timeframe),
+        query
       ));
   }
 
@@ -147,9 +149,9 @@ export default class WebMonitoringApi {
     });
   }
 
-  _getPagesByDomains (domains, dateRange) {
+  _getPagesByDomains (domains, dateRange, extraQuery) {
     const fetches = domains.map(domain => {
-      const query = {site: domain};
+      const query = Object.assign({site: domain}, extraQuery);
       if (dateRange) {
         query.capture_time = dateRange;
       }

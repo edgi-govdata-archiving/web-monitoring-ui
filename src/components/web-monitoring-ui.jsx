@@ -61,16 +61,17 @@ export default class WebMonitoringUi extends React.Component {
     api.isLoggedIn()
       .then(loggedIn => {
         this.setState({user: api.userData});
+        const query = {include_latest: true};
         if (loggedIn) {
-          return localApi.getPagesForUser(api.userData.email)
+          return localApi.getPagesForUser(api.userData.email, null, query)
             .catch(() => {
               // TODO: Handle 'user not found' in a better way
               // than just showing default list
-              return api.getPages();
+              return api.getPages(query);
             });
         }
         else {
-          return api.getPages();
+          return api.getPages(query);
         }
       })
       .then((pages) => {
