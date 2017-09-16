@@ -338,8 +338,8 @@ iframe {
 }
 
 .loading {
-  background-position-x: center;
+  position: absolute;
+  left: 50%;
+  margin-left: -37px;
   height: 70px;
-  background-image: url(../img/infinity-loader.svg);
-  background-repeat: no-repeat;
 }
