@@ -20,21 +20,6 @@ export default class SideBySideRenderedDiff extends React.Component {
     this.frameB = null;
   }
 
-  // Simplistic rendering with remote content
-  // render () {
-  //     if (!this.props) {
-  //         return null;
-  //     }
-
-  //     return (
-  //         <div className="side-by-side-render">
-  //             <iframe src={this.props.a.uri} sandbox="allow-forms allow-scripts" />
-  //             <hr />
-  //             <iframe src={this.props.b.uri} sandbox="allow-forms allow-scripts" />
-  //         </div>
-  //     );
-  // }
-
   render () {
     if (!this.props) {
       return null;
@@ -54,7 +39,8 @@ export default class SideBySideRenderedDiff extends React.Component {
      * @returns {boolean}
      */
   shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.a !== this.props.a || nextProps.b !== this.props.b;
+    return nextProps.diff.from_version_id !== this.props.diff.from_version_id
+      || nextProps.diff.to_version_id !== this.props.diff.to_version_id;
   }
 
   componentDidMount () {
@@ -66,18 +52,16 @@ export default class SideBySideRenderedDiff extends React.Component {
   }
 
   _updateContent () {
-    fetch(this.props.a.uri)
-      .then(response => response.text())
-      .then(rawSource => processSource(rawSource, this.props.page))
-      .then(source => {
-        this.frameA.setAttribute('srcdoc', source);
-      });
-    fetch(this.props.b.uri)
-      .then(response => response.text())
-      .then(rawSource => processSource(rawSource, this.props.page))
-      .then(source => {
-        this.frameB.setAttribute('srcdoc', source);
-      });
+    const raw_source = this.props.diff.content.diff;
+    const removals = raw_source.replace(/<ins[^>]*>[^]*?<\/ins>/ig, '');
+    const additions = raw_source.replace(/<del[^>]*>[^]*?<\/del>/ig, '');
+
+    this.frameA.setAttribute(
+      'srcdoc',
+      processSource(removals, this.props.page));
+    this.frameB.setAttribute(
+      'srcdoc',
+      processSource(additions, this.props.page));
   }
 }
 
