@@ -58,7 +58,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   hideLogin () {
-    this.setState({showLogin: false, user: api.userData});
+    this.setState({showLogin: false, user: api.userData, error: null});
   }
 
   afterLogin (user) {
@@ -87,18 +87,21 @@ export default class WebMonitoringUi extends React.Component {
           return localApi.getPagesForUser(api.userData.email, null, query)
         }
       })
-      .then((pages) => {
+      .then(pages => {
         this.setState({
           [allPages ? 'pages' : 'assignedPages']: pages,
           currentFilter: allPages ? 'pages' : 'assignedPages'
         });
+      })
+      .catch(error => {
+        this.setState({error});
       });
   }
 
   loadUser () {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData, isLoading: false});
+        this.setState({user: api.userData, isLoading: false, error: null});
       });
   }
 
@@ -110,8 +113,8 @@ export default class WebMonitoringUi extends React.Component {
     if (this.state.isLoading) {
       return <Loading />
     }
+    const {error, showLogin, user} = this.state;
 
-    const modal = this.state.showLogin ? this.renderLoginDialog() : null;
     const withData = (ComponentType, pageType) => {
       return (routeProps) => {
         const pages = this.state[pageType];
@@ -121,12 +124,13 @@ export default class WebMonitoringUi extends React.Component {
         return <ComponentType {...routeProps} pages={pages} user={this.state.user} />;
       };
     };
-
-    return (
-      <div>
-        <Router>
-          <div id="application">
-            <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} onClick={this.filterClickHandler} />
+    const modal = showLogin ? this.renderLoginDialog() : null;
+    const main = (!user)
+      ? (this.renderLoginDialog("You must be logged in to view pages"))
+      : error
+        ? (<h1>{error.message}</h1>)
+        : (
+          <div>
             <Route exact path="/" render={() => (
               this.state.user
                 ? (<Redirect to="/assignedPages" />)
@@ -136,23 +140,37 @@ export default class WebMonitoringUi extends React.Component {
             <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
             <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
           </div>
+        );
+
+    return (
+      <div>
+        <Router>
+          <div id="application">
+            <NavBar title="EDGI"
+              user={this.state.user}
+              showLogin={this.showLogin}
+              logOut={this.logOut}
+              onClick={this.filterClickHandler}
+            />
+            {main}
+          </div>
         </Router>
         {modal}
       </div>
     );
   }
 
-  renderLoginDialog () {
+  renderLoginDialog (message) {
     return (
       <AriaModal
-        titleText="Log in"
+        titleText="Log In"
         onExit={this.hideLogin}
         applicationNode={document.getElementById('web-monitoring-ui-root')}
         dialogClass="dialog__body"
         underlayClass="dialog dialog__underlay"
         verticallyCenter={true}
       >
-        <LoginForm cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
+        <LoginForm message={message} cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
       </AriaModal>
     );
   }

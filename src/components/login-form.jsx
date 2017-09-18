@@ -37,7 +37,7 @@ export default class LoginPanel extends React.Component {
     return (
       <form className="login-form" onSubmit={this._logIn}>
         <h1>Log In</h1>
-
+        {this._renderMessage()}
         {this._renderError()}
 
         <label className="form-group">
@@ -69,6 +69,18 @@ export default class LoginPanel extends React.Component {
         {this.state.error}
       </p>
     );
+  }
+
+  _renderMessage () {
+    if (!this.props.message) {
+      return;
+    }
+
+    return (
+      <p className="alert alert-info" role="alert">
+        {this.props.message}
+      </p>
+    )
   }
 
   _updateEmail (event) {
