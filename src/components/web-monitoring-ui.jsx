@@ -39,12 +39,18 @@ export default class WebMonitoringUi extends React.Component {
       user: null,
       isLoading: true,
       error: null,
+      currentFilter: 'assignedPages',
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
     this.logOut = this.logOut.bind(this);
     this.loadPages = this.loadPages.bind(this);
+    this.filterClickHandler = this.filterClickHandler.bind(this);
+  }
+
+  filterClickHandler (filter) {
+    this.setState({currentFilter: filter});
   }
 
   showLogin () {
@@ -83,7 +89,8 @@ export default class WebMonitoringUi extends React.Component {
       })
       .then((pages) => {
         this.setState({
-          [allPages ? 'pages' : 'assignedPages']: pages
+          [allPages ? 'pages' : 'assignedPages']: pages,
+          currentFilter: allPages ? 'pages' : 'assignedPages'
         });
       });
   }
@@ -119,7 +126,7 @@ export default class WebMonitoringUi extends React.Component {
       <div>
         <Router>
           <div id="application">
-            <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
+            <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} onClick={this.filterClickHandler} />
             <Route exact path="/" render={() => (
               this.state.user
                 ? (<Redirect to="/mydomains" />)
@@ -127,7 +134,7 @@ export default class WebMonitoringUi extends React.Component {
             )}/>
             <Route path="/all" render={withData(PageList, 'pages')} />
             <Route path="/mydomains" render={withData(PageList, 'assignedPages')} />
-            <Route path="/page/:pageId/:change?" render={withData(PageDetails, 'pages')} />
+            <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
           </div>
         </Router>
         {modal}
