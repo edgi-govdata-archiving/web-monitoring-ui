@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 /**
  * @typedef {Object} NavBarProps
@@ -31,13 +31,15 @@ export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut})
 function renderUserInfo (user, showLogin, logOut) {
   if (user) {
     return (
-      <span className="auth-status">
-        <Link to="/mydomains">My Domains</Link>
-        <Link to="/all">All</Link>
-        {user.email}
-        {' '}
-        <button className="btn btn-link" onClick={logOut}>(Log out)</button>
-      </span>
+      <div>
+        <NavLink to="/mydomains">My Domains</NavLink>
+        <NavLink to="/all">All</NavLink>
+        <span className="auth-status">
+          {user.email}
+          {' '}
+          <button className="btn btn-link" onClick={logOut}>(Log out)</button>
+        </span>
+      </div>
     );
   }
   else {
