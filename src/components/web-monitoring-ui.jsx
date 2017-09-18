@@ -129,11 +129,11 @@ export default class WebMonitoringUi extends React.Component {
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} onClick={this.filterClickHandler} />
             <Route exact path="/" render={() => (
               this.state.user
-                ? (<Redirect to="/mydomains" />)
-                : (<Redirect to="/all" />)
+                ? (<Redirect to="/assignedPages" />)
+                : (<Redirect to="/pages" />)
             )}/>
-            <Route path="/all" render={withData(PageList, 'pages')} />
-            <Route path="/mydomains" render={withData(PageList, 'assignedPages')} />
+            <Route path="/pages" render={withData(PageList, 'pages')} />
+            <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
             <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
           </div>
         </Router>

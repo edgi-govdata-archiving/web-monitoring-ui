@@ -32,8 +32,8 @@ function renderUserInfo (user, showLogin, logOut, onClick) {
   if (user) {
     return (
       <div>
-        <NavLink to="/mydomains" onClick={() => onClick('assignedPages')}>My Domains</NavLink>
-        <NavLink to="/all" onClick={() => onClick('pages')}>All</NavLink>
+        <NavLink to="/assignedPages" onClick={() => onClick('assignedPages')}>Assigned Pages</NavLink>
+        <NavLink to="/pages" onClick={() => onClick('pages')}>All Pages</NavLink>
         <span className="auth-status">
           {user.email}
           {' '}
