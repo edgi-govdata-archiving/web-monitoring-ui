@@ -33,10 +33,12 @@ export default class WebMonitoringUi extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      assignedPages: null,
       pages: null,
       showLogin: false,
       user: null,
-      loading: false,
+      isLoading: true,
+      error: null,
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
@@ -64,65 +66,54 @@ export default class WebMonitoringUi extends React.Component {
     this.loadPages(true);
   }
 
-  loadPages (showAll) {
+  loadPages (allPages) {
     api.isLoggedIn()
       .then(loggedIn => {
-        if (showAll) {
-          return api.getPages();
+        if (!loggedIn) {
+          return Promise.reject(new Error('You must be logged in to view pages'));
         }
+
         const query = {include_latest: true};
-        if (loggedIn) {
-          return localApi.getPagesForUser(api.userData.email, null, query)
-            .catch(() => {
-              // TODO: Handle 'user not found' in a better way
-              // than just showing default list
-              return api.getPages(query);
-            });
+        if (allPages) {
+          return api.getPages(query);
         }
         else {
-          return api.getPages(query);
+          return localApi.getPagesForUser(api.userData.email, null, query)
         }
       })
       .then((pages) => {
-        this.setState({pages});
+        this.setState({
+          [allPages ? 'pages' : 'assignedPages']: pages
+        });
       });
   }
 
   loadUser () {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData, loading: false});
+        this.setState({user: api.userData, isLoading: false});
       });
   }
 
   componentWillMount () {
     this.loadUser();
-    this.setState({loading: true});
   }
 
   render () {
-    // TODO: There's probably a way to compose these objects to cut down on repetition
-    const withData = bindComponent({
-      pages: this.state.pages,
-      user: this.state.user,
-    });
-    const withDataAll = bindComponent({
-      pages: this.state.pages,
-      user: this.state.user,
-      loadPages: this.loadPages,
-      showAll: true,
-    });
-    const withDataMyDomains = bindComponent({
-      pages: this.state.pages,
-      user: this.state.user,
-      loadPages: this.loadPages,
-      showAll: false,
-    });
-    const modal = this.state.showLogin ? this.renderLoginDialog() : null;
-
-    if (this.state.loading) {
+    if (this.state.isLoading) {
       return <Loading />
     }
+
+    const modal = this.state.showLogin ? this.renderLoginDialog() : null;
+    const withData = (ComponentType, pageType) => {
+      return (routeProps) => {
+        const pages = this.state[pageType];
+        if (!pages) {
+          this.loadPages(pageType === 'pages');
+        }
+        return <ComponentType {...routeProps} pages={pages} user={this.state.user} />;
+      };
+    };
 
     return (
       <div>
@@ -130,15 +121,13 @@ export default class WebMonitoringUi extends React.Component {
           <div id="application">
             <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
             <Route exact path="/" render={() => (
-              this.state.user ? (
-                <Redirect to="/mydomains" />
-              ) : (
-                <Redirect to="/all" />
-              )
+              this.state.user
+                ? (<Redirect to="/mydomains" />)
+                : (<Redirect to="/all" />)
             )}/>
-            <Route path="/all" render={withDataAll(PageList)} />
-            <Route path="/mydomains" render={withDataMyDomains(PageList)} />
-            <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
+            <Route path="/all" render={withData(PageList, 'pages')} />
+            <Route path="/mydomains" render={withData(PageList, 'assignedPages')} />
+            <Route path="/page/:pageId/:change?" render={withData(PageDetails, 'pages')} />
           </div>
         </Router>
         {modal}

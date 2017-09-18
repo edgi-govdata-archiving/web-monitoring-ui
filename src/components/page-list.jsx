@@ -15,14 +15,9 @@ import Loading from './loading';
  * @param {PageListProps} props
  */
 export default class PageList extends React.Component {
-  componentWillMount () {
-    const { loadPages, showAll } = this.props;
-    loadPages(showAll);
-  }
-
   render () {
     if (!this.props.pages) {
-      return (<Loading />);
+      return <Loading />;
     }
 
     return (
