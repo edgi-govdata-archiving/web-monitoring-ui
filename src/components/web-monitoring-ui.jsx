@@ -39,7 +39,7 @@ export default class WebMonitoringUi extends React.Component {
       user: null,
       isLoading: true,
       error: null,
-      currentFilter: 'assignedPages',
+      currentFilter: '',
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
@@ -125,7 +125,8 @@ export default class WebMonitoringUi extends React.Component {
       };
     };
     const modal = showLogin ? this.renderLoginDialog() : null;
-    const main = (!user)
+    const main =
+      (!user)
       ? (this.renderLoginDialog("You must be logged in to view pages"))
       : error
         ? (<h1>{error.message}</h1>)

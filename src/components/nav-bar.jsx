@@ -34,7 +34,7 @@ export default class NavBar extends React.Component {
           <div className="navbar-header">
             <Link to="/" className="navbar-brand">{title}</Link>
           </div>
-          <div className="collapse navbar-collapse" id="navbar-collapse-1">
+          <div>
             <ul className="nav navbar-nav navbar-right">
               <li>
                 {renderUserInfo(user, showLogin, logOut, onClick, this._isActive)}
