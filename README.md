@@ -174,21 +174,21 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 <!-- ALL-CONTRIBUTORS-LIST:START -->
 | Contributions | Name |
 | ----: | :---- |
-| [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
-| [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
 | [📖](# "Documentation") [📋](# "Organizer") [💬](# "Answering Questions") [👀](# "Reviewer") | [Dan Allan](https://github.com/danielballan) |
-| [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
-| [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
-| [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
-| [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
-| [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Andrew Bergman](https://github.com/ambergman) |
+| [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
 | [💡](# "Examples") | [@ArcTanSusan](https://github.com/ArcTanSusan) |
 | [💡](# "Examples") | [@AutumnColeman](https://github.com/AutumnColeman) |
-| [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
+| [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
+| [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Andrew Bergman](https://github.com/ambergman) |
+| [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
+| [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
+| [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
+| [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
+| [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
 | [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
-| [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
-| [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
+| [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
+| [💻](# "Code") [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
