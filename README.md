@@ -178,9 +178,9 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
 | [💡](# "Examples") | [@ArcTanSusan](https://github.com/ArcTanSusan) |
 | [💡](# "Examples") | [@AutumnColeman](https://github.com/AutumnColeman) |
-| [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Andrew Bergman](https://github.com/ambergman) |
 | [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
+| [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
