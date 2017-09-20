@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
-import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
@@ -109,10 +109,19 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   render () {
-    if (this.state.isLoading) {
+    const {
+      showLogin,
+      user,
+      isLoading
+    } = this.state;
+
+    if (isLoading) {
       return <Loading />
     }
-    const {error, showLogin, user} = this.state;
+
+    if (!user) {
+      return this.renderLoginDialog("You must be logged in to view pages");
+    }
 
     const withData = (ComponentType, pageType) => {
       return (routeProps) => {
@@ -120,25 +129,15 @@ export default class WebMonitoringUi extends React.Component {
         if (!pages) {
           this.loadPages(pageType === 'pages');
         }
-        return <ComponentType {...routeProps} pages={pages} user={this.state.user} />;
+        return <ComponentType
+            {...routeProps}
+            pages={pages}
+            user={this.state.user}
+            currentFilter={this.state.currentFilter}
+          />;
       };
     };
     const modal = showLogin ? this.renderLoginDialog() : null;
-    const main =
-      (!user)
-      ? (this.renderLoginDialog("You must be logged in to view pages"))
-      : (
-        <div>
-          <Route exact path="/" render={() => (
-            this.state.user
-              ? (<Redirect to="/assignedPages" />)
-              : (<Redirect to="/pages" />)
-          )}/>
-          <Route path="/pages" render={withData(PageList, 'pages')} />
-          <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
-          <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
-        </div>
-      );
 
     return (
       <div>
@@ -151,7 +150,16 @@ export default class WebMonitoringUi extends React.Component {
               onClick={this.updateCurrentFilter}
               currentFilter={this.state.currentFilter}
             />
-            {main}
+            <div>
+              <Route exact path="/" render={() => (
+                this.state.user
+                  ? (<Redirect to="/assignedPages" />)
+                  : (<Redirect to="/pages" />)
+              )}/>
+              <Route path="/pages" render={withData(PageList, 'pages')} />
+              <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
+              <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
+            </div>
           </div>
         </Router>
         {modal}
