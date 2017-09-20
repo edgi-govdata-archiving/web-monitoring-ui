@@ -48,8 +48,20 @@ export default class NavBar extends React.Component {
   }
 
   renderUserInfo (user, showLogin, logOut, setCurrentFilter, currentFilter) {
-    const isAssignedPagesActive = () => currentFilter === 'assignedPages';
-    const isPagesActive = () => currentFilter === 'pages';
+    const isAssignedPagesActive = match => {
+      if (match) {
+        return match.url === '/assignedPages';
+      } else {
+        return currentFilter === 'assignedPages';
+      }
+    }
+    const isPagesActive = match => {
+      if (match) {
+        return match.url === '/pages';
+      } else {
+        return currentFilter === 'pages';
+      }
+    }
     const setAssignedPages = () => setCurrentFilter('assignedPages');
     const setPages = () => setCurrentFilter('pages');
 
