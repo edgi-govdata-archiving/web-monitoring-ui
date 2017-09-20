@@ -7,6 +7,6 @@ export default class Loading extends React.Component {
   }
 
   render () {
-    return (<img src="/img/infinity-loader.svg" className="loading" />);
+    return (<object type="image/svg+xml" data="/img/infinity-loader.svg" className="loading" />);
   }
 }
