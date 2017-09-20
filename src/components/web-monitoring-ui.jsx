@@ -89,7 +89,8 @@ export default class WebMonitoringUi extends React.Component {
       })
       .then(pages => {
         this.setState({
-          [allPages ? 'pages' : 'assignedPages']: pages
+          [allPages ? 'pages' : 'assignedPages']: pages,
+          currentFilter: allPages ? 'pages' : 'assignedPages'
         });
       })
       .catch(error => {
@@ -112,7 +113,8 @@ export default class WebMonitoringUi extends React.Component {
     const {
       showLogin,
       user,
-      isLoading
+      isLoading,
+      currentFilter
     } = this.state;
 
     if (isLoading) {
@@ -133,7 +135,6 @@ export default class WebMonitoringUi extends React.Component {
             {...routeProps}
             pages={pages}
             user={this.state.user}
-            currentFilter={this.state.currentFilter}
           />;
       };
     };
@@ -158,7 +159,13 @@ export default class WebMonitoringUi extends React.Component {
               )}/>
               <Route path="/pages" render={withData(PageList, 'pages')} />
               <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
-              <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
+              <Route path="/page/:pageId/:change?" render={
+                  (routeProps) => <PageDetails
+                    {...routeProps}
+                    user={user}
+                    currentFilter={currentFilter}
+                    pages={this.state[currentFilter]} />
+                } />
             </div>
           </div>
         </Router>
