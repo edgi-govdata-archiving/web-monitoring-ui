@@ -25,7 +25,8 @@ export default class NavBar extends React.Component {
       user = null,
       showLogin,
       logOut,
-      onClick
+      setCurrentFilter,
+      currentFilter
     } = this.props;
 
     return (
@@ -37,9 +38,7 @@ export default class NavBar extends React.Component {
           <div>
             <ul className="nav navbar-nav navbar-right">
               <li>
-                {this.renderUserInfo(
-                  user, showLogin, logOut, onClick,
-                  this.props.currentFilter)}
+                {this.renderUserInfo(user, showLogin, logOut, setCurrentFilter, currentFilter)}
               </li>
             </ul>
           </div>
@@ -48,11 +47,11 @@ export default class NavBar extends React.Component {
     );
   }
 
-  renderUserInfo (user, showLogin, logOut, onClick, currentFilter) {
+  renderUserInfo (user, showLogin, logOut, setCurrentFilter, currentFilter) {
     const isAssignedPagesActive = () => currentFilter === 'assignedPages';
     const isPagesActive = () => currentFilter === 'pages';
-    const onClickAssignedPages = () => onClick('assignedPages');
-    const onClickPages = () => onClick('pages');
+    const setAssignedPages = () => setCurrentFilter('assignedPages');
+    const setPages = () => setCurrentFilter('pages');
 
     if (user) {
       return (
@@ -60,14 +59,14 @@ export default class NavBar extends React.Component {
           <NavLink
             to="/assignedPages"
             isActive={isAssignedPagesActive}
-            onClick={onClickAssignedPages}
+            onClick={setAssignedPages}
           >
             Assigned Pages
           </NavLink>
           <NavLink
             to="/pages"
             isActive={isPagesActive}
-            onClick={onClickPages}
+            onClick={setPages}
           >
             All Pages
           </NavLink>

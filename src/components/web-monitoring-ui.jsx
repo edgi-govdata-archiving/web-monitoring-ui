@@ -46,10 +46,10 @@ export default class WebMonitoringUi extends React.Component {
     this.afterLogin = this.afterLogin.bind(this);
     this.logOut = this.logOut.bind(this);
     this.loadPages = this.loadPages.bind(this);
-    this.updateCurrentFilter = this.updateCurrentFilter.bind(this);
+    this.setCurrentFilter = this.setCurrentFilter.bind(this);
   }
 
-  updateCurrentFilter (filter) {
+  setCurrentFilter (filter) {
     this.setState({currentFilter: filter});
   }
 
@@ -147,7 +147,7 @@ export default class WebMonitoringUi extends React.Component {
               user={this.state.user}
               showLogin={this.showLogin}
               logOut={this.logOut}
-              onClick={this.updateCurrentFilter}
+              setCurrentFilter={this.setCurrentFilter}
               currentFilter={this.state.currentFilter}
             />
             <div>
