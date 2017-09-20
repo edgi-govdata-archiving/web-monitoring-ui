@@ -193,7 +193,7 @@ export default class ChangeView extends React.Component {
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
             <i className="fa fa-list" aria-hidden="true" />
-            <Link to={`/${this.context.currentFilter}`} className="lnk-action">Back to list view</Link>
+            <Link to={`/${this.props.currentFilter}`} className="lnk-action">Back to list view</Link>
           </div>
           <div className="col-md-6 text-right">
             {markSignificant}
@@ -312,8 +312,7 @@ export default class ChangeView extends React.Component {
 
 ChangeView.contextTypes = {
   api: PropTypes.instanceOf(WebMonitoringDb),
-  localApi: PropTypes.instanceOf(WebMonitoringApi),
-  currentFilter: PropTypes.string
+  localApi: PropTypes.instanceOf(WebMonitoringApi)
 };
 
 /**
