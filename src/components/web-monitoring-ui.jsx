@@ -33,11 +33,11 @@ export default class WebMonitoringUi extends React.Component {
     super(props);
     this.state = {
       assignedPages: null,
+      isLoading: true,
+      pageFilter: '',
       pages: null,
       showLogin: false,
       user: null,
-      isLoading: true,
-      pageFilter: '',
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
@@ -148,11 +148,13 @@ export default class WebMonitoringUi extends React.Component {
               pageFilter={this.state.pageFilter}
             />
             <div>
-              <Route exact path="/" render={() => (
-                this.state.user
-                  ? (<Redirect to="/assignedPages" />)
-                  : (<Redirect to="/pages" />)
-              )}/>
+              <Route exact path="/" render={() => {
+                if (this.state.user) {
+                  return <Redirect to="/assignedPages" />
+                } else {
+                  return <Redirect to="/pages" />
+                }
+              }}/>
               <Route path="/pages" render={withData(PageList, 'pages')} />
               <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
               <Route path="/page/:pageId/:change?" render={(routeProps) =>
