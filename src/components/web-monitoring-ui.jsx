@@ -89,8 +89,7 @@ export default class WebMonitoringUi extends React.Component {
       })
       .then(pages => {
         this.setState({
-          [allPages ? 'pages' : 'assignedPages']: pages,
-          currentFilter: allPages ? 'pages' : 'assignedPages'
+          [allPages ? 'pages' : 'assignedPages']: pages
         });
       })
       .catch(error => {
@@ -128,20 +127,18 @@ export default class WebMonitoringUi extends React.Component {
     const main =
       (!user)
       ? (this.renderLoginDialog("You must be logged in to view pages"))
-      : error
-        ? (<h1>{error.message}</h1>)
-        : (
-          <div>
-            <Route exact path="/" render={() => (
-              this.state.user
-                ? (<Redirect to="/assignedPages" />)
-                : (<Redirect to="/pages" />)
-            )}/>
-            <Route path="/pages" render={withData(PageList, 'pages')} />
-            <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
-            <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
-          </div>
-        );
+      : (
+        <div>
+          <Route exact path="/" render={() => (
+            this.state.user
+              ? (<Redirect to="/assignedPages" />)
+              : (<Redirect to="/pages" />)
+          )}/>
+          <Route path="/pages" render={withData(PageList, 'pages')} />
+          <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
+          <Route path="/page/:pageId/:change?" render={withData(PageDetails, this.state.currentFilter)} />
+        </div>
+      );
 
     return (
       <div>

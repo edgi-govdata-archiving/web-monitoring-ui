@@ -108,6 +108,9 @@ export default class PageDetails extends React.Component {
   }
 
   _renderPager () {
+    if (!this.props.pages) {
+      return null;
+    }
     const allPages = this.props.pages || [];
     const index = allPages.findIndex(page => page.uuid === this.state.page.uuid);
     const previousPage = allPages[index - 1];
