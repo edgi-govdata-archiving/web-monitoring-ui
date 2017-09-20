@@ -25,8 +25,8 @@ export default class NavBar extends React.Component {
       user = null,
       showLogin,
       logOut,
-      setCurrentFilter,
-      currentFilter
+      setPageFilter,
+      pageFilter
     } = this.props;
 
     return (
@@ -38,7 +38,7 @@ export default class NavBar extends React.Component {
           <div>
             <ul className="nav navbar-nav navbar-right">
               <li>
-                {this.renderUserInfo(user, showLogin, logOut, setCurrentFilter, currentFilter)}
+                {this.renderUserInfo(user, showLogin, logOut, setPageFilter, pageFilter)}
               </li>
             </ul>
           </div>
@@ -47,11 +47,11 @@ export default class NavBar extends React.Component {
     );
   }
 
-  renderUserInfo (user, showLogin, logOut, setCurrentFilter, currentFilter) {
-    const isAssignedPagesActive = match => match ? match.url === '/assignedPages' : currentFilter === 'assignedPages';
-    const isPagesActive = match => match ? match.url === '/pages' : currentFilter === 'pages';
-    const setAssignedPages = () => setCurrentFilter('assignedPages');
-    const setPages = () => setCurrentFilter('pages');
+  renderUserInfo (user, showLogin, logOut, setPageFilter, pageFilter) {
+    const isAssignedPagesActive = match => match ? match.url === '/assignedPages' : pageFilter === 'assignedPages';
+    const isPagesActive = match => match ? match.url === '/pages' : pageFilter === 'pages';
+    const setAssignedPages = () => setPageFilter('assignedPages');
+    const setPages = () => setPageFilter('pages');
 
     if (user) {
       return (

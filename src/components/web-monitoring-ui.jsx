@@ -37,18 +37,18 @@ export default class WebMonitoringUi extends React.Component {
       showLogin: false,
       user: null,
       isLoading: true,
-      currentFilter: '',
+      pageFilter: '',
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
     this.logOut = this.logOut.bind(this);
     this.loadPages = this.loadPages.bind(this);
-    this.setCurrentFilter = this.setCurrentFilter.bind(this);
+    this.setPageFilter = this.setPageFilter.bind(this);
   }
 
-  setCurrentFilter (filter) {
-    this.setState({currentFilter: filter});
+  setPageFilter (filter) {
+    this.setState({pageFilter: filter});
   }
 
   showLogin () {
@@ -88,7 +88,7 @@ export default class WebMonitoringUi extends React.Component {
       .then(pages => {
         this.setState({
           [allPages ? 'pages' : 'assignedPages']: pages,
-          currentFilter: allPages ? 'pages' : 'assignedPages'
+          pageFilter: allPages ? 'pages' : 'assignedPages'
         });
       });
   }
@@ -109,7 +109,7 @@ export default class WebMonitoringUi extends React.Component {
       showLogin,
       user,
       isLoading,
-      currentFilter
+      pageFilter
     } = this.state;
 
     if (isLoading) {
@@ -144,8 +144,8 @@ export default class WebMonitoringUi extends React.Component {
               user={this.state.user}
               showLogin={this.showLogin}
               logOut={this.logOut}
-              setCurrentFilter={this.setCurrentFilter}
-              currentFilter={this.state.currentFilter}
+              setPageFilter={this.setPageFilter}
+              pageFilter={this.state.pageFilter}
             />
             <div>
               <Route exact path="/" render={() => (
@@ -159,8 +159,8 @@ export default class WebMonitoringUi extends React.Component {
                 <PageDetails
                   {...routeProps}
                   user={user}
-                  currentFilter={currentFilter}
-                  pages={this.state[currentFilter]}
+                  pageFilter={pageFilter}
+                  pages={this.state[pageFilter]}
                 />
               }/>
             </div>
