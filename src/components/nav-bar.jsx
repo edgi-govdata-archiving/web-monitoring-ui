@@ -17,7 +17,8 @@ import {Link, NavLink} from 'react-router-dom';
 export default class NavBar extends React.Component {
   constructor (props) {
     super(props);
-    this._isActive = this._isActive.bind(this);
+
+    this.renderUserInfo = this.renderUserInfo.bind(this);
   }
   render () {
     const {
@@ -37,7 +38,9 @@ export default class NavBar extends React.Component {
           <div>
             <ul className="nav navbar-nav navbar-right">
               <li>
-                {renderUserInfo(user, showLogin, logOut, onClick, this._isActive)}
+                {this.renderUserInfo(
+                  user, showLogin, logOut, onClick,
+                  this.props.currentFilter)}
               </li>
             </ul>
           </div>
@@ -46,43 +49,42 @@ export default class NavBar extends React.Component {
     );
   }
 
-  _isActive (currentFilter) {
-    return this.context.currentFilter === currentFilter;
+  renderUserInfo (user, showLogin, logOut, onClick, currentFilter) {
+    const isAssignedPagesActive = () => currentFilter === 'assignedPages';
+    const isPagesActive = () => currentFilter === 'pages';
+    const onClickAssignedPages = () => onClick('assignedPages');
+    const onClickPages = () => onClick('pages');
+
+    if (user) {
+      return (
+        <div>
+          <NavLink
+            to="/assignedPages"
+            isActive={isAssignedPagesActive}
+            onClick={onClickAssignedPages}
+          >
+            Assigned Pages
+          </NavLink>
+          <NavLink
+            to="/pages"
+            isActive={isPagesActive}
+            onClick={onClickPages}
+          >
+            All Pages
+          </NavLink>
+          <span className="auth-status">
+            {user.email}
+            {' '}
+            <button className="btn btn-link" onClick={logOut}>(Log out)</button>
+          </span>
+        </div>
+      );
+    }
+    else {
+      return <button className="auth-status btn btn-link" onClick={showLogin}>Log In</button>;
+    }
   }
 }
 
-function renderUserInfo (user, showLogin, logOut, onClick, isActive) {
-  if (user) {
-    return (
-      <div>
-        <NavLink
-          to="/assignedPages"
-          isActive={() => isActive('assignedPages')}
-          onClick={() => onClick('assignedPages')}
-        >
-          Assigned Pages
-        </NavLink>
-        <NavLink
-          to="/pages"
-          isActive={() => isActive('pages')}
-          onClick={() => onClick('pages')}
-        >
-          All Pages
-        </NavLink>
-        <span className="auth-status">
-          {user.email}
-          {' '}
-          <button className="btn btn-link" onClick={logOut}>(Log out)</button>
-        </span>
-      </div>
-    );
-  }
-  else {
-    return <button className="auth-status btn btn-link" onClick={showLogin}>Log In</button>;
-  }
-}
 
-NavBar.contextTypes = {
-  currentFilter: PropTypes.string
-};
 

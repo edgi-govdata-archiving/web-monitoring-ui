@@ -149,6 +149,7 @@ export default class WebMonitoringUi extends React.Component {
               showLogin={this.showLogin}
               logOut={this.logOut}
               onClick={this.updateCurrentFilter}
+              currentFilter={this.state.currentFilter}
             />
             {main}
           </div>
