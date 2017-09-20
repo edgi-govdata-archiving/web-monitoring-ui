@@ -72,7 +72,7 @@ export default class PageDetails extends React.Component {
       fromVersion,
       toVersion,
       annotation
-    )
+    );
   }
 
   render () {

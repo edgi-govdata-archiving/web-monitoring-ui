@@ -82,7 +82,7 @@ export default class WebMonitoringUi extends React.Component {
           return api.getPages(query);
         }
         else {
-          return localApi.getPagesForUser(api.userData.email, null, query)
+          return localApi.getPagesForUser(api.userData.email, null, query);
         }
       })
       .then(pages => {
@@ -90,7 +90,7 @@ export default class WebMonitoringUi extends React.Component {
           [allPages ? 'pages' : 'assignedPages']: pages,
           currentFilter: allPages ? 'pages' : 'assignedPages'
         });
-      })
+      });
   }
 
   loadUser () {
@@ -127,10 +127,10 @@ export default class WebMonitoringUi extends React.Component {
           this.loadPages(pageType === 'pages');
         }
         return <ComponentType
-            {...routeProps}
-            pages={pages}
-            user={this.state.user}
-          />;
+          {...routeProps}
+          pages={pages}
+          user={this.state.user}
+        />;
       };
     };
     const modal = showLogin ? this.renderLoginDialog() : null;
@@ -139,7 +139,8 @@ export default class WebMonitoringUi extends React.Component {
       <div>
         <Router>
           <div id="application">
-            <NavBar title="EDGI"
+            <NavBar
+              title="EDGI"
               user={this.state.user}
               showLogin={this.showLogin}
               logOut={this.logOut}
@@ -154,13 +155,14 @@ export default class WebMonitoringUi extends React.Component {
               )}/>
               <Route path="/pages" render={withData(PageList, 'pages')} />
               <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
-              <Route path="/page/:pageId/:change?" render={
-                  (routeProps) => <PageDetails
-                    {...routeProps}
-                    user={user}
-                    currentFilter={currentFilter}
-                    pages={this.state[currentFilter]} />
-                } />
+              <Route path="/page/:pageId/:change?" render={(routeProps) =>
+                <PageDetails
+                  {...routeProps}
+                  user={user}
+                  currentFilter={currentFilter}
+                  pages={this.state[currentFilter]}
+                />
+              }/>
             </div>
           </div>
         </Router>

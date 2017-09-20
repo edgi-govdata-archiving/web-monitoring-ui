@@ -139,7 +139,7 @@ export default class ChangeView extends React.Component {
     }
 
     if (this.state.updating) {
-      return <Loading />
+      return <Loading />;
     }
 
     const annotation = this.state.annotation || {};
@@ -273,12 +273,12 @@ export default class ChangeView extends React.Component {
   }
 
   _saveAnnotation (annotation) {
-    this.setState({ updating: true })
+    this.setState({ updating: true });
     annotation = annotation || this.state.annotation;
     const fromVersion = this.props.from.uuid;
     const toVersion = this.props.to.uuid;
     this.props.annotateChange(fromVersion, toVersion, annotation)
-        .then(() => this.setState({ updating: false }))
+      .then(() => this.setState({ updating: false }));
   }
 
   _changeSelectedVersions (from, to) {
