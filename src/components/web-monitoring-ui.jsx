@@ -38,7 +38,6 @@ export default class WebMonitoringUi extends React.Component {
       showLogin: false,
       user: null,
       isLoading: true,
-      error: null,
       currentFilter: '',
     };
     this.showLogin = this.showLogin.bind(this);
@@ -58,7 +57,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   hideLogin () {
-    this.setState({showLogin: false, user: api.userData, error: null});
+    this.setState({showLogin: false, user: api.userData});
   }
 
   afterLogin (user) {
@@ -93,15 +92,12 @@ export default class WebMonitoringUi extends React.Component {
           currentFilter: allPages ? 'pages' : 'assignedPages'
         });
       })
-      .catch(error => {
-        this.setState({error});
-      });
   }
 
   loadUser () {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData, isLoading: false, error: null});
+        this.setState({user: api.userData, isLoading: false});
       });
   }
 
