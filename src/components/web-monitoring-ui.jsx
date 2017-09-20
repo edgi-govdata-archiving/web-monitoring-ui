@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
-import bindComponent from '../scripts/bind-component';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import Loading from './loading';
@@ -114,11 +113,11 @@ export default class WebMonitoringUi extends React.Component {
     } = this.state;
 
     if (isLoading) {
-      return <Loading />
+      return <Loading />;
     }
 
     if (!user) {
-      return this.renderLoginDialog("You must be logged in to view pages");
+      return this.renderLoginDialog();
     }
 
     const withData = (ComponentType, pageType) => {
@@ -170,7 +169,7 @@ export default class WebMonitoringUi extends React.Component {
     );
   }
 
-  renderLoginDialog (message) {
+  renderLoginDialog () {
     return (
       <AriaModal
         titleText="Log In"
@@ -180,7 +179,7 @@ export default class WebMonitoringUi extends React.Component {
         underlayClass="dialog dialog__underlay"
         verticallyCenter={true}
       >
-        <LoginForm message={message} cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
+        <LoginForm cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
       </AriaModal>
     );
   }
