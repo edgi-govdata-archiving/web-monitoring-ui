@@ -44,19 +44,19 @@ function renderUserInfo (user, showLogin, logOut) {
 }
 
 function renderNavLink (linkText, filterToMatch, pageFilter, setPageFilter) {
-    const matchesFilter = match => match ? match.url === `/${filterToMatch}` : pageFilter === filterToMatch;
-    const setFilter = () => setPageFilter(filterToMatch);
+  const matchesFilter = match => match ? match.url === `/${filterToMatch}` : pageFilter === filterToMatch;
+  const setFilter = () => setPageFilter(filterToMatch);
 
-    return (
-      <NavLink
-        to={`/${filterToMatch}`}
-        isActive={matchesFilter}
-        onClick={setFilter}
-      >
-        {linkText}
-      </NavLink>
-    )
-  }
+  return (
+    <NavLink
+      to={`/${filterToMatch}`}
+      isActive={matchesFilter}
+      onClick={setFilter}
+    >
+      {linkText}
+    </NavLink>
+  );
+}
 
 
 

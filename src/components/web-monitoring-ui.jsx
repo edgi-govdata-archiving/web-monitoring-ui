@@ -114,18 +114,11 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   render () {
-    const {
-      showLogin,
-      user,
-      isLoading,
-      pageFilter
-    } = this.state;
-
-    if (isLoading) {
+    if (this.state.isLoading) {
       return <Loading />;
     }
 
-    if (!user) {
+    if (!this.state.user) {
       return this.renderLoginDialog();
     }
 
@@ -142,7 +135,7 @@ export default class WebMonitoringUi extends React.Component {
         />;
       };
     };
-    const modal = showLogin ? this.renderLoginDialog() : null;
+    const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
       <div>
@@ -159,9 +152,9 @@ export default class WebMonitoringUi extends React.Component {
             <div>
               <Route exact path="/" render={() => {
                 if (this.state.user) {
-                  return <Redirect to="/assignedPages" />
+                  return <Redirect to="/assignedPages" />;
                 } else {
-                  return <Redirect to="/pages" />
+                  return <Redirect to="/pages" />;
                 }
               }}/>
               <Route path="/pages" render={withData(PageList, 'pages')} />
@@ -169,9 +162,9 @@ export default class WebMonitoringUi extends React.Component {
               <Route path="/page/:pageId/:change?" render={(routeProps) =>
                 <PageDetails
                   {...routeProps}
-                  user={user}
-                  pageFilter={pageFilter}
-                  pages={this.state[pageFilter]}
+                  user={this.state.user}
+                  pageFilter={this.state.pageFilter}
+                  pages={this.state[this.state.pageFilter]}
                 />
               }/>
             </div>

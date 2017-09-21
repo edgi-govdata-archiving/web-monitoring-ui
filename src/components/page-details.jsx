@@ -80,8 +80,6 @@ export default class PageDetails extends React.Component {
       return (<Loading />);
     }
 
-    const page = this.state.page;
-
     // TODO: this HTML should probably be broken up a bit
     return (
       <div className="container-fluid container-page-view">
@@ -90,11 +88,11 @@ export default class PageDetails extends React.Component {
             <h2 className="page-title">
               <a
                 className="diff_page_url"
-                href={page.url}
+                href={this.state.page.url}
                 target="_blank"
                 rel="noopener"
               >
-                {page.title}
+                {this.state.page.title}
               </a>
             </h2>
           </div>
@@ -145,12 +143,10 @@ export default class PageDetails extends React.Component {
    * @returns {JSX.Element}
    */
   _renderChange () {
-    const page = this.state.page;
-
     // TODO: should we show 404 for bad versions? (null vs. undefined here)
     const versionData = this._versionsToRender();
     if (!versionData) {
-      let [to, from] = page.versions;
+      let [to, from] = this.state.page.versions;
       from = from || to;
 
       if (from && to) {
