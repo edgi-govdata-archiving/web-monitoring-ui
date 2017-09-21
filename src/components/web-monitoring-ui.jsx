@@ -75,7 +75,7 @@ export default class WebMonitoringUi extends React.Component {
    * @private
    * @param {string} pageFilter Must be either 'assignedPages' or 'pages'
    *
-   * Sends a requests out to either to db-api or localApi for pages and sets
+   * Sends a requests out to either db-api or localApi for pages and sets
    * corresponding `assignedPages` or `pages` property of state and `pageFilter`.
    * These are passed as props to various child components.
    */
@@ -178,7 +178,7 @@ export default class WebMonitoringUi extends React.Component {
   renderLoginDialog () {
     return (
       <AriaModal
-        titleText="Log In"
+        titleText="Log in"
         onExit={this.hideLogin}
         applicationNode={document.getElementById('web-monitoring-ui-root')}
         dialogClass="dialog__body"

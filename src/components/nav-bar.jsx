@@ -57,8 +57,3 @@ function renderNavLink (linkText, filterToMatch, pageFilter, setPageFilter) {
     </NavLink>
   );
 }
-
-
-
-
-
