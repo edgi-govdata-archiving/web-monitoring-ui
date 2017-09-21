@@ -37,11 +37,16 @@ body {
     color: #EEE;
 }
 
-.nav {
-  padding: 15px;
+.navbar > .container-fluid, .nav {
+  display: flex;
+  align-items: center;
 }
 
-.nav a {
+#bootstrap-override .navbar-header {
+  margin-right: auto;
+}
+
+.nav > li > a {
   border: 1px solid #666666;
   border-radius: 2px;
   margin: 5px;
@@ -49,7 +54,7 @@ body {
   text-decoration: none;
 }
 
-.nav a.active {
+.nav > li > a.active, .nav > li > a.active:focus, .nav > li > a.active:hover {
   background-color: #337ab7;
 }
 
@@ -65,6 +70,7 @@ body {
 .navbar .auth-status {
     border: none;
     line-height: 20px;
+    padding: 15px;
 }
 
 .navbar .auth-status button {

@@ -19,13 +19,11 @@ export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut, 
       <div className="navbar-header">
         <Link to="/" className="navbar-brand">{title}</Link>
       </div>
-      <div>
-        <ul className="nav navbar-nav navbar-right">
-          <li>{renderNavLink('Assigned Pages', 'assignedPages', pageFilter, setPageFilter)}</li>
-          <li>{renderNavLink('All Pages', 'pages', pageFilter, setPageFilter)}</li>
-          <li>{renderUserInfo(user, showLogin, logOut)}</li>
-        </ul>
-      </div>
+      <ul className="nav navbar-nav">
+        <li>{renderNavLink('Assigned Pages', 'assignedPages', pageFilter, setPageFilter)}</li>
+        <li>{renderNavLink('All Pages', 'pages', pageFilter, setPageFilter)}</li>
+        <li>{renderUserInfo(user, showLogin, logOut)}</li>
+      </ul>
     </div>
   </nav>
 );
