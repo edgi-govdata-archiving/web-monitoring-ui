@@ -13,76 +13,54 @@ import {Link, NavLink} from 'react-router-dom';
  * The NavBar component renders an app title, user info, links, etc.
  * @param {NavBarProps} props
  */
-export default class NavBar extends React.Component {
-  constructor (props) {
-    super(props);
+export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut, pageFilter, setPageFilter}) => (
+  <nav className="navbar navbar-inverse">
+    <div className="container-fluid">
+      <div className="navbar-header">
+        <Link to="/" className="navbar-brand">{title}</Link>
+      </div>
+      <div>
+        <ul className="nav navbar-nav navbar-right">
+          <li>{renderNavLink('Assigned Pages', 'assignedPages', pageFilter, setPageFilter)}</li>
+          <li>{renderNavLink('All Pages', 'pages', pageFilter, setPageFilter)}</li>
+          <li>{renderUserInfo(user, showLogin, logOut)}</li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+);
 
-    this.renderUserInfo = this.renderUserInfo.bind(this);
-  }
-  render () {
-    const {
-      title = 'EDGI Web Monitoring',
-      user = null,
-      showLogin,
-      logOut,
-      setPageFilter,
-      pageFilter
-    } = this.props;
-
+function renderUserInfo (user, showLogin, logOut) {
+  if (user) {
     return (
-      <nav className="navbar navbar-inverse">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <Link to="/" className="navbar-brand">{title}</Link>
-          </div>
-          <div>
-            <ul className="nav navbar-nav navbar-right">
-              <li>
-                {this.renderUserInfo(user, showLogin, logOut, setPageFilter, pageFilter)}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <span className="auth-status">
+        {user.email}
+        {' '}
+        <button className="btn btn-link" onClick={logOut}>(Log out)</button>
+      </span>
     );
   }
-
-  renderUserInfo (user, showLogin, logOut, setPageFilter, pageFilter) {
-    const isAssignedPagesActive = match => match ? match.url === '/assignedPages' : pageFilter === 'assignedPages';
-    const isPagesActive = match => match ? match.url === '/pages' : pageFilter === 'pages';
-    const setAssignedPages = () => setPageFilter('assignedPages');
-    const setPages = () => setPageFilter('pages');
-
-    if (user) {
-      return (
-        <div>
-          <NavLink
-            to="/assignedPages"
-            isActive={isAssignedPagesActive}
-            onClick={setAssignedPages}
-          >
-            Assigned Pages
-          </NavLink>
-          <NavLink
-            to="/pages"
-            isActive={isPagesActive}
-            onClick={setPages}
-          >
-            All Pages
-          </NavLink>
-          <span className="auth-status">
-            {user.email}
-            {' '}
-            <button className="btn btn-link" onClick={logOut}>(Log out)</button>
-          </span>
-        </div>
-      );
-    }
-    else {
-      return <button className="auth-status btn btn-link" onClick={showLogin}>Log In</button>;
-    }
+  else {
+    return <button className="auth-status btn btn-link" onClick={showLogin}>Log In</button>;
   }
 }
+
+function renderNavLink (linkText, filterToMatch, pageFilter, setPageFilter) {
+    const matchesFilter = match => match ? match.url === `/${filterToMatch}` : pageFilter === filterToMatch;
+    const setFilter = () => setPageFilter(filterToMatch);
+
+    return (
+      <NavLink
+        to={`/${filterToMatch}`}
+        isActive={matchesFilter}
+        onClick={setFilter}
+      >
+        {linkText}
+      </NavLink>
+    )
+  }
+
+
 
 
 

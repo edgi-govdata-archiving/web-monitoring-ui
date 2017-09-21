@@ -153,8 +153,8 @@ export default class WebMonitoringUi extends React.Component {
               user={this.state.user}
               showLogin={this.showLogin}
               logOut={this.logOut}
-              setPageFilter={this.setPageFilter}
               pageFilter={this.state.pageFilter}
+              setPageFilter={this.setPageFilter}
             />
             <div>
               <Route exact path="/" render={() => {
