@@ -34,7 +34,7 @@ export default class WebMonitoringUi extends React.Component {
     this.state = {
       assignedPages: null,
       isLoading: true,
-      pageFilter: '',
+      pageFilter: '', // keeps track of which set of pages we are looking at
       pages: null,
       showLogin: false,
       user: null,
@@ -61,16 +61,25 @@ export default class WebMonitoringUi extends React.Component {
 
   afterLogin (user) {
     this.hideLogin();
-    this.loadPages(false);
+    this.loadPages(this.state.pageFilter);
   }
 
   logOut () {
     api.logOut();
     this.setState({user: api.userData});
-    this.loadPages(true);
+    this.loadPages('pages');
   }
 
-  loadPages (allPages) {
+  /**
+   * Load pages depending on whether we want all pages or assigned pages.
+   * @private
+   * @param {string} pageFilter Must be either 'assignedPages' or 'pages'
+   *
+   * Sends a requests out to either to db-api or localApi for pages and sets
+   * corresponding `assignedPages` or `pages` property of state and `pageFilter`.
+   * These are passed as props to various child components.
+   */
+  loadPages (pageFilter) {
     api.isLoggedIn()
       .then(loggedIn => {
         if (!loggedIn) {
@@ -78,17 +87,17 @@ export default class WebMonitoringUi extends React.Component {
         }
 
         const query = {include_latest: true};
-        if (allPages) {
-          return api.getPages(query);
+        if (pageFilter === 'assignedPages') {
+          return localApi.getPagesForUser(api.userData.email, null, query);
         }
         else {
-          return localApi.getPagesForUser(api.userData.email, null, query);
+          return api.getPages(query);
         }
       })
       .then(pages => {
         this.setState({
-          [allPages ? 'pages' : 'assignedPages']: pages,
-          pageFilter: allPages ? 'pages' : 'assignedPages'
+          [pageFilter]: pages,
+          pageFilter
         });
       });
   }
@@ -124,7 +133,7 @@ export default class WebMonitoringUi extends React.Component {
       return (routeProps) => {
         const pages = this.state[pageType];
         if (!pages) {
-          this.loadPages(pageType === 'pages');
+          this.loadPages(pageType);
         }
         return <ComponentType
           {...routeProps}
