@@ -37,7 +37,9 @@ export default class LoginPanel extends React.Component {
     return (
       <form className="login-form" onSubmit={this._logIn}>
         <h1>Log In</h1>
-
+        <p className="alert alert-info" role="alert">
+          You must be logged in to view pages
+        </p>
         {this._renderError()}
 
         <label className="form-group">

@@ -72,15 +72,13 @@ export default class PageDetails extends React.Component {
       fromVersion,
       toVersion,
       annotation
-    )
+    );
   }
 
   render () {
     if (!this.state.page) {
       return (<Loading />);
     }
-
-    const page = this.state.page;
 
     // TODO: this HTML should probably be broken up a bit
     return (
@@ -90,11 +88,11 @@ export default class PageDetails extends React.Component {
             <h2 className="page-title">
               <a
                 className="diff_page_url"
-                href={page.url}
+                href={this.state.page.url}
                 target="_blank"
                 rel="noopener"
               >
-                {page.title}
+                {this.state.page.title}
               </a>
             </h2>
           </div>
@@ -108,6 +106,9 @@ export default class PageDetails extends React.Component {
   }
 
   _renderPager () {
+    if (!this.props.pages) {
+      return null;
+    }
     const allPages = this.props.pages || [];
     const index = allPages.findIndex(page => page.uuid === this.state.page.uuid);
     const previousPage = allPages[index - 1];
@@ -142,12 +143,10 @@ export default class PageDetails extends React.Component {
    * @returns {JSX.Element}
    */
   _renderChange () {
-    const page = this.state.page;
-
     // TODO: should we show 404 for bad versions? (null vs. undefined here)
     const versionData = this._versionsToRender();
     if (!versionData) {
-      let [to, from] = page.versions;
+      let [to, from] = this.state.page.versions;
       from = from || to;
 
       if (from && to) {
@@ -164,6 +163,7 @@ export default class PageDetails extends React.Component {
         annotateChange={this._annotateChange}
         user={this.props.user}
         onChangeSelectedVersions={this._navigateToChange}
+        pageFilter={this.props.pageFilter}
       />
     );
   }

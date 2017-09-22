@@ -139,7 +139,7 @@ export default class ChangeView extends React.Component {
     }
 
     if (this.state.updating) {
-      return <Loading />
+      return <Loading />;
     }
 
     const annotation = this.state.annotation || {};
@@ -193,7 +193,7 @@ export default class ChangeView extends React.Component {
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
             <i className="fa fa-list" aria-hidden="true" />
-            <Link to="/" className="lnk-action">Back to list view</Link>
+            <Link to={`/${this.props.pageFilter}`} className="lnk-action">Back to list view</Link>
           </div>
           <div className="col-md-6 text-right">
             {markSignificant}
@@ -273,12 +273,12 @@ export default class ChangeView extends React.Component {
   }
 
   _saveAnnotation (annotation) {
-    this.setState({ updating: true })
+    this.setState({ updating: true });
     annotation = annotation || this.state.annotation;
     const fromVersion = this.props.from.uuid;
     const toVersion = this.props.to.uuid;
     this.props.annotateChange(fromVersion, toVersion, annotation)
-        .then(() => this.setState({ updating: false }))
+      .then(() => this.setState({ updating: false }));
   }
 
   _changeSelectedVersions (from, to) {

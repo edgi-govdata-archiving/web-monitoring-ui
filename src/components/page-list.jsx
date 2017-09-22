@@ -17,7 +17,7 @@ import Loading from './loading';
 export default class PageList extends React.Component {
   render () {
     if (!this.props.pages) {
-      return (<Loading />);
+      return <Loading />;
     }
 
     return (

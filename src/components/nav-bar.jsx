@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 /**
  * @typedef {Object} NavBarProps
@@ -13,17 +13,17 @@ import {Link} from 'react-router-dom';
  * The NavBar component renders an app title, user info, links, etc.
  * @param {NavBarProps} props
  */
-export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut}) => (
+export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut, pageFilter, setPageFilter}) => (
   <nav className="navbar navbar-inverse">
     <div className="container-fluid">
       <div className="navbar-header">
         <Link to="/" className="navbar-brand">{title}</Link>
       </div>
-      <div className="collapse navbar-collapse" id="navbar-collapse-1">
-        <ul className="nav navbar-nav navbar-right">
-          <li>{renderUserInfo(user, showLogin, logOut)}</li>
-        </ul>
-      </div>
+      <ul className="nav navbar-nav">
+        <li>{renderNavLink('Assigned Pages', 'assignedPages', pageFilter, setPageFilter)}</li>
+        <li>{renderNavLink('All Pages', 'pages', pageFilter, setPageFilter)}</li>
+        <li>{renderUserInfo(user, showLogin, logOut)}</li>
+      </ul>
     </div>
   </nav>
 );
@@ -41,4 +41,19 @@ function renderUserInfo (user, showLogin, logOut) {
   else {
     return <button className="auth-status btn btn-link" onClick={showLogin}>Log In</button>;
   }
+}
+
+function renderNavLink (linkText, filterToMatch, pageFilter, setPageFilter) {
+  const matchesFilter = match => match ? match.url === `/${filterToMatch}` : pageFilter === filterToMatch;
+  const setFilter = () => setPageFilter(filterToMatch);
+
+  return (
+    <NavLink
+      to={`/${filterToMatch}`}
+      isActive={matchesFilter}
+      onClick={setFilter}
+    >
+      {linkText}
+    </NavLink>
+  );
 }

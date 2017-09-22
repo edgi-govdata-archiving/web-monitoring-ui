@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-import bindComponent from '../scripts/bind-component';
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
+import Loading from './loading';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
@@ -31,11 +31,24 @@ const localApi = new WebMonitoringApi(api);
 export default class WebMonitoringUi extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {pages: null, showLogin: false, user: null};
+    this.state = {
+      assignedPages: null,
+      isLoading: true,
+      pageFilter: '', // keeps track of which set of pages we are looking at
+      pages: null,
+      showLogin: false,
+      user: null,
+    };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.loadPages = this.loadPages.bind(this);
+    this.setPageFilter = this.setPageFilter.bind(this);
+  }
+
+  setPageFilter (filter) {
+    this.setState({pageFilter: filter});
   }
 
   showLogin () {
@@ -48,52 +61,111 @@ export default class WebMonitoringUi extends React.Component {
 
   afterLogin (user) {
     this.hideLogin();
-    this.loadPages();
+    this.loadPages(this.state.pageFilter);
   }
 
   logOut () {
     api.logOut();
     this.setState({user: api.userData});
-    this.loadPages();
+    this.loadPages('pages');
   }
 
-  loadPages () {
+  /**
+   * Load pages depending on whether we want all pages or assigned pages.
+   * @private
+   * @param {string} pageFilter Must be either 'assignedPages' or 'pages'
+   *
+   * Sends a requests out to either db-api or localApi for pages and sets
+   * corresponding `assignedPages` or `pages` property of state and `pageFilter`.
+   * These are passed as props to various child components.
+   */
+  loadPages (pageFilter) {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData});
+        if (!loggedIn) {
+          return Promise.reject(new Error('You must be logged in to view pages'));
+        }
+
         const query = {include_latest: true};
-        if (loggedIn) {
-          return localApi.getPagesForUser(api.userData.email, null, query)
-            .catch(() => {
-              // TODO: Handle 'user not found' in a better way
-              // than just showing default list
-              return api.getPages(query);
-            });
+        if (pageFilter === 'assignedPages') {
+          return localApi.getPagesForUser(api.userData.email, null, query);
         }
         else {
           return api.getPages(query);
         }
       })
-      .then((pages) => {
-        this.setState({pages});
+      .then(pages => {
+        this.setState({
+          [pageFilter]: pages,
+          pageFilter
+        });
+      });
+  }
+
+  loadUser () {
+    api.isLoggedIn()
+      .then(loggedIn => {
+        this.setState({user: api.userData, isLoading: false});
       });
   }
 
   componentWillMount () {
-    this.loadPages();
+    this.loadUser();
   }
 
   render () {
-    const withData = bindComponent({pages: this.state.pages, user: this.state.user});
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
+
+    if (!this.state.user) {
+      return this.renderLoginDialog();
+    }
+
+    const withData = (ComponentType, pageType) => {
+      return (routeProps) => {
+        const pages = this.state[pageType];
+        if (!pages) {
+          this.loadPages(pageType);
+        }
+        return <ComponentType
+          {...routeProps}
+          pages={pages}
+          user={this.state.user}
+        />;
+      };
+    };
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
       <div>
         <Router>
           <div id="application">
-            <NavBar title="EDGI" user={this.state.user} showLogin={this.showLogin} logOut={this.logOut} />
-            <Route exact path="/" render={withData(PageList)} />
-            <Route path="/page/:pageId/:change?" render={withData(PageDetails)} />
+            <NavBar
+              title="EDGI"
+              user={this.state.user}
+              showLogin={this.showLogin}
+              logOut={this.logOut}
+              pageFilter={this.state.pageFilter}
+              setPageFilter={this.setPageFilter}
+            />
+            <Route exact path="/" render={() => {
+              if (this.state.user) {
+                return <Redirect to="/assignedPages" />;
+              } else {
+                return <Redirect to="/pages" />;
+              }
+            }}/>
+            <Route path="/pages" render={withData(PageList, 'pages')} />
+            <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
+            <Route path="/page/:pageId/:change?" render={(routeProps) =>
+              <PageDetails
+                {...routeProps}
+                user={this.state.user}
+                pageFilter={this.state.pageFilter}
+                pages={this.state[this.state.pageFilter]}
+              />
+            }/>
           </div>
         </Router>
         {modal}
