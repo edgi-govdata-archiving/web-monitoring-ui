@@ -149,25 +149,23 @@ export default class WebMonitoringUi extends React.Component {
               pageFilter={this.state.pageFilter}
               setPageFilter={this.setPageFilter}
             />
-            <div>
-              <Route exact path="/" render={() => {
-                if (this.state.user) {
-                  return <Redirect to="/assignedPages" />;
-                } else {
-                  return <Redirect to="/pages" />;
-                }
-              }}/>
-              <Route path="/pages" render={withData(PageList, 'pages')} />
-              <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
-              <Route path="/page/:pageId/:change?" render={(routeProps) =>
-                <PageDetails
-                  {...routeProps}
-                  user={this.state.user}
-                  pageFilter={this.state.pageFilter}
-                  pages={this.state[this.state.pageFilter]}
-                />
-              }/>
-            </div>
+            <Route exact path="/" render={() => {
+              if (this.state.user) {
+                return <Redirect to="/assignedPages" />;
+              } else {
+                return <Redirect to="/pages" />;
+              }
+            }}/>
+            <Route path="/pages" render={withData(PageList, 'pages')} />
+            <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
+            <Route path="/page/:pageId/:change?" render={(routeProps) =>
+              <PageDetails
+                {...routeProps}
+                user={this.state.user}
+                pageFilter={this.state.pageFilter}
+                pages={this.state[this.state.pageFilter]}
+              />
+            }/>
           </div>
         </Router>
         {modal}
