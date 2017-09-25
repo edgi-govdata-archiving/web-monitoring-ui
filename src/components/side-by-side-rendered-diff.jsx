@@ -116,6 +116,20 @@ function renderableDocument (sourceDocument, page) {
     sourceDocument.head.insertAdjacentElement('afterbegin', base);
   }
 
+  // The differ currently HTML-encodes the source code in these elements :\
+  // https://github.com/edgi-govdata-archiving/web-monitoring-processing/issues/94
+  sourceDocument.querySelectorAll('style, script').forEach(element => {
+    element.textContent = element.textContent
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#(x?)([0-9a-f]+);/ig, (text, hex, value) => {
+        const code = parseInt(value, hex ? 16 : 10);
+        return String.fromCharCode(code);
+      });
+  });
+
   return sourceDocument;
 }
 
