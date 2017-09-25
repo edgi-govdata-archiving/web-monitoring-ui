@@ -74,48 +74,53 @@ export default class SideBySideRenderedDiff extends React.Component {
  */
 function createChangedSource (source, page, viewType) {
   const elementToRemove = viewType === 'additions' ? 'del' : 'ins';
-  const elementExpression =
-    new RegExp(`<${elementToRemove}[^>]*>[^]*?</${elementToRemove}>`, 'ig');
 
-  const newSource = source
-    .replace(/<head[^]*<\/head>/i, head => {
-      return head
-        // Remove unwanted elements in <head> so we don’t load wrong resources
-        .replace(elementExpression, '')
-        // Visually hide elements in body because we remove them after load
-        .replace(`${elementToRemove} {`, `${elementToRemove} {display: none;`);
-    })
-    // Add removeChangeElements() function to remove unwanted elements at end
-    // of doc. We do it this way because we need a tree to operate on.
-    .replace(/<\/body/, `<script type="text/javascript">
-      (${removeChangeElements})('${elementToRemove}');
-    </script></body`);
-
-  return renderableSource(newSource, page);
-}
-
-/**
- * Process HTML source code so that it renders nicely. This includes things like
- * adding a `<base>` tag so subresources are properly fetched.
- *
- * @param {string} source
- * @param {Page} page
- * @returns {string}
- */
-function renderableSource (source, page) {
-  // <meta charset> tags don't work unless they are first, so if one is
-  // present, modify <head> content *after* it.
-  const hasCharsetTag = /<meta charset[^>]+>/.test(source);
-  const headMatcher = hasCharsetTag ? /<meta charset[^>]+>/ : /<head[^>]*>/;
-  const result = source.replace(headMatcher, followTag => {
-    return `${followTag}\n<base href="${page.url}">\n`;
+  // Remove <ins/del> in <head> before parsing; parsing will throw them out
+  // but keep their contents. That could leave us with <link> or <script>
+  // elements that should have been removed.
+  let newSource = source.replace(/<head[^]*<\/head>/i, head => {
+    return head.replace(
+      new RegExp(`<${elementToRemove}[^>]*>[^]*?</${elementToRemove}>`, 'ig'),
+      '');
   });
 
-  return result;
+  const parser = new DOMParser();
+  const newDocument = parser.parseFromString(newSource, 'text/html');
+  removeChangeElements(elementToRemove, newDocument);
+  renderableDocument(newDocument, page);
+
+  const prefix = source.match(/^[^]*?<html/ig)[0];
+  newSource = prefix + newDocument.documentElement.outerHTML.slice(5);
+
+  return newSource;
 }
 
 /**
- * Remove HTML elements representing additions or removals from a page.
+ * Process HTML document so that it renders nicely. This includes things like
+ * adding a `<base>` tag so subresources are properly fetched.
+ *
+ * @param {HTMLDocument} sourceDocument
+ * @param {Page} page
+ * @returns {HTMLDocument}
+ */
+function renderableDocument (sourceDocument, page) {
+  const base = sourceDocument.createElement('base');
+  base.href = page.url;
+  // <meta charset> tags don't work unless they are first, so if one is
+  // present, modify <head> content *after* it.
+  const charsetElement = sourceDocument.querySelector('meta[charset]');
+  if (charsetElement) {
+    charsetElement.insertAdjacentElement('afterend', base);
+  }
+  else {
+    sourceDocument.head.insertAdjacentElement('afterbegin', base);
+  }
+
+  return sourceDocument;
+}
+
+/**
+ * Remove HTML elements representing additions or removals from a document.
  * If removing an element leaves its parent element empty, the parent element
  * is also removed, and so on recursively up the tree. This is meant to
  * compensate for the fact that our diff is really a text diff that is
@@ -125,8 +130,12 @@ function renderableSource (source, page) {
  * context of the web page itself.*
  *
  * @param {string} type  Element type to remove, i.e. `ins` or `del`.
+ * @param {HTMLDocument} [sourceDocument]  Document to remove elements from.
+ *   If not sepecified, the current window's document will be used.
  */
-function removeChangeElements (type) {
+function removeChangeElements (type, sourceDocument) {
+  sourceDocument = sourceDocument || window.document;
+
   function removeEmptyParents (elements) {
     if (elements.size === 0) return;
 
@@ -144,7 +153,7 @@ function removeChangeElements (type) {
   }
 
   const parents = new Set();
-  document.querySelectorAll(type).forEach(element => {
+  sourceDocument.querySelectorAll(type).forEach(element => {
     parents.add(element.parentNode);
     element.parentNode.removeChild(element);
   });
