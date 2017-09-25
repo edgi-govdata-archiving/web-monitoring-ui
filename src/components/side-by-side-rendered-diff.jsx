@@ -53,16 +53,45 @@ export default class SideBySideRenderedDiff extends React.Component {
 
   _updateContent () {
     const raw_source = this.props.diff.content.diff;
-    const removals = raw_source.replace(/<ins[^>]*>[^]*?<\/ins>/ig, '');
-    const additions = raw_source.replace(/<del[^>]*>[^]*?<\/del>/ig, '');
 
     this.frameA.setAttribute(
       'srcdoc',
-      processSource(removals, this.props.page));
+      createChangedSource(raw_source, this.props.page, 'removals'));
     this.frameB.setAttribute(
       'srcdoc',
-      processSource(additions, this.props.page));
+      createChangedSource(raw_source, this.props.page, 'additions'));
   }
+}
+
+/**
+ * Create renderable HTML source code rendering either the added or removed
+ * parts of the page from a an HTML diff representing the full change between
+ * two versions.
+ *
+ * @param {string} source Full diff source code
+ * @param {Page} page The page that is being diffed
+ * @param {string} viewType Either `additions` or `removals`
+ */
+function createChangedSource (source, page, viewType) {
+  const elementToRemove = viewType === 'additions' ? 'del' : 'ins';
+  const elementExpression =
+    new RegExp(`<${elementToRemove}[^>]*>[^]*?</${elementToRemove}>`, 'ig');
+
+  const newSource = source
+    .replace(/<head[^]*<\/head>/i, head => {
+      return head
+        // Remove unwanted elements in <head> so we don’t load wrong resources
+        .replace(elementExpression, '')
+        // Visually hide elements in body because we remove them after load
+        .replace(`${elementToRemove} {`, `${elementToRemove} {display: none;`);
+    })
+    // Add removeChangeElements() function to remove unwanted elements at end
+    // of doc. We do it this way because we need a tree to operate on.
+    .replace(/<\/body/, `<script type="text/javascript">
+      (${removeChangeElements})('${elementToRemove}');
+    </script></body`);
+
+  return renderableSource(newSource, page);
 }
 
 /**
@@ -73,7 +102,7 @@ export default class SideBySideRenderedDiff extends React.Component {
  * @param {Page} page
  * @returns {string}
  */
-function processSource (source, page) {
+function renderableSource (source, page) {
   // <meta charset> tags don't work unless they are first, so if one is
   // present, modify <head> content *after* it.
   const hasCharsetTag = /<meta charset[^>]+>/.test(source);
@@ -83,4 +112,41 @@ function processSource (source, page) {
   });
 
   return result;
+}
+
+/**
+ * Remove HTML elements representing additions or removals from a page.
+ * If removing an element leaves its parent element empty, the parent element
+ * is also removed, and so on recursively up the tree. This is meant to
+ * compensate for the fact that our diff is really a text diff that is
+ * sensitive to the tree and not an actual tree diff.
+ *
+ * NOTE: this method is meant to be converted to source code and run *in the
+ * context of the web page itself.*
+ *
+ * @param {string} type  Element type to remove, i.e. `ins` or `del`.
+ */
+function removeChangeElements (type) {
+  function removeEmptyParents (elements) {
+    if (elements.size === 0) return;
+
+    const parents = new Set();
+    elements.forEach(element => {
+      if (element.parentNode
+          && element.childElementCount === 0
+          && /^[\s\n\r]*$/.test(element.textContent)) {
+        parents.add(element.parentNode);
+        element.parentNode.removeChild(element);
+      }
+    });
+
+    return removeEmptyParents(parents);
+  }
+
+  const parents = new Set();
+  document.querySelectorAll(type).forEach(element => {
+    parents.add(element.parentNode);
+    element.parentNode.removeChild(element);
+  });
+  removeEmptyParents(parents);
 }
