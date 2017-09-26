@@ -46,7 +46,7 @@ export default class DiffView extends React.Component {
   }
 
   render () {
-    const {a, b, diffType} = this.props;
+    const {diffType} = this.props;
     const {diff} = this.state;
 
     if (diffType && diffTypes[diffType].diffService === 'TODO') {

@@ -2,8 +2,8 @@ import React from 'react';
 
 /**
  * @typedef {Object} SideBySideRenderedDiffProps
- * @property {Version} a The "from" version
- * @property {Version} b The "to" version
+ * @property {Diff} diff The diff to render
+ * @property {Page} page The page this diff pertains to
  */
 
 /**
@@ -65,7 +65,7 @@ export default class SideBySideRenderedDiff extends React.Component {
 
 /**
  * Create renderable HTML source code rendering either the added or removed
- * parts of the page from a an HTML diff representing the full change between
+ * parts of the page from an HTML diff representing the full change between
  * two versions.
  *
  * @param {string} source Full diff source code
@@ -140,16 +140,10 @@ function renderableDocument (sourceDocument, page) {
  * compensate for the fact that our diff is really a text diff that is
  * sensitive to the tree and not an actual tree diff.
  *
- * NOTE: this method is meant to be converted to source code and run *in the
- * context of the web page itself.*
- *
  * @param {string} type  Element type to remove, i.e. `ins` or `del`.
- * @param {HTMLDocument} [sourceDocument]  Document to remove elements from.
- *   If not sepecified, the current window's document will be used.
+ * @param {HTMLDocument} sourceDocument  Document to remove elements from.
  */
 function removeChangeElements (type, sourceDocument) {
-  sourceDocument = sourceDocument || window.document;
-
   function removeEmptyParents (elements) {
     if (elements.size === 0) return;
 
