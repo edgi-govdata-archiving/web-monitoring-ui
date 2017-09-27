@@ -46,7 +46,7 @@ export default class DiffView extends React.Component {
   }
 
   render () {
-    const {a, b, diffType} = this.props;
+    const {diffType} = this.props;
     const {diff} = this.state;
 
     if (diffType && diffTypes[diffType].diffService === 'TODO') {
@@ -63,7 +63,7 @@ export default class DiffView extends React.Component {
     switch (diffType) {
     case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
-        <SideBySideRenderedDiff a={a} b={b} page={this.props.page} />
+        <SideBySideRenderedDiff diff={diff} page={this.props.page} />
       );
     case diffTypes.HIGHLIGHTED_TEXT.value:
       return (

@@ -13,7 +13,7 @@ export const diffTypes = {
   },
   SIDE_BY_SIDE_RENDERED: {
     description: 'Side-by-Side Rendered',
-    diffService: 'html_source',  // HACK, real side-by-side doesn't exist yet
+    diffService: 'html_visual'
   },
   SIDE_BY_SIDE_TEXT: {
     description: 'Side-by-Side Text',
