@@ -15,10 +15,6 @@ export const diffTypes = {
     description: 'Side-by-Side Rendered',
     diffService: 'html_visual'
   },
-  SIDE_BY_SIDE_TEXT: {
-    description: 'Side-by-Side Text',
-    diffService: 'TODO',
-  },
   CHANGES_ONLY_TEXT: {
     description: 'Changes Only Text',
     diffService: 'html_text',
