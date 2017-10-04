@@ -95,7 +95,14 @@ export default class ChangeView extends React.Component {
 
   render () {
     const { page } = this.props;
-
+    /**
+     * TODO: Update `userCanAnnotate` to reflect real user permissions once implemented.
+     * `canAnnotate` doesn't exist yet, so always defaults to null.
+     * Effectively hiding the annotation for everyone until permissions are implemented.
+     * `canAnnotate` is arbitrary and DOES NOT reflect any intended permissions model or setup.
+     * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
+     */
+    const userCanAnnotate = this.props.user.canAnnotate || null;
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);
@@ -103,7 +110,7 @@ export default class ChangeView extends React.Component {
 
     return (
       <div className="change-view">
-        {this.renderSubmission()}
+        {userCanAnnotate ? this.renderSubmission() : null}
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
       </div>
