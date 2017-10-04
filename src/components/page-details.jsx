@@ -163,7 +163,6 @@ export default class PageDetails extends React.Component {
         annotateChange={this._annotateChange}
         user={this.props.user}
         onChangeSelectedVersions={this._navigateToChange}
-        pageFilter={this.props.pageFilter}
       />
     );
   }

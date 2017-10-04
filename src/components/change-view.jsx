@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import AnnotationForm from './annotation-form';
@@ -192,8 +191,6 @@ export default class ChangeView extends React.Component {
             <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
-            <i className="fa fa-list" aria-hidden="true" />
-            <Link to={`/${this.props.pageFilter}`} className="lnk-action">Back to list view</Link>
           </div>
           <div className="col-md-6 text-right">
             {markSignificant}
