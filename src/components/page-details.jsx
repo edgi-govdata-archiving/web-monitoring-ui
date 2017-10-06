@@ -85,16 +85,19 @@ export default class PageDetails extends React.Component {
       <div className="container-fluid container-page-view">
         <div className="row">
           <div className="col-md-9">
-            <h2 className="page-title">
+            <header>
+              <h2 className="page-title">
+                {this.state.page.title}
+              </h2>
               <a
                 className="diff_page_url"
                 href={this.state.page.url}
                 target="_blank"
                 rel="noopener"
               >
-                {this.state.page.title}
+                {this.state.page.url}
               </a>
-            </h2>
+            </header>
           </div>
           <div className="col-md-3">
             {this._renderPager()}
@@ -163,7 +166,6 @@ export default class PageDetails extends React.Component {
         annotateChange={this._annotateChange}
         user={this.props.user}
         onChangeSelectedVersions={this._navigateToChange}
-        pageFilter={this.props.pageFilter}
       />
     );
   }

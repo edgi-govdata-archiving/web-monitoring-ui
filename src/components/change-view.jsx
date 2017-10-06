@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import AnnotationForm from './annotation-form';
@@ -96,7 +95,14 @@ export default class ChangeView extends React.Component {
 
   render () {
     const { page } = this.props;
-
+    /**
+     * TODO: Update `userCanAnnotate` to reflect real user permissions once implemented.
+     * `canAnnotate` doesn't exist yet, so always defaults to null.
+     * Effectively hiding the annotation for everyone until permissions are implemented.
+     * `canAnnotate` is arbitrary and DOES NOT reflect any intended permissions model or setup.
+     * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
+     */
+    const userCanAnnotate = this.props.user.canAnnotate || null;
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);
@@ -104,7 +110,7 @@ export default class ChangeView extends React.Component {
 
     return (
       <div className="change-view">
-        {this.renderSubmission()}
+        {userCanAnnotate ? this.renderSubmission() : null}
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
       </div>
@@ -192,8 +198,6 @@ export default class ChangeView extends React.Component {
             <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
-            <i className="fa fa-list" aria-hidden="true" />
-            <Link to={`/${this.props.pageFilter}`} className="lnk-action">Back to list view</Link>
           </div>
           <div className="col-md-6 text-right">
             {markSignificant}
