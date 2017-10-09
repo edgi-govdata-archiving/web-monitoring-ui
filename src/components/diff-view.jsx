@@ -50,11 +50,22 @@ export default class DiffView extends React.Component {
     const {diff} = this.state;
 
     if (diffType && diffTypes[diffType].diffService === 'TODO') {
-      return <div>No diff for '{diffTypes[diffType].description}' yet</div>;
+      return (
+        <p className="alert alert-warning" role="alert">
+          No diff for '{diffTypes[diffType].description}' yet
+        </p>
+      );
     }
 
     if (!diff) {
       return <Loading />;
+    }
+    else if (diff instanceof Error) {
+      return (
+        <p className="alert alert-danger" role="alert">
+          Error: {diff.message}
+        </p>
+      );
     }
 
     // TODO: if we have multiple ways to render content from a single service
@@ -119,6 +130,9 @@ export default class DiffView extends React.Component {
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
     this.setState({diff: null});
     this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService)
+      .catch(error => {
+        return error;
+      })
       .then((diff) => {
         this.setState({
           diff: diff
