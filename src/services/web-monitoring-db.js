@@ -232,7 +232,7 @@ export default class WebMonitoringDb {
   getDiff (pageId, aId, bId, diffType) {
     return fetch(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
       .then(response => response.json())
-      .then(throwErrorResponse('Could not load diff'))
+      .then(throwIfError('Could not load diff'))
       .then(data => parseDiff(data.data));
   }
 
@@ -404,16 +404,17 @@ function parseDiff (data) {
 }
 
 /**
- * Create a function that will throw an error when given parsed response data
- * that contains error information. Use this to reject the promise for an HTTP
- * request.
+ * Create a function that will return the input data or throw an error if the
+ * input data contains error information. Use this to reject the promise for an
+ * HTTP request.
  *
  * @param {string} summary If there are multiple errors or an error message
  *   can not be found in the response, use this as the error message.
- * @returns {Function}
+ * @returns {(data: object) => object}
  */
-function throwErrorResponse (summary) {
+function throwIfError (summary) {
   return data => {
+    // Proper API errors are formatted as an array of errors.
     if (data.errors) {
       const firstMessage = data.errors[0].title || data.errors[0].message;
       const message = data.errors.length > 1 && summary || firstMessage;
@@ -421,9 +422,11 @@ function throwErrorResponse (summary) {
       error.details = data.errors;
       throw error;
     }
+    // Some parts of our system, however, return a single error.
     else if (data.error) {
       throw new Error(data.error.title || data.error.message || summary);
     }
+
     return data;
   };
 }
