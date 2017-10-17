@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 const gulp = require('gulp');
 const babelify = require('babelify');
 const browserify = require('browserify');
@@ -9,20 +11,22 @@ const reportError = function (error) {
   notify({
     title: 'Task Failed [browserify]',
     message: 'See console.',
-    sound: 'Sosumi' // See: https://github.com/mikaelbr/node-notifier#all-notification-options-with-their-defaults
+    sound: 'Purr' // See: https://github.com/mikaelbr/node-notifier#all-notification-options-with-their-defaults
   }).write(error);
-
-  gutil.beep();
 
   // Pretty error reporting
   let report = '';
   const chalk = gutil.colors.white.bgRed;
-  const lineNumber = error.loc.line;
+
+  let message = error.stack;
+  if (error._babel && error instanceof SyntaxError) {
+    // Remove the Babel stack at the bottom of the formatted code.
+    message = error.stack.replace(/\n\s*at .*/g, '');
+  }
 
   report += chalk('TASK:') + ' browserify\n';
-  report += chalk('PROB:') + ` ${error.message}\n`;
-  report += chalk('LINE:') + ` ${lineNumber}\n`;
-  console.error(report); // eslint-disable-line
+  report += chalk('PROB:') + ` ${message}\n`;
+  console.error(report);
 
   // Prevent the 'watch' task from stopping
   this.emit('end');
