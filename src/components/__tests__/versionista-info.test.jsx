@@ -79,6 +79,16 @@ describe('Versionista-Info', () => {
   });
 
   describe('Message tests', () => {
+    const dateFormatter = new Intl.DateTimeFormat('en-US', {
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      month: 'long',
+      second: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC'
+    });
+
     it('Tells us `from` is too old', () => {
       const versions = [];
       versions.push(to);
@@ -89,7 +99,12 @@ describe('Versionista-Info', () => {
       versions.push(filler);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
-      expect(vInfo.text()).toBe('Version from January 17, 2017, 7:17:31 PM is no longer in Versionista. ');
+
+      //localize date
+      const fromUTC = 'January 18, 2017, 3:17:31 AM';
+      const fromDate = vInfo.text().match(/from (.*) is/)[1];
+      const fromLocalized = dateFormatter.format(new Date(fromDate));
+      expect(fromLocalized).toBe(fromUTC);
     });
 
     it('Tells us `to` is too old', () => {
@@ -101,7 +116,12 @@ describe('Versionista-Info', () => {
       versions.push(from);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
-      expect(vInfo.text()).toBe('Version from October 7, 2017, 10:58:12 PM is no longer in Versionista. ');
+
+      //localize date
+      const toUTC = 'October 8, 2017, 5:58:12 AM';
+      const toDate = vInfo.text().match(/from (.*) is/)[1];
+      const toLocalized = dateFormatter.format(new Date(toDate));
+      expect(toLocalized).toBe(toUTC);
     });
 
     it('Tells us both are too old', () => {
@@ -114,7 +134,22 @@ describe('Versionista-Info', () => {
       versions.push(filler);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
-      expect(vInfo.text()).toBe('Version from January 17, 2017, 7:17:31 PM is no longer in Versionista. Version from October 7, 2017, 10:58:12 PM is no longer in Versionista. ');
+
+      var regex = /from ([^.]*) is/g;
+      var matches, output = [];
+      while (matches = regex.exec(vInfo.text())) {
+          output.push(matches[1]);
+      }
+
+      const fromUTC = 'January 18, 2017, 3:17:31 AM';
+      const fromDate = output[0];
+      const fromLocalized = dateFormatter.format(new Date(fromDate));
+      expect(fromLocalized).toBe(fromUTC);
+
+      const toUTC = 'October 8, 2017, 5:58:12 AM';
+      const toDate = output[1];
+      const toLocalized = dateFormatter.format(new Date(toDate));
+      expect(toLocalized).toBe(toUTC);
     });
   });
 });

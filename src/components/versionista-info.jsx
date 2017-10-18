@@ -119,8 +119,6 @@ export default class VersionistaInfo extends React.Component {
     /**
      * Versionista stores only 50 versions: The latest 49 and the first captured version.
      * `lastViableIndex` represents the theoretical last index in `versions` that *should* have a diff.
-     * In practice, that's not always the case. Our versions don't always align perfectly with Versionista,
-     * but it's probably beyond the scope of the UI to scrape Versionista and make sure they do.
      */
     const lastViableIndex = 48; // 49 (0-based) - 1 (first version) = 48
     const indexOfFirstVersion = this.props.versions.length - 1; // assume last index is first version
