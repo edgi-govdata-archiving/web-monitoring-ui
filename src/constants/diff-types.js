@@ -5,7 +5,7 @@ export const diffTypes = {
   },
   HIGHLIGHTED_SOURCE: {
     description: 'Highlighted Source',
-    diffService: 'source',
+    diffService: 'html_source',
   },
   HIGHLIGHTED_RENDERED: {
     description: 'Highlighted Rendered',
@@ -21,7 +21,7 @@ export const diffTypes = {
   },
   CHANGES_ONLY_SOURCE: {
     description: 'Changes Only Source',
-    diffService: 'source',
+    diffService: 'html_source',
   }
 };
 
