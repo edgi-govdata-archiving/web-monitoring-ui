@@ -5,11 +5,9 @@ jobs:
       - image: circleci/node:6.11.1
     steps:
       - checkout
-dependencies:
-  override:
-    - yarn
-test:
-  override:
-    - yarn test
-steps:
-  - checkout
+      - run:
+          name: dependancies
+          command: yarn
+      - run:
+          name: test
+          command: yarn test
