@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:6.11.1
+    steps:
+      - checkout
+dependencies:
+  override:
+    - yarn
+test:
+  override:
+    - yarn test
+steps:
+  - checkout
