@@ -1,5 +1,5 @@
 import React from 'react';
-import Tooltip from 'react-tooltip';
+import StandardTooltip from './standard-tooltip';
 
 /**
  * @typedef {Object} AnnotationFormProps
@@ -81,11 +81,10 @@ export default class AnnotationForm extends React.Component {
           value={annotation.notes || ''}
         />
 
-        <Tooltip
+        <StandardTooltip
           id="annotation-tooltip"
-          place="top"
           disable={!this.props.collapsed}
-          effect="solid" />
+        />
       </form>
     );
   }

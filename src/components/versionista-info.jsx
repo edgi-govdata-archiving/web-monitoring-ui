@@ -1,15 +1,6 @@
 import React from 'react';
-import Tooltip from 'react-tooltip';
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  month: 'long',
-  second: 'numeric',
-  year: 'numeric',
-  timeZoneName: 'short'
-});
+import StandardTooltip from './standard-tooltip';
+import {dateFormatter} from '../scripts/formatters';
 
 /**
  * @typedef VersionistaInfoProps
@@ -68,7 +59,7 @@ export default class VersionistaInfo extends React.Component {
           data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
           aria-hidden="true"
         />
-        <Tooltip id="message-tooltip" />
+        <StandardTooltip id="message-tooltip" />
       </span>
     );
   }
@@ -99,7 +90,7 @@ export default class VersionistaInfo extends React.Component {
           data-tip="This link to Versionista is temporary and for debugging the transition to the app."
           aria-hidden="true"
         />
-        <Tooltip id="versionista-tooltip" />
+        <StandardTooltip id="versionista-tooltip" />
       </span>
     );
   }
