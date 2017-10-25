@@ -167,7 +167,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<Page[]>}
      */
   getPages (query) {
-    return fetch(this._createUrl('pages', query))
+    return this._request(this._createUrl('pages', query))
       .then(response => response.json())
       .then(data => data.data.map(parsePage));
   }
@@ -178,7 +178,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<Page>}
      */
   getPage (pageId) {
-    return fetch(this._createUrl(`pages/${pageId}`))
+    return this._request(this._createUrl(`pages/${pageId}`))
       .then(response => response.json())
       .then(data => parsePage(data.data));
   }
@@ -189,7 +189,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<Version[]>}
      */
   getVersions (pageId) {
-    return fetch(this._createUrl(`pages/${pageId}/versions`))
+    return this._request(this._createUrl(`pages/${pageId}/versions`))
       .then(response => response.json())
       .then(data => data.data.map(parseVersion));
   }
@@ -201,7 +201,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<Version>}
      */
   getVersion (pageId, versionId) {
-    return fetch(this._createUrl(`pages/${pageId}/versions/${versionId}`))
+    return this._request(this._createUrl(`pages/${pageId}/versions/${versionId}`))
       .then(response => response.json())
       .then(data => parseVersion(data.data));
   }
@@ -216,7 +216,7 @@ export default class WebMonitoringDb {
   getChange (pageId, fromVersion, toVersion) {
     fromVersion = fromVersion || '';
     toVersion = toVersion || '';
-    return fetch(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
+    return this._request(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
       .then(response => response.json())
       .then(data => parseChange(data.data));
   }
@@ -230,7 +230,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<ChangeDiff>}
      */
   getDiff (pageId, aId, bId, diffType) {
-    return fetch(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
+    return this._request(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
       .then(response => response.json())
       .then(throwIfError('Could not load diff'))
       .then(data => parseDiff(data.data));
@@ -245,13 +245,8 @@ export default class WebMonitoringDb {
      * @returns {Promise<Annotation>}
      */
   annotateChange (pageId, fromVersion, toVersion, annotation) {
-    return fetch(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}/annotations`), {
+    return this._request(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}/annotations`), {
       body: JSON.stringify(annotation),
-      credentials: 'include',
-      headers: new Headers({
-        'Authorization': this._authHeader(),
-        'X-Requested-With': 'XMLHttpRequest'
-      }),
       method: 'POST',
       mode: 'cors',
     })
@@ -278,6 +273,23 @@ export default class WebMonitoringDb {
       }
     }
     return url;
+  }
+
+  _request (url, options = {}) {
+    const final_options = {
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+    };
+
+    if (this.authToken) {
+      final_options.credentials = 'include';
+      final_options.headers.Authorization = this._authHeader();
+    }
+
+    options.headers = new Headers(
+      Object.assign(final_options.headers, options.headers));
+    Object.assign(final_options, options);
+
+    return fetch(url, final_options);
   }
 
   _loadToken () {
