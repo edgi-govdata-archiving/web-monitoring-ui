@@ -6,7 +6,9 @@ import VersionistaInfo from '../versionista-info';
 
 describe('Versionista-Info', () => {
   const from = {
+    'uuid': 'a',
     'capture_time': new Date('2017-01-18T03:17:31.000Z'),
+    'source_type': 'versionista',
     'source_metadata': {
       'url': 'https://versionista.com/74273/6210778/9452489/',
       'account': 'versionista2',
@@ -17,7 +19,9 @@ describe('Versionista-Info', () => {
   };
 
   const to = {
+    'uuid': 'b',
     'capture_time': new Date('2017-10-08T05:58:12.000Z'),
+    'source_type': 'versionista',
     'source_metadata': {
       'url': 'https://versionista.com/74273/6210778/13117888/',
       'account': 'versionista2',
@@ -29,6 +33,7 @@ describe('Versionista-Info', () => {
 
   const filler = {
     'capture_time': '0000',
+    'source_type': 'versionista',
     'source_metadata': {
       'url': '',
       'account': 'versionista2',
@@ -38,8 +43,20 @@ describe('Versionista-Info', () => {
     }
   };
 
-  it('Gives us a message if there is only one version', () => {
+  it('Outputs nothing if no versions are specified', () => {
     const vInfo = render(<VersionistaInfo />);
+    expect(vInfo.text()).toBe('');
+  });
+
+  it('Outputs nothing if either version is not from versionista', () => {
+    const otherFrom = Object.assign({}, from, {source_type: 'elsewhere'});
+    const otherTo = Object.assign({}, to, {source_type: 'elsewhere'});
+    const vInfo = render(<VersionistaInfo from={otherFrom} to={otherTo} />);
+    expect(vInfo.text()).toBe('');
+  });
+
+  it('Prints a message if only one version is specified', () => {
+    const vInfo = render(<VersionistaInfo from={from} to={from} />);
     expect(vInfo.text()).toBe('There is only one version. No diff to display.');
   });
 
@@ -79,32 +96,18 @@ describe('Versionista-Info', () => {
   });
 
   describe('Message tests', () => {
-    const dateFormatter = new Intl.DateTimeFormat('en-US', {
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      month: 'long',
-      second: 'numeric',
-      year: 'numeric',
-      timeZone: 'UTC'
-    });
-
     it('Tells us `from` is too old', () => {
       const versions = [];
       versions.push(to);
       for (let i = 0; i < 50; i++) {
         versions.push(filler);
       }
-      versions.push(from);
-      versions.push(filler);
+      versions.push(from, filler);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
 
-      //localize date
-      const fromUTC = 'January 18, 2017, 3:17:31 AM';
-      const fromDate = vInfo.text().match(/from (.*) is/)[1];
-      const fromLocalized = dateFormatter.format(new Date(fromDate));
-      expect(fromLocalized).toBe(fromUTC);
+      const fromDate = new Date(vInfo.text().match(/from (.*) is/)[1]);
+      expect(fromDate).toEqual(from.capture_time);
     });
 
     it('Tells us `to` is too old', () => {
@@ -117,11 +120,8 @@ describe('Versionista-Info', () => {
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
 
-      //localize date
-      const toUTC = 'October 8, 2017, 5:58:12 AM';
-      const toDate = vInfo.text().match(/from (.*) is/)[1];
-      const toLocalized = dateFormatter.format(new Date(toDate));
-      expect(toLocalized).toBe(toUTC);
+      const toDate = new Date(vInfo.text().match(/from (.*) is/)[1]);
+      expect(toDate).toEqual(to.capture_time);
     });
 
     it('Tells us both are too old', () => {
@@ -129,27 +129,28 @@ describe('Versionista-Info', () => {
       for (let i = 0; i < 50; i++) {
         versions.push(filler);
       }
-      versions.push(to);
-      versions.push(from);
-      versions.push(filler);
+      versions.push(to, from, filler);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
 
-      var regex = /from ([^.]*) is/g;
-      var matches, output = [];
-      while (matches = regex.exec(vInfo.text())) {
-          output.push(matches[1]);
-      }
+      const format = /from ([^.]+?) and ([^.]+?) are/;
+      expect(vInfo.text()).toMatch(format);
+      const matches = vInfo.text().match(format);
 
-      const fromUTC = 'January 18, 2017, 3:17:31 AM';
-      const fromDate = output[0];
-      const fromLocalized = dateFormatter.format(new Date(fromDate));
-      expect(fromLocalized).toBe(fromUTC);
+      // var matches, output = [];
+      // while (matches = regex.exec(vInfo.text())) {
+      //     output.push(matches[1]);
+      // }
 
-      const toUTC = 'October 8, 2017, 5:58:12 AM';
-      const toDate = output[1];
-      const toLocalized = dateFormatter.format(new Date(toDate));
-      expect(toLocalized).toBe(toUTC);
+      // const fromUTC = 'January 18, 2017, 3:17:31 AM';
+      const fromDate = new Date(matches[1]);
+      // const fromLocalized = dateFormatter.format(new Date(fromDate));
+      expect(fromDate).toEqual(from.capture_time);
+
+      // const toUTC = 'October 8, 2017, 5:58:12 AM';
+      const toDate = new Date(matches[2]);
+      // const toLocalized = dateFormatter.format(new Date(toDate));
+      expect(toDate).toEqual(to.capture_time);
     });
   });
 });

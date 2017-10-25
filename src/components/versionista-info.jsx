@@ -7,7 +7,8 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
   minute: 'numeric',
   month: 'long',
   second: 'numeric',
-  year: 'numeric'
+  year: 'numeric',
+  timeZoneName: 'short'
 });
 
 /**
@@ -26,20 +27,19 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
  * @param {VersionistaInfoProps} props
  */
 export default class VersionistaInfo extends React.Component {
-  constructor (props) {
-    super (props);
-    this.renderDiffMessage = this.renderDiffMessage.bind(this);
-    this.renderLink = this.renderLink.bind(this);
-    this.notInVersionista = this.notInVersionista.bind(this);
-    this.getDatesWithoutDiff = this.getDatesWithoutDiff.bind(this);
-  }
-
   render () {
     let message;
-    if (!this.props.from || !this.props.to) {
+    if (!this.props.from
+     || !this.props.to
+     || this.props.from.source_type !== 'versionista'
+     || this.props.to.source_type !== 'versionista') {
+      return null;
+    }
+    else if (this.props.from === this.props.to) {
       message = <span>There is only one version. No diff to display.</span>;
-    } else {
-      message = this.renderDiffMessage();
+    }
+    else {
+      message = this.renderMissingVersionsMessage();
     }
 
     return (
@@ -49,30 +49,28 @@ export default class VersionistaInfo extends React.Component {
     );
   }
 
-  renderDiffMessage () {
+  renderMissingVersionsMessage () {
     let datesWithoutDiff = this.getDatesWithoutDiff();
-    if (datesWithoutDiff.length > 0) {
-      return (
-        <span>
-          {datesWithoutDiff.map((value, index) => {
-            return (
-              <span key={index}>
-                Version from <strong>{value}</strong> is no longer in Versionista.{' '}
-              </span>
-            );
-          })}
-          <i
-            className="fa fa-info-circle"
-            data-for="message-tooltip"
-            data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
-            aria-hidden="true"
-          />
-          <Tooltip id="message-tooltip" />
-        </span>
-      );
-    } else {
+    if (datesWithoutDiff.length === 0) {
       return null;
     }
+
+    const missingDates = datesWithoutDiff.join(' and ');
+    const plural = datesWithoutDiff.length > 1;
+
+    return (
+      <span>
+        Version{plural ? 's' : ''} from <strong>{missingDates}</strong>
+        {plural ? ' are' : ' is'} no longer in Versionista.
+        <i
+          className="fa fa-info-circle"
+          data-for="message-tooltip"
+          data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
+          aria-hidden="true"
+        />
+        <Tooltip id="message-tooltip" />
+      </span>
+    );
   }
 
   renderLink () {
@@ -80,29 +78,20 @@ export default class VersionistaInfo extends React.Component {
     const siteId = this.props.from.source_metadata.site_id;
     const pageId = this.props.from.source_metadata.page_id;
 
-    // convert to numbers
+    // Ensure IDs are in order -- Versionista doesn't handle this like we do.
     let fromVersionId = +this.props.from.source_metadata.version_id;
     let toVersionId   = +this.props.to.source_metadata.version_id;
-
-    /**
-     * Switch `from` and `to` if necessary because versionista expects `to` be later than `from`.
-     * If we don't do this, than we'll get redirected to the `last two` diff with `to` instead,
-     * disregarding `from`. This is because the app doesn't constrain the `to` version like Versionista does.
-     */
     if (fromVersionId > toVersionId) {
-      const temp = fromVersionId;
-      fromVersionId = toVersionId;
-      toVersionId = temp;
+      [fromVersionId, toVersionId] = [toVersionId, fromVersionId];
     }
 
     return (
       <span>
-        <strong>Versionista diff view: </strong>
         <a
           target='_blank'
           href={`https://versionista.com/${siteId}/${pageId}/${toVersionId}:${fromVersionId}`}
         >
-          {account}
+          View this diff in Versionista (account: {account})
         </a>
         <i
           className="fa fa-info-circle"
@@ -115,26 +104,24 @@ export default class VersionistaInfo extends React.Component {
     );
   }
 
-  notInVersionista (index) {
-    /**
-     * Versionista stores only 50 versions: The latest 49 and the first captured version.
-     * `lastViableIndex` represents the theoretical last index in `versions` that *should* have a diff.
-     */
+  /**
+   * Determine whether a version is likely to be missing from Versionista,
+   * which only stores 50 versions (the latest 49 and the first).
+   * @private
+   */
+  notInVersionista (version) {
+    const index = this.props.versions.findIndex(matchesUuid(version.uuid));
     const lastViableIndex = 48; // 49 (0-based) - 1 (first version) = 48
     const indexOfFirstVersion = this.props.versions.length - 1; // assume last index is first version
     return (index > lastViableIndex && index !== indexOfFirstVersion);
   }
 
   getDatesWithoutDiff () {
-    const versions = this.props.versions;
-    const fromIndex = versions.findIndex(compareWith(this.props.from.source_metadata.version_id));
-    const toIndex = versions.findIndex(compareWith(this.props.to.source_metadata.version_id));
-
     let dates = [];
-    if (this.notInVersionista(fromIndex)) {
+    if (this.notInVersionista(this.props.from)) {
       dates.push(dateFormatter.format(this.props.from.capture_time));
     }
-    if (this.notInVersionista(toIndex)) {
+    if (this.notInVersionista(this.props.to)) {
       dates.push(dateFormatter.format(this.props.to.capture_time));
     }
 
@@ -142,6 +129,6 @@ export default class VersionistaInfo extends React.Component {
   }
 }
 
-function compareWith (index) {
-  return element => element.source_metadata.version_id === index;
+function matchesUuid (uuid) {
+  return version => version.uuid === uuid;
 }
