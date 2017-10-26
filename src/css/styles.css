@@ -366,3 +366,11 @@ iframe {
   margin-left: -37px;
   height: 70px;
 }
+
+.versionista-info {
+  margin-top: 1em;
+}
+
+.versionista-info i {
+  margin-left: 0.5em;
+}

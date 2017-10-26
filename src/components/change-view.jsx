@@ -7,6 +7,7 @@ import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
 import Loading from './loading';
+import VersionistaInfo from './versionista-info';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
@@ -111,6 +112,7 @@ export default class ChangeView extends React.Component {
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
+        <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
       </div>
