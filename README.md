@@ -189,6 +189,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
 | [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
 | [💻](# "Code") [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
+| [💻](# "Code") | [Michelle Truong](https://github.com/fendatr) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
