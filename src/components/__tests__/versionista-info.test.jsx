@@ -57,7 +57,7 @@ describe('Versionista-Info', () => {
 
   it('Prints a message if only one version is specified', () => {
     const vInfo = render(<VersionistaInfo from={from} to={from} />);
-    expect(vInfo.text()).toBe('There is only one version. No diff to display.');
+    expect(vInfo.text()).toBe('No link to display because the selected versions are the same.');
   });
 
   describe('Link tests', () => {

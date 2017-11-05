@@ -10,7 +10,7 @@ import {dateFormatter} from '../scripts/formatters';
  */
 
 /**
- * This component either creates a link that points to the corresponding Versionista diff
+ * Creates a link that points to the corresponding Versionista diff
  * or provides info if a diff is no longer in Versionista.
  *
  * @class VersionistaInfo
@@ -27,7 +27,7 @@ export default class VersionistaInfo extends React.Component {
       return null;
     }
     else if (this.props.from === this.props.to) {
-      message = <span>There is only one version. No diff to display.</span>;
+      message = <span>No link to display because the selected versions are the same.</span>;
     }
     else {
       message = this.renderMissingVersionsMessage();
@@ -35,7 +35,7 @@ export default class VersionistaInfo extends React.Component {
 
     return (
       <div className="versionista-info">
-        {(message) ? message : this.renderLink()}
+        {(message) ? message : this.renderDiffLink()}
       </div>
     );
   }
@@ -64,10 +64,12 @@ export default class VersionistaInfo extends React.Component {
     );
   }
 
-  renderLink () {
-    const account = this.props.from.source_metadata.account;
-    const siteId = this.props.from.source_metadata.site_id;
-    const pageId = this.props.from.source_metadata.page_id;
+  renderDiffLink () {
+    const {
+      account,
+      site_id,
+      page_id
+    } = this.props.from.source_metadata;
 
     // Ensure IDs are in order -- Versionista doesn't handle this like we do.
     let fromVersionId = +this.props.from.source_metadata.version_id;
@@ -79,8 +81,8 @@ export default class VersionistaInfo extends React.Component {
     return (
       <span>
         <a
-          target='_blank'
-          href={`https://versionista.com/${siteId}/${pageId}/${toVersionId}:${fromVersionId}`}
+          target="_blank"
+          href={`https://versionista.com/${site_id}/${page_id}/${toVersionId}:${fromVersionId}`}
         >
           View this diff in Versionista (account: {account})
         </a>
