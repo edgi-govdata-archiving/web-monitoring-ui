@@ -55,16 +55,16 @@ describe('Versionista-Info', () => {
     expect(vInfo.text()).toBe('');
   });
 
-  it('Prints a message if only one version is specified', () => {
+  it('Outputs link to page view if both versions are the same.', () => {
     const vInfo = render(<VersionistaInfo from={from} to={from} />);
-    expect(vInfo.text()).toBe('No link to display because the selected versions are the same.');
+    const { attribs: { href } } = vInfo.find('a')[0];
+    expect(href).toBe('https://versionista.com/74273/6210778');
   });
 
   describe('Link tests', () => {
     it('Gives us a link', () => {
       const versions = [];
-      versions.push(to);
-      versions.push(from);
+      versions.push(to, from);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
       const { attribs: { href } } = vInfo.find('a')[0];
@@ -86,8 +86,7 @@ describe('Versionista-Info', () => {
 
     it('Switches `to` and `from` to give us correct Versionista link', () => {
       const versions = [];
-      versions.push(to);
-      versions.push(from);
+      versions.push(to, from);
 
       const vInfo = render(<VersionistaInfo to={from} from={to} versions={versions} />);
       const { attribs: { href } } = vInfo.find('a')[0];
@@ -115,8 +114,7 @@ describe('Versionista-Info', () => {
       for (let i = 0; i < 50; i++) {
         versions.push(filler);
       }
-      versions.push(to);
-      versions.push(from);
+      versions.push(to, from);
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
 
@@ -137,19 +135,10 @@ describe('Versionista-Info', () => {
       expect(vInfo.text()).toMatch(format);
       const matches = vInfo.text().match(format);
 
-      // var matches, output = [];
-      // while (matches = regex.exec(vInfo.text())) {
-      //     output.push(matches[1]);
-      // }
-
-      // const fromUTC = 'January 18, 2017, 3:17:31 AM';
       const fromDate = new Date(matches[1]);
-      // const fromLocalized = dateFormatter.format(new Date(fromDate));
       expect(fromDate).toEqual(from.capture_time);
 
-      // const toUTC = 'October 8, 2017, 5:58:12 AM';
       const toDate = new Date(matches[2]);
-      // const toLocalized = dateFormatter.format(new Date(toDate));
       expect(toDate).toEqual(to.capture_time);
     });
   });

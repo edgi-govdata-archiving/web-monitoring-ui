@@ -27,7 +27,7 @@ export default class VersionistaInfo extends React.Component {
       return null;
     }
     else if (this.props.from === this.props.to) {
-      message = <span>No link to display because the selected versions are the same.</span>;
+      message = this.renderPageLink();
     }
     else {
       message = this.renderMissingVersionsMessage();
@@ -94,6 +94,19 @@ export default class VersionistaInfo extends React.Component {
         />
         <StandardTooltip id="versionista-tooltip" />
       </span>
+    );
+  }
+
+  renderPageLink () {
+    const {
+      account,
+      site_id,
+      page_id
+    } = this.props.from.source_metadata;
+    return (
+      <a target="_blank" href={`https://versionista.com/${site_id}/${page_id}`}>
+        The selected versions are the same. View the page in Versionista. (account: {account})
+      </a>
     );
   }
 
