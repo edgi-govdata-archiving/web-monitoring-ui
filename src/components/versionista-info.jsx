@@ -26,8 +26,9 @@ export default class VersionistaInfo extends React.Component {
      || this.props.to.source_type !== 'versionista') {
       return null;
     }
-    else if (this.props.from === this.props.to) {
-      message = this.renderPageLink();
+    else if (this.props.from === this.props.to
+      || this.props.to.uuid === this.props.from.uuid) {
+        message = this.renderPageLink();
     }
     else {
       message = this.renderMissingVersionsMessage();
@@ -42,26 +43,32 @@ export default class VersionistaInfo extends React.Component {
 
   renderMissingVersionsMessage () {
     let datesWithoutDiff = this.getDatesWithoutDiff();
-    if (datesWithoutDiff.length === 0) {
-      return null;
-    }
 
-    const missingDates = datesWithoutDiff.join(' and ');
-    const plural = datesWithoutDiff.length > 1;
-
-    return (
+    const tooltip = (
       <span>
-        Version{plural ? 's' : ''} from <strong>{missingDates}</strong>
-        {plural ? ' are' : ' is'} no longer in Versionista.
         <i
-          className="fa fa-info-circle"
-          data-for="message-tooltip"
-          data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
-          aria-hidden="true"
-        />
+            className="fa fa-info-circle"
+            data-for="message-tooltip"
+            data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
+            aria-hidden="true"
+          />
         <StandardTooltip id="message-tooltip" />
       </span>
     );
+
+    switch (datesWithoutDiff.length) {
+      case 0:
+        return null;
+        break;
+      case 1:
+        return <span>Version from <strong>{datesWithoutDiff[0]}</strong> is no longer in Versionista. {tooltip}</span>
+        break;
+      case 2:
+        return <span>Both versions are no longer in Versionista. {tooltip}</span>;
+        break;
+      default:
+        return null;
+    }
   }
 
   renderDiffLink () {
@@ -103,6 +110,7 @@ export default class VersionistaInfo extends React.Component {
       site_id,
       page_id
     } = this.props.from.source_metadata;
+
     return (
       <a target="_blank" href={`https://versionista.com/${site_id}/${page_id}`}>
         The selected versions are the same. View the page in Versionista. (account: {account})
