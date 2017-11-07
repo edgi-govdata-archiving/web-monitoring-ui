@@ -28,7 +28,7 @@ export default class VersionistaInfo extends React.Component {
     }
     else if (this.props.from === this.props.to
       || this.props.to.uuid === this.props.from.uuid) {
-        message = this.renderPageLink();
+      message = this.renderPageLink();
     }
     else {
       message = this.renderMissingVersionsMessage();
@@ -47,27 +47,24 @@ export default class VersionistaInfo extends React.Component {
     const tooltip = (
       <span>
         <i
-            className="fa fa-info-circle"
-            data-for="message-tooltip"
-            data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
-            aria-hidden="true"
-          />
+          className="fa fa-info-circle"
+          data-for="message-tooltip"
+          data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
+          aria-hidden="true"
+        />
         <StandardTooltip id="message-tooltip" />
       </span>
     );
 
     switch (datesWithoutDiff.length) {
-      case 0:
-        return null;
-        break;
-      case 1:
-        return <span>Version from <strong>{datesWithoutDiff[0]}</strong> is no longer in Versionista. {tooltip}</span>
-        break;
-      case 2:
-        return <span>Both versions are no longer in Versionista. {tooltip}</span>;
-        break;
-      default:
-        return null;
+    case 0:
+      return null;
+    case 1:
+      return <span>Version from <strong>{datesWithoutDiff[0]}</strong> is no longer in Versionista. {tooltip}</span>;
+    case 2:
+      return <span>Both versions are no longer in Versionista. {tooltip}</span>;
+    default:
+      return null;
     }
   }
 
