@@ -19,42 +19,51 @@ import {dateFormatter} from '../scripts/formatters';
  */
 export default class VersionistaInfo extends React.Component {
   render () {
-    let message;
     if (!this.props.from
      || !this.props.to
      || this.props.from.source_type !== 'versionista'
      || this.props.to.source_type !== 'versionista') {
       return null;
     }
-    else if (this.props.from === this.props.to
+
+    return (
+      <div className="versionista-info">
+        {this.getMessage() || this.renderDiffLink()}
+      </div>
+    );
+  }
+
+  getMessage () {
+    let message = null;
+    if (this.props.from === this.props.to
       || this.props.to.uuid === this.props.from.uuid) {
       message = this.renderPageLink();
     }
     else {
       message = this.renderMissingVersionsMessage();
     }
+    return message;
+  }
+
+  renderPageLink () {
+    const {
+      account,
+      site_id,
+      page_id
+    } = this.props.from.source_metadata;
 
     return (
-      <div className="versionista-info">
-        {(message) ? message : this.renderDiffLink()}
-      </div>
+      <a target="_blank" href={`https://versionista.com/${site_id}/${page_id}`}>
+        The selected versions are the same. View the page in Versionista. (account: {account})
+      </a>
     );
   }
 
   renderMissingVersionsMessage () {
     let datesWithoutDiff = this.getDatesWithoutDiff();
 
-    const tooltip = (
-      <span>
-        <i
-          className="fa fa-info-circle"
-          data-for="message-tooltip"
-          data-tip="Versionista stores only 50 versions: The latest 49 and the first captured version."
-          aria-hidden="true"
-        />
-        <StandardTooltip id="message-tooltip" />
-      </span>
-    );
+    const tooltip = this.renderTooltip(
+      'Versionista stores only 50 versions: The latest 49 and the first captured version.');
 
     switch (datesWithoutDiff.length) {
     case 0:
@@ -64,7 +73,7 @@ export default class VersionistaInfo extends React.Component {
     case 2:
       return <span>Both versions are no longer in Versionista. {tooltip}</span>;
     default:
-      return null;
+      return <span>Something unexpected happened. Please inform developers with link to this page.</span>;
     }
   }
 
@@ -90,29 +99,23 @@ export default class VersionistaInfo extends React.Component {
         >
           View this diff in Versionista (account: {account})
         </a>
-        <i
-          className="fa fa-info-circle"
-          data-for="versionista-tooltip"
-          data-tip="This link to Versionista is temporary and for debugging the transition to the app."
-          aria-hidden="true"
-        />
-        <StandardTooltip id="versionista-tooltip" />
+        {this.renderTooltip(
+          'This link to Versionista is temporary and for debugging the transition to the app.')}
       </span>
     );
   }
 
-  renderPageLink () {
-    const {
-      account,
-      site_id,
-      page_id
-    } = this.props.from.source_metadata;
-
-    return (
-      <a target="_blank" href={`https://versionista.com/${site_id}/${page_id}`}>
-        The selected versions are the same. View the page in Versionista. (account: {account})
-      </a>
-    );
+  renderTooltip (tip) {
+    return [
+      <i
+        className="fa fa-info-circle"
+        data-for="versionista-tooltip"
+        data-tip={tip}
+        aria-hidden="true"
+        key="icon"
+      />,
+      <StandardTooltip id="versionista-tooltip" key="versionistaTooltip" />
+    ];
   }
 
   /**
