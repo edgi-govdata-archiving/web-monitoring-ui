@@ -146,12 +146,16 @@ export default class PageDetails extends React.Component {
    * @returns {JSX.Element}
    */
   _renderChange () {
-    // TODO: should we show 404 for bad versions? (null vs. undefined here)
+    /** TODO: should we show 404 for bad versions?
+     * If versions are not found we default to latest change.
+     */
     const versionData = this._versionsToRender();
-    if (!versionData) {
-      let [to, from] = this._parsedVersionsToRender() || this.state.page.versions;
 
-      from = from || to;
+    if (!(versionData.from && versionData.to)) {
+      let to = versionData.to || this.state.page.versions[0];
+      let from = this.state.page.versions.find(
+        version => version.capture_time < to.capture_time) || to;
+
       if (from && to) {
         return <Redirect to={this._getChangeUrl(from, to)} />;
       }
@@ -170,34 +174,17 @@ export default class PageDetails extends React.Component {
     );
   }
 
-  // NOTE: returns `null` when specified change is invalid, `undefined` when
-  // no change specified at all. (This is subtle; design could be better.)
   _versionsToRender () {
-    if (this.props.match.params.change) {
-      const [fromId, toId] = this.props.match.params.change.split('..');
-      const from = this.state.page.versions.find(v => v.uuid === fromId);
-      const to = this.state.page.versions.find(v => v.uuid === toId);
+    const [fromId, toId] = (this.props.match.params.change || '').split('..');
+    let from = this.state.page.versions.find(v => v.uuid === fromId);
+    let to = this.state.page.versions.find(v => v.uuid === toId);
 
-      return (from && to) ? {from, to} : null;
+    // Changes w/ no `to` are invalid, but those where `from` was never
+    // specified are OK (it’ll be considered relative to `to`)
+    if (!to || fromId && !from) {
+      to = from = null;
     }
-  }
-
-  // Handles '..toId' case, setting `from` to the previous version relative to the provided one
-  _parsedVersionsToRender () {
-    if (this.props.match.params.change) {
-      let fromIndex, toIndex, from, to;
-      const [fromId, toId] = this.props.match.params.change.split('..');
-
-      if (!fromId && toId) {
-        toIndex = this.state.page.versions.findIndex(v => v.uuid === toId);
-        fromIndex = toIndex + 1;
-        from = this.state.page.versions[fromIndex];
-        to = this.state.page.versions[toIndex];
-        from = from || to;
-      }
-
-      return (from && to) ? [to, from] : null;
-    }
+    return {from, to};
   }
 
   _loadPage (pageId) {
