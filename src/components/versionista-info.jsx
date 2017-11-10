@@ -34,15 +34,12 @@ export default class VersionistaInfo extends React.Component {
   }
 
   getMessage () {
-    let message = null;
-    if (this.props.from === this.props.to
-      || this.props.to.uuid === this.props.from.uuid) {
-      message = this.renderPageLink();
+    if (this.props.to.uuid === this.props.from.uuid) {
+      return this.renderPageLink();
     }
     else {
-      message = this.renderMissingVersionsMessage();
+      return this.renderMissingVersionsMessage();
     }
-    return message;
   }
 
   renderPageLink () {
