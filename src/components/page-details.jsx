@@ -149,9 +149,9 @@ export default class PageDetails extends React.Component {
     // TODO: should we show 404 for bad versions? (null vs. undefined here)
     const versionData = this._versionsToRender();
     if (!versionData) {
-      let [to, from] = this.state.page.versions;
-      from = from || to;
+      let [to, from] = this._parseVersions() || this.state.page.versions;
 
+      from = from || to;
       if (from && to) {
         return <Redirect to={this._getChangeUrl(from, to)} />;
       }
@@ -177,7 +177,26 @@ export default class PageDetails extends React.Component {
       const [fromId, toId] = this.props.match.params.change.split('..');
       const from = this.state.page.versions.find(v => v.uuid === fromId);
       const to = this.state.page.versions.find(v => v.uuid === toId);
+
       return (from && to) ? {from, to} : null;
+    }
+  }
+
+  // Handles '..toId' case, setting `from` to the previous version relative to the provided one
+  _parsedVersionsToRender () {
+    if (this.props.match.params.change) {
+      let fromIndex, toIndex, from, to;
+      const [fromId, toId] = this.props.match.params.change.split('..');
+
+      if (!fromId && toId) {
+        toIndex = this.state.page.versions.findIndex(v => v.uuid === toId);
+        fromIndex = toIndex + 1;
+        from = this.state.page.versions[fromIndex];
+        to = this.state.page.versions[toIndex];
+        from = from || to;
+      }
+
+      return (from && to) ? [to, from] : null;
     }
   }
 
