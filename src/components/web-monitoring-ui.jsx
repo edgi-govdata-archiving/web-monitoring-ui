@@ -9,6 +9,7 @@ import LoginForm from './login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list';
+import VersionRedirect from './version-redirect';
 
 const configuration = window.webMonitoringConfig;
 
@@ -166,6 +167,7 @@ export default class WebMonitoringUi extends React.Component {
                 pages={this.state[this.state.pageFilter]}
               />
             }/>
+            <Route path="/version/:versionId" render={(routeProps) => <VersionRedirect api={api} {...routeProps} />} />
           </div>
         </Router>
         {modal}

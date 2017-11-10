@@ -149,7 +149,7 @@ export default class PageDetails extends React.Component {
     // TODO: should we show 404 for bad versions? (null vs. undefined here)
     const versionData = this._versionsToRender();
     if (!versionData) {
-      let [to, from] = this._parseVersions() || this.state.page.versions;
+      let [to, from] = this._parsedVersionsToRender() || this.state.page.versions;
 
       from = from || to;
       if (from && to) {
