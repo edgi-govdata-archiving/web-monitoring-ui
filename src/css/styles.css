@@ -1,6 +1,11 @@
 @import './diff.css';
 
 /* ===== Global ===== */
+html, body, #web-monitoring-ui-root, #web-monitoring-ui-root > div,
+#application, .container-page-view, .change-view, .side-by-side-render {
+  height: 100%
+}
+
 body {
     background: #136a8a;
     background: linear-gradient(45deg, #136a8a, #267871);
@@ -18,7 +23,8 @@ body {
 }
 
 .container-page-view {
-    padding: 15px;
+  overflow: scroll;
+  padding: 15px;
 }
 
 /* ===== Nav Bar ===== */
