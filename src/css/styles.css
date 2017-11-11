@@ -361,10 +361,9 @@ iframe {
 }
 
 .loading {
-  position: absolute;
-  left: 50%;
-  margin-left: -37px;
-  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .versionista-info {

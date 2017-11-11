@@ -23,7 +23,7 @@ export default class VersionRedirect extends React.Component {
       return (
         <p className="alert alert-danger" role="alert">
           Error: We couldn't find the version you're looking for.
-          Please check you provided the correct version ID or alert the dev team.
+          Please check you provided the correct versionID or alert the dev team.
         </p>
       );
     }

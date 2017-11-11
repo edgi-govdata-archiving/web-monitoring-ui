@@ -179,7 +179,7 @@ export default class PageDetails extends React.Component {
     let from = this.state.page.versions.find(v => v.uuid === fromId);
     let to = this.state.page.versions.find(v => v.uuid === toId);
 
-    // Changes w/ no `to` are invalid, but those where `from` was never
+    // Changes with no `to` are invalid, but those where `from` was never
     // specified are OK (it’ll be considered relative to `to`)
     if (!to || fromId && !from) {
       to = from = null;
