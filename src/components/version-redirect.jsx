@@ -1,6 +1,8 @@
+import Loading from './loading';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import Loading from './loading';
+import WebMonitoringDb from '../services/web-monitoring-db';
 
 export default class VersionRedirect extends React.Component {
   constructor (props) {
@@ -13,7 +15,7 @@ export default class VersionRedirect extends React.Component {
 
   componentDidMount () {
     const versionId = this.props.match.params.versionId;
-    this.props.api.getVersionById(versionId)
+    this.context.api.getVersion(versionId)
       .then(data => this.setState({pageId: data.page_uuid}))
       .catch(error => this.setState({error: error}));
   }
@@ -23,7 +25,7 @@ export default class VersionRedirect extends React.Component {
       return (
         <p className="alert alert-danger" role="alert">
           Error: We couldn't find the version you're looking for.
-          Please check you provided the correct versionID or alert the dev team.
+          Please check you provided the correct versionID.
         </p>
       );
     }
@@ -33,4 +35,8 @@ export default class VersionRedirect extends React.Component {
     }
     return <Redirect to={`/page/${this.state.pageId}/..${this.props.match.params.versionId}`} />;
   }
+}
+
+VersionRedirect.contextTypes = {
+  api: PropTypes.instanceOf(WebMonitoringDb)
 }

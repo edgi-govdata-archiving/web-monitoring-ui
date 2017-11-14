@@ -195,23 +195,11 @@ export default class WebMonitoringDb {
   }
 
   /**
-     * Get a single version of a page.
-     * @param {string} pageId
-     * @param {string} versionId
-     * @returns {Promise<Version>}
-     */
-  getVersion (pageId, versionId) {
-    return this._request(this._createUrl(`pages/${pageId}/versions/${versionId}`))
-      .then(response => response.json())
-      .then(data => parseVersion(data.data));
-  }
-
-  /**
-   * Get a single version
+   * Get a single version of a page
    * @param {string} versionId
    * @returns {Promise<Version>}
    */
-  getVersionById (versionId) {
+  getVersion (versionId) {
     return this._request(this._createUrl(`versions/${versionId}`))
       .then(response => response.json())
       .then(data => parseVersion(data.data));
