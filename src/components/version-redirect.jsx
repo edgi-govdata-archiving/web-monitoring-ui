@@ -16,7 +16,11 @@ export default class VersionRedirect extends React.Component {
   componentDidMount () {
     const versionId = this.props.match.params.versionId;
     this.context.api.getVersion(versionId)
-      .then(data => this.setState({pageId: data.page_uuid}))
+      .then(data => {
+        if (this.props.match.params.versionId === versionId) {
+          this.setState({pageId: data.page_uuid});
+        }
+      })
       .catch(error => this.setState({error: error}));
   }
 
@@ -33,10 +37,11 @@ export default class VersionRedirect extends React.Component {
     if (!this.state.pageId) {
       return <Loading />;
     }
+
     return <Redirect to={`/page/${this.state.pageId}/..${this.props.match.params.versionId}`} />;
   }
 }
 
 VersionRedirect.contextTypes = {
   api: PropTypes.instanceOf(WebMonitoringDb)
-}
+};

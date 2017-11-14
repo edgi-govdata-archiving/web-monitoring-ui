@@ -167,7 +167,7 @@ export default class WebMonitoringUi extends React.Component {
                 pages={this.state[this.state.pageFilter]}
               />
             }/>
-            <Route path="/version/:versionId" render={(routeProps) => <VersionRedirect api={api} {...routeProps} />} />
+            <Route path="/version/:versionId" component={VersionRedirect} />
           </div>
         </Router>
         {modal}
