@@ -189,6 +189,16 @@ function removeChangeElements (type, sourceDocument) {
   removeEmptyParents(parents);
 }
 
+/**
+ * Activate inert (embedded in `<template>`) elements (e.g. scripts and styles)
+ * that were removed as part of the represented change and remove elements that
+ * were added. If the `viewType` is `additions`, this does nothing, since added
+ * elements are already active.
+ *
+ * @param {'additions'|'deletions'} viewType Type of view to restrict to
+ * @param {HTMLDocument} sourceDocument Document to activate or deactivate
+ *                                      elements within
+ */
 function activateInertChangeElements (viewType, sourceDocument) {
   if ( viewType === 'additions') {
     return;
