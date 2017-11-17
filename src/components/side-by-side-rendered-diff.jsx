@@ -75,19 +75,36 @@ export default class SideBySideRenderedDiff extends React.Component {
 function createChangedSource (source, page, viewType) {
   const elementToRemove = viewType === 'additions' ? 'del' : 'ins';
 
-  // Remove <ins/del> in <head> before parsing; parsing will throw them out
-  // but keep their contents. That could leave us with <link> or <script>
-  // elements that should have been removed.
-  let newSource = source.replace(/<head[^]*<\/head>/i, head => {
-    return head.replace(
-      new RegExp(`<${elementToRemove}[^>]*>[^]*?</${elementToRemove}>`, 'ig'),
-      '');
-  });
+  let newSource = source;
+  // TODO: remove this when new diffs are fully deployed; they no longer have
+  // `<ins>/<del>` in the `<head>`.
+  const hasOldHeadTemplate = !!source.match(/<template id="wm-diff-old-head"/i);
+  if (!hasOldHeadTemplate) {
+    // Remove <ins/del> in <head> before parsing; parsing will throw them out
+    // but keep their contents. That could leave us with <link> or <script>
+    // elements that should have been removed.
+    newSource = source.replace(/<head[^]*<\/head>/i, head => {
+      return head.replace(
+        new RegExp(`<${elementToRemove}[^>]*>[^]*?</${elementToRemove}>`, 'ig'),
+        '');
+    });
+  }
 
   const parser = new DOMParser();
   const newDocument = parser.parseFromString(newSource, 'text/html');
+  // Rebuild <head> with contents of old version's `<head>`
+  if (hasOldHeadTemplate && viewType !== 'additions') {
+    const oldHead = newDocument.getElementById('wm-diff-old-head').content;
+    const styling = newDocument.getElementById('wm-diff-style');
+    const titleDiff = newDocument.querySelector('meta[name="wm-diff-title"]');
+    newDocument.head.innerHTML = '';
+    newDocument.head.appendChild(oldHead);
+    newDocument.head.appendChild(styling);
+    newDocument.head.appendChild(titleDiff);
+  }
   removeChangeElements(elementToRemove, newDocument);
   renderableDocument(newDocument, page);
+  activateInertChangeElements(viewType, newDocument);
 
   const prefix = source.match(/^[^]*?<html/ig)[0];
   newSource = prefix + newDocument.documentElement.outerHTML.slice(5);
@@ -116,19 +133,23 @@ function renderableDocument (sourceDocument, page) {
     sourceDocument.head.insertAdjacentElement('afterbegin', base);
   }
 
-  // The differ currently HTML-encodes the source code in these elements :\
-  // https://github.com/edgi-govdata-archiving/web-monitoring-processing/issues/94
-  sourceDocument.querySelectorAll('style, script').forEach(element => {
-    element.textContent = element.textContent
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#(x?)([0-9a-f]+);/ig, (text, hex, value) => {
-        const code = parseInt(value, hex ? 16 : 10);
-        return String.fromCharCode(code);
-      });
-  });
+  // TODO: remove this block when new diff (indicated by presence of
+  // wm-diff-style) is fully deployed.
+  if (!sourceDocument.getElementById('wm-diff-style')) {
+    // The differ currently HTML-encodes the source code in these elements :\
+    // https://github.com/edgi-govdata-archiving/web-monitoring-processing/issues/94
+    sourceDocument.querySelectorAll('style, script').forEach(element => {
+      element.textContent = element.textContent
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#(x?)([0-9a-f]+);/ig, (text, hex, value) => {
+          const code = parseInt(value, hex ? 16 : 10);
+          return String.fromCharCode(code);
+        });
+    });
+  }
 
   return sourceDocument;
 }
@@ -166,4 +187,30 @@ function removeChangeElements (type, sourceDocument) {
     element.parentNode.removeChild(element);
   });
   removeEmptyParents(parents);
+}
+
+/**
+ * Activate inert (embedded in `<template>`) elements (e.g. scripts and styles)
+ * that were removed as part of the represented change and remove elements that
+ * were added. If the `viewType` is `additions`, this does nothing, since added
+ * elements are already active.
+ *
+ * @param {'additions'|'deletions'} viewType Type of view to restrict to
+ * @param {HTMLDocument} sourceDocument Document to activate or deactivate
+ *                                      elements within
+ */
+function activateInertChangeElements (viewType, sourceDocument) {
+  if ( viewType === 'additions') {
+    return;
+  }
+
+  sourceDocument.querySelectorAll('.wm-diff-inserted-active')
+    .forEach(item => item.remove());
+
+  sourceDocument.querySelectorAll('.wm-diff-deleted-inert')
+    .forEach(item => {
+      const content = item.content;
+      item.parentNode.insertBefore(content, item);
+      item.remove();
+    });
 }
