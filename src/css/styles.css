@@ -11,17 +11,6 @@ html, #web-monitoring-ui-root, #web-monitoring-ui-root > div {
   flex-direction: column;
 }
 
-.navbar {
-  flex: 0 0 auto;
-}
-
-.container-page-view {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-  padding: 15px;
-}
-
 .container-page-view > .row, .versionista-info, .version-selector {
   flex: 0 0 auto;
 }
@@ -46,7 +35,14 @@ body {
 .container-list-view, .container-page-view {
     background: white;
     color: #444;
-    margin: 5px 0 ;
+    margin: 55px 0 5px;
+}
+
+.container-page-view {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  padding: 15px;
 }
 
 /* ===== Nav Bar ===== */
@@ -91,7 +87,13 @@ body {
 
 .navbar {
     border-radius: 0;
+    box-shadow: 0px 2px 5px rgba(100, 100, 100, 0.7);
+    flex: 0 0 auto;
+    height: 50px;
     margin-bottom: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }
 
 .navbar-text {
@@ -389,9 +391,11 @@ iframe {
 }
 
 .loading {
+  align-items: center;
+  background: transparent;
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin: 55px 0 5px;
 }
 
 .versionista-info {
