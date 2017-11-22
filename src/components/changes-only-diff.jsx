@@ -24,7 +24,7 @@ export default class ChangesOnlyDiff extends React.Component {
     }
 
     if (!hasChanges(this.props.diff.content.diff)) {
-      return <div className={this.props.className}>No visible change to display.</div>;
+      return <div className={this.props.className}>There were no changes for this diff type.</div>;
     }
 
     const changesOnly = this.props.diff.content.diff.reduce(
