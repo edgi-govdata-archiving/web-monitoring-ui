@@ -7,12 +7,12 @@ ins {
 
 .side-by-side-render {
     display: flex;
+    flex: 1 0 auto;
 }
 
 .side-by-side-render > iframe {
     border: 1px solid #ccc;
     border-radius: 2px;
-    min-height: 40em;
     width: 100%;
 }
 
