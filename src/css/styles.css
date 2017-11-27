@@ -9,7 +9,7 @@ html, #web-monitoring-ui-root, #web-monitoring-ui-root > div {
   display: flex;
   height: 100%;
   flex-direction: column;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .container-page-view > .row, .versionista-info, .version-selector {
@@ -91,6 +91,7 @@ body {
     box-shadow: 0px 2px 5px rgba(100, 100, 100, 0.7);
     flex: 0 0 auto;
     margin-bottom: 0;
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     width: 100%;
