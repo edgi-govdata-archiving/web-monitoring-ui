@@ -119,6 +119,10 @@ export default class WebMonitoringUi extends React.Component {
       return <Loading />;
     }
 
+    /** TODO: When we move to a public platform, we might not
+     * need this check anymore because users should have
+     * some level of access without logging in.
+     */
     if (!this.state.user) {
       return this.renderLoginDialog();
     }
@@ -139,39 +143,37 @@ export default class WebMonitoringUi extends React.Component {
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
-      <div>
-        <Router>
-          <div id="application">
-            <NavBar
-              title="EDGI"
+      <Router>
+        <div id="application">
+          <NavBar
+            title="EDGI"
+            user={this.state.user}
+            showLogin={this.showLogin}
+            logOut={this.logOut}
+            pageFilter={this.state.pageFilter}
+            setPageFilter={this.setPageFilter}
+          />
+          <Route exact path="/" render={() => {
+            if (this.state.user) {
+              return <Redirect to="/assignedPages" />;
+            } else {
+              return <Redirect to="/pages" />;
+            }
+          }}/>
+          <Route path="/pages" render={withData(PageList, 'pages')} />
+          <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
+          <Route path="/page/:pageId/:change?" render={(routeProps) =>
+            <PageDetails
+              {...routeProps}
               user={this.state.user}
-              showLogin={this.showLogin}
-              logOut={this.logOut}
               pageFilter={this.state.pageFilter}
-              setPageFilter={this.setPageFilter}
+              pages={this.state[this.state.pageFilter]}
             />
-            <Route exact path="/" render={() => {
-              if (this.state.user) {
-                return <Redirect to="/assignedPages" />;
-              } else {
-                return <Redirect to="/pages" />;
-              }
-            }}/>
-            <Route path="/pages" render={withData(PageList, 'pages')} />
-            <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
-            <Route path="/page/:pageId/:change?" render={(routeProps) =>
-              <PageDetails
-                {...routeProps}
-                user={this.state.user}
-                pageFilter={this.state.pageFilter}
-                pages={this.state[this.state.pageFilter]}
-              />
-            }/>
-            <Route path="/version/:versionId" component={VersionRedirect} />
-          </div>
-        </Router>
-        {modal}
-      </div>
+          }/>
+          <Route path="/version/:versionId" component={VersionRedirect} />
+          {modal}
+        </div>
+      </Router>
     );
   }
 

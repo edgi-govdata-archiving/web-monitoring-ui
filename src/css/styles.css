@@ -1,15 +1,19 @@
 @import './diff.css';
 
 /* ===== Global ===== */
-html, #web-monitoring-ui-root, #web-monitoring-ui-root > div {
+html, #web-monitoring-ui-root {
   height: 100%
+}
+
+#web-monitoring-ui-root {
+  display: flex;
+  flex-direction: column;
 }
 
 #application {
   display: flex;
-  height: 100%;
   flex-direction: column;
-  overflow: auto;
+  flex: 1 0 auto;
 }
 
 .container-page-view > .row, .versionista-info, .version-selector {
