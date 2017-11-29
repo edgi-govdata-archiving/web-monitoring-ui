@@ -1,14 +1,19 @@
 @import './diff.css';
 
 /* ===== Global ===== */
-html, #web-monitoring-ui-root, #web-monitoring-ui-root > div {
+html, #web-monitoring-ui-root {
   height: 100%
+}
+
+#web-monitoring-ui-root {
+  display: flex;
+  flex-direction: column;
 }
 
 #application {
   display: flex;
-  height: 100%;
   flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .container-page-view > .row, .versionista-info, .version-selector {
@@ -35,19 +40,7 @@ body {
 .container-list-view, .container-page-view {
     background: white;
     color: #444;
-    margin: 56px 0 5px;
-}
-
-@media (max-width: 767px) {
-  .container-list-view, .container-page-view {
-    margin: 63px 0 5px;
-  }
-}
-
-@media (max-width: 571px) {
-  .container-list-view, .container-page-view {
-    margin: 83px 0 5px;
-  }
+    margin: 5px 0;
 }
 
 .container-page-view {
@@ -102,7 +95,9 @@ body {
     box-shadow: 0px 2px 5px rgba(100, 100, 100, 0.7);
     flex: 0 0 auto;
     margin-bottom: 0;
-    position: fixed;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
     width: 100%;
     z-index: 1;
 }
@@ -406,10 +401,6 @@ iframe {
   background: transparent;
   display: flex;
   justify-content: center;
-}
-
-#application > .loading {
-  margin: 55px 0 5px;
 }
 
 .versionista-info {
