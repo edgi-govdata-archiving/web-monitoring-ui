@@ -9,7 +9,7 @@ export const diffTypes = {
   },
   HIGHLIGHTED_RENDERED: {
     description: 'Highlighted Rendered',
-    diffService: 'TODO',
+    diffService: 'html_visual',
   },
   SIDE_BY_SIDE_RENDERED: {
     description: 'Side-by-Side Rendered',

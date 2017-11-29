@@ -5,12 +5,14 @@ ins {
     background-color: lightgreen !important;
 }
 
-.side-by-side-render {
+.side-by-side-render,
+.inline-render {
     display: flex;
     flex: 1 0 auto;
 }
 
-.side-by-side-render > iframe {
+.side-by-side-render > iframe,
+.inline-render > iframe {
     border: 1px solid #ccc;
     border-radius: 2px;
     width: 100%;
