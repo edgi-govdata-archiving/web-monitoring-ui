@@ -15,7 +15,7 @@ import React from 'react';
  */
 export default class SideBySideRenderedDiff extends React.Component {
   constructor (props) {
-    super(props);
+    super (props);
     this.frameA = null;
     this.frameB = null;
   }
@@ -24,11 +24,12 @@ export default class SideBySideRenderedDiff extends React.Component {
     if (!this.props) {
       return null;
     }
+    const onlyOneVersion = this.props.diff.from_version_id === this.props.diff.to_version_id;
 
     return (
       <div className="side-by-side-render">
         <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameA = frame} />
-        <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameB = frame} />
+        {(onlyOneVersion) ? null : <iframe sandbox="allow-forms allow-scripts" ref={frame => this.frameB = frame} />}
       </div>
     );
   }
@@ -54,12 +55,17 @@ export default class SideBySideRenderedDiff extends React.Component {
   _updateContent () {
     const raw_source = this.props.diff.content.diff;
 
-    this.frameA.setAttribute(
-      'srcdoc',
-      createChangedSource(raw_source, this.props.page, 'removals'));
-    this.frameB.setAttribute(
-      'srcdoc',
-      createChangedSource(raw_source, this.props.page, 'additions'));
+    if (this.frameA) {
+      this.frameA.setAttribute(
+        'srcdoc',
+        createChangedSource(raw_source, this.props.page, 'removals'));
+    }
+
+    if (this.frameB) {
+      this.frameB.setAttribute(
+        'srcdoc',
+        createChangedSource(raw_source, this.props.page, 'additions'));
+    }
   }
 }
 

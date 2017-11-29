@@ -1,6 +1,7 @@
 import React from 'react';
 import DiffItem from './diff-item';
 import List from './list';
+import hasChanges from '../scripts/hasChanges';
 
 // The context for a change should be constrained to this many lines
 const maxContextLines = 3;
@@ -20,6 +21,10 @@ export default class ChangesOnlyDiff extends React.Component {
   render () {
     if (!this.props) {
       return null;
+    }
+
+    if (!hasChanges(this.props.diff.content.diff)) {
+      return <div className={this.props.className}>There were no changes for this diff type.</div>;
     }
 
     const changesOnly = this.props.diff.content.diff.reduce(
