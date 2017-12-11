@@ -81,6 +81,10 @@ export default class DiffView extends React.Component {
       return (
         <SideBySideRenderedDiff diff={diff} page={this.props.page} />
       );
+    case diffTypes.OUTGOING_LINKS.value:
+      return (
+        <InlineRenderedDiff diff={diff} page={this.props.page} />
+      );
     case diffTypes.HIGHLIGHTED_TEXT.value:
       return (
         <HighlightedTextDiff diff={diff} className='diff-text-inline' />

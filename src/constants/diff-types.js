@@ -15,6 +15,10 @@ export const diffTypes = {
     description: 'Side-by-Side Rendered',
     diffService: 'html_visual'
   },
+  OUTGOING_LINKS: {
+    description: 'Outgoing Links',
+    diffService: 'links'
+  },
   CHANGES_ONLY_TEXT: {
     description: 'Changes Only Text',
     diffService: 'html_text',
