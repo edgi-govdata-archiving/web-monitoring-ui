@@ -127,7 +127,7 @@ export default class DiffView extends React.Component {
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
     this.setState({diffData: null});
-    this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService)
+    this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService, diffTypes[diffType].options)
       .catch(error => {
         return error;
       })

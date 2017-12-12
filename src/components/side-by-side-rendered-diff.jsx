@@ -22,14 +22,14 @@ export default class SideBySideRenderedDiff extends React.Component {
     return (
       <div className="side-by-side-render">
         <SandboxedHtml
-          html={this.props.diffData.diff}
+          html={this.props.diffData.deletions}
           baseUrl={this.props.page.url}
-          transform={showRemovals}
+          // transform={showRemovals}
         />
         <SandboxedHtml
-          html={this.props.diffData.diff}
+          html={this.props.diffData.insertions}
           baseUrl={this.props.page.url}
-          transform={showAdditions}
+          // transform={showAdditions}
         />
       </div>
     );
