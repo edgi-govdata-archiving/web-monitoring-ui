@@ -226,8 +226,9 @@ export default class WebMonitoringDb {
      * @param {string} diffType
      * @returns {Promise<DiffData>}
      */
-  getDiff (pageId, aId, bId, diffType) {
-    return this._request(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))
+  getDiff (pageId, aId, bId, diffType, options) {
+    const query = Object.assign({format: 'json'}, options);
+    return this._request(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, query))
       .then(response => response.json())
       .then(throwIfError('Could not load diff'))
       .then(data => parseDiff(data.data));
