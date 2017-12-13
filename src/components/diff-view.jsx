@@ -5,6 +5,7 @@ import {diffTypes} from '../constants/diff-types';
 import Loading from './loading';
 
 import HighlightedTextDiff from './highlighted-text-diff';
+import InlineRenderedDiff from './inline-rendered-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 import ChangesOnlyDiff from './changes-only-diff';
 
@@ -72,6 +73,10 @@ export default class DiffView extends React.Component {
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
     switch (diffType) {
+    case diffTypes.HIGHLIGHTED_RENDERED.value:
+      return (
+        <InlineRenderedDiff diff={diff} page={this.props.page} />
+      );
     case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
         <SideBySideRenderedDiff diff={diff} page={this.props.page} />
