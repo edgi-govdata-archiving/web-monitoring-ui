@@ -19,7 +19,7 @@ export default class HighlightedTextDiff extends React.Component {
 
     return (
       <List
-        data={this.props.diff.content.diff}
+        data={this.props.diff}
         component={DiffItem}
         className={this.props.className}
       />

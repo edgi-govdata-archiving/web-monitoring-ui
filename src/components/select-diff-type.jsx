@@ -13,7 +13,6 @@ import {diffTypes} from '../constants/diff-types';
  */
 export default class SelectDiffType extends React.Component {
   render () {
-    // const diffTypes = this.props.diffTypes;
     const handleChange = (event) => {
       this.props.onChange(event.target.value);
     };

@@ -22,7 +22,7 @@ export default class ChangesOnlyDiff extends React.Component {
       return null;
     }
 
-    const changesOnly = this.props.diff.content.diff.reduce(
+    const changesOnly = this.props.diff.reduce(
       getContextualDiff, []);
 
     return (

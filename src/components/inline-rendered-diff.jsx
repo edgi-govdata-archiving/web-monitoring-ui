@@ -18,7 +18,7 @@ export default class InlineRenderedDiff extends React.Component {
   render () {
     return (
       <div className="inline-render">
-        <SandboxedHtml html={this.props.diff.content.diff} baseUrl={this.props.page.url} />
+        <SandboxedHtml html={this.props.diff} baseUrl={this.props.page.url} />
       </div>
     );
   }
