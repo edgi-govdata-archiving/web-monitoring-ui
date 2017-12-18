@@ -19,17 +19,27 @@ const showAdditions = showType.bind(null, 'additions');
  */
 export default class SideBySideRenderedDiff extends React.Component {
   render () {
+    // The newest version of this diff includes separate, more accurate
+    // versions to show for each side, but the old one needs transformations.
+    // TODO: remove this transforms business when new diffs are fully deployed.
+    let transformDeletions = (x) => x;
+    let transformInsertions = transformDeletions;
+    if (!this.props.diffData.deletions) {
+      transformDeletions = showRemovals;
+      transformInsertions = showAdditions;
+    }
+
     return (
       <div className="side-by-side-render">
         <SandboxedHtml
-          html={this.props.diffData.deletions}
+          html={this.props.diffData.deletions || this.props.diffData.diff}
           baseUrl={this.props.page.url}
-          // transform={showRemovals}
+          transform={transformDeletions}
         />
         <SandboxedHtml
-          html={this.props.diffData.insertions}
+          html={this.props.diffData.insertions || this.props.diffData.diff}
           baseUrl={this.props.page.url}
-          // transform={showAdditions}
+          transform={transformInsertions}
         />
       </div>
     );
