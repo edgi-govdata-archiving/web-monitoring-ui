@@ -129,6 +129,18 @@ body {
     background-color: #EEE;
 }
 
+.search-bar {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0.5em;
+}
+
+.search-bar input {
+  width: 100%;
+  border: none;
+  font-size: 1.25em;
+  padding: 0.5em 15px;
+}
+
 /* ===== Page Detail View ===== */
 .page-title {
     font-size: 1.5em;

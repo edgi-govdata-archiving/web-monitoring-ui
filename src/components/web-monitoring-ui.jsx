@@ -37,6 +37,7 @@ export default class WebMonitoringUi extends React.Component {
       isLoading: true,
       pageFilter: '', // keeps track of which set of pages we are looking at
       pages: null,
+      search: null,
       showLogin: false,
       user: null,
     };
@@ -46,6 +47,7 @@ export default class WebMonitoringUi extends React.Component {
     this.logOut = this.logOut.bind(this);
     this.loadPages = this.loadPages.bind(this);
     this.setPageFilter = this.setPageFilter.bind(this);
+    this.search = this.search.bind(this);
   }
 
   setPageFilter (filter) {
@@ -71,6 +73,11 @@ export default class WebMonitoringUi extends React.Component {
     this.loadPages('pages');
   }
 
+  search (query) {
+    this.setState({search: query});
+    this.loadPages('pages');
+  }
+
   /**
    * Load pages depending on whether we want all pages or assigned pages.
    * @private
@@ -87,7 +94,7 @@ export default class WebMonitoringUi extends React.Component {
           return Promise.reject(new Error('You must be logged in to view pages'));
         }
 
-        const query = {include_latest: true};
+        const query = Object.assign({include_latest: true}, this.state.search);
         if (pageFilter === 'assignedPages') {
           return localApi.getPagesForUser(api.userData.email, null, query);
         }
@@ -137,6 +144,7 @@ export default class WebMonitoringUi extends React.Component {
           {...routeProps}
           pages={pages}
           user={this.state.user}
+          onSearch={this.search}
         />;
       };
     };
