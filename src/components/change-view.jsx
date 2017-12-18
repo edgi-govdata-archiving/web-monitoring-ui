@@ -57,6 +57,7 @@ export default class ChangeView extends React.Component {
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
+    this.handleLatestToBaseChange = this.handleLatestToBaseChange.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);
@@ -93,6 +94,10 @@ export default class ChangeView extends React.Component {
   handleToVersionChange (version) {
     this._changeSelectedVersions(null, version);
   }
+  handleLatestToBaseChange () {
+    const {versions} = this.props.page;
+    this._changeSelectedVersions(versions[versions.length - 1], versions[0]);
+  }
 
   render () {
     const { page } = this.props;
@@ -112,7 +117,10 @@ export default class ChangeView extends React.Component {
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
-        <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+        <div className="comparison-controls">
+          <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+          <button className="btn-link" onClick={this.handleLatestToBaseChange} type="button">Latest to Base</button>
+        </div>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
       </div>
