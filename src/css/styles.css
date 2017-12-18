@@ -129,6 +129,31 @@ body {
     background-color: #EEE;
 }
 
+.table {
+  table-layout: fixed;
+}
+.table tr > td:first-child,
+.table tr > th:first-child {
+  width: 12%;
+}
+.table tr > td:nth-child(2),
+.table tr > th:nth-child(2)  {
+  width: 15%;
+}
+.table tr > td:nth-child(3),
+.table tr > th:nth-child(3) {
+  width: 33%;
+}
+
+.table tr > td:nth-child(4),
+.table tr > th:nth-child(4) {
+  width: 40%;
+}
+.table tr > td:nth-child(4) {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
 /* ===== Page Detail View ===== */
 .page-title {
     font-size: 1.5em;

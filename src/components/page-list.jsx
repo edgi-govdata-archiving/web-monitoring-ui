@@ -1,3 +1,4 @@
+import {dateFormatter} from '../scripts/formatters';
 import React from 'react';
 import Loading from './loading';
 
@@ -41,54 +42,27 @@ export default class PageList extends React.Component {
   renderHeader () {
     return (
       <tr>
-        <th>ID</th>
-        <th>Output Date</th>
+        <th>Capture Date</th>
         <th>Site</th>
         <th>Page Name</th>
         <th>URL</th>
-        <th>Page View URL</th>
-        <th>Last Two</th>
-        <th>Latest to Base</th>
       </tr>
     );
   }
 
   renderRow (record) {
     const version = record.latest;
-    let versionistaData;
-    if (version.source_type === 'versionista') {
-      versionistaData = version.source_metadata;
-    }
-
-    const diffWithPrevious = versionistaData && this.renderDiffLink(versionistaData.diff_with_previous_url);
-    const diffWithFirst = versionistaData && this.renderDiffLink(versionistaData.diff_with_first_url);
-
     const onClick = this.didClickRow.bind(this, record);
-
-    const shortUrl = `${record.url.substr(0, 20)}…`;
-    const rawContentPath = versionistaData && versionistaData.url.replace(/^\w+:\/\/[^/]+\//, '');
 
     // TODO: click handling
     return (
       <tr key={record.uuid} onClick={onClick}>
-        <td>{record.uuid}</td>
-        <td>{record.latest.capture_time.toISOString()}</td>
+        <td>{dateFormatter.format(record.latest.capture_time)}</td>
         <td>{record.site}</td>
         <td>{record.title}</td>
-        <td><a href={record.url} target="_blank" rel="noopener">{shortUrl}</a></td>
-        <td><a href={versionistaData && versionistaData.url} target="_blank" rel="noopener">{rawContentPath}</a></td>
-        <td>{diffWithPrevious}</td>
-        <td>{diffWithFirst}</td>
+        <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>
     );
-  }
-
-  renderDiffLink (url) {
-    if (url) {
-      return <a href={url} target="_blank">{url.substr(-15)}</a>;
-    }
-
-    return <em>[Initial Version]</em>;
   }
 
   didClickRow (page, event) {
