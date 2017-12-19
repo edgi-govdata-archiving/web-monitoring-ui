@@ -47,13 +47,11 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef {Object} ChangeDiff
- * @property {string} page_id
- * @property {string} from_version_id
- * @property {string} to_version_id
- * @property {string} diff_service
- * @property {string} diff_service_version
- * @property {*} content
+ * @typedef {Object} DiffData
+ * @property {number} change_count
+ * @property {string} diff
+ * @property {string} version
+ * @property {string} type
  */
 
 /**
@@ -226,7 +224,7 @@ export default class WebMonitoringDb {
      * @param {string} aId
      * @param {string} bId
      * @param {string} diffType
-     * @returns {Promise<ChangeDiff>}
+     * @returns {Promise<DiffData>}
      */
   getDiff (pageId, aId, bId, diffType) {
     return this._request(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, {format: 'json'}))

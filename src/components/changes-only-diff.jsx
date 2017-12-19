@@ -13,7 +13,7 @@ const maxContextLineLength = 300;
  * @class ChangesOnlyDiff
  * @extends {React.Component}
  * @param {Object} props
- * @param {ChangeDiff} props.diff
+ * @param {DiffData} props.diffData
  * @param {string} props.className
  */
 export default class ChangesOnlyDiff extends React.Component {
@@ -22,7 +22,7 @@ export default class ChangesOnlyDiff extends React.Component {
       return null;
     }
 
-    const changesOnly = this.props.diff.reduce(
+    const changesOnly = this.props.diffData.diff.reduce(
       getContextualDiff, []);
 
     return (
