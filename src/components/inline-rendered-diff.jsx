@@ -3,7 +3,7 @@ import SandboxedHtml from './sandboxed-html';
 
 /**
  * @typedef {Object} InlineRenderedDiffProps
- * @property {Diff} diff The diff to render
+ * @property {DiffData} diffData Object containing diff to render and its metadata
  * @property {Page} page The page this diff pertains to
  */
 
@@ -12,13 +12,13 @@ import SandboxedHtml from './sandboxed-html';
  *
  * @class InlineRenderedDiff
  * @extends {React.Component}
- * @params {InlineRenderedDiffProps} props
+ * @param {InlineRenderedDiffProps} props
  */
 export default class InlineRenderedDiff extends React.Component {
   render () {
     return (
       <div className="inline-render">
-        <SandboxedHtml html={this.props.diff.content.diff} baseUrl={this.props.page.url} />
+        <SandboxedHtml html={this.props.diffData.diff} baseUrl={this.props.page.url} />
       </div>
     );
   }

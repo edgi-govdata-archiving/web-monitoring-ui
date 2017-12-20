@@ -6,7 +6,7 @@ const showAdditions = showType.bind(null, 'additions');
 
 /**
  * @typedef {Object} SideBySideRenderedDiffProps
- * @property {Diff} diff The diff to render
+ * @property {DiffData} diffData Object containing diff to render and its metadata
  * @property {Page} page The page this diff pertains to
  */
 
@@ -15,19 +15,19 @@ const showAdditions = showType.bind(null, 'additions');
  *
  * @class SideBySideRenderedDiff
  * @extends {React.Component}
- * @params {SideBySideRenderedDiffProps} props
+ * @param {SideBySideRenderedDiffProps} props
  */
 export default class SideBySideRenderedDiff extends React.Component {
   render () {
     return (
       <div className="side-by-side-render">
         <SandboxedHtml
-          html={this.props.diff.content.diff}
+          html={this.props.diffData.diff}
           baseUrl={this.props.page.url}
           transform={showRemovals}
         />
         <SandboxedHtml
-          html={this.props.diff.content.diff}
+          html={this.props.diffData.diff}
           baseUrl={this.props.page.url}
           transform={showAdditions}
         />

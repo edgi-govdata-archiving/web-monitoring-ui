@@ -8,7 +8,7 @@ import List from './list';
  * @class HighlightedTextDiff
  * @extends {React.Component}
  * @param {Object} props
- * @param {ChangeDiff} props.diff
+ * @param {DiffData} props.diffData
  * @param {string} props.className
  */
 export default class HighlightedTextDiff extends React.Component {
@@ -19,7 +19,7 @@ export default class HighlightedTextDiff extends React.Component {
 
     return (
       <List
-        data={this.props.diff.content.diff}
+        data={this.props.diffData.diff}
         component={DiffItem}
         className={this.props.className}
       />

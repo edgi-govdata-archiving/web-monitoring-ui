@@ -27,13 +27,13 @@ import ChangesOnlyDiff from './changes-only-diff';
 export default class DiffView extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {diff: null};
+    this.state = {diffData: null};
   }
 
   componentWillMount () {
     const {props} = this;
     if (this._canFetch(props)) {
-      this._loadDiff(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
+      this._loadDiffData(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
     }
   }
 
@@ -42,29 +42,18 @@ export default class DiffView extends React.Component {
    */
   componentWillReceiveProps (nextProps) {
     if (this._canFetch(nextProps) && !this._propsSpecifySameDiff(nextProps)) {
-      this._loadDiff(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
+      this._loadDiffData(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
     }
   }
 
   render () {
-    const {diffType} = this.props;
-    const {diff} = this.state;
-
-    if (diffType && diffTypes[diffType].diffService === 'TODO') {
-      return (
-        <p className="alert alert-warning" role="alert">
-          No diff for '{diffTypes[diffType].description}' yet
-        </p>
-      );
-    }
-
-    if (!diff) {
+    if (!this.state.diffData) {
       return <Loading />;
     }
-    else if (diff instanceof Error) {
+    else if (this.state.diffData instanceof Error) {
       return (
         <p className="alert alert-danger" role="alert">
-          Error: {diff.message}
+          Error: {this.state.diffData.message}
         </p>
       );
     }
@@ -72,34 +61,34 @@ export default class DiffView extends React.Component {
     // TODO: if we have multiple ways to render content from a single service
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
-    switch (diffType) {
+    switch (this.props.diffType) {
     case diffTypes.HIGHLIGHTED_RENDERED.value:
       return (
-        <InlineRenderedDiff diff={diff} page={this.props.page} />
+        <InlineRenderedDiff diffData={this.state.diffData} page={this.props.page} />
       );
     case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
-        <SideBySideRenderedDiff diff={diff} page={this.props.page} />
+        <SideBySideRenderedDiff diffData={this.state.diffData} page={this.props.page} />
       );
     case diffTypes.OUTGOING_LINKS.value:
       return (
-        <InlineRenderedDiff diff={diff} page={this.props.page} />
+        <InlineRenderedDiff diffData={this.state.diffData} page={this.props.page} />
       );
     case diffTypes.HIGHLIGHTED_TEXT.value:
       return (
-        <HighlightedTextDiff diff={diff} className='diff-text-inline' />
+        <HighlightedTextDiff diffData={this.state.diffData} className='diff-text-inline' />
       );
     case diffTypes.HIGHLIGHTED_SOURCE.value:
       return (
-        <HighlightedTextDiff diff={diff} className='diff-source-inline' />
+        <HighlightedTextDiff diffData={this.state.diffData} className='diff-source-inline' />
       );
     case diffTypes.CHANGES_ONLY_TEXT.value:
       return (
-        <ChangesOnlyDiff diff={diff} className='diff-text-inline' />
+        <ChangesOnlyDiff diffData={this.state.diffData} className='diff-text-inline' />
       );
     case diffTypes.CHANGES_ONLY_SOURCE.value:
       return (
-        <ChangesOnlyDiff diff={diff} className='diff-source-inline' />
+        <ChangesOnlyDiff diffData={this.state.diffData} className='diff-source-inline' />
       );
     default:
       return null;
@@ -132,19 +121,19 @@ export default class DiffView extends React.Component {
     return (props.page.uuid && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
   }
 
-  _loadDiff (pageId, aId, bId, diffType) {
+  _loadDiffData (pageId, aId, bId, diffType) {
     // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
-    this.setState({diff: null});
+    this.setState({diffData: null});
     this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService)
       .catch(error => {
         return error;
       })
-      .then((diff) => {
+      .then((data) => {
         this.setState({
-          diff: diff
+          diffData: data
         });
       });
   }
