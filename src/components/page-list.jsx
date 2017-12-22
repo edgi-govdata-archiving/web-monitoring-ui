@@ -51,7 +51,6 @@ export default class PageList extends React.Component {
   }
 
   renderRow (record) {
-    const version = record.latest;
     const onClick = this.didClickRow.bind(this, record);
 
     // TODO: click handling
