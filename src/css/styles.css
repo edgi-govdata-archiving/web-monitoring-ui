@@ -129,27 +129,27 @@ body {
     background-color: #EEE;
 }
 
-.table {
+.container-list-view--list {
   table-layout: fixed;
 }
 
-.table tr > td:first-child {
+.container-list-view--list tr > td:first-child {
   width: 12%;
 }
 
-.table tr > td:nth-child(2)  {
+.container-list-view--list tr > td:nth-child(2)  {
   width: 15%;
 }
 
-.table tr > td:nth-child(3) {
+.container-list-view--list tr > td:nth-child(3) {
   width: 33%;
 }
 
-.table tr > td:nth-child(4) {
+.container-list-view--list tr > td:nth-child(4) {
   width: 40%;
 }
 
-.table tr > td {
+.container-list-view--list tr > td {
   overflow-wrap: break-word;
   word-wrap: break-word;
 }

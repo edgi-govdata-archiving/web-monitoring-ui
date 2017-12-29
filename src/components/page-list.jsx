@@ -25,7 +25,7 @@ export default class PageList extends React.Component {
       <div className="container-fluid container-list-view">
         <div className="row">
           <div className="col-md-12">
-            <table className="table">
+            <table className="container-list-view--list table">
               <thead>
                 {this.renderHeader()}
               </thead>
