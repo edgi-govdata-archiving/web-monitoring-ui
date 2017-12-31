@@ -54,7 +54,7 @@ Overall, we recommend [Stroustrup](https://en.wikipedia.org/wiki/Indentation_sty
 
 ```js
 if (foo) {
-bar();
+  bar();
 }
 else {
   baz();
