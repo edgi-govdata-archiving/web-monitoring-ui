@@ -57,7 +57,6 @@ export default class ChangeView extends React.Component {
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
-    this.handleLatestToBaseChange = this.handleLatestToBaseChange.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);

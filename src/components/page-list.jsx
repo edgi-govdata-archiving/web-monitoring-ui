@@ -25,7 +25,7 @@ export default class PageList extends React.Component {
       <div className="container-fluid container-list-view">
         <div className="row">
           <div className="col-md-12">
-            <table className="container-list-view--list table">
+            <table className="container-list-view__list table">
               <thead>
                 {this.renderHeader()}
               </thead>
@@ -42,10 +42,10 @@ export default class PageList extends React.Component {
   renderHeader () {
     return (
       <tr>
-        <th>Capture Date</th>
-        <th>Site</th>
-        <th>Page Name</th>
-        <th>URL</th>
+        <th className="list__header--capture-date">Capture Date</th>
+        <th className="list__header--site">Site</th>
+        <th className="list__header--page-name">Page Name</th>
+        <th className="list__header--url">URL</th>
       </tr>
     );
   }

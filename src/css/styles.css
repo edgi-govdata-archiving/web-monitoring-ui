@@ -121,37 +121,37 @@ body {
 }
 
 /* ===== List View ===== */
-.container-list-view tbody tr {
-    cursor: pointer;
+.container-list-view__list tbody tr {
+  cursor: pointer;
 }
 
-.container-list-view tbody tr:hover {
-    background-color: #EEE;
+.container-list-view__list tbody tr:hover {
+  background-color: #EEE;
 }
 
-.container-list-view--list {
+.container-list-view__list {
   table-layout: fixed;
 }
 
-.container-list-view--list tr > td:first-child {
+.container-list-view__list td {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.list__header--capture-date {
   width: 12%;
 }
 
-.container-list-view--list tr > td:nth-child(2)  {
+.list__header--site  {
   width: 15%;
 }
 
-.container-list-view--list tr > td:nth-child(3) {
+.list__header--page-name {
   width: 33%;
 }
 
-.container-list-view--list tr > td:nth-child(4) {
+.list__header--url {
   width: 40%;
-}
-
-.container-list-view--list tr > td {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
 }
 
 /* ===== Page Detail View ===== */
