@@ -29,7 +29,7 @@ ES6 and above is allowed. A feature is allowed if it has been formally published
 
 ### CSS Methodologies:
 
-Recommend BEM as much as possible (as opposed to (OOCSS, SMACSS, ITCSS)
+Recommend BEM as much as possible (as opposed to OOCSS, SMACSS, ITCSS).
 
 
 ### Organization of React files:
@@ -96,7 +96,6 @@ function foo (a) {
 
 ### Units and layout - px, em, rem, vh, flexbox, grid:
 
-Pixels for borders. Rems for fonts and spacing. Vh, vw for layout. 
-Flexbox: Grid or nested Flexbox (Kevin, should this be included?)
+Pixels for borders. Rems for fonts and spacing. Flexbox and Grid for layout.
 
 
