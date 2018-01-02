@@ -88,15 +88,13 @@ export default class ChangeView extends React.Component {
   handleDiffTypeChange (diffType) {
     this.setState({diffType});
   }
+
   handleFromVersionChange (version) {
     this._changeSelectedVersions(version, null);
   }
+
   handleToVersionChange (version) {
     this._changeSelectedVersions(null, version);
-  }
-  handleLatestToBaseChange () {
-    const {versions} = this.props.page;
-    this._changeSelectedVersions(versions[versions.length - 1], versions[0]);
   }
 
   render () {
@@ -119,7 +117,6 @@ export default class ChangeView extends React.Component {
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="comparison-controls">
           <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
-          <button className="btn-link" onClick={this.handleLatestToBaseChange} type="button">Latest to Base</button>
         </div>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
