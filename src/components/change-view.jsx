@@ -114,9 +114,7 @@ export default class ChangeView extends React.Component {
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
-        <div className="comparison-controls">
-          <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
-        </div>
+        <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
       </div>

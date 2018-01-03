@@ -214,12 +214,6 @@ body {
     vertical-align: baseline;
 }
 
-.comparison-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1em;
-}
-
 /* Version Selector */
 .version-selector {
     display: flex;
@@ -432,6 +426,10 @@ iframe {
   background: transparent;
   display: flex;
   justify-content: center;
+}
+
+.versionista-info {
+  margin-top: 1em;
 }
 
 .versionista-info i {
