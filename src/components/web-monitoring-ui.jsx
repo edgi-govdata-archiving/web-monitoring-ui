@@ -75,7 +75,7 @@ export default class WebMonitoringUi extends React.Component {
 
   search (query) {
     this.setState({search: query});
-    this.loadPages('pages');
+    this.loadPages(this.state.pageFilter);
   }
 
   /**
