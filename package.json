@@ -45,6 +45,6 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "8.2.1"
+    "node": "8.9.4"
   }
 }
