@@ -5,6 +5,7 @@ import Loading from './loading';
  * These props also inherit from React Router's RouteComponent props
  * @typedef {Object} PageListProps
  * @property {Page[]} pages
+ * @property {(any) => void} onSearch
  */
 
 /**
@@ -15,6 +16,12 @@ import Loading from './loading';
  * @param {PageListProps} props
  */
 export default class PageList extends React.Component {
+  constructor (props) {
+    super(props);
+    this._didSearch = this._didSearch.bind(this);
+    this._dispatchSearch = debounce(this._dispatchSearch.bind(this), 500);
+  }
+
   render () {
     if (!this.props.pages) {
       return <Loading />;
@@ -22,6 +29,13 @@ export default class PageList extends React.Component {
 
     return (
       <div className="container-fluid container-list-view">
+        <div className="row search-bar">
+          <input
+            type="text"
+            placeholder="Search for a URL..."
+            onChange={this._didSearch}
+          />
+        </div>
         <div className="row">
           <div className="col-md-12">
             <table className="table">
@@ -98,6 +112,28 @@ export default class PageList extends React.Component {
 
     this.props.history.push(`/page/${page.uuid}`);
   }
+
+  _didSearch (event) {
+    this._dispatchSearch(event.target.value);
+  }
+
+  _dispatchSearch (url) {
+    if (url) {
+      // If doesn't start with a protocol (or looks like it's going that way),
+      // prefix with an asterisk.
+      if (!/^(\*|\/\/|(h|ht|htt|https?|https?\/|https?\/\/))/.test(url)) {
+        url = url = `*//${url}`;
+      }
+      // If the search is for a domain + TLD, return all paths under it
+      if (/^[\w:*]+(\/\/)?[^/]+$/.test(url)) {
+        url = `${url}*`;
+      }
+    }
+    if (this.props.onSearch) {
+      const query = url ? {url} : null;
+      this.props.onSearch(query);
+    }
+  }
 }
 
 function isInAnchor (node) {
@@ -108,4 +144,12 @@ function isInAnchor (node) {
     return true;
   }
   return isInAnchor(node.parentNode);
+}
+
+function debounce (func, delay) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
 }
