@@ -22,8 +22,21 @@ if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
   });
 }
 
+// Serve assets (live from Webpack in dev mode)
+if (config.baseConfiguration().NODE_ENV === 'development') {
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackConfig = require('../webpack.config.js');
+
+  app.use(webpackDevMiddleware(webpack(webpackConfig), {
+    publicPath: webpackConfig.output.publicPath
+  }));
+}
+else {
+  app.use(express.static('dist'));
+}
+
 app.set('views', path.join(__dirname, '../views'));
-app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 

@@ -32,7 +32,8 @@
     "react-router-dom": "^4.1.1",
     "react-test-renderer": "^15.5.4",
     "react-tooltip": "^3.3.0",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.3"
   },
   "scripts": {
     "build": "webpack",
