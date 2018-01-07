@@ -1,5 +1,6 @@
 const autoprefixer = require('autoprefixer');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -45,7 +46,7 @@ module.exports = {
         ],
       },
       {
-        test: /.css$/,
+        test: /\.css$/,
         use: [
           {
             loader: 'file-loader',
@@ -87,3 +88,12 @@ module.exports = {
   plugins: [
   ],
 };
+
+// Production-specific additions
+if (isProduction) {
+  module.exports.plugins.push(new UglifyJsPlugin({
+    test: /\.js($|\?)/i,
+    parallel: true,
+    sourceMap: true
+  }));
+}
