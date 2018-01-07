@@ -1,3 +1,4 @@
+const autoprefixer = require('autoprefixer');
 const path = require('path');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -61,6 +62,15 @@ module.exports = {
             options: {
               import: false,
               sourceMap: true
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              plugins: [
+                autoprefixer()
+              ]
             },
           },
         ],
