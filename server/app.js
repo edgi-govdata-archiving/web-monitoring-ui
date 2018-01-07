@@ -33,7 +33,13 @@ if (config.baseConfiguration().NODE_ENV === 'development') {
   }));
 }
 else {
-  app.use(express.static('dist'));
+  app.use(express.static('dist', {
+    setHeaders (response, filePath, stat) {
+      if (filePath.endsWith('.gz')) {
+        response.set('Content-Encoding', 'gzip');
+      }
+    }
+  }));
 }
 
 app.set('views', path.join(__dirname, '../views'));
@@ -124,8 +130,12 @@ app.post(
  * Main view for manual entry
  */
 app.get('*', function (request, response) {
+  const useGzip = config.baseConfiguration().NODE_ENV === 'production'
+    && request.acceptsEncodings('gzip');
+
   response.render('main.html', {
-    configuration: config.clientConfiguration()
+    configuration: config.clientConfiguration(),
+    useGzip
   });
 });
 

@@ -1,6 +1,7 @@
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ZopfliPlugin = require('zopfli-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -91,9 +92,15 @@ module.exports = {
 
 // Production-specific additions
 if (isProduction) {
-  module.exports.plugins.push(new UglifyJsPlugin({
-    test: /\.js($|\?)/i,
-    parallel: true,
-    sourceMap: true
-  }));
+  module.exports.plugins.push(
+    new UglifyJsPlugin({
+      test: /\.js$/i,
+      parallel: true,
+      sourceMap: true
+    }),
+    new ZopfliPlugin({
+      asset: '[path].gz[query]',
+      test: /\.(js|css|svg|map)$/i
+    })
+  );
 }
