@@ -37,6 +37,17 @@ else {
     setHeaders (response, filePath, stat) {
       if (filePath.endsWith('.gz')) {
         response.set('Content-Encoding', 'gzip');
+
+        const preExtension = (filePath.match(/\.([^/]+)\.gz$/i) || ['', ''])[1];
+        const contentType = {
+          js: 'application/javascript',
+          css: 'text/css',
+          svg: 'image/svg+xml'
+        }[preExtension];
+
+        if (contentType) {
+          response.set('Content-Type', contentType);
+        }
       }
     }
   }));

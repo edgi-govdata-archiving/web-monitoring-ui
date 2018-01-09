@@ -23,8 +23,8 @@ else
     git checkout -b ${deployTo} ${deployFrom}
 fi
 
-gulp img css browserify
-git add -f dist/bundle.js dist/css/diff.css dist/css/styles.css dist/img/*
+yarn run build-production
+git add -f dist/bundle.* dist/css/* dist/img/* dist/sourceMaps/*
 git commit -m "Deploy heroku app"
 git push -f ${remote} ${deployTo}:master
 git checkout ${currentBranch}
