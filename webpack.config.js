@@ -2,6 +2,7 @@ const autoprefixer = require('autoprefixer');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ZopfliPlugin = require('zopfli-webpack-plugin');
+const webpack = require('webpack');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -93,6 +94,9 @@ module.exports = {
 // Production-specific additions
 if (isProduction) {
   module.exports.plugins.push(
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development'
+    }),
     new UglifyJsPlugin({
       test: /\.js$/i,
       parallel: true,
