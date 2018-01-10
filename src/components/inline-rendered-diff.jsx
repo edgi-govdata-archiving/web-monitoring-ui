@@ -16,6 +16,11 @@ import SandboxedHtml from './sandboxed-html';
  */
 export default class InlineRenderedDiff extends React.Component {
   render () {
+    if (this.props.diffData.change_count === 0) {
+      return <div className="diff-text-inline">
+        There were no changes for this diff type.</div>;
+    }
+
     const diff = this.props.diffData.combined || this.props.diffData.diff;
 
     return (

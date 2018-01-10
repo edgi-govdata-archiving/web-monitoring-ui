@@ -8,6 +8,8 @@ const showAdditions = showType.bind(null, 'additions');
  * @typedef {Object} SideBySideRenderedDiffProps
  * @property {DiffData} diffData Object containing diff to render and its metadata
  * @property {Page} page The page this diff pertains to
+ * @property {string} fromUuid
+ * @property {string} toUuid
  */
 
 /**
@@ -27,6 +29,21 @@ export default class SideBySideRenderedDiff extends React.Component {
     if (!this.props.diffData.deletions) {
       transformDeletions = showRemovals;
       transformInsertions = showAdditions;
+    }
+
+    if (this.props.fromUuid === this.props.toUuid) {
+      const diff = this.props.diffData.combined || this.props.diffData.diff;
+
+      return (
+        <div className="inline-render">
+          <SandboxedHtml html={diff} baseUrl={this.props.page.url} />
+        </div>
+      );
+    }
+
+    if (this.props.diffData.change_count === 0) {
+      return <div className="diff-text-inline">
+        There were no changes for this diff type.</div>;
     }
 
     return (
