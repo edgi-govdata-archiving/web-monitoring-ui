@@ -24,10 +24,6 @@ export default class PageList extends React.Component {
   }
 
   render () {
-    if (!this.props.pages) {
-      return <Loading />;
-    }
-
     return (
       <div className="container-fluid container-list-view">
         <div className="row search-bar">
@@ -44,7 +40,7 @@ export default class PageList extends React.Component {
                 {this.renderHeader()}
               </thead>
               <tbody>
-                {this.props.pages.map(page => this.renderRow(page))}
+                {this.renderBody()}
               </tbody>
             </table>
           </div>
@@ -62,6 +58,19 @@ export default class PageList extends React.Component {
         <th data-name="url">URL</th>
       </tr>
     );
+  }
+
+  renderBody () {
+    if (this.props.pages) {
+      return this.props.pages.map(page => this.renderRow(page));
+    }
+    else {
+      return (
+        <tr>
+          <td colSpan={8}>You are not assigned to any pages.</td>
+        </tr>
+      );
+    }
   }
 
   renderRow (record) {
