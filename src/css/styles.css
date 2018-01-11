@@ -422,3 +422,7 @@ iframe {
 .versionista-info i {
   margin-left: 0.5em;
 }
+
+.error-alert {
+  margin-top: 20px;
+}

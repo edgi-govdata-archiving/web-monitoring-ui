@@ -48,6 +48,8 @@ export default class WebMonitoringUi extends React.Component {
     this.loadPages = this.loadPages.bind(this);
     this.setPageFilter = this.setPageFilter.bind(this);
     this.search = this.search.bind(this);
+    this.handleError = this.handleError.bind(this);
+    this.hideError = this.hideError.bind(this);
   }
 
   setPageFilter (filter) {
@@ -76,6 +78,22 @@ export default class WebMonitoringUi extends React.Component {
   search (query) {
     this.setState({search: query});
     this.loadPages(this.state.pageFilter);
+  }
+
+  handleError (e) {
+    if (typeof e == "string") {
+      this.setState({errorMessage: e});
+    }
+    else if (typeof e == "object") {
+      this.setState({errorMessage: e.message})
+    }
+    else {
+      this.setState({errorMessage: "Something weird and unexpected happened."})
+    }
+  }
+
+  hideError () {
+    this.setState({errorMessage: null});
   }
 
   /**
@@ -107,7 +125,8 @@ export default class WebMonitoringUi extends React.Component {
           [pageFilter]: pages,
           pageFilter
         });
-      });
+      })
+      .catch(this.handleError);
   }
 
   loadUser () {
@@ -149,6 +168,7 @@ export default class WebMonitoringUi extends React.Component {
       };
     };
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
+    const error = this.state.errorMessage ? this.renderErrorAlert() : null;
 
     return (
       <Router>
@@ -161,6 +181,7 @@ export default class WebMonitoringUi extends React.Component {
             pageFilter={this.state.pageFilter}
             setPageFilter={this.setPageFilter}
           />
+          {error}
           <Route exact path="/" render={() => {
             if (this.state.user) {
               return <Redirect to="/assignedPages" />;
@@ -197,6 +218,23 @@ export default class WebMonitoringUi extends React.Component {
       >
         <LoginForm cancelLogin={this.hideLogin} onLogin={this.afterLogin} />
       </AriaModal>
+    );
+  }
+
+  renderErrorAlert () {
+    return (
+      <div className="container-fluid error-alert">
+        <div className="alert alert-danger">
+          <div className="row">
+            <div className="col-sm-8">
+              <p>{this.state.errorMessage}</p>
+              <div className="buttons">
+                <button className="btn btn-danger" onClick={this.hideError}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
