@@ -6,10 +6,11 @@ This component works with [web-monitoring-db](https://github.com/edgi-govdata-ar
 
 It’s a React.js-based browser application with a Node.js backend with the following capabilities:
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
-    * [DEMO](https://edgi-web-monitor-ui.herokuapp.com)
-    * LIST VIEW shows first page of records from [web-monitor-db](https://web-monitoring-db.herokuapp.com/api/v0/pages) JSON endpoint
+    * [DEMO](https://monitoring-staging.envirodatagov.org)
+    * LIST VIEW shows first page of records from [web-monitor-db](https://api-staging.monitoring.envirdatagov.org/api/v0/pages) JSON endpoint
     * PAGE VIEW shows basic info about the latest version of that page: site, urls, and links to Versionista diffs
         * updates annotations
+
 
 ## Installation
 
@@ -20,27 +21,18 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     ```sh
     yarn install
     ```
+    
+    *Note: you might need Python 2 in order to build & install `node-zopfli`, one of our dependencies. If you are also running [`web-monitoring-processing`](https://github.com/edgi-govdata-archiving/web-monitoring-processing) (which uses Python 3), tools like [Conda](https://conda.io/) or [Pyenv](https://github.com/pyenv/pyenv) can help you manage multiple versions of Python.*
 
 4. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
-5. Build the application
 
-    ```sh
-    gulp
-    ```
-
-6. Start the web server
+5. Start the web server
 
     ```sh
     yarn run start
     ```
 
-7. If you are actively developing then use gulp to rebuild application on file changes
-
-   ```sh
-   gulp watch
-   ```
-
-8. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
+6. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
 
 ## Running tests
 
@@ -53,7 +45,7 @@ yarn test
 while to start the test runner in watch mode
 
 ```sh
-yarn dev
+yarn run test-watch
 ```
 
 ## Manual view
@@ -147,26 +139,6 @@ Restart your app server and try clicking on the “add important change” or �
 We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
 
 
-## Troubleshooting
-
-#### `The program 'gulp' is currently not installed`
-
-If your run into `The program 'gulp' is currently not installed` error then you can either:
-
-1. Use local development install of gulp
-
-    ```sh
-    yarn run gulp
-    # or
-    npm run gulp
-    ```
-
-2. Install gulp globally
-
-   ```sh
-   yarn install --global gulp-cli
-   ```
-
 ## Contributors
 
 This project wouldn’t exist without a lot of amazing people’s help. Thanks to the following for all their contributions!
@@ -194,6 +166,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 (For a key to the contribution emoji or more info on this format, check out [“All Contributors.”](https://github.com/kentcdodds/all-contributors))
+
 
 ## License & Copyright
 

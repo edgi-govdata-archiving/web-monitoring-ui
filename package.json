@@ -8,23 +8,24 @@
     "ejs": "^2.5.5",
     "express": "^4.14.1",
     "googleapis": "^19.0.0",
-    "gulp-notify": "^3.0.0",
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2016": "^6.24.1",
+    "autoprefixer": "^7.2.4",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "babelify": "^7.3.0",
-    "browserify": "^14.0.0",
+    "css-loader": "^0.28.8",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.2",
     "eslint": "^4.3.0",
     "eslint-plugin-react": "^7.1.0",
+    "extract-loader": "^1.0.1",
     "fetch-mock": "^5.12.1",
-    "gulp": "^3.9.1",
-    "gulp-util": "^3.0.8",
+    "file-loader": "^1.1.6",
     "jest": "^20.0.4",
+    "postcss-loader": "^2.0.10",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-aria-modal": "^2.7.0",
@@ -32,10 +33,14 @@
     "react-router-dom": "^4.1.1",
     "react-test-renderer": "^15.5.4",
     "react-tooltip": "^3.3.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0"
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.3",
+    "zopfli-webpack-plugin": "^0.1.0"
   },
   "scripts": {
+    "build": "webpack",
+    "build-production": "NODE_ENV=production webpack",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
     "start": "node server/app.js",
     "test": "jest",
@@ -45,6 +50,11 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "8.2.1"
-  }
+    "node": "8.9.4"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not Explorer < 11",
+    "not ExplorerMobile > 0"
+  ]
 }
