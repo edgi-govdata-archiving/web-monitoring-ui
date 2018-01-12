@@ -21,6 +21,8 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     ```sh
     yarn install
     ```
+    
+    *Note: you might need Python 2 in order to build & install `node-zopfli`, one of our dependencies. If you are also running [`web-monitoring-processing`](https://github.com/edgi-govdata-archiving/web-monitoring-processing) (which uses Python 3), tools like [Conda](https://conda.io/) or [Pyenv](https://github.com/pyenv/pyenv) can help you manage multiple versions of Python.*
 
 4. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
 
