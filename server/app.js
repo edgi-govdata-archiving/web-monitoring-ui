@@ -22,8 +22,38 @@ if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
   });
 }
 
+// Serve assets (live from Webpack in dev mode)
+if (config.baseConfiguration().NODE_ENV === 'development') {
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackConfig = require('../webpack.config.js');
+
+  app.use(webpackDevMiddleware(webpack(webpackConfig), {
+    publicPath: webpackConfig.output.publicPath
+  }));
+}
+else {
+  app.use(express.static('dist', {
+    setHeaders (response, filePath, stat) {
+      if (filePath.endsWith('.gz')) {
+        response.set('Content-Encoding', 'gzip');
+
+        const preExtension = (filePath.match(/\.([^/]+)\.gz$/i) || ['', ''])[1];
+        const contentType = {
+          js: 'application/javascript',
+          css: 'text/css',
+          svg: 'image/svg+xml'
+        }[preExtension];
+
+        if (contentType) {
+          response.set('Content-Type', contentType);
+        }
+      }
+    }
+  }));
+}
+
 app.set('views', path.join(__dirname, '../views'));
-app.use(express.static('dist'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 
@@ -111,8 +141,12 @@ app.post(
  * Main view for manual entry
  */
 app.get('*', function (request, response) {
+  const useGzip = config.baseConfiguration().NODE_ENV === 'production'
+    && request.acceptsEncodings('gzip');
+
   response.render('main.html', {
-    configuration: config.clientConfiguration()
+    configuration: config.clientConfiguration(),
+    useGzip
   });
 });
 

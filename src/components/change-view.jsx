@@ -87,9 +87,11 @@ export default class ChangeView extends React.Component {
   handleDiffTypeChange (diffType) {
     this.setState({diffType});
   }
+
   handleFromVersionChange (version) {
     this._changeSelectedVersions(version, null);
   }
+
   handleToVersionChange (version) {
     this._changeSelectedVersions(null, version);
   }

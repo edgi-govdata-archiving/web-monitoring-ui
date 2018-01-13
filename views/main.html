@@ -9,7 +9,7 @@
 
         <link rel="stylesheet" type="text/css"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/styles.css<%- useGzip ? '.gz' : '' %>"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
@@ -20,6 +20,6 @@
     <body id="bootstrap-override">
         <div id="web-monitoring-ui-root"></div>
 
-        <script type="text/javascript" src="/bundle.js"></script>
+        <script type="text/javascript" src="/bundle.js<%- useGzip ? '.gz' : '' %>"></script>
     </body>
 </html>

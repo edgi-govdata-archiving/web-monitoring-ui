@@ -1,3 +1,14 @@
 {
-  "presets": ["es2015", "es2016", "react"]
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": [
+          "last 2 versions",
+          "not Explorer < 11",
+          "not ExplorerMobile > 0"
+        ]
+      }
+    }],
+    "react"
+  ]
 }
