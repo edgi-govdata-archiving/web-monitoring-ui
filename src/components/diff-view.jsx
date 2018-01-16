@@ -68,8 +68,7 @@ export default class DiffView extends React.Component {
       );
     case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
-        <SideBySideRenderedDiff diffData={this.state.diffData} page={this.props.page}
-          fromUuid={this.props.a.uuid} toUuid={this.props.b.uuid} />
+        <SideBySideRenderedDiff diffData={this.state.diffData} page={this.props.page} />
       );
     case diffTypes.OUTGOING_LINKS.value:
       return (
