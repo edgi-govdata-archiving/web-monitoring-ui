@@ -4,6 +4,7 @@ import AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
+import EnvironmentBanner from './environment-banner';
 import Loading from './loading';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
@@ -160,7 +161,9 @@ export default class WebMonitoringUi extends React.Component {
             logOut={this.logOut}
             pageFilter={this.state.pageFilter}
             setPageFilter={this.setPageFilter}
-          />
+          >
+            <EnvironmentBanner apiUrl={api.url}/>
+          </NavBar>
           <Route exact path="/" render={() => {
             if (this.state.user) {
               return <Redirect to="/assignedPages" />;
