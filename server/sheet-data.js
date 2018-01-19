@@ -96,7 +96,7 @@ function addChangeToDictionary (data) {
     data.page.url,
     // Page View URL
     // TODO: should these all be the web-monitoring-ui URLs instead?
-    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}` : '',
+    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
     // Last Two - Side by Side
     versionista ? versionista.diff_with_previous_url : '',
     // Latest to Base - Side by Side
@@ -148,7 +148,7 @@ function addChangeToImportant (data) {
     data.page.url,
     // Page View URL
     // TODO: should these all be the web-monitoring-ui URLs instead?
-    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}` : '',
+    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
     // Last Two - Side by Side
     versionista ? versionista.diff_with_previous_url : '',
     // Latest to Base - Side by Side
