@@ -176,8 +176,9 @@ export default class PageDetails extends React.Component {
 
   _versionsToRender () {
     const [fromId, toId] = (this.props.match.params.change || '').split('..');
-    let from = this.state.page.versions.find(v => v.uuid === fromId);
-    let to = this.state.page.versions.find(v => v.uuid === toId);
+    const firstVersion = this.state.page.versions[this.state.page.versions.length - 1];
+    let from = fromId === '^' ? firstVersion : this.state.page.versions.find(v => v.uuid === fromId);
+    let to = toId === '$' ? this.state.page.versions[0] : this.state.page.versions.find(v => v.uuid === toId);
 
     // Changes with no `to` are invalid, but those where `from` was never
     // specified are OK (it’ll be considered relative to `to`)
