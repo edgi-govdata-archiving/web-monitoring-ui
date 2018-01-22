@@ -146,26 +146,20 @@ export default class PageDetails extends React.Component {
    * @returns {JSX.Element}
    */
   _renderChange () {
-    /** TODO: should we show 404 for bad versions?
-     * If versions are not found we default to latest change.
-     */
+    /** TODO: should we show 404 for bad versions? */
     const versionData = this._versionsToRender();
 
-    if (!(versionData.from && versionData.to)) {
-      let to = versionData.to || this.state.page.versions[0];
-      let from = this.state.page.versions.find(
-        version => version.capture_time < to.capture_time) || to;
-
-      if (from && to) {
-        return <Redirect to={this._getChangeUrl(from, to)} />;
-      }
-
+    if (versionData.shouldRedirect && versionData.from && versionData.to) {
+      return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
+    }
+    else if (!(versionData.from && versionData.to)) {
       return <div className="error">No saved versions of this page</div>;
     }
 
     return (
       <ChangeView
-        {...versionData}
+        from={versionData.from}
+        to={versionData.to}
         page={this.state.page}
         annotateChange={this._annotateChange}
         user={this.props.user}
@@ -176,16 +170,34 @@ export default class PageDetails extends React.Component {
 
   _versionsToRender () {
     const [fromId, toId] = (this.props.match.params.change || '').split('..');
-    const firstVersion = this.state.page.versions[this.state.page.versions.length - 1];
-    let from = fromId === '^' ? firstVersion : this.state.page.versions.find(v => v.uuid === fromId);
-    let to = toId === '$' ? this.state.page.versions[0] : this.state.page.versions.find(v => v.uuid === toId);
+    const versions = this.state.page.versions;
+    let from, to, shouldRedirect = false;
 
-    // Changes with no `to` are invalid, but those where `from` was never
-    // specified are OK (it’ll be considered relative to `to`)
-    if (!to || fromId && !from) {
-      to = from = null;
+    from = versions.find(v => v.uuid === fromId);
+    to = versions.find(v => v.uuid === toId);
+
+    if (!(from && to)) {
+      shouldRedirect = true;
+
+      if (toId === '$') {
+        to = versions[0];
+      }
+      else if (from) {
+        to = versions[versions.findIndex(v => v.uuid === from.uuid) - 1];
+      }
+      else {
+        to = to || versions[0];
+      }
+
+      if (fromId === '^') {
+        from = versions[versions.length - 1];
+      }
+      else {
+        from = from || versions.find(v => v.capture_time < to.capture_time) || to;
+      }
     }
-    return {from, to};
+
+    return {from, to, shouldRedirect};
   }
 
   _loadPage (pageId) {
