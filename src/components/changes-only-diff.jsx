@@ -18,10 +18,6 @@ const maxContextLineLength = 300;
  */
 export default class ChangesOnlyDiff extends React.Component {
   render () {
-    if (!this.props) {
-      return null;
-    }
-
     if (this.props.diffData.change_count === 0) {
       return <div className="diff-text-inline">
         There were no changes for this diff type.</div>;
