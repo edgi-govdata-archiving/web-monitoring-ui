@@ -29,11 +29,6 @@ export default class SideBySideRenderedDiff extends React.Component {
       transformInsertions = showAdditions;
     }
 
-    if (this.props.diffData.change_count === 0) {
-      return <div className="diff-text-inline">
-        There were no changes for this diff type.</div>;
-    }
-
     return (
       <div className="side-by-side-render">
         <SandboxedHtml

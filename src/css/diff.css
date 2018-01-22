@@ -5,6 +5,16 @@ ins {
     background-color: lightgreen !important;
 }
 
+.diff-view {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+.diff-view__alert {
+  text-align: center;
+}
+
 .side-by-side-render,
 .inline-render {
     display: flex;

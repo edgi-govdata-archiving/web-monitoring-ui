@@ -18,11 +18,6 @@ const maxContextLineLength = 300;
  */
 export default class ChangesOnlyDiff extends React.Component {
   render () {
-    if (this.props.diffData.change_count === 0) {
-      return <div className="diff-text-inline">
-        There were no changes for this diff type.</div>;
-    }
-
     const changesOnly = this.props.diffData.diff.reduce(
       getContextualDiff, []);
 
@@ -35,7 +30,6 @@ export default class ChangesOnlyDiff extends React.Component {
     );
   }
 }
-
 
 /**
  * Trim parts of diff entries where there are no changes to show only a few

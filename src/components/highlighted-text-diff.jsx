@@ -13,11 +13,6 @@ import List from './list';
  */
 export default class HighlightedTextDiff extends React.Component {
   render () {
-    if (this.props.diffData.change_count === 0) {
-      return <div className="diff-text-inline">
-        There were no changes for this diff type.</div>;
-    }
-
     return (
       <List
         data={this.props.diffData.diff}

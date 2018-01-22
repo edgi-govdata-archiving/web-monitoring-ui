@@ -58,6 +58,25 @@ export default class DiffView extends React.Component {
       );
     }
 
+    return (
+      <div className="diff-view">
+        {this.renderNoChangeMessage()}
+        {this.renderDiff()}
+      </div>
+    );
+  }
+
+  renderNoChangeMessage () {
+    if (this.state.diffData.change_count === 0) {
+      return <div className="diff-view__alert alert alert-warning">
+        There were NO changes for this diff type.</div>;
+    }
+    else {
+      return null;
+    }
+  }
+
+  renderDiff () {
     // TODO: if we have multiple ways to render content from a single service
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
