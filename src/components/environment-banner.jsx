@@ -3,8 +3,6 @@
  */
 
 import React from 'react';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import WebMonitoringDb from '../services/web-monitoring-db';
 
 export default class EnvironmentBanner extends React.Component {
 
@@ -14,7 +12,7 @@ export default class EnvironmentBanner extends React.Component {
       apiEnv: 'production',
       dismissed: false,
     };
-    
+
     // Would be preferable to use WebMonitoringDb rather than parse environment
     // info from the API URL.
 
@@ -50,7 +48,7 @@ export default class EnvironmentBanner extends React.Component {
            */}
         </div>
       </section>
-    ) : null
+    ) : null;
   }
 }
 
