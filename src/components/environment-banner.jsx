@@ -11,7 +11,7 @@ export default class EnvironmentBanner extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      apiEnv: "Production",
+      apiEnv: "production",
       dismissed: false,
     }
 
@@ -25,14 +25,9 @@ export default class EnvironmentBanner extends React.Component {
   componentDidMount() {
     // This is not a good method, but a proof of concept.
     // A better method would result from querying the data via this.dbapi
-    if (this.props.apiUrl.indexOf("api-staging.monitoring") !== -1) {
-      this.setState({
-        apiEnv: "Staging"
-      })
-    } else {
-      this.setState({
-        apiEnv: "Production"
-      })
+    const environment = (this.props.apiUrl.match(/api-([^.]+)/i) || [])[1];
+    if (environment) {
+      this.setState({apiEnv: environment});
     }
   }
 
@@ -41,13 +36,15 @@ export default class EnvironmentBanner extends React.Component {
   }
 
   render() {
-    const showBanner = !(this.state.apiEnv === "Production") && !this.state.dismissed;
+    const showBanner = !(this.state.apiEnv === "production") && !this.state.dismissed;
 
     return showBanner ? (
       <section className="environment-banner bg-warning">
         <div className="container-fluid">
           <p>Environment: {this.state.apiEnv}</p>
-          <div className="close-x" onClick={this.dismiss.bind(this)}>✕</div>
+          {/* Uncomment to make dismissible
+           <div className="close-x" onClick={this.dismiss.bind(this)}>✕</div>
+           */}
         </div>
       </section>
     ) : null
