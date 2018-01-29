@@ -9,17 +9,20 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 export default class EnvironmentBanner extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      apiEnv: "production",
+      apiEnv: 'production',
       dismissed: false,
-    }
+    };
+    
+    // Would be preferable to use WebMonitoringDb rather than parse environment
+    // info from the API URL.
 
     // webMonitoringConfig is a global, unimported external dependency
     // We expect it to be in the 'window' namepace.
-    this.dbapi  = new WebMonitoringDb({
-      url: webMonitoringConfig.WEB_MONITORING_DB_URL
-    })
+    // this.dbapi  = new WebMonitoringDb({
+    //   url: webMonitoringConfig.WEB_MONITORING_DB_URL
+    // });
   }
 
   componentDidMount() {
@@ -32,18 +35,18 @@ export default class EnvironmentBanner extends React.Component {
   }
 
   dismiss() {
-    this.setState({dismissed: true})
+    this.setState({dismissed: true});
   }
 
   render() {
-    const showBanner = !(this.state.apiEnv === "production") && !this.state.dismissed;
+    const showBanner = !(this.state.apiEnv === 'production') && !this.state.dismissed;
 
     return showBanner ? (
-      <section className="environment-banner bg-warning">
-        <div className="container-fluid">
+      <section className='environment-banner bg-warning'>
+        <div className='container-fluid'>
           <p>Environment: {this.state.apiEnv}</p>
           {/* Uncomment to make dismissible
-           <div className="close-x" onClick={this.dismiss.bind(this)}>✕</div>
+           <div className='close-x' onClick={this.dismiss.bind(this)}>✕</div>
            */}
         </div>
       </section>
