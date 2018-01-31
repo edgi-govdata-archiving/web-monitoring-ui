@@ -153,7 +153,7 @@ export default class PageDetails extends React.Component {
       return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
     }
     else if (!(versionData.from && versionData.to)) {
-      return <div className="error">No saved versions of this page</div>;
+      return <div className="alert alert-danger">No saved versions of this page.</div>;
     }
 
     return (
@@ -168,6 +168,19 @@ export default class PageDetails extends React.Component {
     );
   }
 
+  /**
+   * Return `from` and `to` versions to display based on uuids in url.
+   * There are various shortcuts that can be used when both uuids are not provided.
+   *
+   * 1) `from..`    - `from` and its next version
+   * 2) `..to`      - `to` and its previous version
+   * 3) `^..(to)`   - the first version and its next version or `to`
+   * 4) `(from)..$` - the latest version and its previous version or `from`
+   *
+   * The default is to return the latest version and its previous version.
+   * @private
+   * @returns {Object}
+   */
   _versionsToRender () {
     const [fromId, toId] = (this.props.match.params.change || '').split('..');
     const versions = this.state.page.versions;
@@ -179,21 +192,25 @@ export default class PageDetails extends React.Component {
     if (!(from && to)) {
       shouldRedirect = true;
 
+      /**
+       * We try to determine `to` first because the default case
+       * sets `to` to latest version, then `from` based on that.
+       *
+       * Check for regex operators, if not found
+       * set version to found version, relative version, or default.
+       */
       if (toId === '$') {
         to = versions[0];
       }
-      else if (from) {
-        to = versions[versions.findIndex(v => v.uuid === from.uuid) - 1];
-      }
       else {
-        to = to || versions[0];
+        to = to || versions[versions.indexOf(from) - 1] || versions[0];
       }
 
       if (fromId === '^') {
         from = versions[versions.length - 1];
       }
       else {
-        from = from || versions.find(v => v.capture_time < to.capture_time) || to;
+        from = from || versions[versions.indexOf(to) + 1] || to;
       }
     }
 
