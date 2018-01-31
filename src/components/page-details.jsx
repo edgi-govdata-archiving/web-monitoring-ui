@@ -208,6 +208,11 @@ export default class PageDetails extends React.Component {
 
       if (fromId === '^') {
         from = versions[versions.length - 1];
+
+        // make `^..` go to first and next, instead of first and latest version
+        if (!toId) {
+          to = versions[versions.indexOf(from) - 1];
+        }
       }
       else {
         from = from || versions[versions.indexOf(to) + 1] || to;
