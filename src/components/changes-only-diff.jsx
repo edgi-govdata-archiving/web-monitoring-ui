@@ -18,10 +18,6 @@ const maxContextLineLength = 300;
  */
 export default class ChangesOnlyDiff extends React.Component {
   render () {
-    if (!this.props) {
-      return null;
-    }
-
     const changesOnly = this.props.diffData.diff.reduce(
       getContextualDiff, []);
 
@@ -34,7 +30,6 @@ export default class ChangesOnlyDiff extends React.Component {
     );
   }
 }
-
 
 /**
  * Trim parts of diff entries where there are no changes to show only a few
