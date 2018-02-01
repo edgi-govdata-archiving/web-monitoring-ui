@@ -24,7 +24,7 @@
     "extract-loader": "^1.0.1",
     "fetch-mock": "^5.12.1",
     "file-loader": "^1.1.6",
-    "jest": "^20.0.4",
+    "jest": "^22.1.4",
     "postcss-loader": "^2.0.10",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
