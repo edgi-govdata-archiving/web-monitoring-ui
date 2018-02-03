@@ -1,31 +1,29 @@
-/**
- *  A banner to conditionally display warnings to users about the environment.
- */
-
 import React from 'react';
 
-export default class EnvironmentBanner extends React.Component {
+/**
+ * @typedef EnvironmentBannerProps
+ * @property {string} apiUrl
+ */
 
+/**
+ * A banner to conditionally display warnings to users about the environment.
+ *
+ * @class EnvironmentBanner
+ * @extends {React.Component}
+ * @param {EnvironmentBannerProps} props
+ */
+export default class EnvironmentBanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       apiEnvironment: 'production',
       dismissed: false,
     };
-
-    // Would be preferable to use WebMonitoringDb rather than parse environment
-    // info from the API URL.
-
-    // webMonitoringConfig is a global, unimported external dependency
-    // We expect it to be in the 'window' namepace.
-    // this.dbapi  = new WebMonitoringDb({
-    //   url: webMonitoringConfig.WEB_MONITORING_DB_URL
-    // });
   }
 
   componentDidMount() {
     // This is not a good method, but a proof of concept.
-    // A better method would result from querying the data via this.dbapi
+    // TODO: see about querying the data via this.context.api
     const environment = (this.props.apiUrl.match(/api-([^.]+)/i) || [])[1];
     if (environment) {
       this.setState({apiEnvironment: environment});
@@ -53,5 +51,3 @@ export default class EnvironmentBanner extends React.Component {
     ) : null;
   }
 }
-
-
