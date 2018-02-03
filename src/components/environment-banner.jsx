@@ -9,7 +9,7 @@ export default class EnvironmentBanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiEnv: 'production',
+      apiEnvironment: 'production',
       dismissed: false,
     };
 
@@ -28,7 +28,7 @@ export default class EnvironmentBanner extends React.Component {
     // A better method would result from querying the data via this.dbapi
     const environment = (this.props.apiUrl.match(/api-([^.]+)/i) || [])[1];
     if (environment) {
-      this.setState({apiEnv: environment});
+      this.setState({apiEnvironment: environment});
     }
   }
 
@@ -37,12 +37,14 @@ export default class EnvironmentBanner extends React.Component {
   }
 
   render() {
-    const showBanner = !(this.state.apiEnv === 'production') && !this.state.dismissed;
+    const showBanner =
+      !(this.state.apiEnvironment === 'production')
+      && !this.state.dismissed;
 
     return showBanner ? (
       <section className='environment-banner bg-warning'>
         <div className='container-fluid'>
-          <p>Environment: {this.state.apiEnv}</p>
+          <p>Environment: {this.state.apiEnvironment}</p>
           {/* Uncomment to make dismissible
            <div className='close-x' onClick={this.dismiss.bind(this)}>✕</div>
            */}
