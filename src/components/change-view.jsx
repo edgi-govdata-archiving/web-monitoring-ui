@@ -8,6 +8,13 @@ import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
 import Loading from './loading';
 import VersionistaInfo from './versionista-info';
+import {diffTypesFor} from '../constants/diff-types';
+import {
+  htmlType,
+  mediaTypeForExtension,
+  parseMediaType,
+  unknownType
+} from '../scripts/media-type';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 
@@ -46,6 +53,10 @@ export default class ChangeView extends React.Component {
     const page = this.props.page;
     if (page.versions && page.versions.length > 1) {
       this.state.diffType = 'SIDE_BY_SIDE_RENDERED';
+      const relevantTypes = relevantDiffTypes(this.props.from, this.props.to);
+      if (!relevantTypes.find(type => type.value === this.state.diffType)) {
+        this.state.diffType = relevantTypes[0].value;
+      }
     }
 
     if ('sessionStorage' in window) {
@@ -130,7 +141,11 @@ export default class ChangeView extends React.Component {
         </label>
         <label className="version-selector__item">
           <span>Comparison:</span>
-          <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
+          <SelectDiffType
+            types={relevantDiffTypes(this.props.from, this.props.to)}
+            value={this.state.diffType}
+            onChange={this.handleDiffTypeChange}
+          />
         </label>
 
         <label className="version-selector__item">
@@ -340,4 +355,31 @@ function changeMatches (change, other) {
 
 function isDisabled (element) {
   return element.disabled || element.classList.contains('disabled');
+}
+
+function relevantDiffTypes (versionA, versionB) {
+  let typeA = mediaTypeForVersion(versionA);
+
+  if (typeA.equals(mediaTypeForVersion(versionB))) {
+    return diffTypesFor(typeA);
+  }
+
+  // If we have differing types of content consider it an 'unkown' type.
+  return diffTypesFor(unknownType);
+}
+
+function mediaTypeForVersion (version) {
+  const contentType = version.content_type
+    || version.source_metadata.content_type;
+
+  if (contentType) {
+    return parseMediaType(contentType);
+  }
+
+  if (version.uri) {
+    const extension = version.uri.match(/^([^:]+:\/\/)?.*\/[^/]*(\.[^/]+)$/);
+    return mediaTypeForExtension[extension && extension[2]] || htmlType;
+  }
+
+  return htmlType;
 }
