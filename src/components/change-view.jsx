@@ -17,6 +17,7 @@ import {
 } from '../scripts/media-type';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
+const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 
 /**
  * @typedef ChangeViewProps
@@ -52,7 +53,7 @@ export default class ChangeView extends React.Component {
     // TODO: unify this default state logic with componentWillReceiveProps
     const page = this.props.page;
     if (page.versions && page.versions.length > 1) {
-      this.state.diffType = 'SIDE_BY_SIDE_RENDERED';
+      this.state.diffType = defaultDiffType;
       const relevantTypes = relevantDiffTypes(this.props.from, this.props.to);
       if (!relevantTypes.find(type => type.value === this.state.diffType)) {
         this.state.diffType = relevantTypes[0].value;
@@ -82,7 +83,20 @@ export default class ChangeView extends React.Component {
   componentWillReceiveProps (nextProps) {
     const nextVersions = nextProps.page.versions;
     if (nextVersions && nextVersions.length > 1) {
+      // TODO: is this correct? seems like we should be checking nextProps.from/to
       this._getChange(nextVersions[1], nextVersions[0]);
+    }
+
+    if (nextProps.from && nextProps.to) {
+      // update the diff type
+      const relevantTypes = relevantDiffTypes(nextProps.from, nextProps.to);
+      if (!relevantTypes.find(type => type.value === this.state.diffType)) {
+        let diffType = relevantTypes[0].value;
+        if (relevantTypes.find(type => type.value === defaultDiffType)) {
+          diffType = defaultDiffType;
+        }
+        this.setState({diffType});
+      }
     }
   }
 

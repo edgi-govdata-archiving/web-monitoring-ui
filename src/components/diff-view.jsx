@@ -35,7 +35,7 @@ export default class DiffView extends React.Component {
   componentWillMount () {
     const {props} = this;
     if (this._canFetch(props)) {
-      this._loadDiffData(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
+      this._loadDiffData(props.page, props.a, props.b, props.diffType);
     }
   }
 
@@ -44,7 +44,7 @@ export default class DiffView extends React.Component {
    */
   componentWillReceiveProps (nextProps) {
     if (this._canFetch(nextProps) && !this._propsSpecifySameDiff(nextProps)) {
-      this._loadDiffData(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
+      this._loadDiffData(nextProps.page, nextProps.a, nextProps.b, nextProps.diffType);
     }
   }
 
@@ -178,7 +178,7 @@ export default class DiffView extends React.Component {
     return (props.page.uuid && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
   }
 
-  _loadDiffData (pageId, aId, bId, diffType) {
+  _loadDiffData (page, a, b, diffType) {
     // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
@@ -186,8 +186,8 @@ export default class DiffView extends React.Component {
     this.setState({diffData: null});
     if (!diffTypes[diffType].diffService) {
       return Promise.all([
-        fetch(this.props.a.uri, {mode: 'cors'}),
-        fetch(this.props.b.uri, {mode: 'cors'})
+        fetch(a.uri, {mode: 'cors'}),
+        fetch(b.uri, {mode: 'cors'})
       ])
         .then(([rawA, rawB]) => {
           return {raw: true, rawA, rawB};
@@ -196,7 +196,13 @@ export default class DiffView extends React.Component {
         .then(data => this.setState({diffData: data}));
     }
 
-    this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService, diffTypes[diffType].options)
+    this.context.api.getDiff(
+      page.uuid,
+      a.uuid,
+      b.uuid,
+      diffTypes[diffType].diffService,
+      diffTypes[diffType].options
+    )
       .catch(error => {
         return error;
       })
