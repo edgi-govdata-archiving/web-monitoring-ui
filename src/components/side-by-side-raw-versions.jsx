@@ -29,7 +29,7 @@ export default class SideBySideRawVersions extends React.Component {
 
 function renderVersion (page, version, content) {
   if (content && /^[\s\n\r]*</.test(content)) {
-    return <SandboxedHtml html={contentcontent} baseUrl={page.url} />;
+    return <SandboxedHtml html={content} baseUrl={page.url} />;
   }
 
   return <iframe src={version.uri} />;
