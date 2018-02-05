@@ -447,3 +447,22 @@ iframe {
 .versionista-info i {
   margin-left: 0.5em;
 }
+
+/* ===== Environment Banner ====== */
+.environment-banner {
+  color: #333;
+}
+
+.environment-banner p {
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.environment-banner .close-x {
+  float: right;
+  margin: 10px;
+}
+
+.environment-banner .close-x:hover {
+  cursor: pointer;
+}

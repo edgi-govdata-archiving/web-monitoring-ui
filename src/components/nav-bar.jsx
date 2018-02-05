@@ -13,7 +13,7 @@ import {Link, NavLink} from 'react-router-dom';
  * The NavBar component renders an app title, user info, links, etc.
  * @param {NavBarProps} props
  */
-export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut, pageFilter, setPageFilter}) => (
+export default ({children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut, pageFilter, setPageFilter}) => (
   <nav className="navbar navbar-inverse">
     <div className="container-fluid">
       <div className="navbar-header">
@@ -25,6 +25,7 @@ export default ({title = 'EDGI Web Monitoring', user = null, showLogin, logOut, 
         <li>{renderUserInfo(user, showLogin, logOut)}</li>
       </ul>
     </div>
+    {children}
   </nav>
 );
 
