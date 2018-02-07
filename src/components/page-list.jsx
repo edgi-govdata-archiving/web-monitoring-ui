@@ -1,6 +1,5 @@
 import {dateFormatter, formatSites} from '../scripts/formatters';
 import React from 'react';
-import Loading from './loading';
 
 /**
  * These props also inherit from React Router's RouteComponent props
