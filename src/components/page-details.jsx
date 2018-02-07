@@ -146,26 +146,20 @@ export default class PageDetails extends React.Component {
    * @returns {JSX.Element}
    */
   _renderChange () {
-    /** TODO: should we show 404 for bad versions?
-     * If versions are not found we default to latest change.
-     */
+    /** TODO: should we show 404 for bad versions? */
     const versionData = this._versionsToRender();
 
-    if (!(versionData.from && versionData.to)) {
-      let to = versionData.to || this.state.page.versions[0];
-      let from = this.state.page.versions.find(
-        version => version.capture_time < to.capture_time) || to;
-
-      if (from && to) {
-        return <Redirect to={this._getChangeUrl(from, to)} />;
-      }
-
-      return <div className="error">No saved versions of this page</div>;
+    if (versionData.shouldRedirect && versionData.from && versionData.to) {
+      return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
+    }
+    else if (!(versionData.from && versionData.to)) {
+      return <div className="alert alert-danger">No saved versions of this page.</div>;
     }
 
     return (
       <ChangeView
-        {...versionData}
+        from={versionData.from}
+        to={versionData.to}
         page={this.state.page}
         annotateChange={this._annotateChange}
         user={this.props.user}
@@ -174,17 +168,58 @@ export default class PageDetails extends React.Component {
     );
   }
 
+  /**
+   * Return `from` and `to` versions to display based on uuids in url.
+   * There are various shortcuts that can be used when both uuids are not provided.
+   *
+   * 1) `from..`    - `from` and its next version
+   * 2) `..to`      - `to` and its previous version
+   * 3) `^..(to)`   - the first version and its next version or `to`
+   * 4) `(from)..$` - the latest version and its previous version or `from`
+   *
+   * The default is to return the latest version and its previous version.
+   * @private
+   * @returns {Object}
+   */
   _versionsToRender () {
     const [fromId, toId] = (this.props.match.params.change || '').split('..');
-    let from = this.state.page.versions.find(v => v.uuid === fromId);
-    let to = this.state.page.versions.find(v => v.uuid === toId);
+    const versions = this.state.page.versions;
+    let from, to, shouldRedirect = false;
 
-    // Changes with no `to` are invalid, but those where `from` was never
-    // specified are OK (it’ll be considered relative to `to`)
-    if (!to || fromId && !from) {
-      to = from = null;
+    from = versions.find(v => v.uuid === fromId);
+    to = versions.find(v => v.uuid === toId);
+
+    if (!(from && to)) {
+      shouldRedirect = true;
+
+      /**
+       * We try to determine `to` first because the default case
+       * sets `to` to latest version, then `from` based on that.
+       *
+       * Check for regex operators, if not found
+       * set version to found version, relative version, or default.
+       */
+      if (toId === '$') {
+        to = versions[0];
+      }
+      else {
+        to = to || versions[versions.indexOf(from) - 1] || versions[0];
+      }
+
+      if (fromId === '^') {
+        from = versions[versions.length - 1];
+
+        // make `^..` go to first and next, instead of first and latest version
+        if (!toId) {
+          to = versions[versions.indexOf(from) - 1];
+        }
+      }
+      else {
+        from = from || versions[versions.indexOf(to) + 1] || to;
+      }
     }
-    return {from, to};
+
+    return {from, to, shouldRedirect};
   }
 
   _loadPage (pageId) {

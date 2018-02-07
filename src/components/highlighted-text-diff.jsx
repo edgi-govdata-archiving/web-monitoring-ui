@@ -13,10 +13,6 @@ import List from './list';
  */
 export default class HighlightedTextDiff extends React.Component {
   render () {
-    if (!this.props) {
-      return null;
-    }
-
     return (
       <List
         data={this.props.diffData.diff}

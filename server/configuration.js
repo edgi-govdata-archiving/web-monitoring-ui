@@ -24,6 +24,8 @@ function baseConfiguration () {
   let localEnvironment = processEnvironment;
 
   if (processEnvironment.NODE_ENV !== 'production') {
+    localEnvironment.NODE_ENV = 'development';
+
     // dotenv.config() updates process.env, but only with properties it doesn't
     // already have. That means it won't update properties that were previously
     // specified, so we have to do it manually here.

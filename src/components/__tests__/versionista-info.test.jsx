@@ -58,7 +58,7 @@ describe('Versionista-Info', () => {
   it('outputs link to page view if both versions are the same', () => {
     const vInfo = render(<VersionistaInfo from={from} to={from} />);
     const { attribs: { href } } = vInfo.find('a')[0];
-    expect(href).toBe('https://versionista.com/74273/6210778');
+    expect(href).toBe('https://versionista.com/74273/6210778/');
   });
 
   describe('Link tests', () => {
@@ -68,7 +68,7 @@ describe('Versionista-Info', () => {
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
       const { attribs: { href } } = vInfo.find('a')[0];
-      expect(href).toBe('https://versionista.com/74273/6210778/13117888:9452489');
+      expect(href).toBe('https://versionista.com/74273/6210778/13117888:9452489/');
     });
 
     it('outputs link if `from` is first version of set of >50 versions', () => {
@@ -81,7 +81,7 @@ describe('Versionista-Info', () => {
 
       const vInfo = render(<VersionistaInfo to={to} from={from} versions={versions} />);
       const { attribs: { href } } = vInfo.find('a')[0];
-      expect(href).toBe('https://versionista.com/74273/6210778/13117888:9452489');
+      expect(href).toBe('https://versionista.com/74273/6210778/13117888:9452489/');
     });
 
     it('switches `to` and `from` to give us correct Versionista link', () => {
@@ -90,7 +90,7 @@ describe('Versionista-Info', () => {
 
       const vInfo = render(<VersionistaInfo to={from} from={to} versions={versions} />);
       const { attribs: { href } } = vInfo.find('a')[0];
-      expect(href).toBe('https://versionista.com/74273/6210778/13117888:9452489');
+      expect(href).toBe('https://versionista.com/74273/6210778/13117888:9452489/');
     });
   });
 
