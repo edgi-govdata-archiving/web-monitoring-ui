@@ -108,6 +108,9 @@ export default class WebMonitoringUi extends React.Component {
           [pageFilter]: pages,
           pageFilter
         });
+      })
+      .catch(err => {
+        console.error(err);
       });
   }
 
