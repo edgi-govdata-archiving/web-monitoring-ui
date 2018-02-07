@@ -61,16 +61,14 @@ export default class PageList extends React.Component {
   }
 
   renderBody () {
-    if (this.props.pages) {
+    if (this.props.pages && this.props.pages.length > 0) {
       return this.props.pages.map(page => this.renderRow(page));
     }
-    else {
-      return (
-        <tr>
-          <td colSpan={8}>You are not assigned to any pages.</td>
-        </tr>
-      );
-    }
+    return (
+      <tr>
+        <td colSpan={4}>You are not assigned to any pages.</td>
+      </tr>
+    );
   }
 
   renderRow (record) {
