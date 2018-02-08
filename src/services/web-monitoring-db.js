@@ -1,4 +1,4 @@
-const defaultApiUrl = 'https://web-monitoring-db-staging.herokuapp.com/';
+const defaultApiUrl = 'https://api-staging.monitoring.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
 /**
