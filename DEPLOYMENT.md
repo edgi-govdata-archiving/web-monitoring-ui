@@ -10,12 +10,17 @@ This deployment is simple and consists of:
 
 ## Environment Variables
 
-In our deployment, environment variables are named
-1. `WEB_MONITORING_DB_URL`
-2. `WEB_MONITORING_DB_USER`
-3. `WEB_MONITORING_DB_PASSWORD`
+In our deployment, environment variables are named:
 
-All are optional, but you will need credentials to update annotations. This is temporary until we implement a better login system.
+1. `WEB_MONITORING_DB_URL`
+2. `FORCE_SSL`
+3. `GOOGLE_SERVICE_CLIENT_EMAIL`
+4. `GOOGLE_SHEETS_PRIVATE_KEY`
+5. `GOOGLE_TASK_SHEET_ID`
+6. `GOOGLE_IMPORTANT_CHANGE_SHEET_ID`
+7. `GOOGLE_DICTIONARY_SHEET_ID`
+
+All are optional, but you will need to set the `GOOGLE_*` variables if you want to use the “assigned pages” feature (see the “Google Sheets” section of [README.md](./README.md) for more details).
 
 ## Shell script
 
