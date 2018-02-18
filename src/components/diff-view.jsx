@@ -8,6 +8,8 @@ import HighlightedTextDiff from './highlighted-text-diff';
 import InlineRenderedDiff from './inline-rendered-diff';
 import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 import ChangesOnlyDiff from './changes-only-diff';
+import RawVersion from './raw-version';
+import SideBySideRawVersions from './side-by-side-raw-versions';
 
 /**
  * @typedef DiffViewProps
@@ -33,7 +35,7 @@ export default class DiffView extends React.Component {
   componentWillMount () {
     const {props} = this;
     if (this._canFetch(props)) {
-      this._loadDiffData(props.page.uuid, props.a.uuid, props.b.uuid, props.diffType);
+      this._loadDiffData(props.page, props.a, props.b, props.diffType);
     }
   }
 
@@ -42,7 +44,7 @@ export default class DiffView extends React.Component {
    */
   componentWillReceiveProps (nextProps) {
     if (this._canFetch(nextProps) && !this._propsSpecifySameDiff(nextProps)) {
-      this._loadDiffData(nextProps.page.uuid, nextProps.a.uuid, nextProps.b.uuid, nextProps.diffType);
+      this._loadDiffData(nextProps.page, nextProps.a, nextProps.b, nextProps.diffType);
     }
   }
 
@@ -60,20 +62,44 @@ export default class DiffView extends React.Component {
 
     return (
       <div className="diff-view">
-        {this.renderNoChangeMessage()}
+        {this.renderNoChangeMessage() || this.renderUndiffableMessage()}
         {this.renderDiff()}
       </div>
     );
   }
 
   renderNoChangeMessage () {
-    if (this.state.diffData.change_count === 0) {
-      return <div className="diff-view__alert alert alert-warning">
-        There were NO changes for this diff type.</div>;
+    const sameContent = this.props.a
+      && this.props.b
+      && this.props.a.version_hash === this.props.b.version_hash;
+
+    const className = 'diff-view__alert alert alert-warning';
+
+    if (sameContent) {
+      return <div className={className}>
+        These two versions are <strong>exactly the same</strong>.
+      </div>;
     }
-    else {
-      return null;
+    else if (this.state.diffData.change_count === 0) {
+      return <div className={className}>
+        There were <strong>no changes for this diff type</strong>. (Other diff
+        types may show changes.)
+      </div>;
     }
+
+    return null;
+  }
+
+  renderUndiffableMessage () {
+    if (this.state.diffData.raw) {
+      return (
+        <div className="diff-view__alert alert alert-info">
+          We can’t compare the selected versions of page; you are viewing the
+          content without deletions and insertions highlighted.
+        </div>
+      );
+    }
+    return null;
   }
 
   renderDiff () {
@@ -81,6 +107,18 @@ export default class DiffView extends React.Component {
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
     switch (this.props.diffType) {
+    case diffTypes.RAW_SIDE_BY_SIDE.value:
+      return (
+        <SideBySideRawVersions page={this.props.page} a={this.props.a} b={this.props.b} diffData={this.state.diffData} />
+      );
+    case diffTypes.RAW_FROM_CONTENT.value:
+      return (
+        <RawVersion page={this.props.page} version={this.props.a} content={this.state.diffData.rawA} />
+      );
+    case diffTypes.RAW_TO_CONTENT.value:
+      return (
+        <RawVersion page={this.props.page} version={this.props.b} content={this.state.diffData.rawB} />
+      );
     case diffTypes.HIGHLIGHTED_RENDERED.value:
       return (
         <InlineRenderedDiff diffData={this.state.diffData} page={this.props.page} />
@@ -140,13 +178,31 @@ export default class DiffView extends React.Component {
     return (props.page.uuid && props.diffType && props.a && props.b && props.a.uuid && props.b.uuid);
   }
 
-  _loadDiffData (pageId, aId, bId, diffType) {
+  _loadDiffData (page, a, b, diffType) {
     // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
     // const fromList = this.props.pages && this.props.pages.find(
     //     (page: Page) => page.uuid === pageId);
     // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
     this.setState({diffData: null});
-    this.context.api.getDiff(pageId, aId, bId, diffTypes[diffType].diffService, diffTypes[diffType].options)
+    if (!diffTypes[diffType].diffService) {
+      return Promise.all([
+        fetch(a.uri, {mode: 'cors'}),
+        fetch(b.uri, {mode: 'cors'})
+      ])
+        .then(([rawA, rawB]) => {
+          return {raw: true, rawA, rawB};
+        })
+        .catch(error => error)
+        .then(data => this.setState({diffData: data}));
+    }
+
+    this.context.api.getDiff(
+      page.uuid,
+      a.uuid,
+      b.uuid,
+      diffTypes[diffType].diffService,
+      diffTypes[diffType].options
+    )
       .catch(error => {
         return error;
       })

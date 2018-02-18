@@ -8,8 +8,16 @@ import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
 import Loading from './loading';
 import VersionistaInfo from './versionista-info';
+import {diffTypesFor} from '../constants/diff-types';
+import {
+  htmlType,
+  mediaTypeForExtension,
+  parseMediaType,
+  unknownType
+} from '../scripts/media-type';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
+const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 
 /**
  * @typedef ChangeViewProps
@@ -45,7 +53,14 @@ export default class ChangeView extends React.Component {
     // TODO: unify this default state logic with componentWillReceiveProps
     const page = this.props.page;
     if (page.versions && page.versions.length > 1) {
-      this.state.diffType = 'SIDE_BY_SIDE_RENDERED';
+      this.state.diffType = defaultDiffType;
+      const relevantTypes = relevantDiffTypes(
+        this.props.from,
+        this.props.to,
+        page);
+      if (!relevantTypes.find(type => type.value === this.state.diffType)) {
+        this.state.diffType = relevantTypes[0].value;
+      }
     }
 
     if ('sessionStorage' in window) {
@@ -71,7 +86,23 @@ export default class ChangeView extends React.Component {
   componentWillReceiveProps (nextProps) {
     const nextVersions = nextProps.page.versions;
     if (nextVersions && nextVersions.length > 1) {
+      // TODO: is this correct? seems like we should be checking nextProps.from/to
       this._getChange(nextVersions[1], nextVersions[0]);
+    }
+
+    if (nextProps.from && nextProps.to) {
+      // update the diff type
+      const relevantTypes = relevantDiffTypes(
+        nextProps.from,
+        nextProps.to,
+        nextProps.page);
+      if (!relevantTypes.find(type => type.value === this.state.diffType)) {
+        let diffType = relevantTypes[0].value;
+        if (relevantTypes.find(type => type.value === defaultDiffType)) {
+          diffType = defaultDiffType;
+        }
+        this.setState({diffType});
+      }
     }
   }
 
@@ -130,7 +161,11 @@ export default class ChangeView extends React.Component {
         </label>
         <label className="version-selector__item">
           <span>Comparison:</span>
-          <SelectDiffType value={this.state.diffType} onChange={this.handleDiffTypeChange} />
+          <SelectDiffType
+            types={relevantDiffTypes(this.props.from, this.props.to, this.props.page)}
+            value={this.state.diffType}
+            onChange={this.handleDiffTypeChange}
+          />
         </label>
 
         <label className="version-selector__item">
@@ -340,4 +375,37 @@ function changeMatches (change, other) {
 
 function isDisabled (element) {
   return element.disabled || element.classList.contains('disabled');
+}
+
+function relevantDiffTypes (versionA, versionB, page) {
+  let typeA = mediaTypeForVersion(versionA, page);
+
+  if (typeA.equals(mediaTypeForVersion(versionB, page))) {
+    return diffTypesFor(typeA);
+  }
+
+  // If we have differing types of content consider it an 'unkown' type.
+  return diffTypesFor(unknownType);
+}
+
+// Matches the file extension on a URL
+const extensionExpression = /^([^:]+:\/\/)?.*\/[^/]*(\.[^/]+)$/;
+
+function mediaTypeForVersion (version, page) {
+  const contentType = version.content_type
+    || version.source_metadata.content_type;
+
+  if (contentType) {
+    return parseMediaType(contentType);
+  }
+
+  const extensionType = mediaTypeForUrl(version.uri)
+    || (page && mediaTypeForUrl(page.url));
+
+  return extensionType || htmlType;
+}
+
+function mediaTypeForUrl (url) {
+  const extension = url ? url.match(extensionExpression) : null;
+  return extension && mediaTypeForExtension[extension[2]];
 }
