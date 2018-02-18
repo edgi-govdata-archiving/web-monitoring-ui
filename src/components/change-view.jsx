@@ -54,7 +54,10 @@ export default class ChangeView extends React.Component {
     const page = this.props.page;
     if (page.versions && page.versions.length > 1) {
       this.state.diffType = defaultDiffType;
-      const relevantTypes = relevantDiffTypes(this.props.from, this.props.to);
+      const relevantTypes = relevantDiffTypes(
+        this.props.from,
+        this.props.to,
+        page);
       if (!relevantTypes.find(type => type.value === this.state.diffType)) {
         this.state.diffType = relevantTypes[0].value;
       }
@@ -89,7 +92,10 @@ export default class ChangeView extends React.Component {
 
     if (nextProps.from && nextProps.to) {
       // update the diff type
-      const relevantTypes = relevantDiffTypes(nextProps.from, nextProps.to);
+      const relevantTypes = relevantDiffTypes(
+        nextProps.from,
+        nextProps.to,
+        nextProps.page);
       if (!relevantTypes.find(type => type.value === this.state.diffType)) {
         let diffType = relevantTypes[0].value;
         if (relevantTypes.find(type => type.value === defaultDiffType)) {
@@ -156,7 +162,7 @@ export default class ChangeView extends React.Component {
         <label className="version-selector__item">
           <span>Comparison:</span>
           <SelectDiffType
-            types={relevantDiffTypes(this.props.from, this.props.to)}
+            types={relevantDiffTypes(this.props.from, this.props.to, this.props.page)}
             value={this.state.diffType}
             onChange={this.handleDiffTypeChange}
           />
@@ -371,10 +377,10 @@ function isDisabled (element) {
   return element.disabled || element.classList.contains('disabled');
 }
 
-function relevantDiffTypes (versionA, versionB) {
-  let typeA = mediaTypeForVersion(versionA);
+function relevantDiffTypes (versionA, versionB, page) {
+  let typeA = mediaTypeForVersion(versionA, page);
 
-  if (typeA.equals(mediaTypeForVersion(versionB))) {
+  if (typeA.equals(mediaTypeForVersion(versionB, page))) {
     return diffTypesFor(typeA);
   }
 
@@ -382,7 +388,10 @@ function relevantDiffTypes (versionA, versionB) {
   return diffTypesFor(unknownType);
 }
 
-function mediaTypeForVersion (version) {
+// Matches the file extension on a URL
+const extensionExpression = /^([^:]+:\/\/)?.*\/[^/]*(\.[^/]+)$/;
+
+function mediaTypeForVersion (version, page) {
   const contentType = version.content_type
     || version.source_metadata.content_type;
 
@@ -390,10 +399,13 @@ function mediaTypeForVersion (version) {
     return parseMediaType(contentType);
   }
 
-  if (version.uri) {
-    const extension = version.uri.match(/^([^:]+:\/\/)?.*\/[^/]*(\.[^/]+)$/);
-    return mediaTypeForExtension[extension && extension[2]] || htmlType;
-  }
+  const extensionType = mediaTypeForUrl(version.uri)
+    || (page && mediaTypeForUrl(page.url));
 
-  return htmlType;
+  return extensionType || htmlType;
+}
+
+function mediaTypeForUrl (url) {
+  const extension = url ? url.match(extensionExpression) : null;
+  return extension && mediaTypeForExtension[extension[2]];
 }
