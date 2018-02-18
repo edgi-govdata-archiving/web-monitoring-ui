@@ -72,7 +72,7 @@ export const mediaTypeForExtension = {
   '.xls':  MediaType('application', 'vnd.ms-excel'),
   '.xlsx': MediaType('application', 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
   '.png':  MediaType('image', 'png'),
-  '.docx': MediaType('application', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'),
+  '.docx': MediaType('application', 'vnd.openxmlformats-officedocument.wordprocessingml.document'),
   '.jpeg': MediaType('image', 'jpeg'),
   '.mp3':  MediaType('audio', 'mpeg'),
   '.ai':   MediaType('application', 'postscript'),
