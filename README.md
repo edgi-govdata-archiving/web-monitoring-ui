@@ -8,7 +8,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://monitoring-staging.envirodatagov.org)
     * LIST VIEW shows first page of records from [web-monitor-db](https://api-staging.monitoring.envirdatagov.org/api/v0/pages) JSON endpoint
-    * PAGE VIEW shows basic info about the latest version of that page: site, urls, and links to Versionista diffs
+    * PAGE VIEW shows basic info about the latest version of that page: site, URLs, and links to Versionista diffs
         * updates annotations
 
 
@@ -59,7 +59,7 @@ Screenshot:
 
 The analysis UI keeps some data and runtime configuration separate from the public web monitoring database ([`web-monitoring-db`](http://github.com/edgi-govdata-archiving/web-monitoring-db)). This data is kept in 3 Google Docs spreadsheets. You can use the UI without configuring them, but you will be missing some functionality.
 
-First, you’ll need to create a *service account* the application can use to access the sheets. To do so, follow the first half of [this tutorial](http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/). During the process, you should have downloaded a `.json` file with authentication information. Add the `client_email` and `private_key` fields from the file to you `.env` file:
+First, you’ll need to create a *service account* the application can use to access the sheets. To do so, follow the first half of [this tutorial](http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/). During the process, you should have downloaded a `.json` file with authentication information. Add the `client_email` and `private_key` fields from the file to your `.env` file:
 
 ```sh
 GOOGLE_SERVICE_CLIENT_EMAIL=73874number-example@developer.gserviceaccount.com
