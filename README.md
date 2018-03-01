@@ -162,6 +162,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
 | [💻](# "Code") [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
 | [💻](# "Code") | [Michelle Truong](https://github.com/fendatr) |
+| [💻](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
