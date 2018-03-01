@@ -153,16 +153,16 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Andrew Bergman](https://github.com/ambergman) |
 | [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
 | [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
+| [💻](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
 | [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
 | [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
+| [💻](# "Code") | [Michelle Truong](https://github.com/fendatr) |
 | [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
 | [💻](# "Code") [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
-| [💻](# "Code") | [Michelle Truong](https://github.com/fendatr) |
-| [💻](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
