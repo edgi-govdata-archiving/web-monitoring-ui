@@ -66,13 +66,11 @@ export default class PageList extends React.Component {
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
-
-    // TODO: click handling
-    // TODOKEV: CHANGE RECORD.SITE TO USE SITE TAGS
+    
     return (
       <tr key={record.uuid} onClick={onClick}>
         <td>{dateFormatter.format(record.latest.capture_time)}</td>
-        <td>{record.site}</td> 
+        <td>{formatSites(record.tags)}</td> 
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>
@@ -126,4 +124,12 @@ function debounce (func, delay) {
     clearTimeout(timer);
     timer = setTimeout(() => func(...args), delay);
   };
+}
+
+function formatSites (tags) {
+  const isSite = /^site:/;
+  return tags
+    .filter(tagging => isSite.test(tagging.name))
+    .map(tagging => tagging.name.replace(isSite, ''))
+    .join(', ');
 }
