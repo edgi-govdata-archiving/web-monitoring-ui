@@ -151,7 +151,7 @@ export default class WebMonitoringApi {
 
   _getPagesByDomains (domains, dateRange, extraQuery) {
     const fetches = domains.map(domain => {
-      const query = Object.assign({site: domain}, extraQuery);
+      const query = Object.assign({'tags[]': `site:${domain}`}, extraQuery);
       if (dateRange) {
         query.capture_time = dateRange;
       }
