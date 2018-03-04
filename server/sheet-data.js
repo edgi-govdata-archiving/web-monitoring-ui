@@ -86,10 +86,10 @@ function addChangeToDictionary (data) {
     `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
-    // Agency - TODOKEVIN: CHANGE TO MAINTAINERS
-    data.page.agency,
-    // Site Name - TODOKEVIN: CHANGE TO TAGS
-    data.page.site,
+    // Maintainers
+    formatMaintainers(data.page.maintainers),
+    // Sites
+    formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
@@ -138,10 +138,10 @@ function addChangeToImportant (data) {
     `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
-    // Agency - TODOKEV: change to maintainers
-    data.page.agency,
-    // Site Name - TODOKEV: change to site tags
-    data.page.site,
+    // Maintainers
+    formatMaintainers(data.page.maintainers),
+    // Sites
+    formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
@@ -317,6 +317,18 @@ function formatDate (date) {
     .replace('T', ' ')
     .replace(/(\d\d)\.\d+/, '$1')
     .replace('Z', ' GMT');
+}
+
+function formatMaintainers (maintainers) {
+  return maintainers.map(maintainership => maintainership.name).join(', ');
+}
+
+function formatSites (tags) {
+  const isSite = /^site:/;
+  return tags
+    .filter(tagging => isSite.test(tagging.name))
+    .map(tagging => tagging.name.replace(isSite, ''))
+    .join(', ');
 }
 
 exports.getDomains = getDomains;
