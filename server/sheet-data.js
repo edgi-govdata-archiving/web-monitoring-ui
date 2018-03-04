@@ -83,7 +83,7 @@ function addChangeToDictionary (data) {
     // Index
     '',
     // UUID
-    `${data.from_version.uuid}..${data.to_version.uuid}`,
+    data.to_version.uuid,
     // Output Date/Time
     formatDate(),
     // Maintainers
@@ -95,12 +95,12 @@ function addChangeToDictionary (data) {
     // URL
     data.page.url,
     // Page View URL
-    // TODOKEVIN: should these all be the web-monitoring-ui URLs instead?
+    // TODO: Remove last vestiges of Versionista
     versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
     // Last Two - Side by Side
-    versionista ? versionista.diff_with_previous_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/..${data.to_version.uuid}`,
     // Latest to Base - Side by Side
-    versionista ? versionista.diff_with_first_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/^..${data.to_version.uuid}`,
     // Date Found - Latest
     formatDate(data.from_version.capture_time),
     // Date Found - Base
@@ -135,7 +135,7 @@ function addChangeToImportant (data) {
     // Index
     '',
     // Unique ID
-    `${data.from_version.uuid}..${data.to_version.uuid}`,
+    data.to_version.uuid,
     // Output Date/Time
     formatDate(),
     // Maintainers
@@ -147,12 +147,12 @@ function addChangeToImportant (data) {
     // URL
     data.page.url,
     // Page View URL
-    // TODOKEV: should these all be the web-monitoring-ui URLs instead?
+    // TODO: Remove last vestiges of Versionista
     versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
     // Last Two - Side by Side
-    versionista ? versionista.diff_with_previous_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/..${data.to_version.uuid}`,
     // Latest to Base - Side by Side
-    versionista ? versionista.diff_with_first_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/^..${data.to_version.uuid}`,
     // Date Found - Latest
     formatDate(data.from_version.capture_time),
     // Date Found - Base
