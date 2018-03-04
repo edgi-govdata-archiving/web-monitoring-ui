@@ -97,7 +97,12 @@ export default class WebMonitoringUi extends React.Component {
 
         const query = Object.assign({include_latest: true}, this.state.search);
         if (pageFilter === 'assignedPages') {
-          return localApi.getPagesForUser(api.userData.email, null, query);
+          const timeframe = {
+            "start": new Date("2017-01-15T04:00:00.000Z"),
+            "end": new Date("2018-02-14T04:00:00.000Z"),
+            "duration": 2592000000
+          }
+          return localApi.getPagesForUser(api.userData.email, timeframe, query);
         }
         else {
           return api.getPages(query);

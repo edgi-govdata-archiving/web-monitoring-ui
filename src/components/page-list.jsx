@@ -68,10 +68,11 @@ export default class PageList extends React.Component {
     const onClick = this.didClickRow.bind(this, record);
 
     // TODO: click handling
+    // TODOKEV: CHANGE RECORD.SITE TO USE SITE TAGS
     return (
       <tr key={record.uuid} onClick={onClick}>
         <td>{dateFormatter.format(record.latest.capture_time)}</td>
-        <td>{record.site}</td>
+        <td>{record.site}</td> 
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>

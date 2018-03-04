@@ -14,7 +14,7 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {Date} updated_at
  */
 
-/**
+/** TODOKEV: CHANGE TO TAGS AND MAINTAINERS
  * @typedef {Object} Page
  * @property {string} uuid
  * @property {string} url

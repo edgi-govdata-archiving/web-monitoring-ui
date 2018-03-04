@@ -86,16 +86,16 @@ function addChangeToDictionary (data) {
     `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
-    // Agency
+    // Agency - TODOKEVIN: CHANGE TO MAINTAINERS
     data.page.agency,
-    // Site Name
+    // Site Name - TODOKEVIN: CHANGE TO TAGS
     data.page.site,
     // Page Name
     data.page.title,
     // URL
     data.page.url,
     // Page View URL
-    // TODO: should these all be the web-monitoring-ui URLs instead?
+    // TODOKEVIN: should these all be the web-monitoring-ui URLs instead?
     versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
     // Last Two - Side by Side
     versionista ? versionista.diff_with_previous_url : '',
@@ -138,16 +138,16 @@ function addChangeToImportant (data) {
     `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
-    // Agency
+    // Agency - TODOKEV: change to maintainers
     data.page.agency,
-    // Site Name
+    // Site Name - TODOKEV: change to site tags
     data.page.site,
     // Page Name
     data.page.title,
     // URL
     data.page.url,
     // Page View URL
-    // TODO: should these all be the web-monitoring-ui URLs instead?
+    // TODOKEV: should these all be the web-monitoring-ui URLs instead?
     versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
     // Last Two - Side by Side
     versionista ? versionista.diff_with_previous_url : '',
