@@ -14,17 +14,17 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {Date} updated_at
  */
 
-/** TODOKEV: CHANGE TO TAGS AND MAINTAINERS
+/** 
  * @typedef {Object} Page
  * @property {string} uuid
  * @property {string} url
  * @property {string} title
- * @property {string} agency
- * @property {string} site
  * @property {Date} created_at
  * @property {Date} updated_at
  * @property {Version} [latest]
  * @property {Version[]} [versions]
+ * @property {Maintainers[]} maintainerships
+ * @property {Tags[]} taggings
  */
 
 /**
@@ -55,11 +55,26 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef ApiResponse
+ * @typedef {Object} ApiResponse
  * @property {Object} [links]
  * @property {Object|Array} [data]
  * @property {Array} [errors]
  */
+
+/**
+  * @typedef {Object} Maintainership
+  * @property {string} uuid
+  * @property {string} name
+  * @property {Date} assigned_at
+  * @property {string} parent_uuid
+  */
+
+/** 
+ * @typedef {Object} Tagging
+ * @property {string} uuid
+ * @property {string} name
+ * @property {Date} assigned_at
+*/
 
 /**
  * API wrapper for accessing information from the public Web Monitoring Database

@@ -2,8 +2,6 @@
   "uuid": "9420d91c-2fd8-411a-a756-5bf976574d10",
   "url": "http://www.ncei.noaa.gov/news/earth-science-conference-convenes",
   "title": "Earth Science Conference Convenes | National Centers for Environmental Information (NCEI)",
-  "agency": "NOAA",
-  "site": "NOAA - ncei.noaa.gov",
   "created_at": "2017-05-02T23:55:57.021Z",
   "updated_at": "2018-02-01T05:20:52.203Z",
   "versions": [
@@ -64,6 +62,37 @@
       "created_at": "2017-05-02T23:55:57.033Z",
       "updated_at": "2017-05-02T23:55:57.033Z",
       "title": "Earth Science Conference Convenes | National Centers for Environmental Information (NCEI)"
+    }
+  ],
+  "maintainers": [
+    {
+    "uuid": "c73c89bc-6be8-4267-a3c7-c17a05c2d113",
+    "name": "NOAA",
+    "assigned_at": "2018-02-19T23:10:17.841Z",
+    "parent_uuid": null
+    },
+    {
+      "uuid": "3kbc89bc-6be8-42b7-a337-cln305c2dte3",
+      "name": "Unicorn Department",
+      "assigned_at": "2018-03-19T23:10:17.841Z",
+      "parent_uuid": null
+    }
+  ],
+  "tags": [
+    {
+    "uuid": "5954f070-c1b2-4a0d-9e97-42974b8875a0",
+    "name": "site:NOAA - ncei.noaa.gov",
+    "assigned_at": "2018-02-19T23:10:17.853Z"
+    },
+    {
+      "uuid": "5954f070-c1b2-4a0d-9e97-42974b8875a0",
+      "name": "site:NOAA - ncei1.noaa.gov",
+      "assigned_at": "2018-02-19T23:10:17.853Z"
+      },
+    {
+      "uuid": "39mdkf070-c2b2-ba0d-le97-u3i74b887mc9",
+      "name": "Human",
+      "assigned_at": "2018-02-19T23:10:17.853Z"
     }
   ]
 }
