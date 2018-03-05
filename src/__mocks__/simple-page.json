@@ -66,10 +66,10 @@
   ],
   "maintainers": [
     {
-    "uuid": "c73c89bc-6be8-4267-a3c7-c17a05c2d113",
-    "name": "NOAA",
-    "assigned_at": "2018-02-19T23:10:17.841Z",
-    "parent_uuid": null
+      "uuid": "c73c89bc-6be8-4267-a3c7-c17a05c2d113",
+      "name": "NOAA",
+      "assigned_at": "2018-02-19T23:10:17.841Z",
+      "parent_uuid": null
     },
     {
       "uuid": "3kbc89bc-6be8-42b7-a337-cln305c2dte3",
@@ -80,15 +80,15 @@
   ],
   "tags": [
     {
-    "uuid": "5954f070-c1b2-4a0d-9e97-42974b8875a0",
-    "name": "site:NOAA - ncei.noaa.gov",
-    "assigned_at": "2018-02-19T23:10:17.853Z"
+      "uuid": "5954f070-c1b2-4a0d-9e97-42974b8875a0",
+      "name": "site:NOAA - ncei.noaa.gov",
+      "assigned_at": "2018-02-19T23:10:17.853Z"
     },
     {
       "uuid": "5954f070-c1b2-4a0d-9e97-42974b8875a0",
       "name": "site:NOAA - ncei1.noaa.gov",
       "assigned_at": "2018-02-19T23:10:17.853Z"
-      },
+    },
     {
       "uuid": "39mdkf070-c2b2-ba0d-le97-u3i74b887mc9",
       "name": "Human",
