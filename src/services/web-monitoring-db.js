@@ -2,7 +2,7 @@ const defaultApiUrl = 'https://api-staging.monitoring.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
 /**
- * @typedef {Object} Version
+ * @typedef Version
  * @property {string} uuid
  * @property {string} page_uuid
  * @property {Date} capture_time
@@ -15,7 +15,7 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /** 
- * @typedef {Object} Page
+ * @typedef Page
  * @property {string} uuid
  * @property {string} url
  * @property {string} title
@@ -23,12 +23,12 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {Date} updated_at
  * @property {Version} [latest]
  * @property {Version[]} [versions]
- * @property {Maintainers[]} maintainerships
- * @property {Tags[]} taggings
+ * @property {Maintainership[]} maintainers
+ * @property {Tagging[]} tags
  */
 
 /**
- * @typedef {Object} Annotation
+ * @typedef Annotation
  * @property {Object} annotation
  * @property {Object} author
  * @property {Date} created_at
@@ -36,7 +36,7 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef {Object} Change
+ * @typedef Change
  * @property {string} uuid_from
  * @property {string} uuid_to
  * @property {number} [priority]
@@ -47,7 +47,7 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef {Object} DiffData
+ * @typedef DiffData
  * @property {number} change_count
  * @property {string} diff
  * @property {string} version
@@ -55,14 +55,14 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef {Object} ApiResponse
+ * @typedef ApiResponse
  * @property {Object} [links]
  * @property {Object|Array} [data]
  * @property {Array} [errors]
  */
 
 /**
-  * @typedef {Object} Maintainership
+  * @typedef Maintainership
   * @property {string} uuid
   * @property {string} name
   * @property {Date} assigned_at
@@ -70,7 +70,7 @@ const storageLocation = 'WebMonitoringDb.token';
   */
 
 /** 
- * @typedef {Object} Tagging
+ * @typedef Tagging
  * @property {string} uuid
  * @property {string} name
  * @property {Date} assigned_at

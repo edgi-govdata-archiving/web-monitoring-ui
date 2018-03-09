@@ -13,10 +13,7 @@ describe('page-list', () => {
 
   it('can render', () => {
     const pageList = shallow(
-      <PageList
-        pages={null}
-        onSearch={null}
-      />
+      <PageList />
     );
 
     expect(pageList.exists()).toEqual(true);
@@ -28,7 +25,6 @@ describe('page-list', () => {
     const pageList = shallow(
       <PageList
         pages={simplePages}
-        onSearch={null}
       />
     );
     expect(pageList.find('.page-list tbody tr').first().childAt(1).text())

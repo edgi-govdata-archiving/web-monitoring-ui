@@ -3,6 +3,7 @@
 const google = require('googleapis');
 const config = require('./configuration');
 const sheets = google.sheets('v4');
+const formatters = require('../src/scripts/formatters');
 
 function getTaskSheetData (range) {
   const configuration = config.baseConfiguration();
@@ -83,20 +84,19 @@ function addChangeToDictionary (data) {
     // Index
     '',
     // UUID
-    data.to_version.uuid,
+    `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
     // Maintainers
     formatMaintainers(data.page.maintainers),
     // Sites
-    formatSites(data.page.tags),
+    formatters.formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
     data.page.url,
     // Page View URL
-    // TODO: Remove last vestiges of Versionista
-    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}`,
     // Last Two - Side by Side
     `https://monitoring.envirodatagov.org/page/${data.page.uuid}/..${data.to_version.uuid}`,
     // Latest to Base - Side by Side
@@ -135,20 +135,19 @@ function addChangeToImportant (data) {
     // Index
     '',
     // Unique ID
-    data.to_version.uuid,
+    `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
     // Maintainers
     formatMaintainers(data.page.maintainers),
     // Sites
-    formatSites(data.page.tags),
+    formatters.formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
     data.page.url,
     // Page View URL
-    // TODO: Remove last vestiges of Versionista
-    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}`,
     // Last Two - Side by Side
     `https://monitoring.envirodatagov.org/page/${data.page.uuid}/..${data.to_version.uuid}`,
     // Latest to Base - Side by Side
@@ -321,14 +320,6 @@ function formatDate (date) {
 
 function formatMaintainers (maintainers) {
   return maintainers.map(maintainership => maintainership.name).join(', ');
-}
-
-function formatSites (tags) {
-  const isSite = /^site:/;
-  return tags
-    .filter(tagging => isSite.test(tagging.name))
-    .map(tagging => tagging.name.replace(isSite, ''))
-    .join(', ');
 }
 
 exports.getDomains = getDomains;

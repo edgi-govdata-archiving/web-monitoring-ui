@@ -1,4 +1,4 @@
-import {dateFormatter} from '../scripts/formatters';
+import {dateFormatter, formatSites} from '../scripts/formatters';
 import React from 'react';
 import Loading from './loading';
 
@@ -124,12 +124,4 @@ function debounce (func, delay) {
     clearTimeout(timer);
     timer = setTimeout(() => func(...args), delay);
   };
-}
-
-function formatSites (tags) {
-  const isSite = /^site:/;
-  return tags
-    .filter(tagging => isSite.test(tagging.name))
-    .map(tagging => tagging.name.replace(isSite, ''))
-    .join(', ');
 }
