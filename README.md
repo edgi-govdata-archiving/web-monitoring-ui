@@ -138,17 +138,25 @@ Restart your app server and try clicking on the “add important change” or �
 
 We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
 
+
 ## Docker
 
-The Dockerfile runs the rails server on port 3001 in the container. To build
-and run:
+You can also run this project via Docker. To build and run (on port 3001, as in the instructions for running directly above):
 
 ```
-docker build -t ui . -e <ENVIRONMENT VARIABLES>
-docker run -p 3001:3001 ui
+docker build -t envirodgi/ui .
+docker run -p 3001:3001 -e <ENVIRONMENT VARIABLES> envirodgi/ui
 ```
 
-Point your browser or ``curl`` at ``http://localhost:3001``.
+Point your browser to ``http://localhost:3001``.
+
+To run tests via Docker:
+
+```
+docker build -t envirodgi/ui:dev --target dev .
+docker run envirodgi/ui:dev yarn run test
+```
+
 
 ## Contributors
 
