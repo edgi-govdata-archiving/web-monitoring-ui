@@ -150,19 +150,13 @@ export default class WebMonitoringApi {
   }
 
   _getPagesByDomains (domains, dateRange, extraQuery) {
-    const fetches = domains.map(domain => {
-      const query = Object.assign({'tags[]': `site:${domain}`}, extraQuery);
-      if (dateRange) {
-        query.capture_time = dateRange;
-      }
-
-      return this.dbApi.getPages(query);
-    });
-
-    /* TODO: Make sure pages are unique, because some are shared across domains.
-                 Will implement when we get some test data. */
-    return Promise.all(fetches)
-      .then(data => data.reduce((acc, arr) => acc.concat(arr), []));
+    const query = Object.assign({
+      tags: domains.map(domain => `site:${domain}`)
+    }, extraQuery);
+    if (dateRange) {
+      query.capture_time = dateRange;
+    }
+    return this.dbApi.getPages(query);
   }
 
   _dateRangeString (timeframe) {

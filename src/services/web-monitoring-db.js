@@ -277,6 +277,12 @@ export default class WebMonitoringDb {
         if (value == null) {
           queryList.push(encodeURIComponent(key));
         }
+        else if (Array.isArray(value)) {
+          const encodedKey = encodeURIComponent(key);
+          for (let item of value) {
+            queryList.push(`${encodedKey}[]=${encodeURIComponent(item)}`);
+          }
+        }
         else {
           queryList.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
         }
