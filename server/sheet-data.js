@@ -88,7 +88,7 @@ function addChangeToDictionary (data) {
     // Output Date/Time
     formatDate(),
     // Maintainers
-    formatMaintainers(data.page.maintainers),
+    formatters.formatMaintainers(data.page.maintainers),
     // Sites
     formatters.formatSites(data.page.tags),
     // Page Name
@@ -139,7 +139,7 @@ function addChangeToImportant (data) {
     // Output Date/Time
     formatDate(),
     // Maintainers
-    formatMaintainers(data.page.maintainers),
+    formatters.formatMaintainers(data.page.maintainers),
     // Sites
     formatters.formatSites(data.page.tags),
     // Page Name
@@ -316,10 +316,6 @@ function formatDate (date) {
     .replace('T', ' ')
     .replace(/(\d\d)\.\d+/, '$1')
     .replace('Z', ' GMT');
-}
-
-function formatMaintainers (maintainers) {
-  return maintainers.map(maintainership => maintainership.name).join(', ');
 }
 
 exports.getDomains = getDomains;

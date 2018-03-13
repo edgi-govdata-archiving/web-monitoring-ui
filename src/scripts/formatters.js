@@ -10,6 +10,8 @@ exports.dateFormatter = new Intl.DateTimeFormat('en-US', {
   timeZoneName: 'short'
 });
 
+exports.formatMaintainers = maintainers => maintainers.map(maintainership => maintainership.name).join(', ');
+
 exports.formatSites = tags => {
   const sitePrefix = 'site:';
   return tags
