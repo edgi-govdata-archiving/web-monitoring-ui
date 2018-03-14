@@ -3,6 +3,7 @@
 const google = require('googleapis');
 const config = require('./configuration');
 const sheets = google.sheets('v4');
+const formatters = require('../src/scripts/formatters');
 
 function getTaskSheetData (range) {
   const configuration = config.baseConfiguration();
@@ -86,21 +87,20 @@ function addChangeToDictionary (data) {
     `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
-    // Agency
-    data.page.agency,
-    // Site Name
-    data.page.site,
+    // Maintainers
+    formatters.formatMaintainers(data.page.maintainers),
+    // Sites
+    formatters.formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
     data.page.url,
     // Page View URL
-    // TODO: should these all be the web-monitoring-ui URLs instead?
-    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}`,
     // Last Two - Side by Side
-    versionista ? versionista.diff_with_previous_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/..${data.to_version.uuid}`,
     // Latest to Base - Side by Side
-    versionista ? versionista.diff_with_first_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/^..${data.to_version.uuid}`,
     // Date Found - Latest
     formatDate(data.from_version.capture_time),
     // Date Found - Base
@@ -138,21 +138,20 @@ function addChangeToImportant (data) {
     `${data.from_version.uuid}..${data.to_version.uuid}`,
     // Output Date/Time
     formatDate(),
-    // Agency
-    data.page.agency,
-    // Site Name
-    data.page.site,
+    // Maintainers
+    formatters.formatMaintainers(data.page.maintainers),
+    // Sites
+    formatters.formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
     data.page.url,
     // Page View URL
-    // TODO: should these all be the web-monitoring-ui URLs instead?
-    versionista ? `https://versionista.com/${versionista.site_id}/${versionista.page_id}/` : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}`,
     // Last Two - Side by Side
-    versionista ? versionista.diff_with_previous_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/..${data.to_version.uuid}`,
     // Latest to Base - Side by Side
-    versionista ? versionista.diff_with_first_url : '',
+    `https://monitoring.envirodatagov.org/page/${data.page.uuid}/^..${data.to_version.uuid}`,
     // Date Found - Latest
     formatDate(data.from_version.capture_time),
     // Date Found - Base

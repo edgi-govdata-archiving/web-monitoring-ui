@@ -1,4 +1,4 @@
-import {dateFormatter} from '../scripts/formatters';
+import {dateFormatter, formatSites} from '../scripts/formatters';
 import React from 'react';
 import Loading from './loading';
 
@@ -66,12 +66,11 @@ export default class PageList extends React.Component {
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
-
-    // TODO: click handling
+    
     return (
       <tr key={record.uuid} onClick={onClick}>
         <td>{dateFormatter.format(record.latest.capture_time)}</td>
-        <td>{record.site}</td>
+        <td>{formatSites(record.tags)}</td> 
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>

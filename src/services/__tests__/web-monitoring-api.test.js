@@ -9,12 +9,12 @@ describe('WebMonitoringApi', () => {
   beforeEach(() => {
     api = new WebMonitoringApi({
       getPages: jest.fn(query => Promise.resolve([
-        {url: 'a', site: 'first'},
-        {url: 'b', site: 'second'},
-        {url: 'c', site: 'second'}
+        {url: 'a', tags: [{name: 'site:first'}]},
+        {url: 'b', tags: [{name: 'site:second'}]},
+        {url: 'c', tags: [{name: 'site:second'}]}
       ].filter(page => {
-        if (query.site) {
-          return page.site === query.site;
+        if (query['tags[]']) {
+          return page.tags[0].name === query['tags[]'];
         }
         return true;
       })))
@@ -64,9 +64,9 @@ describe('WebMonitoringApi', () => {
       .mock('begin:/api/domains/', {domains: ['first', 'second']});
 
     expect(api.getPagesForUser('x')).resolves.toEqual([
-      {url: 'a', site: 'first'},
-      {url: 'b', site: 'second'},
-      {url: 'c', site: 'second'}
+      {url: 'a', tags: [{name: 'site:first'}]},
+      {url: 'b', tags: [{name: 'site:second'}]},
+      {url: 'c', tags: [{name: 'site:second'}]}
     ]);
   });
 

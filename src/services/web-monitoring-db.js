@@ -2,7 +2,7 @@ const defaultApiUrl = 'https://api-staging.monitoring.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
 /**
- * @typedef {Object} Version
+ * @typedef Version
  * @property {string} uuid
  * @property {string} page_uuid
  * @property {Date} capture_time
@@ -14,21 +14,21 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {Date} updated_at
  */
 
-/**
- * @typedef {Object} Page
+/** 
+ * @typedef Page
  * @property {string} uuid
  * @property {string} url
  * @property {string} title
- * @property {string} agency
- * @property {string} site
  * @property {Date} created_at
  * @property {Date} updated_at
  * @property {Version} [latest]
  * @property {Version[]} [versions]
+ * @property {Maintainership[]} maintainers
+ * @property {Tagging[]} tags
  */
 
 /**
- * @typedef {Object} Annotation
+ * @typedef Annotation
  * @property {Object} annotation
  * @property {Object} author
  * @property {Date} created_at
@@ -36,7 +36,7 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef {Object} Change
+ * @typedef Change
  * @property {string} uuid_from
  * @property {string} uuid_to
  * @property {number} [priority]
@@ -47,7 +47,7 @@ const storageLocation = 'WebMonitoringDb.token';
  */
 
 /**
- * @typedef {Object} DiffData
+ * @typedef DiffData
  * @property {number} change_count
  * @property {string} diff
  * @property {string} version
@@ -60,6 +60,21 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {Object|Array} [data]
  * @property {Array} [errors]
  */
+
+/**
+  * @typedef Maintainership
+  * @property {string} uuid
+  * @property {string} name
+  * @property {Date} assigned_at
+  * @property {string} parent_uuid
+  */
+
+/** 
+ * @typedef Tagging
+ * @property {string} uuid
+ * @property {string} name
+ * @property {Date} assigned_at
+*/
 
 /**
  * API wrapper for accessing information from the public Web Monitoring Database
@@ -261,6 +276,12 @@ export default class WebMonitoringDb {
         const value = query[key];
         if (value == null) {
           queryList.push(encodeURIComponent(key));
+        }
+        else if (Array.isArray(value)) {
+          const encodedKey = encodeURIComponent(key);
+          for (let item of value) {
+            queryList.push(`${encodedKey}[]=${encodeURIComponent(item)}`);
+          }
         }
         else {
           queryList.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
