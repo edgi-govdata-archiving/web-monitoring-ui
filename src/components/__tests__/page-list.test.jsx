@@ -28,6 +28,6 @@ describe('page-list', () => {
       />
     );
     expect(pageList.find('.page-list tbody tr').first().childAt(1).text())
-      .toBe('NOAA - ncei.noaa.gov, NOAA - ncei1.noaa.gov');
+      .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
   });
 });
