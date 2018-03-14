@@ -21,7 +21,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     ```sh
     yarn install
     ```
-    
+
     *Note: you might need Python 2 in order to build & install `node-zopfli`, one of our dependencies. If you are also running [`web-monitoring-processing`](https://github.com/edgi-govdata-archiving/web-monitoring-processing) (which uses Python 3), tools like [Conda](https://conda.io/) or [Pyenv](https://github.com/pyenv/pyenv) can help you manage multiple versions of Python.*
 
 4. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
@@ -137,6 +137,25 @@ Restart your app server and try clicking on the “add important change” or �
 ## Getting Involved
 
 We need your help! Please read through the [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring) project document and see what you can help with and check [EDGI’s contribution guidelines](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) for information on how to propose issues or changes.
+
+
+## Docker
+
+You can also run this project via Docker. To build and run (on port 3001, as in the instructions for running directly above):
+
+```
+docker build -t envirodgi/ui .
+docker run -p 3001:3001 -e <ENVIRONMENT VARIABLES> envirodgi/ui
+```
+
+Point your browser to ``http://localhost:3001``.
+
+To run tests via Docker:
+
+```
+docker build -t envirodgi/ui:dev --target dev .
+docker run envirodgi/ui:dev yarn run test
+```
 
 
 ## Contributors

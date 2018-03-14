@@ -8,7 +8,11 @@ const clientFields = [
   'WEB_MONITORING_DB_URL'
 ];
 
-const processEnvironment = Object.assign({}, process.env);
+const processEnvironment = Object.assign(
+  {},
+  process.env,
+  {NODE_ENV: (process.env.NODE_ENV || 'development').toLowerCase()}
+);
 
 /**
  * Get the current configuration for the app. This consists of the process's

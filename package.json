@@ -43,7 +43,7 @@
     "build-production": "NODE_ENV=production webpack",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
     "start": "node server/app.js",
-    "test": "jest",
+    "test": "jest --colors",
     "test-watch": "jest --watch"
   },
   "jest": {
@@ -54,7 +54,7 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "8.9.4"
+    "node": "8.10.0"
   },
   "browserslist": [
     "last 2 versions",
