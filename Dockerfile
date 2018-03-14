@@ -32,7 +32,7 @@ CMD ["/bin/bash"]
 # Note this *creates* production artifacts. The docker image created here
 # should never actually be distributed; it's just an intermediate.
 FROM dev as build
-ENV NODE_ENV=PRODUCTION
+ENV NODE_ENV=production
 RUN yarn run build-production
 
 
@@ -55,7 +55,7 @@ RUN apt-get install -y yarn
 RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64
 RUN chmod +x /usr/local/bin/dumb-init
 
-ENV NODE_ENV=PRODUCTION
+ENV NODE_ENV=production
 
 RUN mkdir -p /app
 WORKDIR /app
