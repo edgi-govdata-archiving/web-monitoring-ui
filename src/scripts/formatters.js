@@ -1,4 +1,4 @@
-/*eslint-env node*/
+/*eslint-env commonjs*/
 
 exports.dateFormatter = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
