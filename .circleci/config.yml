@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:6.11.1
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - restore_cache:
@@ -20,3 +20,40 @@ jobs:
       - run:
           name: Test
           command: yarn test
+
+  publish_docker:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          docker build -t envirodgi/ui:$CIRCLE_SHA1 .
+          docker build -t envirodgi/ui:latest .
+      - run: |
+          docker push envirodgi/ui:$CIRCLE_SHA1
+          docker push envirodgi/ui:latest
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: master
+
+  build-and-publish:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+      - approve_docker_publish:
+          type: approval
+          requires:
+            - build
+      - publish_docker:
+          requires:
+            - approve_docker_publish
