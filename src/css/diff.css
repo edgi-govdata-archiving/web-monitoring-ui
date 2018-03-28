@@ -1,8 +1,8 @@
 del {
-    background-color: lightcoral !important;
+  background-color: lightcoral !important;
 }
 ins {
-    background-color: lightgreen !important;
+  background-color: lightgreen !important;
 }
 
 .diff-view {
@@ -17,33 +17,33 @@ ins {
 
 .side-by-side-render,
 .inline-render {
-    display: flex;
-    flex: 1 0 auto;
+  display: flex;
+  flex: 1 0 auto;
 }
 
 .side-by-side-render > iframe,
 .inline-render > iframe {
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
 }
 
 .side-by-side-render > iframe:first-of-type {
-    margin-right: 0.5em;
+  margin-right: 0.5em;
 }
 
 .diff-source-inline {
-    background: #eee;
-    border: 1px solid #ccc;
-    font-family: monospace;
-    overflow: auto;
-    padding: 1em;
-    white-space: pre-wrap;
+  background: #eee;
+  border: 1px solid #ccc;
+  font-family: monospace;
+  overflow: auto;
+  padding: 1em;
+  white-space: pre-wrap;
 }
 
 .diff-text-inline {
-    background: #eee;
-    border: 1px solid #ccc;
-    padding: 1em;
-    white-space: pre-wrap;
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 1em;
+  white-space: pre-wrap;
 }
