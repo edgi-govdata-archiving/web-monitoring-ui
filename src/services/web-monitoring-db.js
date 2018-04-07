@@ -201,8 +201,8 @@ export default class WebMonitoringDb {
      * @param {string} pageId
      * @returns {Promise<Version[]>}
      */
-  getVersions (pageId) {
-    return this._request(this._createUrl(`pages/${pageId}/versions`))
+  getVersions (pageId, query) {
+    return this._request(this._createUrl(`pages/${pageId}/versions`, query))
       .then(response => response.json())
       .then(data => data.data.map(parseVersion));
   }
