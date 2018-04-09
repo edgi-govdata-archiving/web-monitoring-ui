@@ -227,20 +227,20 @@ export default class PageDetails extends React.Component {
     const fromList = this.props.pages && this.props.pages.find(
       (page) => page.uuid === pageId && !!page.versions);
     
-    Promise.resolve(fromList || this.context.api.getPage(pageId))
-      .then((page) => {
-        this._loadVersions(page, '2016-11-01', '');
-      });
-  }
-
-  _loadVersions(page, fromDate, toDate) {
     /** HACK: To deal with the huge number of versions coming from Internet Archive,
      * we're returning only versions captured after November 1, 2016 until we figure out a 
      * better solution. Probably an improved iteration of timeline idea:
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/pull/98
      * Issue outlined here: https://github.com/edgi-govdata-archiving/web-monitoring-db/issues/264
      */
-    const capture_time = {'capture_time': `${fromDate}..${toDate}`};
+    Promise.resolve(fromList || this.context.api.getPage(pageId))
+      .then((page) => {
+        this._loadVersions(page, '2016-11-01', '');
+      });
+  }
+
+  _loadVersions(page, dateFrom, dateTo) {
+    const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
     Promise.resolve(this.context.api.getVersions(page.uuid, capture_time))
       .then(versions => {
         page.versions = versions;

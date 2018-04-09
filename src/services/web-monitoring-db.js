@@ -202,9 +202,22 @@ export default class WebMonitoringDb {
      * @returns {Promise<Version[]>}
      */
   getVersions (pageId, query) {
-    return this._request(this._createUrl(`pages/${pageId}/versions`, query))
-      .then(response => response.json())
-      .then(data => data.data.map(parseVersion));
+    return this.joinPaginatedVersions(this._createUrl(`pages/${pageId}/versions`, query));
+  }
+
+  joinPaginatedVersions (url, data) {
+    if (!url) {
+      return data;
+    }
+    else {
+      let joinedData = data || [];
+      return this._request(url)
+        .then(response => response.json())
+        .then(data => {
+          joinedData.push(...data.data.map(parseVersion));
+          return this.joinPaginatedVersions(data.links.next, joinedData);
+        });
+    }
   }
 
   /**
