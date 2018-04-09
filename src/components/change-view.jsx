@@ -1,14 +1,15 @@
+import AnnotationForm from './annotation-form';
+import {diffTypesFor} from '../constants/diff-types';
+import DiffView from './diff-view';
+import {loadDateFilter, setDateFilter} from '../scripts/date-filter';
+import Loading from './loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import WebMonitoringDb from '../services/web-monitoring-db';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import AnnotationForm from './annotation-form';
-import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
-import Loading from './loading';
+import WebMonitoringApi from '../services/web-monitoring-api';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import VersionistaInfo from './versionista-info';
-import {diffTypesFor} from '../constants/diff-types';
 import {
   htmlType,
   mediaTypeForExtension,
@@ -27,6 +28,7 @@ const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
  * @property {Object} user
  * @property {Function} annotateChange
  * @property {Function} onChangeSelectedVersions
+ * @property {Function} onClickDateFilteredVersions
  */
 
 /**
@@ -39,7 +41,6 @@ const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 export default class ChangeView extends React.Component {
   constructor (props) {
     super (props);
-
     this.state = {
       change: null,
       annotation: {},
@@ -72,6 +73,7 @@ export default class ChangeView extends React.Component {
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
+    this.handleDateFilterClick = this.handleDateFilterClick.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);
@@ -81,6 +83,10 @@ export default class ChangeView extends React.Component {
 
   componentWillMount () {
     this._getChange();
+  }
+
+  componentWillUpdate () {
+    this.dateFrom.value = loadDateFilter();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -127,6 +133,11 @@ export default class ChangeView extends React.Component {
     this._changeSelectedVersions(null, version);
   }
 
+  handleDateFilterClick (event) {
+    this.props.onClickDateFilteredVersions(this.props.page, this.dateFrom.value);
+    setDateFilter(this.dateFrom.value);
+  }
+
   render () {
     const { page } = this.props;
     /**
@@ -145,9 +156,32 @@ export default class ChangeView extends React.Component {
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
-        <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+        <div className="utilities">
+          <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+          {this.renderDateFilter()}
+        </div>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
+      </div>
+    );
+  }
+
+  renderDateFilter () {
+    return (
+      <div className="date-filter">
+        <label className="date-filter__label">
+          Filter from:
+        </label>
+        <input 
+          className="date-filter__input" 
+          type="date" 
+          name="dateFrom" 
+          value={this.state.dateFrom} 
+          ref={(input) => this.dateFrom = input}
+        />
+        <button type="button" onClick={this.handleDateFilterClick}>
+          Filter
+        </button>
       </div>
     );
   }

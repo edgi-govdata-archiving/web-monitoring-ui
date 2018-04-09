@@ -458,12 +458,25 @@ iframe {
   justify-content: center;
 }
 
-.versionista-info {
+.utilities {
+  display: flex;
+  justify-content: space-between;
   margin-top: 1em;
 }
 
 .versionista-info i {
   margin-left: 0.5em;
+}
+
+.date-filter {
+  margin-left: auto;
+}
+
+.date-filter__label {
+  margin-right: 0.5rem;
+}
+.date-filter__input {
+  margin-right: 1rem;
 }
 
 /* ===== Environment Banner ====== */

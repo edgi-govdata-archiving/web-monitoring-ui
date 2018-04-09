@@ -1,9 +1,10 @@
+import ChangeView from './change-view';
+import {Link, Redirect} from 'react-router-dom';
+import {loadDateFilter} from '../scripts/date-filter';
+import Loading from './loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link, Redirect} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import ChangeView from './change-view';
-import Loading from './loading';
 
 /**
  * @typedef {Object} PageDetailsProps
@@ -24,6 +25,7 @@ export default class PageDetails extends React.Component {
     this.state = { page: null };
     this._annotateChange = this._annotateChange.bind(this);
     this._navigateToChange = this._navigateToChange.bind(this);
+    this.loadVersions = this.loadVersions.bind(this);
   }
 
   componentWillMount () {
@@ -57,6 +59,23 @@ export default class PageDetails extends React.Component {
     if (event.keyCode === 27) {
       this.props.history.push('/');
     }
+  }
+
+  /**
+   * Load subset of versions filtered by date range.
+   * We use string representations of dates because they are passed
+   * as query arguments to -db api.
+   *
+   * @param {Object} page 
+   * @param {string} dateFrom 
+   */
+  loadVersions(page, dateFrom) {
+    const capture_time = {'capture_time': `${dateFrom}..`};
+    Promise.resolve(this.context.api.getVersions(page.uuid, capture_time))
+      .then(versions => {
+        page.versions = versions;
+        this.setState({page});
+      });
   }
 
   /**
@@ -164,6 +183,7 @@ export default class PageDetails extends React.Component {
         annotateChange={this._annotateChange}
         user={this.props.user}
         onChangeSelectedVersions={this._navigateToChange}
+        onClickDateFilteredVersions={this.loadVersions}
       />
     );
   }
@@ -228,23 +248,14 @@ export default class PageDetails extends React.Component {
       (page) => page.uuid === pageId && !!page.versions);
     
     /** HACK: To deal with the huge number of versions coming from Internet Archive,
-     * we're returning only versions captured after November 1, 2016 until we figure out a 
+     * we default to returning only versions captured after November 1, 2016 until we figure out a 
      * better solution. Probably an improved iteration of timeline idea:
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/pull/98
      * Issue outlined here: https://github.com/edgi-govdata-archiving/web-monitoring-db/issues/264
      */
     Promise.resolve(fromList || this.context.api.getPage(pageId))
       .then((page) => {
-        this._loadVersions(page, '2016-11-01', '');
-      });
-  }
-
-  _loadVersions(page, dateFrom, dateTo) {
-    const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
-    Promise.resolve(this.context.api.getVersions(page.uuid, capture_time))
-      .then(versions => {
-        page.versions = versions;
-        this.setState({page});
+        this.loadVersions(page, loadDateFilter());
       });
   }
 
