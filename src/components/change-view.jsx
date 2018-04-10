@@ -15,6 +15,7 @@ import {
   parseMediaType,
   unknownType
 } from '../scripts/media-type';
+import VersionTimelineSelector from './version-timeline-selector';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
@@ -47,7 +48,8 @@ export default class ChangeView extends React.Component {
       diffType: undefined,
       addingToDictionary: false,
       addingToImportant: false,
-      updating: false
+      updating: false,
+      showTimeline: false,
     };
 
     // TODO: unify this default state logic with componentWillReceiveProps
@@ -73,6 +75,7 @@ export default class ChangeView extends React.Component {
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
+    this._toggleTimeline = this._toggleTimeline.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);
     this._markAsSignificant = this._markAsSignificant.bind(this);
@@ -142,11 +145,24 @@ export default class ChangeView extends React.Component {
       return (<div></div>);
     }
 
+    let timeline;
+    if (this.state.showTimeline) {
+      timeline = (
+        <VersionTimelineSelector
+          versions={page.versions}
+          onSelect={this._getChange.bind(this)}
+          selectedFromVersion={this.props.from}
+          selectedToVersion={this.props.to}
+        />
+      );
+    }
+
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
         <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
         {this.renderVersionSelector(page)}
+        {timeline}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
       </div>
     );
@@ -172,6 +188,9 @@ export default class ChangeView extends React.Component {
           <span>To:</span>
           <SelectVersion versions={page.versions} value={this.props.to} onChange={this.handleToVersionChange} />
         </label>
+        <button className="btn btn-link" onClick={this._toggleTimeline}>
+          {this.state.showTimeline ? 'Hide' : 'Show'} Timeline
+        </button>
       </form>
     );
   }
@@ -304,6 +323,11 @@ export default class ChangeView extends React.Component {
       )
         .then(onComplete, onComplete);
     }
+  }
+
+  _toggleTimeline (event) {
+    event.preventDefault();
+    this.setState(previousState => ({showTimeline: !previousState.showTimeline}));
   }
 
   _updateAnnotation (newAnnotation) {
