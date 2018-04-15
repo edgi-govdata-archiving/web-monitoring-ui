@@ -1,4 +1,5 @@
 import {dateFormatter, formatSites} from '../scripts/formatters';
+import Loading from './loading';
 import React from 'react';
 
 /**
@@ -23,6 +24,10 @@ export default class PageList extends React.Component {
   }
 
   render () {
+    if (!this.props.pages) {
+      return <Loading />;
+    }
+
     return (
       <div className="container-fluid container-list-view">
         <div className="row search-bar">
@@ -72,11 +77,11 @@ export default class PageList extends React.Component {
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
-    
+
     return (
       <tr key={record.uuid} onClick={onClick}>
         <td>{dateFormatter.format(record.latest.capture_time)}</td>
-        <td>{formatSites(record.tags)}</td> 
+        <td>{formatSites(record.tags)}</td>
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>
