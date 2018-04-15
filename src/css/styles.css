@@ -54,6 +54,10 @@ body {
   padding: 15px;
 }
 
+.container-list-view > .alert {
+  margin-top: 1em;
+}
+
 /* ===== Nav Bar ===== */
 #bootstrap-override .navbar-brand {
   font-size: 1.4em;
