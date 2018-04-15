@@ -104,8 +104,10 @@ export default class WebMonitoringUi extends React.Component {
         }
       })
       .then(pages => {
+        // TODO: differentiate between having no assignments (pages == null)
+        // and having no changes to your assigned pages (pages == [])
         this.setState({
-          [pageFilter]: pages,
+          [pageFilter]: pages || [],
           pageFilter
         });
       });
