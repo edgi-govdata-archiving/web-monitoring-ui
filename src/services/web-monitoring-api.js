@@ -51,7 +51,7 @@ export default class WebMonitoringApi {
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          throw data.error;
+          throw new Error(data.error);
         }
 
         return data.domains;
@@ -61,6 +61,10 @@ export default class WebMonitoringApi {
   /**
      * Get a list of pages a user should analyze based on their assigned
      * domains and the analysis timeframe.
+     *
+     * This promise can resolve to an array of pages OR to `null`, which
+     * indicates the user has no assigned pages to monitor (an empty array of
+     * pages means none of their pages were updated in the given timeframe).
      *
      * @param {string} username
      * @param {AnalysisTimeframe} [timeframe] If omitted, defaults to current
@@ -72,11 +76,14 @@ export default class WebMonitoringApi {
     const timeframeRequest = Promise.resolve(timeframe || this.getCurrentTimeframe());
 
     return Promise.all([domainsRequest, timeframeRequest])
-      .then(([domains, timeframe]) => this._getPagesByDomains(
-        domains,
-        this._dateRangeString(timeframe),
-        query
-      ));
+      .then(([domains, timeframe]) => {
+        if (domains.length === 0) return null;
+        return this._getPagesByDomains(
+          domains,
+          this._dateRangeString(timeframe),
+          query
+        );
+      });
   }
 
   /**

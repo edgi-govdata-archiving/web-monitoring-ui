@@ -23,22 +23,16 @@ function getTaskSheetData (range) {
 function getDomains (username) {
   return getTaskSheetData('A2:ZZZ') // extreme range to get whole spreadsheet
     .then(response => {
-      const domains = findUserRecord(username, response.values);
-      if (domains) {
-        return {domains};
-      }
-      else {
-        throw {
-          error: `${username} not found.`,
-          status: 404
-        };
-      }
+      const domains = findUserRecord(username, response.values) || [];
+      return {domains};
     });
 }
 
 function findUserRecord (username, records) {
   const lowerName = username.toLowerCase();
-  const domains = records.find(record => lowerName === record[0].toLowerCase());
+  const domains = records.find(
+    record => lowerName === (record[0] && record[0].toLowerCase())
+  );
 
   return domains ? domains.slice(1) : null;
 }

@@ -10,6 +10,29 @@ const config = require('./configuration');
 
 const serverPort = process.env.PORT || 3001;
 
+/**
+ * Create a generic error handler for a response. This (or something similar)
+ * should always conclude a promise chain in an HTTP request handler. If you
+ * have an error you expect, however (e.g. some kind of specialized "not found"
+ * error), you should handle it directly so you can send a useful message.
+ *
+ * @param {Express.Response} response
+ */
+function createErrorHandler (response) {
+  return error => {
+    let errorData = error;
+    if (error instanceof Error) {
+      if (config.baseConfiguration().NODE_ENV !== 'production') {
+        errorData = {error: error.message, stack: error.stack};
+      }
+      else {
+        errorData = {error: 'An unknown error ocurred.'};
+      }
+    }
+    response.status(error.status || 500).json(errorData);
+  };
+}
+
 if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
   app.use((request, response, next) => {
     if (request.secure || request.headers['x-forwarded-proto'] === 'https') {
@@ -62,16 +85,14 @@ app.get('/api/domains/:username', function(request, response) {
 
   sheetData.getDomains(username)
     .then(data => response.json(data))
-    .catch(error => response
-      .status(error.status || 500)
-      .json(error));
+    .catch(createErrorHandler(response));
 });
 
 app.get('/api/timeframe', function(request, response) {
   const date = request.query.date && new Date(request.query.date);
   sheetData.getCurrentTimeframe(date)
     .then(data => response.json(data))
-    .catch(error => response.status(500).json(error));
+    .catch(createErrorHandler(response));
 });
 
 function validateChangeBody (request, response, next) {
@@ -122,7 +143,7 @@ app.post(
   function(request, response) {
     sheetData.addChangeToImportant(request.body)
       .then(data => response.json(data))
-      .catch(error => response.status(500).json(error));
+      .catch(createErrorHandler(response));
   }
 );
 
@@ -133,7 +154,7 @@ app.post(
   function(request, response) {
     sheetData.addChangeToDictionary(request.body)
       .then(data => response.json(data))
-      .catch(error => response.status(500).json(error));
+      .catch(createErrorHandler(response));
   }
 );
 

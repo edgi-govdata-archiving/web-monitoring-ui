@@ -1,6 +1,6 @@
 import {dateFormatter, formatSites} from '../scripts/formatters';
-import React from 'react';
 import Loading from './loading';
+import React from 'react';
 
 /**
  * These props also inherit from React Router's RouteComponent props
@@ -26,6 +26,13 @@ export default class PageList extends React.Component {
   render () {
     if (!this.props.pages) {
       return <Loading />;
+    }
+
+    if (this.props.pages instanceof Error) {
+      return this.renderError(`Could not load pages: ${this.props.pages.message}`);
+    }
+    else if (this.props.pages.length === 0) {
+      return this.renderError('You don’t have any assigned pages.', 'warning');
     }
 
     return (
@@ -66,14 +73,25 @@ export default class PageList extends React.Component {
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
-    
+
     return (
       <tr key={record.uuid} onClick={onClick}>
         <td>{dateFormatter.format(record.latest.capture_time)}</td>
-        <td>{formatSites(record.tags)}</td> 
+        <td>{formatSites(record.tags)}</td>
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>
+    );
+  }
+
+  // TODO: we use similar markup elsewhere, consider making this a component
+  renderError (message, type = 'danger') {
+    return (
+      <div className="container-fluid container-list-view">
+        <p className={`alert alert-${type}`} role="alert">
+          {message}
+        </p>
+      </div>
     );
   }
 
