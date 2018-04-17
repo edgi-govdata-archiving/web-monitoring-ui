@@ -30,7 +30,9 @@ function getDomains (username) {
 
 function findUserRecord (username, records) {
   const lowerName = username.toLowerCase();
-  const domains = records.find(record => lowerName === record[0].toLowerCase());
+  const domains = records.find(
+    record => lowerName === (record[0] && record[0].toLowerCase())
+  );
 
   return domains ? domains.slice(1) : null;
 }
