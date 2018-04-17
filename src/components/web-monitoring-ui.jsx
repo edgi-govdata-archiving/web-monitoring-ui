@@ -103,6 +103,8 @@ export default class WebMonitoringUi extends React.Component {
           return api.getPages(query);
         }
       })
+      // Set state.pages = error; downstream code should check `pages` type.
+      .catch(error => error)
       .then(pages => {
         // TODO: differentiate between having no assignments (pages == null)
         // and having no changes to your assigned pages (pages == [])

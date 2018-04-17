@@ -28,14 +28,11 @@ export default class PageList extends React.Component {
       return <Loading />;
     }
 
-    if (this.props.pages.length === 0) {
-      return (
-        <div className="container-fluid container-list-view">
-          <p className="alert alert-warning" role="alert">
-            You don’t have any assigned pages.
-          </p>
-        </div>
-      );
+    if (this.props.pages instanceof Error) {
+      return this.renderError(`Could not load pages: ${this.props.pages.message}`);
+    }
+    else if (this.props.pages.length === 0) {
+      return this.renderError('You don’t have any assigned pages.', 'warning');
     }
 
     return (
@@ -84,6 +81,17 @@ export default class PageList extends React.Component {
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>
+    );
+  }
+
+  // TODO: we use similar markup elsewhere, consider making this a component
+  renderError (message, type = 'danger') {
+    return (
+      <div className="container-fluid container-list-view">
+        <p className={`alert alert-${type}`} role="alert">
+          {message}
+        </p>
+      </div>
     );
   }
 

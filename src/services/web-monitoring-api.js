@@ -51,7 +51,7 @@ export default class WebMonitoringApi {
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          throw data.error;
+          throw new Error(data.error);
         }
 
         return data.domains;
