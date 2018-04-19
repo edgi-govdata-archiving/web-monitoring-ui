@@ -182,6 +182,7 @@ export default class WebMonitoringDb {
   getPages (query) {
     return this._request(this._createUrl('pages', query))
       .then(response => response.json())
+      .then(throwIfError(`Could not load pages`))
       .then(data => data.data.map(parsePage));
   }
 
@@ -193,6 +194,7 @@ export default class WebMonitoringDb {
   getPage (pageId) {
     return this._request(this._createUrl(`pages/${pageId}`))
       .then(response => response.json())
+      .then(throwIfError(`Could not load page: ${pageId}`))
       .then(data => parsePage(data.data));
   }
 
@@ -228,6 +230,7 @@ export default class WebMonitoringDb {
   getVersion (versionId) {
     return this._request(this._createUrl(`versions/${versionId}`))
       .then(response => response.json())
+      .then(throwIfError(`Could not load version: ${versionId}`))
       .then(data => parseVersion(data.data));
   }
 
@@ -243,6 +246,7 @@ export default class WebMonitoringDb {
     toVersion = toVersion || '';
     return this._request(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
       .then(response => response.json())
+      .then(throwIfError(`Could not load change from: pages/${pageId}/changes/${fromVersion}..${toVersion}`))
       .then(data => parseChange(data.data));
   }
 
