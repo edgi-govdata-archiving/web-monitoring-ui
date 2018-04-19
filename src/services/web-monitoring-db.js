@@ -182,7 +182,7 @@ export default class WebMonitoringDb {
   getPages (query) {
     return this._request(this._createUrl('pages', query))
       .then(response => response.json())
-      .then(throwIfError(`Could not load pages`))
+      .then(throwIfError('Could not load pages'))
       .then(data => data.data.map(parsePage));
   }
 
@@ -199,27 +199,33 @@ export default class WebMonitoringDb {
   }
 
   /**
-     * Get a list of versions of a given page.
+     * Recursively get a list of all versions for a given page.
      * @param {string} pageId
+     * @param {string} query
      * @returns {Promise<Version[]>}
      */
-  getVersions (pageId, query) {
-    return this.joinPaginatedVersions(this._createUrl(`pages/${pageId}/versions`, query));
-  }
 
-  joinPaginatedVersions (url, data) {
-    if (!url) {
-      return data;
-    }
-    else {
-      let joinedData = data || [];
-      return this._request(url)
-        .then(response => response.json())
-        .then(data => {
-          joinedData.push(...data.data.map(parseVersion));
-          return this.joinPaginatedVersions(data.links.next, joinedData);
-        });
-    }
+  getAllVersions (pageId, query) {
+    const api = this;
+    const url = api._createUrl(`pages/${pageId}/versions`, query);
+
+    return new Promise((resolve, reject) => {
+      let allVersions = [];
+      let getVersionsChunk = url => {
+        api._request(url)
+          .then(response => response.json())
+          .then(throwIfError(`Could not load versions from: ${url}`))
+          .then(data => {
+            allVersions.push(...data.data.map(parseVersion));
+            if (!data.links.next) {
+              resolve(allVersions);
+            } else {
+              getVersionsChunk(data.links.next);
+            }
+          });
+      };
+      getVersionsChunk(url);
+    });
   }
 
   /**
