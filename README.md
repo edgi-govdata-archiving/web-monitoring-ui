@@ -17,7 +17,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 1. Install Node v8.10.0
     - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 8.10.0`
 1. [Install][yarn-install] the `yarn` package manager.
-    - Note any specific instructions for `nvm` users.
+    - On Linux? Note specific instructions for `nvm` users.
 3. Install node dependencies with `yarn`
 
     ```sh
