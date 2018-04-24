@@ -14,8 +14,10 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 ## Installation
 
-1. Ensure you have yarn ([installation instructions](https://yarnpkg.com/en/docs/install))
-2. Clone this repo
+1. Install Node v8.10.0
+    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 8.10.0`
+1. [Install][yarn-install] the `yarn` package manager.
+    - On Linux? Note specific instructions for `nvm` users.
 3. Install node dependencies with `yarn`
 
     ```sh
@@ -33,6 +35,9 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     ```
 
 6. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
+
+   [nvm-install]: https://github.com/creationix/nvm#install-script
+   [yarn-install]: https://yarnpkg.com/en/docs/install
 
 ## Running tests
 
