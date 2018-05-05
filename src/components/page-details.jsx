@@ -5,6 +5,8 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 import Loading from './loading';
 
+const cutoffDate = '2016-11-01';
+
 /**
  * @typedef {Object} PageDetailsProps
  * @property {Page[]} pages
@@ -233,7 +235,6 @@ export default class PageDetails extends React.Component {
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/pull/98
      * Issue outlined here: https://github.com/edgi-govdata-archiving/web-monitoring-db/issues/264
      */
-    const cutoffDate = '2016-11-01';
     Promise.resolve(fromList || this.context.api.getPage(pageId))
       .then(page => {
         this._loadVersions(page, cutoffDate, '')
