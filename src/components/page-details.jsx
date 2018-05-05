@@ -247,7 +247,7 @@ export default class PageDetails extends React.Component {
 
   _loadVersions(page, dateFrom, dateTo) {
     const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
-    return this.context.api.getAllVersions(page.uuid, capture_time);
+    return this.context.api.getVersions(page.uuid, capture_time, Infinity);
   }
 
   _getChangeUrl (from, to, page) {
