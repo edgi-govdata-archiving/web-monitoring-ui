@@ -5,6 +5,8 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 import Loading from './loading';
 
+const cutoffDate = '2016-11-01';
+
 /**
  * @typedef {Object} PageDetailsProps
  * @property {Page[]} pages
@@ -226,11 +228,26 @@ export default class PageDetails extends React.Component {
     // TODO: handle the missing `.versions` collection problem better
     const fromList = this.props.pages && this.props.pages.find(
       (page) => page.uuid === pageId && !!page.versions);
-
+    
+    /** HACK: To deal with the huge number of versions coming from Internet Archive,
+     * we're returning only versions captured after November 1, 2016 until we figure out a 
+     * better solution. Probably an improved iteration of timeline idea:
+     * https://github.com/edgi-govdata-archiving/web-monitoring-ui/pull/98
+     * Issue outlined here: https://github.com/edgi-govdata-archiving/web-monitoring-db/issues/264
+     */
     Promise.resolve(fromList || this.context.api.getPage(pageId))
-      .then((page) => {
-        this.setState({page});
+      .then(page => {
+        this._loadVersions(page, cutoffDate, '')
+          .then(versions => {
+            page.versions = versions;
+            this.setState({page});
+          });
       });
+  }
+
+  _loadVersions(page, dateFrom, dateTo) {
+    const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
+    return this.context.api.getVersions(page.uuid, capture_time, Infinity);
   }
 
   _getChangeUrl (from, to, page) {

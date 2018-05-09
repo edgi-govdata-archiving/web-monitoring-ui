@@ -177,12 +177,12 @@ export default class WebMonitoringDb {
   /**
      * Get pages.
      * @param {Object} [query]
+     * @param {number} limitChunks
      * @returns {Promise<Page[]>}
      */
-  getPages (query) {
-    return this._request(this._createUrl('pages', query))
-      .then(response => response.json())
-      .then(data => data.data.map(parsePage));
+  getPages (query, limitChunks = 1) {
+    const url = this._createUrl('pages', query);
+    return this._getListChunks(url, parsePage, limitChunks);
   }
 
   /**
@@ -193,18 +193,20 @@ export default class WebMonitoringDb {
   getPage (pageId) {
     return this._request(this._createUrl(`pages/${pageId}`))
       .then(response => response.json())
+      .then(throwIfError(`Could not load page: ${pageId}`))
       .then(data => parsePage(data.data));
   }
 
   /**
-     * Get a list of versions of a given page.
-     * @param {string} pageId
-     * @returns {Promise<Version[]>}
-     */
-  getVersions (pageId) {
-    return this._request(this._createUrl(`pages/${pageId}/versions`))
-      .then(response => response.json())
-      .then(data => data.data.map(parseVersion));
+   * Get list of versions for a given page.
+   * @param {string} pageId
+   * @param {string} query
+   * @param {number} limitChunks
+   * @returns {Promise<Version[]>}
+   */
+  getVersions (pageId, query, limitChunks = 1) {
+    const url = this._createUrl(`pages/${pageId}/versions`, query);
+    return this._getListChunks(url, parseVersion, limitChunks);
   }
 
   /**
@@ -215,6 +217,7 @@ export default class WebMonitoringDb {
   getVersion (versionId) {
     return this._request(this._createUrl(`versions/${versionId}`))
       .then(response => response.json())
+      .then(throwIfError(`Could not load version: ${versionId}`))
       .then(data => parseVersion(data.data));
   }
 
@@ -230,6 +233,7 @@ export default class WebMonitoringDb {
     toVersion = toVersion || '';
     return this._request(this._createUrl(`pages/${pageId}/changes/${fromVersion}..${toVersion}`))
       .then(response => response.json())
+      .then(throwIfError(`Could not load change from: pages/${pageId}/changes/${fromVersion}..${toVersion}`))
       .then(data => parseChange(data.data));
   }
 
@@ -376,6 +380,25 @@ export default class WebMonitoringDb {
 
   _authHeader () {
     return `Bearer ${this.authToken}`;
+  }
+
+  _getListChunk (url, parser) {
+    return this._request(url)
+      .then(response => response.json())
+      .then(throwIfError(`Could not load: ${url}`))
+      .then(chunk => {
+        chunk.data = chunk.data.map(parser);
+        return chunk;
+      });
+  }
+
+  _getListChunks (url, parser, limit = Infinity, result = []) {
+    if (!url || !limit) return Promise.resolve(result);
+    return this._getListChunk(url, parser)
+      .then(chunk => {
+        result.push(...chunk.data);
+        return this._getListChunks(chunk.links.next, parser, limit - 1, result);
+      });
   }
 }
 
