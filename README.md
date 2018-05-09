@@ -16,8 +16,11 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 1. Install Node v8.10.0
     - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 8.10.0`
-1. [Install][yarn-install] the `yarn` package manager.
-    - On Linux? Note specific instructions for `nvm` users.
+    - If you are using Windows, check out [Nodenv][nodenv] or any of [these alternatives][nvm-alternatives].
+
+2. [Install][yarn-install] the `yarn` package manager.
+    - Make sure to follow any special notes if you are using NVM or a similar tool to manage multiple Node.js installs (see above).
+
 3. Install node dependencies with `yarn`
 
     ```sh
@@ -36,8 +39,11 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 6. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
 
-   [nvm-install]: https://github.com/creationix/nvm#install-script
-   [yarn-install]: https://yarnpkg.com/en/docs/install
+[nodenv]: https://github.com/nodenv/nodenv
+[nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
+[nvm-install]: https://github.com/creationix/nvm#install-script
+[yarn-install]: https://yarnpkg.com/en/docs/install
+
 
 ## Running tests
 
@@ -52,6 +58,7 @@ while to start the test runner in watch mode
 ```sh
 yarn run test-watch
 ```
+
 
 ## Manual view
 Access the main view at `http://localhost:3001`
