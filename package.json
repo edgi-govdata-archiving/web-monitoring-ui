@@ -24,6 +24,7 @@
     "extract-loader": "^1.0.1",
     "fetch-mock": "^5.12.1",
     "file-loader": "^1.1.6",
+    "husky": "^0.14.3",
     "jest": "^22.1.4",
     "postcss-loader": "^2.0.10",
     "prop-types": "^15.5.10",
@@ -42,6 +43,7 @@
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
+    "precommit": "yarn run lint",
     "start": "node server/app.js",
     "test": "jest --colors",
     "test-watch": "jest --watch"
