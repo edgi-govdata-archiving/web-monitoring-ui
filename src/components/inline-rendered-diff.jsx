@@ -16,7 +16,7 @@ import SandboxedHtml from './sandboxed-html';
  */
 export default class InlineRenderedDiff extends React.Component {
   render () {
-    const diff = this.props.diffData.combined || this.props.diffData.diff;
+    const diff = this.props.diffData.combined;
 
     return (
       <div className="inline-render">

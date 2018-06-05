@@ -14,7 +14,7 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {Date} updated_at
  */
 
-/** 
+/**
  * @typedef Page
  * @property {string} uuid
  * @property {string} url
@@ -69,7 +69,7 @@ const storageLocation = 'WebMonitoringDb.token';
   * @property {string} parent_uuid
   */
 
-/** 
+/**
  * @typedef Tagging
  * @property {string} uuid
  * @property {string} name
@@ -250,7 +250,7 @@ export default class WebMonitoringDb {
     return this._request(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, query))
       .then(response => response.json())
       .then(throwIfError('Could not load diff'))
-      .then(data => parseDiff(data.data));
+      .then(data => data.data);
   }
 
   /**
@@ -443,17 +443,6 @@ function parseChange (data) {
     updatedValues.updated_at = new Date(data.updated_at);
   }
   return Object.assign({}, data, updatedValues);
-}
-
-function parseDiff (data) {
-  // temporarily massage old diff format into new diff format
-  if (data.content && data.content.diff) {
-    return {
-      'diff': data.content.diff,
-      'change_count': null
-    };
-  }
-  return data;
 }
 
 /**
