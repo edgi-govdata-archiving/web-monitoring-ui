@@ -458,8 +458,21 @@ iframe {
   justify-content: center;
 }
 
-.versionista-info {
-  margin-top: 1em;
+/* ===== Utilities ====== */
+.utilities {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.utilities__label {
+  cursor: pointer;
+  font-weight: normal;
+  margin: 0;
+}
+
+.utilities__input[type="checkbox"] {
+  margin: 0 0.5rem;
 }
 
 .versionista-info i {

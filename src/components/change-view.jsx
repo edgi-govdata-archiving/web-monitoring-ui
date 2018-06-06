@@ -38,16 +38,17 @@ const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
  */
 export default class ChangeView extends React.Component {
   constructor (props) {
-    super (props);
+    super(props);
 
     this.state = {
-      change: null,
-      annotation: {},
-      collapsedView: true,
-      diffType: undefined,
       addingToDictionary: false,
       addingToImportant: false,
-      updating: false
+      annotation: {},
+      change: null,
+      collapsedView: true,
+      diffType: undefined,
+      removeFormatting: false,
+      updating: false,
     };
 
     // TODO: unify this default state logic with componentWillReceiveProps
@@ -77,6 +78,7 @@ export default class ChangeView extends React.Component {
     this._updateAnnotation = this._updateAnnotation.bind(this);
     this._markAsSignificant = this._markAsSignificant.bind(this);
     this._addToDictionary = this._addToDictionary.bind(this);
+    this._handleRemoveFormattingChange = this._handleRemoveFormattingChange.bind(this);
   }
 
   componentWillMount () {
@@ -137,6 +139,7 @@ export default class ChangeView extends React.Component {
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
      */
     const userCanAnnotate = this.props.user.canAnnotate || null;
+    const canRemoveFormatting = this._canRemoveFormatting();
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);
@@ -145,9 +148,13 @@ export default class ChangeView extends React.Component {
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
-        <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+        <div className="utilities">
+          <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+          {canRemoveFormatting ? this.renderRemoveFormatting() : null}
+        </div>
         {this.renderVersionSelector(page)}
-        <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
+        <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to}
+          removeFormatting={this.state.removeFormatting}/>
       </div>
     );
   }
@@ -255,6 +262,20 @@ export default class ChangeView extends React.Component {
     ];
   }
 
+  renderRemoveFormatting () {
+    return (
+      <label className="utilities__label">
+        <input
+          className="utilities__input"
+          checked={this.state.removeFormatting}
+          onChange={this._handleRemoveFormattingChange}
+          type="checkbox">
+        </input>
+        Remove formatting
+      </label>
+    );
+  }
+
   _toggleCollapsedView (event) {
     event.preventDefault();
     this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
@@ -350,6 +371,17 @@ export default class ChangeView extends React.Component {
           });
         }
       });
+  }
+
+  _handleRemoveFormattingChange () {
+    this.setState({
+      removeFormatting: !this.state.removeFormatting
+    });
+  }
+
+  _canRemoveFormatting () {
+    const diffType = this.state.diffType;
+    return (diffType === 'SIDE_BY_SIDE_RENDERED' || diffType === 'HIGHLIGHTED_RENDERED');
   }
 }
 
