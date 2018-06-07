@@ -1,14 +1,15 @@
+import AnnotationForm from './annotation-form';
+import DiffSettings from './diff-settings';
+import {diffTypesFor} from '../constants/diff-types';
+import DiffView from './diff-view';
+import Loading from './loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import WebMonitoringDb from '../services/web-monitoring-db';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import AnnotationForm from './annotation-form';
-import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
-import Loading from './loading';
 import VersionistaInfo from './versionista-info';
-import {diffTypesFor} from '../constants/diff-types';
+import WebMonitoringApi from '../services/web-monitoring-api';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import {
   htmlType,
   mediaTypeForExtension,
@@ -73,12 +74,12 @@ export default class ChangeView extends React.Component {
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
+    this.handleRemoveFormattingChange = this.handleRemoveFormattingChange.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);
     this._markAsSignificant = this._markAsSignificant.bind(this);
     this._addToDictionary = this._addToDictionary.bind(this);
-    this._handleRemoveFormattingChange = this._handleRemoveFormattingChange.bind(this);
   }
 
   componentWillMount () {
@@ -121,6 +122,10 @@ export default class ChangeView extends React.Component {
     this.setState({diffType});
   }
 
+  handleRemoveFormattingChange (removeFormatting) {
+    this.setState({removeFormatting});
+  }
+
   handleFromVersionChange (version) {
     this._changeSelectedVersions(version, null);
   }
@@ -139,7 +144,6 @@ export default class ChangeView extends React.Component {
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
      */
     const userCanAnnotate = this.props.user.canAnnotate || null;
-    const canRemoveFormatting = this._canRemoveFormatting();
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);
@@ -150,7 +154,11 @@ export default class ChangeView extends React.Component {
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
-          {canRemoveFormatting ? this.renderRemoveFormatting() : null}
+          <DiffSettings
+            diffType={this.state.diffType}
+            onRemoveFormattingChange={this.handleRemoveFormattingChange}
+            removeFormatting={this.state.removeFormatting}
+          />
         </div>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to}
@@ -262,20 +270,6 @@ export default class ChangeView extends React.Component {
     ];
   }
 
-  renderRemoveFormatting () {
-    return (
-      <label className="utilities__label">
-        <input
-          className="utilities__input"
-          checked={this.state.removeFormatting}
-          onChange={this._handleRemoveFormattingChange}
-          type="checkbox">
-        </input>
-        Remove formatting
-      </label>
-    );
-  }
-
   _toggleCollapsedView (event) {
     event.preventDefault();
     this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
@@ -371,17 +365,6 @@ export default class ChangeView extends React.Component {
           });
         }
       });
-  }
-
-  _handleRemoveFormattingChange () {
-    this.setState({
-      removeFormatting: !this.state.removeFormatting
-    });
-  }
-
-  _canRemoveFormatting () {
-    const diffType = this.state.diffType;
-    return (diffType === 'SIDE_BY_SIDE_RENDERED' || diffType === 'HIGHLIGHTED_RENDERED');
   }
 }
 
