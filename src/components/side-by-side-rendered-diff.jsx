@@ -18,10 +18,7 @@ import SandboxedHtml from './sandboxed-html';
  */
 export default class SideBySideRenderedDiff extends React.Component {
   render () {
-    let transformDocument = (x) => x;
-    if (this.props.removeFormatting) {
-      transformDocument = removeStyleAndScript;
-    }
+    const transformDocument = this.props.removeFormatting && removeStyleAndScript;
 
     return (
       <div className="side-by-side-render">
