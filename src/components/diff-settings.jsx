@@ -2,24 +2,26 @@ import React from 'react';
 
 /**
  * @typedef DiffSettingsProps
+ * @property {object} diffSettings
  * @property {string} diffType
- * @property {Function} onRemoveFormattingChange
- * @property {boolean} removeFormatting
+ * @property {Function} handleRemoveFormattingChange
  */
 
 /**
  *
  * @class DiffSettings
- * @extends {React.Component}
+ * @extends {React.PureComponent}
  * @param {DiffSettingsProps} props
 
  */
-export default class DiffSettings extends React.Component {
-  render () {
-    const handleChange = (event) => {
-      this.props.onRemoveFormattingChange(event.target.checked);
-    };
+export default class DiffSettings extends React.PureComponent {
+  constructor (props) {
+    super(props);
 
+    this._handleRemoveFormattingChange = this._handleRemoveFormattingChange.bind(this);
+  }
+
+  render () {
     const renderedDiffTypes = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
     if (!renderedDiffTypes.includes(this.props.diffType)) {
       return null;
@@ -28,13 +30,17 @@ export default class DiffSettings extends React.Component {
     return (
       <label className="utilities__label">
         <input
-          checked={this.props.removeFormatting}
+          checked={this.props.diffSettings.removeFormatting}
           className="utilities__input"
-          onChange={handleChange}
+          onChange={this._handleRemoveFormattingChange}
           type="checkbox">
         </input>
         Remove formatting
       </label>
     );
+  }
+
+  _handleRemoveFormattingChange (event) {
+    this.props.handleRemoveFormattingChange(event.target.checked);
   }
 }

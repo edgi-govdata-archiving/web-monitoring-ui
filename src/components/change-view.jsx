@@ -47,8 +47,10 @@ export default class ChangeView extends React.Component {
       annotation: {},
       change: null,
       collapsedView: true,
+      diffSettings: {
+        removeFormatting: false,
+      },
       diffType: undefined,
-      removeFormatting: false,
       updating: false,
     };
 
@@ -123,7 +125,11 @@ export default class ChangeView extends React.Component {
   }
 
   handleRemoveFormattingChange (removeFormatting) {
-    this.setState({removeFormatting});
+    this.setState({
+      diffSettings: {
+        removeFormatting
+      }
+    });
   }
 
   handleFromVersionChange (version) {
@@ -155,14 +161,14 @@ export default class ChangeView extends React.Component {
         <div className="utilities">
           <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
           <DiffSettings
+            diffSettings={this.state.diffSettings}
             diffType={this.state.diffType}
-            onRemoveFormattingChange={this.handleRemoveFormattingChange}
-            removeFormatting={this.state.removeFormatting}
+            handleRemoveFormattingChange={this.handleRemoveFormattingChange}
           />
         </div>
         {this.renderVersionSelector(page)}
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to}
-          removeFormatting={this.state.removeFormatting}/>
+          diffSettings={this.state.diffSettings}/>
       </div>
     );
   }
