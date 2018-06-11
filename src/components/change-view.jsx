@@ -1,14 +1,15 @@
+import AnnotationForm from './annotation-form';
+import DiffSettingsForm from './diff-settings-form';
+import {diffTypesFor} from '../constants/diff-types';
+import DiffView from './diff-view';
+import Loading from './loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import WebMonitoringDb from '../services/web-monitoring-db';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import AnnotationForm from './annotation-form';
-import DiffView from './diff-view';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
-import Loading from './loading';
 import VersionistaInfo from './versionista-info';
-import {diffTypesFor} from '../constants/diff-types';
+import WebMonitoringApi from '../services/web-monitoring-api';
+import WebMonitoringDb from '../services/web-monitoring-db';
 import {
   htmlType,
   mediaTypeForExtension,
@@ -38,16 +39,19 @@ const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
  */
 export default class ChangeView extends React.Component {
   constructor (props) {
-    super (props);
+    super(props);
 
     this.state = {
-      change: null,
-      annotation: {},
-      collapsedView: true,
-      diffType: undefined,
       addingToDictionary: false,
       addingToImportant: false,
-      updating: false
+      annotation: {},
+      change: null,
+      collapsedView: true,
+      diffSettings: {
+        removeFormatting: false,
+      },
+      diffType: undefined,
+      updating: false,
     };
 
     // TODO: unify this default state logic with componentWillReceiveProps
@@ -72,6 +76,7 @@ export default class ChangeView extends React.Component {
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
+    this.handleDiffSettingsChange = this.handleDiffSettingsChange.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);
@@ -119,6 +124,10 @@ export default class ChangeView extends React.Component {
     this.setState({diffType});
   }
 
+  handleDiffSettingsChange (diffSettings) {
+    this.setState({diffSettings});
+  }
+
   handleFromVersionChange (version) {
     this._changeSelectedVersions(version, null);
   }
@@ -145,9 +154,17 @@ export default class ChangeView extends React.Component {
     return (
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
-        <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+        <div className="utilities">
+          <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
+          <DiffSettingsForm
+            settings={this.state.diffSettings}
+            diffType={this.state.diffType}
+            onChange={this.handleDiffSettingsChange}
+          />
+        </div>
         {this.renderVersionSelector(page)}
-        <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to} />
+        <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to}
+          diffSettings={this.state.diffSettings}/>
       </div>
     );
   }

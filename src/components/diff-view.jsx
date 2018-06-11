@@ -17,6 +17,7 @@ import SideBySideRawVersions from './side-by-side-raw-versions';
  * @property {string} diffType
  * @property {Version} a
  * @property {Version} b
+ * @property {object} diffSettings
  */
 
 /**
@@ -121,11 +122,13 @@ export default class DiffView extends React.Component {
       );
     case diffTypes.HIGHLIGHTED_RENDERED.value:
       return (
-        <InlineRenderedDiff diffData={this.state.diffData} page={this.props.page} />
+        <InlineRenderedDiff diffData={this.state.diffData} page={this.props.page}
+          removeFormatting={this.props.diffSettings.removeFormatting}/>
       );
     case diffTypes.SIDE_BY_SIDE_RENDERED.value:
       return (
-        <SideBySideRenderedDiff diffData={this.state.diffData} page={this.props.page} />
+        <SideBySideRenderedDiff diffData={this.state.diffData} page={this.props.page}
+          removeFormatting={this.props.diffSettings.removeFormatting}/>
       );
     case diffTypes.OUTGOING_LINKS.value:
       return (
