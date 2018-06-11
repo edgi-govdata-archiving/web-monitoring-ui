@@ -1,5 +1,5 @@
 import AnnotationForm from './annotation-form';
-import DiffSettings from './diff-settings';
+import DiffSettingsForm from './diff-settings-form';
 import {diffTypesFor} from '../constants/diff-types';
 import DiffView from './diff-view';
 import Loading from './loading';
@@ -156,7 +156,7 @@ export default class ChangeView extends React.Component {
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
-          <DiffSettings
+          <DiffSettingsForm
             settings={this.state.diffSettings}
             diffType={this.state.diffType}
             onChange={this.handleDiffSettingsChange}

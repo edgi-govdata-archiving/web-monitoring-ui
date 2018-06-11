@@ -4,7 +4,7 @@ import React from 'react';
 const typesWithFormatting = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
 
 /**
- * @typedef DiffSettingsProps
+ * @typedef DiffSettingsFormProps
  * @property {string} diffType The current diff type to render controls for
  * @property {object} settings An object containing the current diff settings
  * @property {(object) => any} onChange Called when the settings are changed
@@ -14,9 +14,9 @@ const typesWithFormatting = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
  * A form for changing settings related to a diff, like whether to remove
  * formatting from it.
  * @extends {React.PureComponent}
- * @param {DiffSettingsProps} props
+ * @param {DiffSettingsFormProps} props
  */
-export default class DiffSettings extends React.PureComponent {
+export default class DiffSettingsForm extends React.PureComponent {
   constructor (props) {
     super(props);
 
