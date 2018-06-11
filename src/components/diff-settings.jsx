@@ -1,18 +1,20 @@
 import React from 'react';
 
+// Diff types that we can remove formatting from
+const typesWithFormatting = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
+
 /**
  * @typedef DiffSettingsProps
- * @property {object} diffSettings
- * @property {string} diffType
- * @property {Function} handleRemoveFormattingChange
+ * @property {string} diffType The current diff type to render controls for
+ * @property {object} settings An object containing the current diff settings
+ * @property {(object) => any} onChange Called when the settings are changed
  */
 
 /**
- *
- * @class DiffSettings
+ * A form for changing settings related to a diff, like whether to remove
+ * formatting from it.
  * @extends {React.PureComponent}
  * @param {DiffSettingsProps} props
-
  */
 export default class DiffSettings extends React.PureComponent {
   constructor (props) {
@@ -22,15 +24,14 @@ export default class DiffSettings extends React.PureComponent {
   }
 
   render () {
-    const renderedDiffTypes = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
-    if (!renderedDiffTypes.includes(this.props.diffType)) {
+    if (!typesWithFormatting.includes(this.props.diffType)) {
       return null;
     }
 
     return (
       <label className="utilities__label">
         <input
-          checked={this.props.diffSettings.removeFormatting}
+          checked={this.props.settings.removeFormatting}
           className="utilities__input"
           onChange={this._handleRemoveFormattingChange}
           type="checkbox">
@@ -41,6 +42,8 @@ export default class DiffSettings extends React.PureComponent {
   }
 
   _handleRemoveFormattingChange (event) {
-    this.props.handleRemoveFormattingChange(event.target.checked);
+    this.props.onChange({
+      removeFormatting: event.target.checked
+    });
   }
 }

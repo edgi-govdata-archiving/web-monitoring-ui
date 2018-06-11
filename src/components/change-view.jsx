@@ -76,7 +76,7 @@ export default class ChangeView extends React.Component {
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
-    this.handleRemoveFormattingChange = this.handleRemoveFormattingChange.bind(this);
+    this.handleDiffSettingsChange = this.handleDiffSettingsChange.bind(this);
     this._toggleCollapsedView = this._toggleCollapsedView.bind(this);
     this._annotateChange = this._annotateChange.bind(this);
     this._updateAnnotation = this._updateAnnotation.bind(this);
@@ -124,12 +124,8 @@ export default class ChangeView extends React.Component {
     this.setState({diffType});
   }
 
-  handleRemoveFormattingChange (removeFormatting) {
-    this.setState({
-      diffSettings: {
-        removeFormatting
-      }
-    });
+  handleDiffSettingsChange (diffSettings) {
+    this.setState({diffSettings});
   }
 
   handleFromVersionChange (version) {
@@ -161,9 +157,9 @@ export default class ChangeView extends React.Component {
         <div className="utilities">
           <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
           <DiffSettings
-            diffSettings={this.state.diffSettings}
+            settings={this.state.diffSettings}
             diffType={this.state.diffType}
-            handleRemoveFormattingChange={this.handleRemoveFormattingChange}
+            onChange={this.handleDiffSettingsChange}
           />
         </div>
         {this.renderVersionSelector(page)}
