@@ -36,8 +36,7 @@
     "react-tooltip": "^3.3.0",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
-    "webpack-dev-middleware": "^2.0.3",
-    "zopfli-webpack-plugin": "^0.1.0"
+    "webpack-dev-middleware": "^2.0.3"
   },
   "scripts": {
     "build": "webpack",
