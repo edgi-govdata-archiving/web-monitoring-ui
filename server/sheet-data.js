@@ -1,6 +1,6 @@
 'use strict';
 
-const google = require('googleapis');
+const {google} = require('googleapis');
 const config = require('./configuration');
 const sheets = google.sheets('v4');
 const formatters = require('../src/scripts/formatters');
@@ -11,7 +11,7 @@ function getTaskSheetData (range) {
     range,
     spreadsheetId: configuration.GOOGLE_TASK_SHEET_ID
   })
-    .then(promisable(sheets.spreadsheets.values.get))
+    .then(query => sheets.spreadsheets.values.get(query))
     .catch(error => {
       console.error('GOOGLE API ERROR:', error);
       throw {
@@ -23,7 +23,7 @@ function getTaskSheetData (range) {
 function getDomains (username) {
   return getTaskSheetData('A2:ZZZ') // extreme range to get whole spreadsheet
     .then(response => {
-      const domains = findUserRecord(username, response.values) || [];
+      const domains = findUserRecord(username, response.data.values) || [];
       return {domains};
     });
 }
@@ -41,7 +41,7 @@ function getCurrentTimeframe (date) {
   return getTaskSheetData('Timeframes!A2:B')
     .then(response => {
       const now = date ? date.getTime() : Date.now();
-      const frame = findLatestTimeframe(response.values, now);
+      const frame = findLatestTimeframe(response.data.values, now);
 
       const intervals = Math.floor((now - frame.start) / frame.duration);
       const currentStart = frame.start + (intervals - 1) * frame.duration;
@@ -234,7 +234,7 @@ function appendRowToSheet(values, spreadsheetId, range = 'A3:ZZZ') {
     valueInputOption: 'RAW',
     insertDataOption: 'INSERT_ROWS'
   })
-    .then(promisable(sheets.spreadsheets.values.append));
+    .then(args => sheets.spreadsheets.values.append(args));
 }
 
 
@@ -278,23 +278,6 @@ function addAuthentication (requestData) {
       resolve(Object.assign({auth: authClient}, requestData));
     }
   });
-}
-
-/**
- * Convert a callback-based async function into a promise-based function.
- * @param {Function} functionWithCallback
- * @returns {Function} Function that returns a promise
- */
-function promisable (functionWithCallback) {
-  return (...input) => {
-    return new Promise((resolve, reject) => {
-      const callback = (error, result) => {
-        if (error) return reject(error);
-        resolve(result);
-      };
-      functionWithCallback.apply(null, [...input, callback]);
-    });
-  };
 }
 
 function formatDate (date) {
