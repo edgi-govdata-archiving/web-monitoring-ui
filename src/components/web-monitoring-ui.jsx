@@ -64,6 +64,8 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   afterLogin (user) {
+    // Clear page lists (they could have held not-logged-in errors)
+    this.setState({pages: null, assignedPages: null});
     this.hideLogin();
     this.loadPages(this.state.pageFilter);
   }
