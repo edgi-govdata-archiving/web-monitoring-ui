@@ -5260,9 +5260,9 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-aria-modal@^2.7.0:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/react-aria-modal/-/react-aria-modal-2.11.1.tgz#b82769f369223f634989728694c9eecacb0a8529"
+react-aria-modal@^2.12.3:
+  version "2.12.3"
+  resolved "https://registry.yarnpkg.com/react-aria-modal/-/react-aria-modal-2.12.3.tgz#6d8ea702c96682418d4cd1bf84f1b03fcc2dc36a"
   dependencies:
     focus-trap-react "^3.0.4"
     no-scroll "^2.0.0"
