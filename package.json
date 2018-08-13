@@ -23,7 +23,7 @@
     "eslint-plugin-react": "^7.1.0",
     "extract-loader": "^2.0.1",
     "fetch-mock": "^6.5.2",
-    "file-loader": "^1.1.6",
+    "file-loader": "^1.1.11",
     "husky": "^0.14.3",
     "jest": "^23.4.2",
     "postcss-loader": "^2.0.10",
