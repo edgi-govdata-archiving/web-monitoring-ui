@@ -35,7 +35,8 @@
     "react-test-renderer": "^15.5.4",
     "react-tooltip": "^3.3.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
-    "webpack": "^3.10.0",
+    "webpack": "^4.16.5",
+    "webpack-command": "^0.4.1",
     "webpack-dev-middleware": "^2.0.3",
     "zopfli-webpack-plugin": "^0.1.0"
   },
