@@ -1,8 +1,6 @@
 const autoprefixer = require('autoprefixer');
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ZopfliPlugin = require('zopfli-webpack-plugin');
-const webpack = require('webpack');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -18,6 +16,7 @@ function removeSrcDirectory (filePath) {
 
 module.exports = {
   context,
+  mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? 'source-map' : 'inline-source-map',
   entry: {
     'bundle': './src/scripts/main.jsx',
@@ -87,21 +86,12 @@ module.exports = {
       }
     ],
   },
-  plugins: [
-  ],
+  plugins: [],
 };
 
 // Production-specific additions
 if (isProduction) {
   module.exports.plugins.push(
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development'
-    }),
-    new UglifyJsPlugin({
-      test: /\.js$/i,
-      parallel: true,
-      sourceMap: true
-    }),
     new ZopfliPlugin({
       asset: '[path].gz[query]',
       test: /\.(js|css|svg|map)$/i
