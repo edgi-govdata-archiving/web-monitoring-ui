@@ -19,7 +19,7 @@
     "css-loader": "^1.0.0",
     "dotenv": "^4.0.0",
     "enzyme": "^2.8.2",
-    "eslint": "^4.3.0",
+    "eslint": "^5.4.0",
     "eslint-plugin-react": "^7.1.0",
     "extract-loader": "^2.0.1",
     "fetch-mock": "^6.5.2",
