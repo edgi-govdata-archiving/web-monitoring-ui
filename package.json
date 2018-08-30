@@ -32,7 +32,7 @@
     "react-aria-modal": "^2.12.3",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.1",
-    "react-test-renderer": "^15.5.4",
+    "react-test-renderer": "^16.4.2",
     "react-tooltip": "^3.3.0",
     "webpack": "^4.16.5",
     "webpack-command": "^0.4.1",
