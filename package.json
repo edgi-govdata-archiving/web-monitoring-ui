@@ -28,7 +28,7 @@
     "jest": "^23.4.2",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.5.10",
-    "react": "^15.5.4",
+    "react": "^16.4.2",
     "react-aria-modal": "^2.12.3",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.1",
