@@ -124,7 +124,7 @@ export default class WebMonitoringUi extends React.Component {
       });
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.loadUser();
   }
 

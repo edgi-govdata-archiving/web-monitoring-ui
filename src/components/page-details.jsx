@@ -21,6 +21,14 @@ const cutoffDate = '2016-11-01';
  * @param {PageDetailsProps} props
  */
 export default class PageDetails extends React.Component {
+  static getDerivedStateFromProps (props, state) {
+    // Clear existing content when switching pages
+    if (state.page && state.page.uuid !== props.match.params.pageId) {
+      return { page: null };
+    }
+    return null;
+  }
+
   constructor (props) {
     super(props);
     this.state = { page: null };
@@ -28,12 +36,9 @@ export default class PageDetails extends React.Component {
     this._navigateToChange = this._navigateToChange.bind(this);
   }
 
-  componentWillMount () {
-    this._loadPage(this.props.match.params.pageId);
-  }
-
   componentDidMount () {
     window.addEventListener('keydown', this);
+    this._loadPage(this.props.match.params.pageId);
   }
 
   componentWillUnmount () {
@@ -41,11 +46,11 @@ export default class PageDetails extends React.Component {
   }
 
   /**
-   * @param {PageDetailsProps} nextProps
+   * @param {PageDetailsProps} previousProps
    */
-  componentWillReceiveProps (nextProps) {
-    const nextPageId = nextProps.match.params.pageId;
-    if (nextPageId !== this.props.match.params.pageId) {
+  componentDidUpdate (previousProps) {
+    const nextPageId = this.props.match.params.pageId;
+    if (nextPageId !== previousProps.match.params.pageId) {
       this._loadPage(nextPageId);
     }
   }
@@ -228,9 +233,9 @@ export default class PageDetails extends React.Component {
     // TODO: handle the missing `.versions` collection problem better
     const fromList = this.props.pages && this.props.pages.find(
       (page) => page.uuid === pageId && !!page.versions);
-    
+
     /** HACK: To deal with the huge number of versions coming from Internet Archive,
-     * we're returning only versions captured after November 1, 2016 until we figure out a 
+     * we're returning only versions captured after November 1, 2016 until we figure out a
      * better solution. Probably an improved iteration of timeline idea:
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/pull/98
      * Issue outlined here: https://github.com/edgi-govdata-archiving/web-monitoring-db/issues/264

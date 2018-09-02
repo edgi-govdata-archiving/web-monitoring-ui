@@ -28,24 +28,37 @@ import SideBySideRawVersions from './side-by-side-raw-versions';
  * @param {DiffViewProps} props
  */
 export default class DiffView extends React.Component {
+  static getDerivedStateFromProps (props, state) {
+    // Clear out stale diff data before trying to render
+    if (!specifiesSameDiff(props, state.previousDiff)) {
+      return {
+        diffData: null,
+        previousDiff: { a: props.a, b: props.b, diffType: props.diffType }
+      };
+    }
+    return null;
+  }
+
   constructor (props) {
     super(props);
-    this.state = {diffData: null};
+    this._loadingDiff = null;
+    this.state = {
+      diffData: null,
+      previousDiff: null
+    };
   }
 
-  componentWillMount () {
-    const {props} = this;
-    if (this._canFetch(props)) {
+  componentDidMount () {
+    this._loadDiffIfNeeded(this.props);
+  }
+
+  componentDidUpdate () {
+    this._loadDiffIfNeeded(this.props);
+  }
+
+  _loadDiffIfNeeded (props) {
+    if (!this.state.diffData && this._canFetch(props)) {
       this._loadDiffData(props.page, props.a, props.b, props.diffType);
-    }
-  }
-
-  /**
-   * @param {DiffViewProps} nextProps
-   */
-  componentWillReceiveProps (nextProps) {
-    if (this._canFetch(nextProps) && !this._propsSpecifySameDiff(nextProps)) {
-      this._loadDiffData(nextProps.page, nextProps.a, nextProps.b, nextProps.diffType);
     }
   }
 
@@ -156,22 +169,6 @@ export default class DiffView extends React.Component {
   }
 
   /**
-   * Determine whether a set of props specifies the same diff as another set of
-   * props (or the current props, if omitted).
-   *
-   * @private
-   * @param {DiffViewProps} newProps The new props to check
-   * @param {DiffViewProps} [props=this.props] The current props to compare to
-   * @returns {boolean}
-   */
-  _propsSpecifySameDiff (newProps, props) {
-    props = props || this.props;
-    return props.a.uuid === newProps.a.uuid
-      && props.b.uuid === newProps.b.uuid
-      && props.diffType === newProps.diffType;
-  }
-
-  /**
    * Check whether this props object has everything needed to perform a fetch
    * @private
    * @param {DiffViewProps} props
@@ -182,11 +179,13 @@ export default class DiffView extends React.Component {
   }
 
   _loadDiffData (page, a, b, diffType) {
-    // TODO - this seems to be some sort of caching mechanism, would be smart to have this for diffs
-    // const fromList = this.props.pages && this.props.pages.find(
-    //     (page: Page) => page.uuid === pageId);
-    // Promise.resolve(fromList || this.context.api.getDiff(pageId, aId, bId, changeDiffTypes[diffType]))
-    this.setState({diffData: null});
+    // If this diff request is already in flight, just stop now.
+    const specifier = { a, b, diffType };
+    if (specifiesSameDiff(specifier, this._loadingDiff)) {
+      return;
+    }
+
+    this._loadingDiff = specifier;
     if (!diffTypes[diffType].diffService) {
       return Promise.all([
         fetch(a.uri, {mode: 'cors'}),
@@ -196,7 +195,10 @@ export default class DiffView extends React.Component {
           return {raw: true, rawA, rawB};
         })
         .catch(error => error)
-        .then(data => this.setState({diffData: data}));
+        .then(data => {
+          this._loadingDiff = specifier;
+          this.setState({ diffData: data });
+        });
     }
 
     this.context.api.getDiff(
@@ -209,10 +211,9 @@ export default class DiffView extends React.Component {
       .catch(error => {
         return error;
       })
-      .then((data) => {
-        this.setState({
-          diffData: data
-        });
+      .then(data => {
+        this._loadingDiff = specifier;
+        this.setState({ diffData: data });
       });
   }
 }
@@ -220,3 +221,19 @@ export default class DiffView extends React.Component {
 DiffView.contextTypes = {
   api: PropTypes.instanceOf(WebMonitoringDb),
 };
+
+/**
+ * Determine whether a set of props specifies the same diff as another set of
+ * props.
+ *
+ * @private
+ * @param {DiffViewProps} specifierA
+ * @param {DiffViewProps} specifierB
+ * @returns {boolean}
+ */
+function specifiesSameDiff (specifierA, specifierB) {
+  return specifierA && specifierB
+    && specifierA.a.uuid === specifierB.a.uuid
+    && specifierA.b.uuid === specifierB.b.uuid
+    && specifierA.diffType === specifierB.diffType;
+}
