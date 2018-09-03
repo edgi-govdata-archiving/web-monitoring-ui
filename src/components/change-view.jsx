@@ -38,6 +38,23 @@ const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
  * @param {ChangeViewProps} props
  */
 export default class ChangeView extends React.Component {
+  static getDerivedStateFromProps (props, state) {
+    // Ensure that the current diff type is relevant to the content we are
+    // comparing. If not, switch to a relevant type.
+    if (props.from && props.to) {
+      const relevantTypes = relevantDiffTypes(props.from, props.to, props.page);
+      if (!relevantTypes.find(type => type.value === state.diffType)) {
+        let diffType = relevantTypes[0].value;
+        if (relevantTypes.find(type => type.value === defaultDiffType)) {
+          diffType = defaultDiffType;
+        }
+        return { diffType };
+      }
+    }
+
+    return null;
+  }
+
   constructor (props) {
     super(props);
 
@@ -54,7 +71,7 @@ export default class ChangeView extends React.Component {
       updating: false,
     };
 
-    // TODO: unify this default state logic with componentWillReceiveProps
+    // TODO: unify this default state logic with getDerivedStateFromProps?
     const page = this.props.page;
     if (page.versions && page.versions.length > 1) {
       this.state.diffType = defaultDiffType;
@@ -84,34 +101,15 @@ export default class ChangeView extends React.Component {
     this._addToDictionary = this._addToDictionary.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this._getChange();
   }
 
-  componentWillReceiveProps (nextProps) {
-    const nextVersions = nextProps.page.versions;
-    if (nextVersions && nextVersions.length > 1) {
-      // TODO: is this correct? seems like we should be checking nextProps.from/to
-      this._getChange(nextVersions[1], nextVersions[0]);
+  componentDidUpdate (previousProps) {
+    if (this.props.from !== previousProps.from || this.props.to !== previousProps.to) {
+      this._getChange(this.props.from, this.props.to);
     }
 
-    if (nextProps.from && nextProps.to) {
-      // update the diff type
-      const relevantTypes = relevantDiffTypes(
-        nextProps.from,
-        nextProps.to,
-        nextProps.page);
-      if (!relevantTypes.find(type => type.value === this.state.diffType)) {
-        let diffType = relevantTypes[0].value;
-        if (relevantTypes.find(type => type.value === defaultDiffType)) {
-          diffType = defaultDiffType;
-        }
-        this.setState({diffType});
-      }
-    }
-  }
-
-  componentDidUpdate () {
     if ('sessionStorage' in window) {
       sessionStorage.setItem(
         collapsedViewStorage,

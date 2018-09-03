@@ -1,12 +1,12 @@
 /* eslint-env jest */
 
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {mount} from 'enzyme';
 import SandboxedHtml from '../sandboxed-html';
 
 describe('sandboxed-html', () => {
   it('renders an iframe with a sandbox attribute', () => {
-    const sandbox = shallow(<SandboxedHtml />);
+    const sandbox = mount(<SandboxedHtml />);
     const frame = sandbox.find('iframe').first();
     expect(frame).toBeDefined();
     expect(frame.props().sandbox).toBeTruthy();
