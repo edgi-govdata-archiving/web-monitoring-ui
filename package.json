@@ -30,7 +30,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-aria-modal": "^2.12.3",
-    "react-dom": "^15.5.4",
+    "react-dom": "^16.3.3",
     "react-router-dom": "^4.1.1",
     "react-test-renderer": "^15.5.4",
     "react-tooltip": "^3.3.0",
