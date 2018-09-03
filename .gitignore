@@ -103,3 +103,4 @@ archives/.idea/
 .vscode/
 .DS_Store
 dist
+scratch*
