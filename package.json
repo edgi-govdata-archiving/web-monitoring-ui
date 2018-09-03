@@ -18,7 +18,7 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^1.0.0",
     "dotenv": "^4.0.0",
-    "enzyme": "^2.8.2",
+    "enzyme": "^3.5.0",
     "eslint": "^5.4.0",
     "eslint-plugin-react": "^7.1.0",
     "extract-loader": "^2.0.1",
