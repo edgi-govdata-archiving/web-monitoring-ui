@@ -21,7 +21,7 @@
     "enzyme": "^2.8.2",
     "eslint": "^5.5.0",
     "eslint-plugin-react": "^7.1.0",
-    "extract-loader": "^2.0.1",
+    "extract-loader": "^3.0.0",
     "fetch-mock": "^6.5.2",
     "file-loader": "^1.1.11",
     "husky": "^0.14.3",
