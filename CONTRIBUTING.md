@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-We love improvements to our tools! EDGI has general [guidelines for contributing](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) to all of our organizational repos.
+We love improvements to our tools! EDGI has general [guidelines for contributing](https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md) and a [code of conduct](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md) for all of our organizational repos.
 
 
 ## Submitting Web Monitoring Issues
@@ -38,8 +38,8 @@ Recommend BEM as much as possible (as opposed to OOCSS, SMACSS, ITCSS).
 2. Lifecycle methods
 3. Public methods, usually passed as props to child components
 4. Render
-5. Additional render methods 
-6. Private 
+5. Additional render methods
+6. Private
 7. Utility functions outside of class definition -- these are useful only to the class so not worth pulling out into a file. They are not dependent on having a context. We neither use 'this' in the function, and calling 'this.utility' is wordy.
 
 
