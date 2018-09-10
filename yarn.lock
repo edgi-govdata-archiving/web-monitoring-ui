@@ -3077,7 +3077,7 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-google-auth-library@^1.4.0:
+google-auth-library@^1.6.0:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-1.6.1.tgz#9c73d831ad720c0c3048ab89d0ffdec714d07dd2"
   dependencies:
@@ -3096,15 +3096,23 @@ google-p12-pem@^1.0.0:
     node-forge "^0.7.4"
     pify "^3.0.0"
 
-googleapis@^32.0.0:
-  version "32.0.0"
-  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-32.0.0.tgz#04795d1956568546bb3e3cca3cae29a759326493"
+googleapis-common@^0.2.0:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/googleapis-common/-/googleapis-common-0.2.1.tgz#d4332d47fcdc93a89160a6fca79d630e5a138f7f"
   dependencies:
-    google-auth-library "^1.4.0"
+    axios "^0.18.0"
+    google-auth-library "^1.6.0"
     pify "^3.0.0"
     qs "^6.5.2"
     url-template "^2.0.8"
     uuid "^3.2.1"
+
+googleapis@^33.0.0:
+  version "33.0.0"
+  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-33.0.0.tgz#9963391eb93d63ea0e3810148eb27371e3a36862"
+  dependencies:
+    google-auth-library "^1.6.0"
+    googleapis-common "^0.2.0"
 
 got@^6.7.1:
   version "6.7.1"
