@@ -1,5 +1,5 @@
 import React from 'react';
-import {removeStyleAndScript} from '../scripts/html-transforms';
+import {removeStyleAndScript, loadSubresourcesFromWayback, compose} from '../scripts/html-transforms';
 import SandboxedHtml from './sandboxed-html';
 
 /**
@@ -7,6 +7,7 @@ import SandboxedHtml from './sandboxed-html';
  * @property {DiffData} diffData Object containing diff to render and its metadata
  * @property {Page} page The page this diff pertains to
  * @property {boolean} removeFormatting
+ * @property {boolean} useWaybackResources
  */
 
 /**
@@ -19,7 +20,13 @@ import SandboxedHtml from './sandboxed-html';
 export default class InlineRenderedDiff extends React.Component {
   render () {
     const diff = this.props.diffData.combined || this.props.diffData.diff;
-    const transformDocument = this.props.removeFormatting && removeStyleAndScript;
+    const transformDocument = compose(
+      this.props.removeFormatting && removeStyleAndScript,
+      this.props.useWaybackResources && loadSubresourcesFromWayback(
+        this.props.page,
+        diff
+      )
+    );
 
     return (
       <div className="inline-render">

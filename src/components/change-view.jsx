@@ -66,6 +66,7 @@ export default class ChangeView extends React.Component {
       collapsedView: true,
       diffSettings: {
         removeFormatting: false,
+        useWaybackResources: true,
       },
       diffType: undefined,
       updating: false,
