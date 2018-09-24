@@ -28,11 +28,16 @@ export default class PageList extends React.Component {
       return <Loading />;
     }
 
+    let results;
+
     if (this.props.pages instanceof Error) {
-      return this.renderError(`Could not load pages: ${this.props.pages.message}`);
+      results = this.renderError(`Could not load pages: ${this.props.pages.message}`);
     }
     else if (this.props.pages.length === 0) {
-      return this.renderError('You don’t have any assigned pages.', 'warning');
+      results = this.renderError('There were no page results.', 'warning');
+    }
+    else {
+      results = this.renderPages();
     }
 
     return (
@@ -44,17 +49,23 @@ export default class PageList extends React.Component {
             onChange={this._didSearch}
           />
         </div>
-        <div className="row">
-          <div className="col-md-12">
-            <table className="page-list table">
-              <thead>
-                {this.renderHeader()}
-              </thead>
-              <tbody>
-                {this.props.pages.map(page => this.renderRow(page))}
-              </tbody>
-            </table>
-          </div>
+        {results}
+      </div>
+    );
+  }
+
+  renderPages () {
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          <table className="page-list table">
+            <thead>
+              {this.renderHeader()}
+            </thead>
+            <tbody>
+              {this.props.pages.map(page => this.renderRow(page))}
+            </tbody>
+          </table>
         </div>
       </div>
     );
