@@ -28,14 +28,12 @@ export default class PageList extends React.Component {
       return <Loading />;
     }
 
-    if (this.props.pages instanceof Error) {
-      return this.renderError(`Could not load pages: ${this.props.pages.message}`);
-    }
-
-    const noPages = this.props.pages.length === 0;
     let results;
 
-    if (noPages) {
+    if (this.props.pages instanceof Error) {
+      results = this.renderError(`Could not load pages: ${this.props.pages.message}`);
+    }
+    else if (this.props.pages.length === 0) {
       results = this.renderError('There were no page results.', 'warning');
     }
     else {
