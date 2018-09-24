@@ -26,7 +26,7 @@
     "fetch-mock": "^6.5.2",
     "file-loader": "^1.1.11",
     "husky": "^0.14.3",
-    "jest": "^23.5.0",
+    "jest": "^23.6.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
