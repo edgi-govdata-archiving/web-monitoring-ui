@@ -63,14 +63,14 @@ export default class VersionistaInfo extends React.Component {
       'Versionista stores only 50 versions: The latest 49 and the first captured version.');
 
     switch (datesWithoutDiff.length) {
-    case 0:
-      return null;
-    case 1:
-      return <span>Version from <strong>{datesWithoutDiff[0]}</strong> is no longer in Versionista. {tooltip}</span>;
-    case 2:
-      return <span>Both versions are no longer in Versionista. {tooltip}</span>;
-    default:
-      return <span>Something unexpected happened. Please inform developers with link to this page.</span>;
+      case 0:
+        return null;
+      case 1:
+        return <span>Version from <strong>{datesWithoutDiff[0]}</strong> is no longer in Versionista. {tooltip}</span>;
+      case 2:
+        return <span>Both versions are no longer in Versionista. {tooltip}</span>;
+      default:
+        return <span>Something unexpected happened. Please inform developers with link to this page.</span>;
     }
   }
 
