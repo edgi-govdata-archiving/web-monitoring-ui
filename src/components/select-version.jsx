@@ -23,7 +23,7 @@ export default class SelectVersion extends React.PureComponent {
     const options = versions.map(version => {
       return (
         <option key={version.uuid} value={version.uuid}>
-          {dateFormatter.format(version.capture_time)}
+          {dateFormatter.format(version.capture_time)}{sourceLabel(version)}
         </option>
       );
     });
@@ -34,5 +34,13 @@ export default class SelectVersion extends React.PureComponent {
         {options}
       </select>
     );
+  }
+}
+
+function sourceLabel (version) {
+  switch (version.source_type) {
+    case 'versionista':      return ' (V)';
+    case 'internet_archive': return ' (IA)';
+    default:                 return '';
   }
 }
