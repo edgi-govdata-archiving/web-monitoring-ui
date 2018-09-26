@@ -1,11 +1,18 @@
 import React from 'react';
-import {removeStyleAndScript, loadSubresourcesFromWayback, compose} from '../scripts/html-transforms';
+
+import {
+  removeStyleAndScript,
+  loadSubresourcesFromWayback,
+  compose
+} from '../scripts/html-transforms';
 import SandboxedHtml from './sandboxed-html';
 
 /**
  * @typedef {Object} InlineRenderedDiffProps
  * @property {DiffData} diffData Object containing diff to render and its metadata
  * @property {Page} page The page this diff pertains to
+ * @property {Version} a The "A" version of the page this diff pertains to
+ * @property {Version} b The "B" version of the page this diff pertains to
  * @property {boolean} removeFormatting
  * @property {boolean} useWaybackResources
  */
@@ -24,7 +31,7 @@ export default class InlineRenderedDiff extends React.Component {
       this.props.removeFormatting && removeStyleAndScript,
       this.props.useWaybackResources && loadSubresourcesFromWayback(
         this.props.page,
-        diff
+        this.props.b
       )
     );
 

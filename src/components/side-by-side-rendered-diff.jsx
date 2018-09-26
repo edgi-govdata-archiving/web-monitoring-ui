@@ -1,5 +1,9 @@
 import React from 'react';
-import {removeStyleAndScript, loadSubresourcesFromWayback, compose} from '../scripts/html-transforms';
+import {
+  removeStyleAndScript,
+  loadSubresourcesFromWayback,
+  compose
+} from '../scripts/html-transforms';
 import SandboxedHtml from './sandboxed-html';
 
 /**
@@ -9,7 +13,7 @@ import SandboxedHtml from './sandboxed-html';
  * @property {Version} a The "A" version of the page this diff pertains to
  * @property {Version} b The "B" version of the page this diff pertains to
  * @property {boolean} removeFormatting
- * @proprety {boolean} useWaybackResources
+ * @property {boolean} useWaybackResources
  */
 
 /**
