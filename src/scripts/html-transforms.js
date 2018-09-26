@@ -29,7 +29,15 @@ export function removeStyleAndScript (document) {
 }
 
 /**
+ * Creates a transform that will rewrite subresource URLs to point to the
+ * Wayback Machine. This is useful when we have snapshots of the page itself,
+ * but not its subresources. It won't always work (Wayback won't always have
+ * a snapshot of the subresource from a similar point in time), but it'll work
+ * a lot better than just pointing to the original URL, which might be missing
+ * or significantly altered by the time a diff is viewed.
  *
+ * Note this *creates* the transform and is not the transform itself (because
+ * the transform must be custom to a particular source URL and point in time).
  * @param {WebMonitoringDb.Page} page
  * @param {WebMonitoringDb.Version} version
  */
@@ -39,6 +47,12 @@ export function loadSubresourcesFromWayback (page, version) {
     document.querySelectorAll('link[rel="stylesheet"]').forEach(node => {
       node.href = createWaybackUrl(node.getAttribute('href'), timestamp, page.url);
     });
+    document.querySelectorAll('script[src],img[src]').forEach(node => {
+      node.src = createWaybackUrl(node.getAttribute('src'), timestamp, page.url);
+    });
+    // TODO: handle <picture> with all its subelements
+    // TODO: SVG <use> directives
+    // TODO: video/audio (similar structure to <picture>)
 
     return document;
   };
