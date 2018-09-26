@@ -3,6 +3,9 @@ import React from 'react';
 // Diff types that we can remove formatting from
 const typesWithFormatting = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
 
+// Shallow-merge multiple objects
+const mergeObjects = (...objects) => Object.assign({}, ...objects);
+
 /**
  * @typedef DiffSettingsFormProps
  * @property {string} diffType The current diff type to render controls for
@@ -20,7 +23,7 @@ export default class DiffSettingsForm extends React.PureComponent {
   constructor (props) {
     super(props);
 
-    this._handleRemoveFormattingChange = this._handleRemoveFormattingChange.bind(this);
+    this._handleCheckboxChange = this._handleCheckboxChange.bind(this);
   }
 
   render () {
@@ -29,21 +32,36 @@ export default class DiffSettingsForm extends React.PureComponent {
     }
 
     return (
-      <label className="utilities__label">
-        <input
-          checked={this.props.settings.removeFormatting}
-          className="utilities__input"
-          onChange={this._handleRemoveFormattingChange}
-          type="checkbox">
-        </input>
-        Remove formatting
-      </label>
+      <form>
+        <label className="utilities__label">
+          <input
+            checked={this.props.settings.removeFormatting}
+            className="utilities__input"
+            name="removeFormatting"
+            onChange={this._handleCheckboxChange}
+            type="checkbox">
+          </input>
+          Remove formatting
+        </label>
+
+        <label className="utilities__label">
+          <input
+            checked={this.props.settings.useWaybackResources}
+            className="utilities__input"
+            name="useWaybackResources"
+            onChange={this._handleCheckboxChange}
+            type="checkbox">
+          </input>
+          Load Resources from Wayback Machine
+        </label>
+      </form>
     );
   }
 
-  _handleRemoveFormattingChange (event) {
-    this.props.onChange({
-      removeFormatting: event.target.checked
-    });
+  _handleCheckboxChange (event) {
+    const field = event.target.name;
+    this.props.onChange(mergeObjects(this.props.settings, {
+      [field]: event.target.checked
+    }));
   }
 }
