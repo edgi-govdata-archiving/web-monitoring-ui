@@ -39,8 +39,8 @@ export default class SelectVersion extends React.PureComponent {
 
 function sourceLabel (version) {
   switch (version.source_type) {
-    case 'versionista':      return ' (V)';
-    case 'internet_archive': return ' (IA)';
+    case 'versionista':      return ' (Versionista)';
+    case 'internet_archive': return ' (Wayback)';
     default:                 return '';
   }
 }
