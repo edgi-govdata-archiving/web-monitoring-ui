@@ -127,52 +127,52 @@ export default class DiffView extends React.Component {
     // in the future (e.g. inline vs. side-by-side text), we need a better
     // way to ensure we use the correct rendering and avoid race conditions
     switch (this.props.diffType) {
-    case diffTypes.RAW_SIDE_BY_SIDE.value:
-      return (
-        <SideBySideRawVersions {...commonProps} />
-      );
-    case diffTypes.RAW_FROM_CONTENT.value:
-      return (
-        <RawVersion page={this.props.page} version={this.props.a} content={this.state.diffData.rawA} />
-      );
-    case diffTypes.RAW_TO_CONTENT.value:
-      return (
-        <RawVersion page={this.props.page} version={this.props.b} content={this.state.diffData.rawB} />
-      );
-    case diffTypes.HIGHLIGHTED_RENDERED.value:
-      return (
-        <InlineRenderedDiff {...commonProps}
-          removeFormatting={this.props.diffSettings.removeFormatting}
-          useWaybackResources={this.props.diffSettings.useWaybackResources} />
-      );
-    case diffTypes.SIDE_BY_SIDE_RENDERED.value:
-      return (
-        <SideBySideRenderedDiff {...commonProps}
-          removeFormatting={this.props.diffSettings.removeFormatting}
-          useWaybackResources={this.props.diffSettings.useWaybackResources} />
-      );
-    case diffTypes.OUTGOING_LINKS.value:
-      return (
-        <InlineRenderedDiff {...commonProps} />
-      );
-    case diffTypes.HIGHLIGHTED_TEXT.value:
-      return (
-        <HighlightedTextDiff diffData={this.state.diffData} className='diff-text-inline' />
-      );
-    case diffTypes.HIGHLIGHTED_SOURCE.value:
-      return (
-        <HighlightedTextDiff diffData={this.state.diffData} className='diff-source-inline' />
-      );
-    case diffTypes.CHANGES_ONLY_TEXT.value:
-      return (
-        <ChangesOnlyDiff diffData={this.state.diffData} className='diff-text-inline' />
-      );
-    case diffTypes.CHANGES_ONLY_SOURCE.value:
-      return (
-        <ChangesOnlyDiff diffData={this.state.diffData} className='diff-source-inline' />
-      );
-    default:
-      return null;
+      case diffTypes.RAW_SIDE_BY_SIDE.value:
+        return (
+          <SideBySideRawVersions {...commonProps} />
+        );
+      case diffTypes.RAW_FROM_CONTENT.value:
+        return (
+          <RawVersion page={this.props.page} version={this.props.a} content={this.state.diffData.rawA} />
+        );
+      case diffTypes.RAW_TO_CONTENT.value:
+        return (
+          <RawVersion page={this.props.page} version={this.props.b} content={this.state.diffData.rawB} />
+        );
+      case diffTypes.HIGHLIGHTED_RENDERED.value:
+        return (
+          <InlineRenderedDiff {...commonProps}
+            removeFormatting={this.props.diffSettings.removeFormatting}
+            useWaybackResources={this.props.diffSettings.useWaybackResources} />
+        );
+      case diffTypes.SIDE_BY_SIDE_RENDERED.value:
+        return (
+          <SideBySideRenderedDiff {...commonProps}
+            removeFormatting={this.props.diffSettings.removeFormatting}
+            useWaybackResources={this.props.diffSettings.useWaybackResources} />
+        );
+      case diffTypes.OUTGOING_LINKS.value:
+        return (
+          <InlineRenderedDiff {...commonProps} />
+        );
+      case diffTypes.HIGHLIGHTED_TEXT.value:
+        return (
+          <HighlightedTextDiff diffData={this.state.diffData} className='diff-text-inline' />
+        );
+      case diffTypes.HIGHLIGHTED_SOURCE.value:
+        return (
+          <HighlightedTextDiff diffData={this.state.diffData} className='diff-source-inline' />
+        );
+      case diffTypes.CHANGES_ONLY_TEXT.value:
+        return (
+          <ChangesOnlyDiff diffData={this.state.diffData} className='diff-text-inline' />
+        );
+      case diffTypes.CHANGES_ONLY_SOURCE.value:
+        return (
+          <ChangesOnlyDiff diffData={this.state.diffData} className='diff-source-inline' />
+        );
+      default:
+        return null;
     }
   }
 
