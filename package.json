@@ -15,7 +15,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.1.5",
-    "babel-loader": "^8.0.1",
+    "babel-loader": "^8.0.4",
     "css-loader": "^1.0.0",
     "dotenv": "^6.0.0",
     "enzyme": "^3.5.0",
