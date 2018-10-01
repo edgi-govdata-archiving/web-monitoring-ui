@@ -35,7 +35,7 @@
     "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.5.2",
     "react-tooltip": "^3.8.4",
-    "webpack": "^4.16.5",
+    "webpack": "^4.20.2",
     "webpack-command": "^0.4.1",
     "webpack-dev-middleware": "^3.2.0",
     "zopfli-webpack-plugin": "^0.1.0"
