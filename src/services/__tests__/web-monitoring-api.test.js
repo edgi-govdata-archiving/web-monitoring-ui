@@ -22,7 +22,7 @@ describe('WebMonitoringApi', () => {
   });
 
   afterEach(() => {
-    fetch.restore();
+    fetch.reset();
   });
 
   test('getCurrentTimeframe() returns parsed data', () => {
