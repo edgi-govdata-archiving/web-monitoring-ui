@@ -32,7 +32,6 @@ function createErrorHandler (response) {
     response.status(error.status || 500).json(errorData);
   };
 }
-
 if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
   app.use((request, response, next) => {
     if (request.secure || request.headers['x-forwarded-proto'] === 'https') {
@@ -79,6 +78,10 @@ else {
 app.set('views', path.join(__dirname, '../views'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
+
+app.get('/healthcheck', function(request, response) {
+  response.json({});
+});
 
 app.get('/api/domains/:username', function(request, response) {
   const username = request.params.username;
