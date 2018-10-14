@@ -1,6 +1,6 @@
 ### Baseline image for development/test/build ###
 # We require a lot of extras for building (Python, GCC) because of Node-Zopfli.
-FROM node:8.11.4 as dev
+FROM node:10.12.0 as dev
 MAINTAINER enviroDGI@gmail.com
 
 # apt-transport-https is needed to process yarn sources
@@ -39,7 +39,7 @@ RUN yarn run build-production
 ### Release Image ###
 # It might feel ridiculous to build up all the same things again, but the
 # resulting image is less than half the size!
-FROM node:8.11.4-slim as release
+FROM node:10.12.0-slim as release
 MAINTAINER enviroDGI@gmail.com
 
 # apt-transport-https is needed to process yarn sources

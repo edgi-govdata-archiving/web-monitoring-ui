@@ -62,7 +62,7 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "8.11.4"
+    "node": "10.12.0"
   },
   "browserslist": [
     "last 2 versions",
