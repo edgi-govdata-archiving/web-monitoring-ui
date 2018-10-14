@@ -1,6 +1,7 @@
 const autoprefixer = require('autoprefixer');
+const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
-const ZopfliPlugin = require('zopfli-webpack-plugin');
+const zopfli = require('node-zopfli-es');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -92,9 +93,15 @@ module.exports = {
 // Production-specific additions
 if (isProduction) {
   module.exports.plugins.push(
-    new ZopfliPlugin({
-      asset: '[path].gz[query]',
-      test: /\.(js|css|svg|map)$/i
+    new CompressionPlugin({
+      filename: '[path].gz[query]',
+      test: /\.(js|css|svg|map)$/i,
+      compressionOptions: {
+        numiterations: 15
+      },
+      algorithm (input, compressionOptions, callback) {
+        return zopfli.gzip(input, compressionOptions, callback);
+      }
     })
   );
 }
