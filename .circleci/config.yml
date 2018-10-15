@@ -41,7 +41,7 @@ workflows:
       - build:
           filters:
             branches:
-              ignore: master
+              ignore: release
 
   build-and-publish:
     jobs:
@@ -49,11 +49,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
-      - approve_docker_publish:
-          type: approval
-          requires:
-            - build
+                - release
       - publish_docker:
           requires:
-            - approve_docker_publish
+            - build
