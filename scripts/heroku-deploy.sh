@@ -23,7 +23,7 @@ else
     git checkout -b ${deployTo} ${deployFrom}
 fi
 
-yarn run build-production
+npm run build-production
 git add -f dist/bundle.* dist/css/* dist/img/* dist/sourceMaps/*
 git commit -m "Deploy heroku app"
 git push -f ${remote} ${deployTo}:master
