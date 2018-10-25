@@ -2,6 +2,7 @@ import AnnotationForm from './annotation-form';
 import DiffSettingsForm from './diff-settings-form';
 import {diffTypesFor} from '../constants/diff-types';
 import DiffView from './diff-view';
+import layeredStorage from '../scripts/layered-storage';
 import Loading from './loading';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,6 +20,7 @@ import {
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
+const diffSettingsStorage = 'edgi.wm.ui.diff_settings';
 
 /**
  * @typedef ChangeViewProps
@@ -64,10 +66,7 @@ export default class ChangeView extends React.Component {
       annotation: {},
       change: null,
       collapsedView: true,
-      diffSettings: {
-        removeFormatting: false,
-        useWaybackResources: true,
-      },
+      diffSettings: loadDiffSettings(),
       diffType: undefined,
       updating: false,
     };
@@ -125,6 +124,9 @@ export default class ChangeView extends React.Component {
 
   handleDiffSettingsChange (diffSettings) {
     this.setState({diffSettings});
+    if (diffSettings) {
+      saveDiffSettings(diffSettings);
+    }
   }
 
   handleFromVersionChange (version) {
@@ -424,4 +426,15 @@ function mediaTypeForVersion (version, page) {
 function mediaTypeForUrl (url) {
   const extension = url ? url.match(extensionExpression) : null;
   return extension && mediaTypeForExtension[extension[2]];
+}
+
+function loadDiffSettings () {
+  return layeredStorage.getItem(diffSettingsStorage) || {
+    removeFormatting: false,
+    useWaybackResources: true,
+  };
+}
+
+function saveDiffSettings (settings) {
+  layeredStorage.setItem(diffSettingsStorage, settings);
 }
