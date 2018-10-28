@@ -18,31 +18,27 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.12.0`
     - If you are using Windows, check out [Nodenv][nodenv] or any of [these alternatives][nvm-alternatives].
 
-2. [Install][yarn-install] the `yarn` package manager.
-    - Make sure to follow any special notes if you are using NVM or a similar tool to manage multiple Node.js installs (see above).
-
-3. Install node dependencies with `yarn`
+2. Install node dependencies with `npm`
 
     ```sh
-    yarn install
+    npm install
     ```
 
     *Note: you might need Python 2 and the g++ compiler (on OS X, Xcode command line tools includes g++; on Debian systems [like Ubuntu], it’s included in the `build-essential` package; on yum/dnf systems [like CentOS, RHEL, or Fedora] it’s available as `gcc-c++` and included in the `Development Tools` package group) in order to build & install `node-zopfli-es`, one of our dependencies. If you are also running [`web-monitoring-processing`](https://github.com/edgi-govdata-archiving/web-monitoring-processing) (which uses Python 3), tools like [Conda](https://conda.io/) or [Pyenv](https://github.com/pyenv/pyenv) can help you manage multiple versions of Python.*
 
-4. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
+3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
 
-5. Start the web server
+4. Start the web server
 
     ```sh
-    yarn run start
+    npm start
     ```
 
-6. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
+5. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
 
 [nodenv]: https://github.com/nodenv/nodenv
 [nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
 [nvm-install]: https://github.com/creationix/nvm#install-script
-[yarn-install]: https://yarnpkg.com/en/docs/install
 
 
 ## Running tests
@@ -50,13 +46,13 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 To run all tests once
 
 ```sh
-yarn test
+npm test
 ```
 
 while to start the test runner in watch mode
 
 ```sh
-yarn run test-watch
+npm run test-watch
 ```
 
 
@@ -169,7 +165,7 @@ To run tests via Docker:
 
 ```
 docker build -t envirodgi/ui:dev --target dev .
-docker run envirodgi/ui:dev yarn run test
+docker run envirodgi/ui:dev npm run test
 ```
 
 
