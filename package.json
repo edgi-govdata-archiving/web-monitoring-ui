@@ -15,6 +15,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.1.5",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.4",
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "^1.0.0",
@@ -28,6 +29,7 @@
     "file-loader": "^2.0.0",
     "husky": "^1.0.1",
     "jest": "^23.6.0",
+    "node-fetch": "^2.2.0",
     "node-zopfli-es": "^0.0.2",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
@@ -41,14 +43,11 @@
     "webpack-command": "^0.4.1",
     "webpack-dev-middleware": "^3.2.0"
   },
-  "resolutions": {
-    "babel-core": "7.0.0-bridge.0"
-  },
   "scripts": {
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
-    "precommit": "yarn run lint",
+    "precommit": "npm run lint",
     "start": "node server/app.js",
     "test": "jest --colors",
     "test-watch": "jest --watch"
