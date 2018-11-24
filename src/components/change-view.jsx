@@ -411,7 +411,8 @@ const extensionExpression = /^([^:]+:\/\/)?.*\/[^/]*(\.[^/]+)$/;
 
 function mediaTypeForVersion (version, page) {
   const contentType = version.content_type
-    || version.source_metadata.content_type;
+    || version.source_metadata.content_type
+    || version.source_metadata.mime_type;
 
   if (contentType) {
     return parseMediaType(contentType);
