@@ -32,9 +32,15 @@ function createErrorHandler (response) {
     response.status(error.status || 500).json(errorData);
   };
 }
+
+// If FORCE_SSL is true, redirect any non-SSL requests to https.
 if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
+  // The /healthcheck route is exempted, to allow liveness/readiness probes
+  // to make requests internal to a deployment (inside SSL termination).
+  const exemptPaths = /^\/healthcheck\/?$/;
+
   app.use((request, response, next) => {
-    if (request.secure || request.headers['x-forwarded-proto'] === 'https') {
+    if (request.secure || request.headers['x-forwarded-proto'] === 'https' || exemptPaths.test(request.path)) {
       return next();
     }
     response.redirect(
