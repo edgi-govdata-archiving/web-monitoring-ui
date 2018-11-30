@@ -14,8 +14,8 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 ## Installation
 
-1. Install Node v10.13.0
-    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.13.0`
+1. Install Node v10.14.1
+    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.14.1`
     - If you are using Windows, check out [Nodenv][nodenv] or any of [these alternatives][nvm-alternatives].
 
 2. Install node dependencies with `npm`
