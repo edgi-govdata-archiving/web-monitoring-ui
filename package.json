@@ -30,7 +30,7 @@
     "husky": "^1.2.0",
     "jest": "^23.6.0",
     "node-fetch": "^2.2.0",
-    "node-zopfli-es": "^0.0.2",
+    "node-zopfli-es": "^1.0.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
