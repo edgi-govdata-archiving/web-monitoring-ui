@@ -41,7 +41,7 @@
     "react-tooltip": "^3.9.2",
     "webpack": "^4.28.3",
     "webpack-command": "^0.4.1",
-    "webpack-dev-middleware": "^3.2.0"
+    "webpack-dev-middleware": "^3.6.0"
   },
   "scripts": {
     "build": "webpack",
