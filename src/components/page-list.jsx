@@ -87,7 +87,7 @@ export default class PageList extends React.Component {
 
     return (
       <tr key={record.uuid} onClick={onClick}>
-        <td>{dateFormatter.format(record.latest.capture_time)}</td>
+        <td>{record.latest ? dateFormatter.format(record.latest.capture_time) : 'No saved versions'}</td>
         <td>{formatSites(record.tags)}</td>
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
