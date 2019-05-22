@@ -1,3 +1,5 @@
+[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md)
+
 # web-monitoring-ui
 
 This repository is part of the EDGI [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring).
@@ -14,8 +16,8 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 ## Installation
 
-1. Install Node v10.12.0
-    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.12.0`
+1. Install Node v10.14.1
+    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.14.1`
     - If you are using Windows, check out [Nodenv][nodenv] or any of [these alternatives][nvm-alternatives].
 
 2. Install node dependencies with `npm`
