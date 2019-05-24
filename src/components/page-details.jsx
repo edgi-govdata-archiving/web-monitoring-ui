@@ -5,7 +5,7 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 import Loading from './loading';
 
-const cutoffDate = '2016-11-01';
+const cutoffDate = '2000-01-01';
 
 /**
  * @typedef {Object} PageDetailsProps
