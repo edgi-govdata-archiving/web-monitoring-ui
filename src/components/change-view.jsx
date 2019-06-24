@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
-import VersionistaInfo from './versionista-info';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import {
@@ -156,7 +155,6 @@ export default class ChangeView extends React.Component {
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
-          <VersionistaInfo versions={this.props.page.versions} from={this.props.from} to={this.props.to}/>
           <DiffSettingsForm
             settings={this.state.diffSettings}
             diffType={this.state.diffType}

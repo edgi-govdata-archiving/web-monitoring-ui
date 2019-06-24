@@ -10,7 +10,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://monitoring-staging.envirodatagov.org)
     * LIST VIEW shows first page of records from [web-monitor-db](https://api-staging.monitoring.envirdatagov.org/api/v0/pages) JSON endpoint
-    * PAGE VIEW shows basic info about the latest version of that page: site, URLs, and links to Versionista diffs
+    * PAGE VIEW shows basic info about the latest version of that page: site and URLs
         * updates annotations
 
 
