@@ -18,7 +18,6 @@ html,
 }
 
 .container-page-view > .row,
-.versionista-info,
 .version-selector {
   flex: 0 0 auto;
 }
@@ -461,7 +460,8 @@ iframe {
 /* ===== Utilities ====== */
 .utilities {
   display: flex;
-  justify-content: space-between;
+  /* TODO: change this back to space-between when wayback link is added */
+  justify-content: flex-end;
   margin-top: 1rem;
 }
 
@@ -473,10 +473,6 @@ iframe {
 
 .utilities__input[type="checkbox"] {
   margin: 0 0.5rem;
-}
-
-.versionista-info i {
-  margin-left: 0.5em;
 }
 
 /* ===== Environment Banner ====== */

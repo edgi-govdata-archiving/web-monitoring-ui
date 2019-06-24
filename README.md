@@ -10,14 +10,14 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://monitoring-staging.envirodatagov.org)
     * LIST VIEW shows first page of records from [web-monitor-db](https://api-staging.monitoring.envirdatagov.org/api/v0/pages) JSON endpoint
-    * PAGE VIEW shows basic info about the latest version of that page: site, URLs, and links to Versionista diffs
+    * PAGE VIEW shows basic info about the latest version of that page: site and URLs
         * updates annotations
 
 
 ## Installation
 
-1. Install Node v10.14.1
-    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.14.1`
+1. Install Node v10.15.3
+    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 10.15.3`
     - If you are using Windows, check out [Nodenv][nodenv] or any of [these alternatives][nvm-alternatives].
 
 2. Install node dependencies with `npm`
@@ -190,10 +190,12 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
+| [💻](# "Code") | [Ben Sheldon](https://github.com/bensheldon) |
 | [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
 | [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
 | [💻](# "Code") | [Michelle Truong](https://github.com/fendatr) |
 | [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
+| [⚠️](# "Tests") | [Sarah Yu](https://github.com/SYU15) |
 | [💻](# "Code") [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->

@@ -6,28 +6,28 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "ejs": "^2.5.5",
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "googleapis": "^39.2.0",
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
+    "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.5.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.5",
     "compression-webpack-plugin": "^2.0.0",
-    "css-loader": "^1.0.0",
+    "css-loader": "^2.1.1",
     "dotenv": "^6.0.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react": "^7.13.0",
     "extract-loader": "^3.1.0",
     "fetch-mock": "^7.3.0",
     "file-loader": "^3.0.1",
-    "husky": "^2.1.0",
+    "husky": "^2.3.0",
     "jest": "^24.0.0",
     "node-fetch": "^2.2.0",
     "node-zopfli-es": "^1.0.1",
@@ -63,7 +63,7 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "10.14.1"
+    "node": "10.15.3"
   },
   "browserslist": [
     "last 2 versions",
