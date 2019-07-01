@@ -20,7 +20,7 @@
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "^2.1.1",
     "dotenv": "^6.0.0",
-    "enzyme": "^3.9.0",
+    "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.10.0",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.13.0",
