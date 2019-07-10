@@ -18,7 +18,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
     "compression-webpack-plugin": "^2.0.0",
-    "css-loader": "^2.1.1",
+    "css-loader": "^3.0.0",
     "dotenv": "^6.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.10.0",
