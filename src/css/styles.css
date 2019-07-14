@@ -38,6 +38,14 @@ body {
   margin-right: 0.5em;
 }
 
+.fa--right-icon {
+  margin-left: 0.5em;
+}
+
+.fa--no-hover:hover {
+  text-decoration: none;
+}
+
 /* ===== Containers ===== */
 .container-list-view,
 .container-page-view {
@@ -460,9 +468,9 @@ iframe {
 /* ===== Utilities ====== */
 .utilities {
   display: flex;
-  /* TODO: change this back to space-between when wayback link is added */
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .utilities__label {
@@ -473,6 +481,21 @@ iframe {
 
 .utilities__input[type="checkbox"] {
   margin: 0 0.5rem;
+}
+
+/* ===== Source Info ====== */
+.source-info__list {
+  padding: 0;
+  list-style: none;
+}
+
+.source-info__list-item {
+  display: inline;
+}
+
+.source-info__list-link {
+  color: black;
+  font-weight: bold;
 }
 
 /* ===== Environment Banner ====== */
