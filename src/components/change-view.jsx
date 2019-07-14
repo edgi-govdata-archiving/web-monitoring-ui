@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
+import SourceInfo from './source-info';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import {
@@ -58,7 +59,6 @@ export default class ChangeView extends React.Component {
 
   constructor (props) {
     super(props);
-
     this.state = {
       addingToDictionary: false,
       addingToImportant: false,
@@ -155,6 +155,11 @@ export default class ChangeView extends React.Component {
       <div className="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
+          <SourceInfo
+            from={this.props.from}
+            to={this.props.to}
+            pageUrl={this.props.page.url}
+          />
           <DiffSettingsForm
             settings={this.state.diffSettings}
             diffType={this.state.diffType}
