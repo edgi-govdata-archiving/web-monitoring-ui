@@ -49,6 +49,11 @@ export default class PageDetails extends React.Component {
    * @param {PageDetailsProps} previousProps
    */
   componentDidUpdate (previousProps) {
+    if (this.state.page){
+      document.title = `web-monitoring-ui | ${this.state.page.title}`;
+    }else{
+      document.title = 'web-monitoring-ui';
+    }
     const nextPageId = this.props.match.params.pageId;
     if (nextPageId !== previousProps.match.params.pageId) {
       this._loadPage(nextPageId);
