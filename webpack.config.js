@@ -9,7 +9,7 @@ const context = __dirname;
 
 function removeSrcDirectory (filePath) {
   let relativePath = path.relative(context, filePath);
-  if (relativePath.startsWith('src/')) {
+  if (relativePath.startsWith('src' + path.sep)) {
     relativePath = relativePath.slice(4);
   }
   return relativePath;
