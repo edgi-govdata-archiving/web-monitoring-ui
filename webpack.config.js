@@ -1,7 +1,7 @@
 const autoprefixer = require('autoprefixer');
 const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
-const zopfli = require('node-zopfli-es');
+const zopfli = require('@gfx/zopfli');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -9,7 +9,7 @@ const context = __dirname;
 
 function removeSrcDirectory (filePath) {
   let relativePath = path.relative(context, filePath);
-  if (relativePath.startsWith('src/')) {
+  if (relativePath.startsWith('src' + path.sep)) {
     relativePath = relativePath.slice(4);
   }
   return relativePath;

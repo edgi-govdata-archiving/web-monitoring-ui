@@ -10,7 +10,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://monitoring-staging.envirodatagov.org)
     * LIST VIEW shows first page of records from [web-monitor-db](https://api-staging.monitoring.envirdatagov.org/api/v0/pages) JSON endpoint
-    * PAGE VIEW shows basic info about the latest version of that page: site and URLs
+    * PAGE VIEW shows basic info about the latest version of that page: site, URLs and links to Wayback Machine calendar view and page versions
         * updates annotations
 
 
@@ -25,8 +25,6 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     ```sh
     npm install
     ```
-
-    *Note: you might need Python 2 and the g++ compiler (on OS X, Xcode command line tools includes g++; on Debian systems [like Ubuntu], it’s included in the `build-essential` package; on yum/dnf systems [like CentOS, RHEL, or Fedora] it’s available as `gcc-c++` and included in the `Development Tools` package group) in order to build & install `node-zopfli-es`, one of our dependencies. If you are also running [`web-monitoring-processing`](https://github.com/edgi-govdata-archiving/web-monitoring-processing) (which uses Python 3), tools like [Conda](https://conda.io/) or [Pyenv](https://github.com/pyenv/pyenv) can help you manage multiple versions of Python.*
 
 3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
 
