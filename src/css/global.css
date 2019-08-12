@@ -1,0 +1,13 @@
+/* Put styles to be applied globally here */
+
+:global(.fa) {
+  margin-right: 0.5em;
+}
+  
+:global(.fa-right-icon) {
+  margin-left: 0.5em;
+}
+
+:global(.fa-no-hover:hover) {
+  text-decoration: none;
+}
