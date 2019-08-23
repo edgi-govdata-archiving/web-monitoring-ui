@@ -49,6 +49,40 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        // Exclude legacy CSS from CSS modules pipeline
+        exclude: [
+          path.resolve(__dirname, 'src/css/styles.css'),
+          path.resolve(__dirname, 'src/css/diff.css')
+        ],
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+              },
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              plugins: [
+                autoprefixer()
+              ]
+            },
+          },
+        ],
+      },
+      // TODO: remove this entire pipeline when all legacy CSS is refactored
+      {
+        test: /\.css$/,
+        // Only process legacy CSS files
+        include: [
+          path.resolve(__dirname, 'src/css/styles.css'),
+          path.resolve(__dirname, 'src/css/diff.css')
+        ],
         use: [
           {
             loader: 'file-loader',

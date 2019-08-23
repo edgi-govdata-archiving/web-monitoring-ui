@@ -1,4 +1,5 @@
 import React from 'react';
+import './source-info.css';
 
 /**
  * @typedef SourceInfo
@@ -24,14 +25,14 @@ export default class SourceInfo extends React.Component {
   render () {
     const waybackCalendarUrl = `https://web.archive.org/web/*/${this.props.pageUrl}`;
     const waybackCalendarLink = (
-      <li className="source-info__list-item" key={waybackCalendarUrl}>
+      <li styleName="source-info-list-item" key={waybackCalendarUrl}>
         <a
-          className="source-info__list-link"
+          styleName="source-info-link"
           href={waybackCalendarUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className="fa fa-calendar fa--no-hover" aria-hidden="true" />
+          <i className="fa fa-calendar fa-no-hover" aria-hidden="true" />
           Wayback Machine calendar view
         </a>
       </li>
@@ -40,15 +41,15 @@ export default class SourceInfo extends React.Component {
 
     if (this.props.from.source_metadata.view_url) {
       const fromLink = (
-        <li className="source-info__list-item" key={this.props.from.source_metadata.view_url}>
+        <li styleName="source-info-list-item" key={this.props.from.source_metadata.view_url}>
           <span aria-hidden="true"> | </span>
           <a 
-            className="source-info__list-link"
+            styleName="source-info-link"
             href={this.props.from.source_metadata.view_url}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fa fa-arrow-left fa--no-hover" aria-hidden="true" />
+            <i className="fa fa-arrow-left fa-no-hover" aria-hidden="true" />
             {sourceTypeName[this.props.from.source_type]} previous page version
           </a>
         </li>
@@ -59,16 +60,16 @@ export default class SourceInfo extends React.Component {
 
     if (this.props.to.source_metadata.view_url) {
       const toLink = (
-        <li className="source-info__list-item" key={this.props.to.source_metadata.view_url}>
+        <li styleName="source-info-list-item" key={this.props.to.source_metadata.view_url}>
           <span aria-hidden="true"> | </span>
           <a
-            className="source-info__list-link"
+            styleName="source-info-link"
             href={this.props.to.source_metadata.view_url}
             target="_blank"
             rel="noopener noreferrer"
           >
             {sourceTypeName[this.props.to.source_type]} next page version
-            <i className="fa fa-arrow-right fa--right-icon fa--no-hover" aria-hidden="true" />
+            <i className="fa fa-arrow-right fa-right-icon fa-no-hover" aria-hidden="true" />
           </a>
         </li>
       );
@@ -78,7 +79,7 @@ export default class SourceInfo extends React.Component {
     
     return (
       <aside>
-        <ol className="source-info__list">
+        <ol styleName="source-info-list">
           {links}
         </ol>
       </aside>

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SelectDiffType from './select-diff-type';
 import SelectVersion from './select-version';
-import SourceInfo from './source-info';
+import SourceInfo from './source-info/source-info';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import {
