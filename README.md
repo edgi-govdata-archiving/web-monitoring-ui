@@ -34,7 +34,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     npm start
     ```
 
-5. (Optional) Set up Google Sheets for user tasking, saving important changes and repeated, “dictionary” changes. If you skip this step, everything will work fine, but your UI will show all pages when logged in, not just your assigned pages. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
+5. (Optional) Set up Google Sheets for saving important changes and repeated, “dictionary” changes. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
 
 [nodenv]: https://github.com/nodenv/nodenv
 [nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
@@ -63,7 +63,7 @@ Screenshot:
 ![screenshot](screenshot.png)
 
 
-## Google Sheets (Tasking and Significant Changes)
+## Google Sheets (Significant Changes)
 
 The analysis UI keeps some data and runtime configuration separate from the public web monitoring database ([`web-monitoring-db`](http://github.com/edgi-govdata-archiving/web-monitoring-db)). This data is kept in 3 Google Docs spreadsheets. You can use the UI without configuring them, but you will be missing some functionality.
 
@@ -74,28 +74,7 @@ GOOGLE_SERVICE_CLIENT_EMAIL=73874number-example@developer.gserviceaccount.com
 GOOGLE_SHEETS_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\EXAMPLEExampleG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCsBjS7qpN+vUhz\nXRhcL3pwKZtewjZ478rs7FylT+YAJMmy1wOS3ze2FVYaBHelloFromXm9gL82OCSJn1ZThePastuwGA0\npe9oZSAtiB4ujaHhcWCO7ZYZzBvsPRJZR2eo4UokDpmgAS9ExTU7zN+eKTBTFGB4\nKDc7FAxqhk9dBcYFpLU34wuQsS/SZY1j3I/pmqQ7CHnGG+KLhyRiZ6UvlT8KjWejWTFdfMoredksjfGibberishkljfkls+\nkerGibberishll7\n7oU0VVs3xY5nhkjd#r34jkd7vxjknfy3jsdhf5zjkGYfyXFNhVjsl/bJ3AHA/C9Fd5z9JmOCsZE\nyD9Yjy72C50CjOgCp568pse85A==\n-----END PRIVATE KEY-----\n
 ```
 
-In the next two sections, you’ll create the 3 sheets.
-
-
-### Creating Tasking Sheets
-
-User tasking data (analysis timeframes, who is assigned what domains and pages, etc.) is currently kept in a Google Docs spreadsheet for easy manipulation by project admins. To enable tasking in your local build, you’ll need to create your own copy of this spreadsheet.
-
-You can start off by making a copy of [this example tasking sheet](https://docs.google.com/spreadsheets/d/1l5TAoJBbX6xV7ZYF9g5TnryJ4-SsatXvb-6cWuTMW5A/). Otherwise, you can create one from scratch: create a spreadsheet in Google Docs. It should have two worksheets or tabs, named:
-
-1. `Tasks` (this should be the first tab)
-2. `Timeframes`
-
-**The `Tasks` sheet** should be formatted such that the first column is a list of usernames/e-mail addresses. The rest of the columns in that row are the names of domains that the user in the first column is assigned (one domain per column). Domains are the `site` attribute of a page in [the API](https://api.monitoring.envirodatagov.org). The first row is reserved for column headers. The sheet might look like:
-
-| A | B | C |
-| - | - | - |
-| User/e-mail              | Site                | Site                 | Etc.          |
-| someone@example.com      | DOT - fhwa.dot.gov  | EPA - epa.gov        |               |
-| someone.else@example.com | EPA - epa.gov/arc-x | GAO - Climate Change | DOI - fws.gov |
-| learner@example.com      | DOI - blm.gov       |                      |               |
-
-In this case, someone@example.com is assigned two domains, while learner@example.com is assigned only one. There can be any number of columns on each row.
+In the next two sections, you’ll create the 2 sheets.
 
 **The `Timeframes` sheet** holds information about analysis timeframes. The analysis team currently works on changes in 3-day chunks and this sheet lets you define when those chunks start and end. It should have exactly two columns. The first is a date (in ISO 8601 format) that a timeframe starts on. The second is the duration of that timeframe in seconds (e.g. `259200` for 3 days). Timeframes are assumed to repeat until a new timeframe is started. Like `tasks`, the first row is reserved for column headers. This sheet might look like:
 

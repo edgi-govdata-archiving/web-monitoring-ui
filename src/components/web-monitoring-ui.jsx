@@ -19,7 +19,6 @@ const api = new WebMonitoringDb({
 });
 
 const localApi = new WebMonitoringApi(api);
-
 /**
  * WebMonitoringUi represents the root container for the app. It also maintains
  * a top-level lsit of pages to share across the app. We do this here instead
@@ -34,9 +33,7 @@ export default class WebMonitoringUi extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      assignedPages: null,
       isLoading: true,
-      pageFilter: '', // keeps track of which set of pages we are looking at
       pages: null,
       search: null,
       showLogin: false,
@@ -47,12 +44,7 @@ export default class WebMonitoringUi extends React.Component {
     this.afterLogin = this.afterLogin.bind(this);
     this.logOut = this.logOut.bind(this);
     this.loadPages = this.loadPages.bind(this);
-    this.setPageFilter = this.setPageFilter.bind(this);
     this.search = this.search.bind(this);
-  }
-
-  setPageFilter (filter) {
-    this.setState({pageFilter: filter});
   }
 
   showLogin () {
@@ -65,9 +57,9 @@ export default class WebMonitoringUi extends React.Component {
 
   afterLogin (user) {
     // Clear page lists (they could have held not-logged-in errors)
-    this.setState({pages: null, assignedPages: null});
+    this.setState({pages: null});
     this.hideLogin();
-    this.loadPages(this.state.pageFilter);
+    this.loadPages();
   }
 
   logOut () {
@@ -78,19 +70,17 @@ export default class WebMonitoringUi extends React.Component {
 
   search (query) {
     this.setState({search: query});
-    this.loadPages(this.state.pageFilter);
+    this.loadPages();
   }
 
   /**
-   * Load pages depending on whether we want all pages or assigned pages.
+   * Load all pages.
    * @private
-   * @param {string} pageFilter Must be either 'assignedPages' or 'pages'
    *
-   * Sends a requests out to either db-api or localApi for pages and sets
-   * corresponding `assignedPages` or `pages` property of state and `pageFilter`.
+   * Sends a requests out to localApi for pages and sets `pages` property of state.
    * These are passed as props to various child components.
    */
-  loadPages (pageFilter) {
+  loadPages () {
     api.isLoggedIn()
       .then(loggedIn => {
         if (!loggedIn) {
@@ -98,21 +88,14 @@ export default class WebMonitoringUi extends React.Component {
         }
 
         const query = Object.assign({include_latest: true}, this.state.search);
-        if (pageFilter === 'assignedPages') {
-          return localApi.getPagesForUser(api.userData.email, null, query);
-        }
-        else {
-          return api.getPages(query);
-        }
+        
+        return api.getPages(query);
       })
       // Set state.pages = error; downstream code should check `pages` type.
       .catch(error => error)
       .then(pages => {
-        // TODO: differentiate between having no assignments (pages == null)
-        // and having no changes to your assigned pages (pages == [])
         this.setState({
-          [pageFilter]: pages || [],
-          pageFilter
+          pages: pages || []
         });
       });
   }
@@ -141,11 +124,11 @@ export default class WebMonitoringUi extends React.Component {
       return this.renderLoginDialog();
     }
 
-    const withData = (ComponentType, pageType) => {
+    const withData = (ComponentType) => {
       return (routeProps) => {
-        const pages = this.state[pageType];
+        const pages = this.state.pages;
         if (!pages) {
-          this.loadPages(pageType);
+          this.loadPages();
         }
         return <ComponentType
           {...routeProps}
@@ -165,26 +148,16 @@ export default class WebMonitoringUi extends React.Component {
             user={this.state.user}
             showLogin={this.showLogin}
             logOut={this.logOut}
-            pageFilter={this.state.pageFilter}
-            setPageFilter={this.setPageFilter}
           >
             <EnvironmentBanner apiUrl={api.url}/>
           </NavBar>
-          <Route exact path="/" render={() => {
-            if (this.state.user) {
-              return <Redirect to="/assignedPages" />;
-            } else {
-              return <Redirect to="/pages" />;
-            }
-          }}/>
-          <Route path="/pages" render={withData(PageList, 'pages')} />
-          <Route path="/assignedPages" render={withData(PageList, 'assignedPages')} />
+          <Route exact path="/" render={() => <Redirect to="/pages" />}/>
+          <Route path="/pages" render={withData(PageList)} />
           <Route path="/page/:pageId/:change?" render={(routeProps) =>
             <PageDetails
               {...routeProps}
               user={this.state.user}
-              pageFilter={this.state.pageFilter}
-              pages={this.state[this.state.pageFilter]}
+              pages={this.state.pages}
             />
           }/>
           <Route path="/version/:versionId" component={VersionRedirect} />
