@@ -30,7 +30,7 @@ ES6 and above is allowed. A feature is allowed if it has been formally published
 
 #### CSS Methodologies:
 
-Recommend BEM as much as possible (as opposed to OOCSS, SMACSS, ITCSS).
+This project uses [CSS Modules](https://github.com/css-modules/css-modules) with the majority of the classes scoped at the component level. There is a `global.css` file to put classes that should be applied sitewide.
 
 
 #### Organization of React files:

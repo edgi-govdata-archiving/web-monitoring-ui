@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import SourceInfo from '../source-info';
+import SourceInfo from '../source-info/source-info';
 
 describe('source-info', () => {
   const noViewUrl = {

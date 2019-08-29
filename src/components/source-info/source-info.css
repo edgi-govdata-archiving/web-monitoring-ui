@@ -1,0 +1,13 @@
+.source-info-list {
+  padding: 0;
+  list-style: none;
+}
+  
+.source-info-list-item {
+  display: inline;
+}
+  
+.source-info-link {
+  color: black;
+  font-weight: bold;
+}

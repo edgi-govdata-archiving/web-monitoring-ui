@@ -4,6 +4,7 @@
   "description": "web-monitoring-ui",
   "main": "views/main.html",
   "dependencies": {
+    "babel-plugin-react-css-modules": "^5.2.6",
     "body-parser": "^1.18.3",
     "ejs": "^2.5.5",
     "express": "^4.17.1",
@@ -23,8 +24,8 @@
     "dotenv": "^6.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.13.0",
+    "eslint": "^6.2.2",
+    "eslint-plugin-react": "^7.14.3",
     "extract-loader": "^3.1.0",
     "fetch-mock": "^7.3.9",
     "file-loader": "^3.0.1",
@@ -39,6 +40,7 @@
     "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.5.2",
     "react-tooltip": "^3.10.0",
+    "style-loader": "^1.0.0",
     "webpack": "^4.39.0",
     "webpack-command": "^0.4.1",
     "webpack-dev-middleware": "^3.6.0"
@@ -54,7 +56,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/file-mock.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/file-mock.js",
+      "\\.css$": "<rootDir>/src/__mocks__/identity-object.js"
     },
     "setupFilesAfterEnv": [
       "<rootDir>src/test-setup.js"

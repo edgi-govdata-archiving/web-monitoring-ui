@@ -1,5 +1,8 @@
 @import "./diff.css";
 
+/* NOTE: This is a legacy CSS file and should not have any new CSS added to it
+If you need to add a global style, add it in global.css */
+
 /* ===== Global ===== */
 html,
 #web-monitoring-ui-root {
@@ -32,18 +35,6 @@ body {
   background: #136a8a;
   background: linear-gradient(45deg, #136a8a, #267871);
   height: 100%;
-}
-
-.fa {
-  margin-right: 0.5em;
-}
-
-.fa--right-icon {
-  margin-left: 0.5em;
-}
-
-.fa--no-hover:hover {
-  text-decoration: none;
 }
 
 /* ===== Containers ===== */
@@ -481,21 +472,6 @@ iframe {
 
 .utilities__input[type="checkbox"] {
   margin: 0 0.5rem;
-}
-
-/* ===== Source Info ====== */
-.source-info__list {
-  padding: 0;
-  list-style: none;
-}
-
-.source-info__list-item {
-  display: inline;
-}
-
-.source-info__list-link {
-  color: black;
-  font-weight: bold;
 }
 
 /* ===== Environment Banner ====== */
