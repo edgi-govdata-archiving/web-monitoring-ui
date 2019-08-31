@@ -89,21 +89,6 @@ app.get('/healthcheck', function(request, response) {
   response.json({});
 });
 
-app.get('/api/domains/:username', function(request, response) {
-  const username = request.params.username;
-
-  sheetData.getDomains(username)
-    .then(data => response.json(data))
-    .catch(createErrorHandler(response));
-});
-
-app.get('/api/timeframe', function(request, response) {
-  const date = request.query.date && new Date(request.query.date);
-  sheetData.getCurrentTimeframe(date)
-    .then(data => response.json(data))
-    .catch(createErrorHandler(response));
-});
-
 function validateChangeBody (request, response, next) {
   const valid = request.body
     && request.body.page

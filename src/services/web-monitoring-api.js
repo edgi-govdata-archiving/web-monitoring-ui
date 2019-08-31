@@ -1,11 +1,4 @@
 /**
- * @typedef {Object} AnalysisTimeframe
- * @property {Date} start
- * @property {Date} end
- * @property {number} duration length of the timeframe in milliseconds
- */
-
-/**
  * Access the UI-specific tasking and management API
  * @class WebMonitoringApi
  * @param {WebMonitoringDb} dbApi Remote DB API instance to wrap
@@ -14,76 +7,6 @@ export default class WebMonitoringApi {
   constructor (dbApi) {
     /** @property {WebMonitoringDb} dbApi */
     this.dbApi = dbApi;
-  }
-
-  /**
-     * Get the current analysis timeframe a user should be working on.
-     * @returns {Promise<AnalysisTimeframe>}
-     */
-  getCurrentTimeframe () {
-    return fetch(`/api/timeframe?date=${new Date().toISOString()}`)
-      .then(response => response.json())
-      .then(timeframe => {
-        if (timeframe.error) {
-          throw new Error(timeframe.error);
-        }
-
-        return {
-          duration: timeframe.duration,
-          end: new Date(timeframe.end),
-          start: new Date(timeframe.start)
-        };
-      });
-  }
-
-  /**
-     * Get a list of domains assigned to a given user.
-     * @param {string} username
-     * @returns {Promise<string[]>}
-     */
-  getDomainsForUser (username) {
-    if (!username) {
-      return Promise.reject(new TypeError('The first argument to getDomainsForUser() must be a string.'));
-    }
-
-    const url = `/api/domains/${username}`;
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          throw new Error(data.error);
-        }
-
-        return data.domains;
-      });
-  }
-
-  /**
-     * Get a list of pages a user should analyze based on their assigned
-     * domains and the analysis timeframe.
-     *
-     * This promise can resolve to an array of pages OR to `null`, which
-     * indicates the user has no assigned pages to monitor (an empty array of
-     * pages means none of their pages were updated in the given timeframe).
-     *
-     * @param {string} username
-     * @param {AnalysisTimeframe} [timeframe] If omitted, defaults to current
-     * @param {object} [query] Additional query options for getting pages
-     * @returns {Promise<Page[]>}
-     */
-  getPagesForUser (username, timeframe, query = {}) {
-    const domainsRequest = this.getDomainsForUser(username);
-    const timeframeRequest = Promise.resolve(timeframe || this.getCurrentTimeframe());
-
-    return Promise.all([domainsRequest, timeframeRequest])
-      .then(([domains, timeframe]) => {
-        if (domains.length === 0) return null;
-        return this._getPagesByDomains(
-          domains,
-          this._dateRangeString(timeframe),
-          query
-        );
-      });
   }
 
   /**
@@ -154,26 +77,5 @@ export default class WebMonitoringApi {
         'X-Requested-With': 'XMLHttpRequest'
       })
     });
-  }
-
-  _getPagesByDomains (domains, dateRange, extraQuery) {
-    const query = Object.assign({
-      tags: domains.map(domain => `site:${domain}`)
-    }, extraQuery);
-    if (dateRange) {
-      query.capture_time = dateRange;
-    }
-    return this.dbApi.getPages(query);
-  }
-
-  _dateRangeString (timeframe) {
-    if (!timeframe) {
-      return null;
-    }
-
-    let range = timeframe.start ? timeframe.start.toISOString() : '';
-    range += '..';
-    range +=  timeframe.end ?  timeframe.end.toISOString() : '';
-    return range;
   }
 }
