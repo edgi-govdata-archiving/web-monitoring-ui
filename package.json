@@ -49,10 +49,14 @@
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
-    "precommit": "npm run lint",
     "start": "node server/app.js",
     "test": "jest --colors",
     "test-watch": "jest --watch"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "jest": {
     "moduleNameMapper": {
