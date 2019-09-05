@@ -31,10 +31,9 @@ export function removeStyleAndScript (document) {
 
 // Add target="_blank" to <a>tags
 export function addTargetBlank (document) {
-  console.log('hey now', document)
   document.querySelectorAll('a').forEach(node => {
-    node.setAttribute("target", "_blank");
-  })
+    node.setAttribute('target', '_blank');
+  });
   return document;
 }
 
