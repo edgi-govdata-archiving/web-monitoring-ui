@@ -31,7 +31,7 @@ export default class SandboxedHtml extends React.PureComponent {
 
   render () {
     return <iframe
-      sandbox="allow-forms allow-scripts"
+      sandbox="allow-forms allow-scripts allow-popups"
       ref={frame => this._frame = frame}
     />;
   }

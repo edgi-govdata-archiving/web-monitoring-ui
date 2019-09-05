@@ -5,7 +5,7 @@ export function compose (...transforms) {
   }
 
   return (input) => {
-    transforms.reduce((output, transform) => {
+    return transforms.reduce((output, transform) => {
       return transform(output);
     }, input);
   };
@@ -25,6 +25,16 @@ export function removeStyleAndScript (document) {
   // Inline style attributes
   document.querySelectorAll('[style]').forEach(node => node.removeAttribute('style'));
 
+  return document;
+}
+
+
+// Add target="_blank" to <a>tags
+export function addTargetBlank (document) {
+  console.log('hey now', document)
+  document.querySelectorAll('a').forEach(node => {
+    node.setAttribute("target", "_blank");
+  })
   return document;
 }
 
