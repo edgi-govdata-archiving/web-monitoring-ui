@@ -26,7 +26,7 @@ import SandboxedHtml from './sandboxed-html';
  */
 export default class SideBySideRenderedDiff extends React.Component {
   render () {
-    const baseTransform = this.props.removeFormatting && removeStyleAndScript;
+    const baseTransform = compose(this.props.removeFormatting && removeStyleAndScript, addTargetBlank);
     let transformA = baseTransform;
     let transformB = baseTransform;
     if (this.props.useWaybackResources) {
@@ -39,9 +39,6 @@ export default class SideBySideRenderedDiff extends React.Component {
         this.props.b
       ));
     }
-
-    transformA = compose(transformA, addTargetBlank);
-    transformB = compose(transformB, addTargetBlank);
 
     return (
       <div className="side-by-side-render">
