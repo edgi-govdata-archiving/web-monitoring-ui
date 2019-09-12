@@ -30,6 +30,7 @@ export default class SandboxedHtml extends React.PureComponent {
   }
 
   render () {
+    // 'allow-popups' is needed for addTargetBlank for html-transforms.js
     return <iframe
       sandbox="allow-forms allow-scripts allow-popups"
       ref={frame => this._frame = frame}
