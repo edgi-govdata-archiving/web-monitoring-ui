@@ -28,7 +28,12 @@ export function removeStyleAndScript (document) {
   return document;
 }
 
-
+/**
+ * Creates a transform that forces links in diffs to open in a new tab,
+ * not inside of diff.
+ * @param {HTMLDocument} document The html document to transform.
+ * @returns {HTMLDocument}
+ */
 // Add target="_blank" to <a>tags
 export function addTargetBlank (document) {
   document.querySelectorAll('a').forEach(node => {
