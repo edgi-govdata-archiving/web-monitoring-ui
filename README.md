@@ -65,7 +65,7 @@ Screenshot:
 
 ## Google Sheets (Significant Changes)
 
-The analysis UI keeps some data and runtime configuration separate from the public web monitoring database ([`web-monitoring-db`](http://github.com/edgi-govdata-archiving/web-monitoring-db)). This data is kept in 3 Google Docs spreadsheets. You can use the UI without configuring them, but you will be missing some functionality.
+The analysis UI keeps some data and runtime configuration separate from the public web monitoring database ([`web-monitoring-db`](http://github.com/edgi-govdata-archiving/web-monitoring-db)). This data is kept in 2 Google Docs spreadsheets. You can use the UI without configuring them, but you will be missing some functionality.
 
 First, you’ll need to create a *service account* the application can use to access the sheets. To do so, follow the first half of [this tutorial](http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/). During the process, you should have downloaded a `.json` file with authentication information. Add the `client_email` and `private_key` fields from the file to your `.env` file:
 
@@ -74,29 +74,7 @@ GOOGLE_SERVICE_CLIENT_EMAIL=73874number-example@developer.gserviceaccount.com
 GOOGLE_SHEETS_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\EXAMPLEExampleG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCsBjS7qpN+vUhz\nXRhcL3pwKZtewjZ478rs7FylT+YAJMmy1wOS3ze2FVYaBHelloFromXm9gL82OCSJn1ZThePastuwGA0\npe9oZSAtiB4ujaHhcWCO7ZYZzBvsPRJZR2eo4UokDpmgAS9ExTU7zN+eKTBTFGB4\nKDc7FAxqhk9dBcYFpLU34wuQsS/SZY1j3I/pmqQ7CHnGG+KLhyRiZ6UvlT8KjWejWTFdfMoredksjfGibberishkljfkls+\nkerGibberishll7\n7oU0VVs3xY5nhkjd#r34jkd7vxjknfy3jsdhf5zjkGYfyXFNhVjsl/bJ3AHA/C9Fd5z9JmOCsZE\nyD9Yjy72C50CjOgCp568pse85A==\n-----END PRIVATE KEY-----\n
 ```
 
-In the next two sections, you’ll create the 2 sheets.
-
-**The `Timeframes` sheet** holds information about analysis timeframes. The analysis team currently works on changes in 3-day chunks and this sheet lets you define when those chunks start and end. It should have exactly two columns. The first is a date (in ISO 8601 format) that a timeframe starts on. The second is the duration of that timeframe in seconds (e.g. `259200` for 3 days). Timeframes are assumed to repeat until a new timeframe is started. Like `tasks`, the first row is reserved for column headers. This sheet might look like:
-
-| A | B | C |
-| - | - | - |
-| Start Time           | Duration (seconds) | Comments |
-| 2017-01-20T04:00:00Z | 259200             |          |
-| 2017-04-20T04:00:00Z | 604800             | Take a breather for a few days and change to a 7-day period |
-| 2017-01-27T04:00:00Z | 259200             | Back to normal! |
-
-In this example, analysis started going in 3-day chunks from January through April 20th, but then switched to 7 days for a week, then back to 3-day chunks again.
-
-Finally, share the spreadsheet with the e-mail address of the service account you created earlier.
-
-Once you have the sheets created, update your `.env` file with ID of the sheet:
-
-```sh
-# ID of the Google Sheet we created above. For more on how to get the ID, see:
-# https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id
-GOOGLE_TASK_SHEET_ID=AIzaSyAChRujfXXXXXXXXMP5eouRRQ6bxV-1u_o
-```
-
+In the next section, you’ll create the 2 sheets.
 
 ### Important Changes and Dictionary Sheets
 
@@ -109,7 +87,7 @@ Two Google Docs spreadsheets are used to keep track of changes that users mark a
 
     Make note the of [sheet IDs](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) of your new spreadsheets.
 
-2) Share each of those sheets with the e-mail address of the service account you created earlier. You must give it **write** access.
+2) Share the spreadsheets with the e-mail address of the service account you created earlier. You must give it **write** access.
 
 3) Update your `.env` file with the IDs of the sheets:
 
