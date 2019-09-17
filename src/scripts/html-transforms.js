@@ -1,3 +1,9 @@
+/**
+ * Takes two transforms returns a new function that takes an html document,
+ * runs the two transforms functions on it, and returns the the resulting document.
+ * @param {array} ...transforms The html document to transform.
+ * @returns {HTMLDocument}
+ */
 export function compose (...transforms) {
   transforms = transforms.filter(transform => !!transform);
   if (transforms.length === 0) {
@@ -29,12 +35,13 @@ export function removeStyleAndScript (document) {
 }
 
 /**
- * Creates a transform that forces links in diffs to open in a new tab,
- * not inside of diff.
+ * Creates a transform that prevents navigation from within a diff. This is 
+ * needed so that diffs can still be compared correctly. Function forces
+ * links to open in a new tab when clicked instead of inside the iframe.
  * @param {HTMLDocument} document The html document to transform.
  * @returns {HTMLDocument}
  */
-// Add target="_blank" to <a>tags
+// Add target="_blank" to all <a>tags
 export function addTargetBlank (document) {
   document.querySelectorAll('a').forEach(node => {
     node.setAttribute('target', '_blank');
