@@ -2,7 +2,7 @@ import React from 'react';
 import './source-info.css';
 
 /**
- * @typedef SourceInfo
+ * @typedef SourceInfoProps
  * @property {Version} from
  * @property {Version} to
  * @property {String} pageUrl
@@ -43,7 +43,7 @@ export default class SourceInfo extends React.Component {
       const fromLink = (
         <li styleName="source-info-list-item" key={this.props.from.source_metadata.view_url}>
           <span aria-hidden="true"> | </span>
-          <a 
+          <a
             styleName="source-info-link"
             href={this.props.from.source_metadata.view_url}
             target="_blank"
@@ -54,7 +54,7 @@ export default class SourceInfo extends React.Component {
           </a>
         </li>
       );
-      
+
       links.push(fromLink);
     }
 
@@ -73,10 +73,10 @@ export default class SourceInfo extends React.Component {
           </a>
         </li>
       );
-      
+
       links.push(toLink);
     }
-    
+
     return (
       <aside>
         <ol styleName="source-info-list">
