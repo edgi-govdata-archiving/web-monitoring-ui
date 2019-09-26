@@ -28,13 +28,18 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
 
-4. Start the web server
+4. (Optional) Set up Google Sheets for saving important changes and repeated, “dictionary” changes. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
+
+5. Start the web server!
 
     ```sh
     npm start
     ```
 
-5. (Optional) Set up Google Sheets for saving important changes and repeated, “dictionary” changes. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
+    …and point your browser to http://localhost:3001 to view the app. If you haven't changed `WEB_MONITORING_DB_URL` in your `.env` file (step 3), you can log in with the public user credentials:
+
+    - Username: `public.access@envirodatagov.org`
+    - Password: `PUBLIC_ACCESS`
 
 [nodenv]: https://github.com/nodenv/nodenv
 [nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
