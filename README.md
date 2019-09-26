@@ -28,9 +28,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
 
-4. (Optional) Set up Google Sheets for saving important changes and repeated, “dictionary” changes. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
-
-5. Start the web server!
+4. Start the web server!
 
     ```sh
     npm start
@@ -40,6 +38,8 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
     - Username: `public.access@envirodatagov.org`
     - Password: `PUBLIC_ACCESS`
+
+5. (Optional) Set up Google Sheets for saving important changes and repeated, “dictionary” changes. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
 
 [nodenv]: https://github.com/nodenv/nodenv
 [nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
