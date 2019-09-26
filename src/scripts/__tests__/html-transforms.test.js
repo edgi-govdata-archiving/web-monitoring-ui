@@ -82,11 +82,11 @@ describe('HtmlTransforms module', () => {
       </body>
     </html>
     `,
-      "text/html"
+      'text/html'
     );
 
     document = addTargetBlank(document);
-    expect(document.getElementById("goo").target).toEqual("_blank");
-    expect(document.getElementById("orange").target).toBeFalsy();
+    expect(document.getElementById('goo').target).toEqual('_blank');
+    expect(document.getElementById('orange').target).toBeFalsy();
   });
 });
