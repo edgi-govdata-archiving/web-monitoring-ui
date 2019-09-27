@@ -1,17 +1,17 @@
-.environment-banner {
+.environment-banner-section {
     color: #333;
 }
 
-.environment-banner p {
+.environment-banner-title {
     display: inline-block;
     margin: 10px 0;
 }
 
-.environment-banner .close-x {
+.environment-banner-close-x {
     float: right;
     margin: 10px;
 }
 
-.environment-banner .close-x:hover {
+.environment-banner-close-x:hover {
     cursor: pointer;
 }

@@ -41,11 +41,11 @@ export default class EnvironmentBanner extends React.Component {
       && !this.state.dismissed;
 
     return showBanner ? (
-      <section styleName='environment-banner' className='bg-warning'>
+      <section styleName='environment-banner-section' className='bg-warning'>
         <div className='container-fluid'>
-          <p>Environment: {this.state.apiEnvironment}</p>
+          <p styleName='environment-banner-title'>Environment: {this.state.apiEnvironment}</p>
           {/* Uncomment to make dismissible
-          <div className='close-x' onClick={this.dismiss.bind(this)}>✕</div>
+          <div className='environment-banner-close-x' onClick={this.dismiss.bind(this)}>✕</div>
            */}
         </div>
       </section>
