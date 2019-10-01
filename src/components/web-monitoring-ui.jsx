@@ -9,7 +9,7 @@ import Loading from './loading';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
-import PageList from './page-list';
+import PageList from './page-list/page-list';
 import VersionRedirect from './version-redirect';
 
 const configuration = window.webMonitoringConfig;
