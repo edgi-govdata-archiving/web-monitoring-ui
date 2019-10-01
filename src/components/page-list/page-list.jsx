@@ -63,10 +63,10 @@ export default class PageList extends React.Component {
   renderHeader () {
     return (
       <tr>
-        <th data-name="capture-date">Capture Date</th>
-        <th data-name="site">Site</th>
-        <th data-name="page-name">Page Name</th>
-        <th data-name="url">URL</th>
+        <th styleName="page-list-th" data-name="capture-date">Capture Date</th>
+        <th styleName="page-list-th" data-name="site">Site</th>
+        <th styleName="page-list-th" data-name="page-name">Page Name</th>
+        <th styleName="page-list-th" data-name="url">URL</th>
       </tr>
     );
   }
@@ -75,11 +75,11 @@ export default class PageList extends React.Component {
     const onClick = this.didClickRow.bind(this, record);
 
     return (
-      <tr key={record.uuid} onClick={onClick}>
-        <td>{record.latest ? dateFormatter.format(record.latest.capture_time) : 'No saved versions'}</td>
-        <td>{formatSites(record.tags)}</td>
-        <td>{record.title}</td>
-        <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
+      <tr styleName="page-list-tbody-tr" key={record.uuid} onClick={onClick}>
+        <td styleName="page-list-td">{record.latest ? dateFormatter.format(record.latest.capture_time) : 'No saved versions'}</td>
+        <td styleName="page-list-td">{formatSites(record.tags)}</td>
+        <td styleName="page-list-td">{record.title}</td>
+        <td styleName="page-list-td"><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
       </tr>
     );
   }
