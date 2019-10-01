@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import PageList from '../page-list';
+import PageList from '../page-list/page-list';
 import React from 'react';
 import {shallow} from 'enzyme';
 import simplePages from '../../__mocks__/simple-pages.json';
