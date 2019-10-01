@@ -1,8 +1,8 @@
-import {dateFormatter, formatSites} from '../scripts/formatters';
-import Loading from './loading';
+import {dateFormatter, formatSites} from '../../scripts/formatters';
+import Loading from '../loading';
 import React from 'react';
-import SearchBar from './search-bar/search-bar';
-
+import SearchBar from '../search-bar/search-bar';
+import './page-list.css';
 /**
  * These props also inherit from React Router's RouteComponent props
  * @typedef {Object} PageListProps
