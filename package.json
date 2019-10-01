@@ -6,7 +6,7 @@
   "dependencies": {
     "babel-plugin-react-css-modules": "^5.2.6",
     "body-parser": "^1.18.3",
-    "ejs": "^2.5.5",
+    "ejs": "^2.7.1",
     "express": "^4.17.1",
     "googleapis": "^42.0.0",
     "request": "^2.88.0"
