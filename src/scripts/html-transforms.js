@@ -24,7 +24,7 @@ export function compose (...transforms) {
 }
 
 /**
- * Takes an html document, removes allthe stylesheets and scripts from
+ * Takes an html document, removes all the stylesheets and scripts from
  * the document. If any of them have a class or id that starts with 'wm-', 
  * it keeps them as an exception. 
  * Returns the resulting document.
