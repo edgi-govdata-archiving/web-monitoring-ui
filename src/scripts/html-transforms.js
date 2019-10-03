@@ -1,8 +1,15 @@
 /**
- * Takes two transforms returns a new function that takes an html document,
- * runs the two transforms functions on it, and returns the the resulting document.
- * @param {array} ...transforms The html document to transform.
- * @returns {HTMLDocument}
+ * HtmlTransforms are functions that take an HTML Document and modify it in
+ * some useful way, such as removing scripts.
+ @typedef {(document: HTMLDocument) => HTMLDocument} HtmlTransform
+ */
+
+/**
+ * Takes several transforms and returns a new function that takes an html document,
+ * runs the transform functions on it, and returns the resulting document.
+ * @param {...HtmlTransform}
+ * transforms The html document to combine.
+ * @returns {HtmlTransform}
  */
 export function compose (...transforms) {
   transforms = transforms.filter(transform => !!transform);
@@ -33,7 +40,7 @@ export function removeStyleAndScript (document) {
 
   return document;
 }
-
+ 
 /**
  * Creates a transform that prevents navigation from within a diff. This is 
  * needed so that diffs can still be compared correctly. Function forces
