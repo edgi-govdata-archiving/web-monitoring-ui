@@ -7,8 +7,7 @@
 /**
  * Takes several transforms and returns a new function that takes an html document,
  * runs the transform functions on it, and returns the resulting document.
- * @param {...HtmlTransform}
- * transforms The html document to combine.
+ * @param {...HtmlTransform} The transforms to combine.
  * @returns {HtmlTransform}
  */
 export function compose (...transforms) {
@@ -24,6 +23,14 @@ export function compose (...transforms) {
   };
 }
 
+/**
+ * Takes an html document, removes allthe stylesheets and scripts from
+ * the document. If any of them have a class or id that starts with 'wm-', 
+ * it keeps them as an exception. 
+ * Returns the resulting document.
+ * @param {HTMLDocument} The html document to change.
+ * @returns {HTMLDocument}
+ */
 export function removeStyleAndScript (document) {
   // Stylesheets and scripts
   document.querySelectorAll('link[rel="stylesheet"], style, script').forEach(node => {
@@ -31,7 +38,7 @@ export function removeStyleAndScript (document) {
       Array.from(node.classList).some(name => name.startsWith('wm-'));
 
     if (!isDiffNode) {
-      node.remove();
+      node.remove(); 
     }
   });
 
