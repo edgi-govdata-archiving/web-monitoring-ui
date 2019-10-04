@@ -27,7 +27,7 @@ describe('page-list', () => {
         pages={simplePages}
       />
     );
-    expect(pageList.find('.page-list tbody tr').first().childAt(1).text())
+    expect(pageList.find('tbody tr').first().childAt(1).text())
       .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
   });
 });
