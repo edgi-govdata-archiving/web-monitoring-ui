@@ -1,35 +1,33 @@
-
 /* ===== List View ===== */
 .page-list {
-    table-layout: fixed;
-  }
-  
-  .page-list-tbody-tr {
-    cursor: pointer;
-  }
-  
-  .page-list-tbody-tr:hover {
-    background-color: #eee;
-  }
-  
-  .page-list-td {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-  
-  .page-list-th[data-name="capture-date"] {
-    width: 12%;
-  }
-  
-  .page-list-th[data-name="site"] {
-    width: 15%;
-  }
-  
-  .page-list-th[data-name="page-name"] {
-    width: 33%;
-  }
-  
-  .page-list-th[data-name="url"] {
-    width: 40%;
-  }
-  
+  table-layout: fixed;
+}
+
+.page-list-tbody-tr {
+  cursor: pointer;
+}
+
+.page-list-tbody-tr:hover {
+  background-color: #eee;
+}
+
+.page-list-td {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.page-list-th[data-name="capture-date"] {
+  width: 12%;
+}
+
+.page-list-th[data-name="site"] {
+  width: 15%;
+}
+
+.page-list-th[data-name="page-name"] {
+  width: 33%;
+}
+
+.page-list-th[data-name="url"] {
+  width: 40%;
+}
