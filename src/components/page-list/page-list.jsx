@@ -47,7 +47,7 @@ export default class PageList extends React.Component {
     return (
       <div className="row">
         <div className="col-md-12">
-          <table className="page-list table">
+          <table styleName="page-list" className="table">
             <thead>
               {this.renderHeader()}
             </thead>
