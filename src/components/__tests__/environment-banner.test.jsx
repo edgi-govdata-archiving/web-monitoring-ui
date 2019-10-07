@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import EnvironmentBanner from '../environment-banner';
+import EnvironmentBanner from '../environment-banner/environment-banner';
 import React from 'react';
 import {mount} from 'enzyme';
 

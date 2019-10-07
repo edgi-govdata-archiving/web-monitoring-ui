@@ -4,7 +4,7 @@ import AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import EnvironmentBanner from './environment-banner';
+import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
