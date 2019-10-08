@@ -147,6 +147,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
 | [📖](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
+| [💻](# "Code") | [Greg Merrill](https://github.com/g-merrill) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
