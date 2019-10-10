@@ -138,7 +138,7 @@ docker run envirodgi/ui:dev npm run test
 
 New releases of the app are published automatically as Docker images by CircleCI when someone pushes to the `release` branch. They are availble at https://hub.docker.com/r/envirodgi/ui. See [web-monitoring-ops](https://github.com/edgi-govdata-archiving/web-monitoring-ops) for how we deploy releases to actual web servers.
 
-Images are tagged with the SHA-1 of the git commit they were built from. For example, the image `envirodgi/ui:6fa54911bede5b135e890391198fbba68cd20853` was built from [commit `3802e0392fb6fe398a93f355083ba51052e83102`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102) in web-monitoring-db.
+Images are tagged with the SHA-1 of the git commit they were built from. For example, the image `envirodgi/ui:6fa54911bede5b135e890391198fbba68cd20853` was built from [commit `3802e0392fb6fe398a93f355083ba51052e83102`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102).
 
 We usually create *merge commits* on the `release` branch that note the PRs included in the release or any other relevant notes (e.g. [`Release #395`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102)).
 
