@@ -1,4 +1,4 @@
-[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md)
+[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md) &nbsp;[![Project Status Board](https://img.shields.io/badge/✔-Project%20Status%20Board-green.svg?style=flat)](https://github.com/orgs/edgi-govdata-archiving/projects/4)
 
 # web-monitoring-ui
 
@@ -81,6 +81,7 @@ GOOGLE_SHEETS_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\EXAMPLEExampleG9w0BAQEFAAS
 
 In the next section, you’ll create the 2 sheets.
 
+
 ### Important Changes and Dictionary Sheets
 
 Two Google Docs spreadsheets are used to keep track of changes that users mark as “important” or add to the “dictionary” of repeated, common changes. This information also gets saved to the database, but since analysts’ current workflow is spreadsheet-based, we *also* send this data to the spreadsheets. To get this working:
@@ -103,9 +104,11 @@ GOOGLE_DICTIONARY_SHEET_ID=examplesdf8Za7sdft39a_osnzhJBI2dsftasdf
 
 Restart your app server and try clicking on the “add important change” or “add to dictionary” buttons. A new line should be added to the relevant sheet.
 
+
 ## Code of Conduct
 
 This repository falls under EDGI's [Code of Conduct](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md).
+
 
 ## Getting Involved
 
@@ -129,6 +132,15 @@ To run tests via Docker:
 docker build -t envirodgi/ui:dev --target dev .
 docker run envirodgi/ui:dev npm run test
 ```
+
+
+## Releases
+
+New releases of the app are published automatically as Docker images by CircleCI when someone pushes to the `release` branch. They are availble at https://hub.docker.com/r/envirodgi/ui. See [web-monitoring-ops](https://github.com/edgi-govdata-archiving/web-monitoring-ops) for how we deploy releases to actual web servers.
+
+Images are tagged with the SHA-1 of the git commit they were built from. For example, the image `envirodgi/ui:6fa54911bede5b135e890391198fbba68cd20853` was built from [commit `3802e0392fb6fe398a93f355083ba51052e83102`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102) in web-monitoring-db.
+
+We usually create *merge commits* on the `release` branch that note the PRs included in the release or any other relevant notes (e.g. [`Release #395`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102)).
 
 
 ## Contributors
