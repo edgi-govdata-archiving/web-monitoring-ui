@@ -134,6 +134,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | Contributions | Name |
 | ----: | :---- |
 | [📖](# "Documentation") [📋](# "Organizer") [💬](# "Answering Questions") [👀](# "Reviewer") | [Dan Allan](https://github.com/danielballan) |
+| [💻](# "Code") | [Jatin Arora](https://github.com/jatinAroraGit) |
 | [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
 | [💡](# "Examples") | [@ArcTanSusan](https://github.com/ArcTanSusan) |
 | [💡](# "Examples") | [@AutumnColeman](https://github.com/AutumnColeman) |
