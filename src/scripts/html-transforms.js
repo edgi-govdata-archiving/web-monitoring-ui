@@ -55,8 +55,8 @@ export function removeStyleAndScript (document) {
  * @param {HTMLDocument} document The html document to transform.
  * @returns {HTMLDocument}
  */
-// Add target="_blank" to all <a>tags
 export function addTargetBlank (document) {
+  // Add target="_blank" to all <a>tags
   document.querySelectorAll('a').forEach(node => {
     node.setAttribute('target', '_blank');
   });
