@@ -1,4 +1,5 @@
 import React from 'react';
+import './environment-banner.css';
 
 /**
  * @typedef EnvironmentBannerProps
@@ -40,12 +41,9 @@ export default class EnvironmentBanner extends React.Component {
       && !this.state.dismissed;
 
     return showBanner ? (
-      <section className='environment-banner bg-warning'>
+      <section styleName='section' className='bg-warning'>
         <div className='container-fluid'>
-          <p>Environment: {this.state.apiEnvironment}</p>
-          {/* Uncomment to make dismissible
-           <div className='close-x' onClick={this.dismiss.bind(this)}>✕</div>
-           */}
+          <p styleName='title'>Environment: {this.state.apiEnvironment}</p>
         </div>
       </section>
     ) : null;

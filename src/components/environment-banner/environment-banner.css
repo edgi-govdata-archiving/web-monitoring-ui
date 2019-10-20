@@ -1,0 +1,8 @@
+.section {
+    color: #333;
+}
+
+.title {
+    display: inline-block;
+    margin: 10px 0;
+}
