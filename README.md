@@ -163,6 +163,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💻](# "Code") | [Greg Merrill](https://github.com/g-merrill) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
+| [📖](# "Documentation") | [@professionalzack](https://github.com/professionalzack) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
 | [💻](# "Code") | [Ben Sheldon](https://github.com/bensheldon) |
 | [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
