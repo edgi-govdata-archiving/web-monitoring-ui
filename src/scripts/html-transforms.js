@@ -1,7 +1,7 @@
 /**
  * HtmlTransforms are functions that take an HTML Document and modify it in
  * some useful way, such as removing scripts.
- @typedef {(document: HTMLDocument) => HTMLDocument} HtmlTransform
+ * @typedef {(document: HTMLDocument) => HTMLDocument} HtmlTransform
  */
 
 /**
