@@ -38,7 +38,7 @@ export function removeStyleAndScript (document) {
       Array.from(node.classList).some(name => name.startsWith('wm-'));
 
     if (!isDiffNode) {
-      node.remove(); 
+      node.remove();
     }
   });
 
