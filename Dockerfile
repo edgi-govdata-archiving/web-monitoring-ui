@@ -1,7 +1,7 @@
 ### Baseline image for development/test/build ###
 # We require a lot of extras for building (Python, GCC) because of Node-Zopfli.
 FROM node:10.15.3 as dev
-MAINTAINER enviroDGI@gmail.com
+LABEL maintainer="enviroDGI@gmail.com"
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -31,7 +31,7 @@ RUN npm run build-production
 # It might feel ridiculous to build up all the same things again, but the
 # resulting image is less than half the size!
 FROM node:10.15.3-slim as release
-MAINTAINER enviroDGI@gmail.com
+LABEL maintainer="enviroDGI@gmail.com"
 
 # apt-get in this base image does not have dumb-init
 RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64
