@@ -4,7 +4,7 @@ import AriaModal from 'react-aria-modal';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import EnvironmentBanner from './environment-banner';
+import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
 import LoginForm from './login-form';
 import NavBar from './nav-bar';
@@ -77,8 +77,9 @@ export default class WebMonitoringUi extends React.Component {
    * Load all pages.
    * @private
    *
-   * Sends a requests out to localApi for pages and sets `pages` property of state.
+   * Sends a request to fetch the first chunk of pages and sets the `pages` property of state.
    * These are passed as props to various child components.
+   * If the user is not logged in, set the `pages` state property to the error instance instead.
    */
   loadPages () {
     api.isLoggedIn()

@@ -1,13 +1,12 @@
 {
   "presets": [
     ["@babel/preset-env", {
-      "targets": {
-        "browsers": [
-          "last 2 versions",
-          "not Explorer < 11",
-          "not ExplorerMobile > 0"
-        ]
-      }
+      // Uncomment to check query results when building.
+      // "debug": true,
+
+      // Preview the results of this query at:
+      // https://browserl.ist/?q=last+3+versions%2C+not+%3C+1%25%2C+not+ie+%3C+100%2C+not+op_mini+all
+      "targets": "last 3 versions, not < 1%, not ie < 100, not op_mini all"
     }],
     "@babel/preset-react"
   ],
