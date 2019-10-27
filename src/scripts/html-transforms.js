@@ -1,3 +1,15 @@
+/**
+ * HtmlTransforms are functions that take an HTML Document and modify it in
+ * some useful way, such as removing scripts.
+ * @typedef {(document: HTMLDocument) => HTMLDocument} HtmlTransform
+ */
+
+/**
+ * Takes several transforms and returns a new function that takes an html document,
+ * runs the transform functions on it, and returns the resulting document.
+ * @param {...HtmlTransform} The transforms to combine.
+ * @returns {HtmlTransform}
+ */
 export function compose (...transforms) {
   transforms = transforms.filter(transform => !!transform);
   if (transforms.length === 0) {
@@ -5,12 +17,20 @@ export function compose (...transforms) {
   }
 
   return (input) => {
-    transforms.reduce((output, transform) => {
+    return transforms.reduce((output, transform) => {
       return transform(output);
     }, input);
   };
 }
 
+/**
+ * Takes an html document, removes all the stylesheets and scripts from
+ * the document. If any of them have a class or id that starts with 'wm-', 
+ * it keeps them as an exception. 
+ * Returns the resulting document.
+ * @param {HTMLDocument} The html document to change.
+ * @returns {HTMLDocument}
+ */
 export function removeStyleAndScript (document) {
   // Stylesheets and scripts
   document.querySelectorAll('link[rel="stylesheet"], style, script').forEach(node => {
@@ -25,6 +45,21 @@ export function removeStyleAndScript (document) {
   // Inline style attributes
   document.querySelectorAll('[style]').forEach(node => node.removeAttribute('style'));
 
+  return document;
+}
+ 
+/**
+ * Creates a transform that prevents navigation from within a diff. This is 
+ * needed so that diffs can still be compared correctly. Function forces
+ * links to open in a new tab when clicked instead of inside the iframe.
+ * @param {HTMLDocument} document The html document to transform.
+ * @returns {HTMLDocument}
+ */
+export function addTargetBlank (document) {
+  // Add target="_blank" to all <a>tags
+  document.querySelectorAll('a').forEach(node => {
+    node.setAttribute('target', '_blank');
+  });
   return document;
 }
 
