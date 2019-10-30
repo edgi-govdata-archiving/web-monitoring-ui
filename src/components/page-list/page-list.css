@@ -10,23 +10,23 @@
   background-color: #eee;
 }
 
-.page-list > td {
+.page-list > tbody > tr > td {
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
 
-.page-list > th[data-name="capture-date"] {
+.page-list > tbody > tr > th[data-name="capture-date"] {
   width: 12%;
 }
 
-.page-list > th[data-name="site"] {
+.page-list > tbody > tr > th[data-name="site"] {
   width: 15%;
 }
 
-.page-list > th[data-name="page-name"] {
+.page-list > tbody > tr > th[data-name="page-name"] {
   width: 33%;
 }
 
-.page-list > th[data-name="url"] {
+.page-list > tbody > tr > th[data-name="url"] {
   width: 40%;
 }

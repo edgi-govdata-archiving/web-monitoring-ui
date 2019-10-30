@@ -75,7 +75,7 @@ export default class PageList extends React.Component {
     const onClick = this.didClickRow.bind(this, record);
 
     return (
-      <tr styleName="page-list" key={record.uuid} onClick={onClick}>
+      <tr key={record.uuid} onClick={onClick}>
         <td>{record.latest ? dateFormatter.format(record.latest.capture_time) : 'No saved versions'}</td>
         <td>{formatSites(record.tags)}</td>
         <td>{record.title}</td>
