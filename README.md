@@ -159,6 +159,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
 | [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
 | [📖](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
+| [💻](# "Code") [⚠️](# "Tests") | [Katie Jones](https://github.com/katjone) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
 | [💻](# "Code") | [Greg Merrill](https://github.com/g-merrill) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
