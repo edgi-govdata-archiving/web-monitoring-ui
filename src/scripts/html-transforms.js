@@ -25,8 +25,8 @@ export function compose (...transforms) {
 
 /**
  * Takes an html document, removes all the stylesheets and scripts from
- * the document. If any of them have a class or id that starts with 'wm-', 
- * it keeps them as an exception. 
+ * the document. If any of them have a class or id that starts with 'wm-',
+ * it keeps them as an exception.
  * Returns the resulting document.
  * @param {HTMLDocument} The html document to change.
  * @returns {HTMLDocument}
@@ -47,11 +47,15 @@ export function removeStyleAndScript (document) {
 
   return document;
 }
- 
+
 /**
- * Creates a transform that prevents navigation from within a diff. This is 
- * needed so that diffs can still be compared correctly. Function forces
- * links to open in a new tab when clicked instead of inside the iframe.
+ * Prevents navigation from within a diff by forcing links to open in a new
+ * tab when clicked. This helps ensure we don’t get in a state where one side
+ * of a side-by-side diff has been navigated and viewer does not realize they
+ * are no longer actually looking at a *diff*.
+ *
+ * NOTE: This requires the iframe displaying the diff to allow popups with the
+ * `sandbox="allow-popups"` attribute.
  * @param {HTMLDocument} document The html document to transform.
  * @returns {HTMLDocument}
  */
