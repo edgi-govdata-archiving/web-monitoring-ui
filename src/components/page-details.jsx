@@ -43,12 +43,14 @@ export default class PageDetails extends React.Component {
 
   componentWillUnmount () {
     window.removeEventListener('keydown', this);
+    window.document.querySelector('title').innerText = 'web-monitoring-ui';
   }
 
   /**
    * @param {PageDetailsProps} previousProps
    */
   componentDidUpdate (previousProps) {
+    window.document.querySelector('title').innerText = `Scanner | ${this.state.page.url}`;
     const nextPageId = this.props.match.params.pageId;
     if (nextPageId !== previousProps.match.params.pageId) {
       this._loadPage(nextPageId);
