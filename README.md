@@ -1,4 +1,4 @@
-[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md)
+[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md) &nbsp;[![Project Status Board](https://img.shields.io/badge/✔-Project%20Status%20Board-green.svg?style=flat)](https://github.com/orgs/edgi-govdata-archiving/projects/4)
 
 # web-monitoring-ui
 
@@ -81,6 +81,7 @@ GOOGLE_SHEETS_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\EXAMPLEExampleG9w0BAQEFAAS
 
 In the next section, you’ll create the 2 sheets.
 
+
 ### Important Changes and Dictionary Sheets
 
 Two Google Docs spreadsheets are used to keep track of changes that users mark as “important” or add to the “dictionary” of repeated, common changes. This information also gets saved to the database, but since analysts’ current workflow is spreadsheet-based, we *also* send this data to the spreadsheets. To get this working:
@@ -103,9 +104,11 @@ GOOGLE_DICTIONARY_SHEET_ID=examplesdf8Za7sdft39a_osnzhJBI2dsftasdf
 
 Restart your app server and try clicking on the “add important change” or “add to dictionary” buttons. A new line should be added to the relevant sheet.
 
+
 ## Code of Conduct
 
 This repository falls under EDGI's [Code of Conduct](https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md).
+
 
 ## Getting Involved
 
@@ -131,6 +134,15 @@ docker run envirodgi/ui:dev npm run test
 ```
 
 
+## Releases
+
+New releases of the app are published automatically as Docker images by CircleCI when someone pushes to the `release` branch. They are availble at https://hub.docker.com/r/envirodgi/ui. See [web-monitoring-ops](https://github.com/edgi-govdata-archiving/web-monitoring-ops) for how we deploy releases to actual web servers.
+
+Images are tagged with the SHA-1 of the git commit they were built from. For example, the image `envirodgi/ui:6fa54911bede5b135e890391198fbba68cd20853` was built from [commit `3802e0392fb6fe398a93f355083ba51052e83102`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102).
+
+We usually create *merge commits* on the `release` branch that note the PRs included in the release or any other relevant notes (e.g. [`Release #395`](https://github.com/edgi-govdata-archiving/web-monitoring-ui/commit/3802e0392fb6fe398a93f355083ba51052e83102)).
+
+
 ## Contributors
 
 This project wouldn’t exist without a lot of amazing people’s help. Thanks to the following for all their contributions!
@@ -139,6 +151,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | Contributions | Name |
 | ----: | :---- |
 | [📖](# "Documentation") [📋](# "Organizer") [💬](# "Answering Questions") [👀](# "Reviewer") | [Dan Allan](https://github.com/danielballan) |
+| [💻](# "Code") | [Jatin Arora](https://github.com/jatinAroraGit) |
 | [💡](# "Examples") | [@allanpichardo](https://github.com/allanpichardo) |
 | [💡](# "Examples") | [@ArcTanSusan](https://github.com/ArcTanSusan) |
 | [💡](# "Examples") | [@AutumnColeman](https://github.com/AutumnColeman) |
@@ -146,16 +159,19 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💻](# "Code") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
 | [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
 | [📖](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
+| [💻](# "Code") [⚠️](# "Tests") | [Katie Jones](https://github.com/katjone) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
+| [💻](# "Code") | [Greg Merrill](https://github.com/g-merrill) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
+| [📖](# "Documentation") | [@professionalzack](https://github.com/professionalzack) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |
 | [💻](# "Code") | [Ben Sheldon](https://github.com/bensheldon) |
 | [💡](# "Examples") | [@StephenAlanBuckley](https://github.com/StephenAlanBuckley) |
 | [💡](# "Examples") | [@stuartlynn](https://github.com/stuartlynn) |
 | [💻](# "Code") | [Michelle Truong](https://github.com/fendatr) |
 | [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
-| [💻](# "Code") [📖](# "Documentation") [⚠️](# "Tests") | [Sarah Yu](https://github.com/SYU15) |
+| [💻](# "Code") [📖](# "Documentation") [⚠️](# "Tests") [👀](# "Reviewer") | [Sarah Yu](https://github.com/SYU15) |
 | [💻](# "Code") [⚠️](# "Tests") | [Alberto Zaccagni](https://github.com/lazywithclass) |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->

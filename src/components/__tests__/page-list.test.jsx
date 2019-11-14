@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import PageList from '../page-list';
+import PageList from '../page-list/page-list';
 import React from 'react';
 import {shallow} from 'enzyme';
 import simplePages from '../../__mocks__/simple-pages.json';
@@ -27,7 +27,7 @@ describe('page-list', () => {
         pages={simplePages}
       />
     );
-    expect(pageList.find('.page-list tbody tr').first().childAt(1).text())
+    expect(pageList.find('tbody tr').first().childAt(1).text())
       .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
   });
 });
