@@ -43,7 +43,7 @@ export default class PageDetails extends React.Component {
 
   componentWillUnmount () {
     window.removeEventListener('keydown', this);
-    window.document.querySelector('title').innerText = 'web-monitoring-ui';
+    window.document.querySelector('title').innerText = 'Scanner';
   }
 
   /**
