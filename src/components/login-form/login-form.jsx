@@ -3,7 +3,7 @@ import React from 'react';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import './login-form.css';
 
-/**s
+/**
  * @typedef {Object} LoginFormProps
  * @property {Function} cancelLogin Should match `() => void`
  * @property {Function} onLogin Callback when a user has logged in successfully.
