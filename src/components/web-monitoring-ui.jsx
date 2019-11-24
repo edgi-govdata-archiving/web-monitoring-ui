@@ -38,6 +38,7 @@ export default class WebMonitoringUi extends React.Component {
       search: null,
       showLogin: false,
       user: null,
+      isSearching: false
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
@@ -69,7 +70,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   search (query) {
-    this.setState({search: query});
+    this.setState({search: query, isSearching: true});
     this.loadPages();
   }
 
@@ -96,7 +97,8 @@ export default class WebMonitoringUi extends React.Component {
       .catch(error => error)
       .then(pages => {
         this.setState({
-          pages: pages || []
+          pages: pages || [], 
+          isSearching: false
         });
       });
   }
@@ -136,6 +138,7 @@ export default class WebMonitoringUi extends React.Component {
           pages={pages}
           user={this.state.user}
           onSearch={this.search}
+          isSearching={this.state.isSearching}
         />;
       };
     };

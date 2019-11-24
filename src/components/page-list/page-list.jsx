@@ -44,20 +44,22 @@ export default class PageList extends React.Component {
   }
 
   renderPages () {
-    return (
-      <div className="row">
-        <div className="col-md-12">
-          <table className="table" styleName="page-list" >
-            <thead>
-              {this.renderHeader()}
-            </thead>
-            <tbody>
-              {this.props.pages.map(page => this.renderRow(page))}
-            </tbody>
-          </table>
+    if (this.props.isSearching) {
+      return <Loading />;
+    } else {
+      return (
+        <div className="row">
+          <div className="col-md-12">
+            <table className="table" styleName="page-list">
+              <thead>{this.renderHeader()}</thead>
+              <tbody>
+                {this.props.pages.map(page => this.renderRow(page))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   renderHeader () {
