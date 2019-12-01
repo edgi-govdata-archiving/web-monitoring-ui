@@ -21,7 +21,7 @@
     "babel-loader": "^8.0.6",
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "^3.1.0",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^6.7.2",
