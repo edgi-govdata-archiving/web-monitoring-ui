@@ -12,9 +12,9 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-react": "^7.6.3",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
     "@gfx/zopfli": "^1.0.14",
     "autoprefixer": "^9.5.1",
     "babel-core": "^7.0.0-bridge.0",
