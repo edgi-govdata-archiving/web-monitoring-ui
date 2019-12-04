@@ -16,7 +16,7 @@ describe('login-form', () => {
     const label = panel.find('label').at(0);
 
     expect(label.text()).toMatch(/e-?mail/i);
-    expect(label.find('input').props().type).toBe('text');
+    expect(label.find('input').props()).toMatchObject({name: 'email', type: 'text'});
   });
 
   it('Renders a label and input for password', () => {
@@ -24,7 +24,7 @@ describe('login-form', () => {
     const label = panel.find('label').at(1);
 
     expect(label.text()).toMatch(/password/i);
-    expect(label.find('input').props().type).toBe('password');
+    expect(label.find('input').props()).toMatchObject({name: 'password', type: 'password'});
   });
 
   it('Renders a submit button for the form', () => {
@@ -92,12 +92,8 @@ describe('login-form', () => {
 
       panel.find('form').simulate('submit', document.createEvent('UIEvents'));
 
-      try {
-        await api.logIn.mock.results[0].value;
-        throw new Error('api.logIn should have rejected'); // failsafe to make sure the assertion runs
-      } catch (err) {
-        expect(panel.find('.alert.alert-danger').text()).toBe(err.message);
-      }
+      await expect(api.logIn.mock.results[0].value).rejects.toThrow();
+      expect(panel.find('.alert.alert-danger').text()).toBe('Login unsuccessful');
     });
 
     it('Does not call "logIn" if email and password are not both present', () => {
