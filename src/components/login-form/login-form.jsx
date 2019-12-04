@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import WebMonitoringDb from '../../services/web-monitoring-db';
+import './login-form.css';
 
 /**
  * @typedef {Object} LoginFormProps
@@ -35,27 +36,27 @@ export default class LoginPanel extends React.Component {
 
   render () {
     return (
-      <form className="login-form" onSubmit={this._logIn}>
-        <h1>Log In</h1>
+      <form styleName="form" onSubmit={this._logIn}>
+        <h1 styleName="title">Log In</h1>
         <p className="alert alert-info" role="alert">
           You must be logged in to view pages
         </p>
         {this._renderError()}
 
-        <label className="form-group">
+        <label className="form-group" styleName="group">
           <span className="info-text">E-mail Address:</span>
           <input className="form-control" type="text" name="email" onChange={this._updateEmail} />
         </label>
 
-        <label className="form-group">
+        <label className="form-group" styleName="group">
           <span className="info-text">Password:</span>
           <input className="form-control" type="password" name="password" onChange={this._updatePassword} />
         </label>
 
-        <div className="login-form__footer">
-          <input className="login-form__submit btn btn-primary" type="submit" value="Log In" />
+        <div styleName="footer">
+          <input className="btn btn-primary" type="submit" value="Log In" />
           {' '}
-          <button className="login-form__cancel btn btn-default" onClick={this._cancel}>Cancel</button>
+          <button className="btn btn-default" onClick={this._cancel}>Cancel</button>
         </div>
       </form>
     );
