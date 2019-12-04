@@ -380,27 +380,11 @@ iframe {
   }
 }
 
-/* ===== Login Form ===== */
+/* ===== Login Form Dialog ===== */
 .dialog__body {
   background: white;
   border-radius: 3px;
   padding: 1em;
-}
-
-.login-form {
-  width: 24em;
-}
-
-.login-form h1 {
-  margin: 0 0 1em;
-}
-
-.login-form .form-group {
-  width: 100%;
-}
-
-.login-form__footer {
-  text-align: right;
 }
 
 .loading {
