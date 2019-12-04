@@ -8,7 +8,7 @@
     "body-parser": "^1.18.3",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "googleapis": "^42.0.0",
+    "googleapis": "^45.0.0",
     "request": "^2.88.0"
   },
   "devDependencies": {
