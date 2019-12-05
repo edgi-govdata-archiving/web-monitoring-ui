@@ -19,13 +19,12 @@ import './page-list.css';
  */
 export default class PageList extends React.Component {
   render () {
-    if (!this.props.pages) {
-      return <Loading />;
-    }
-
     let results;
 
-    if (this.props.pages instanceof Error) {
+    if (!this.props.pages){
+      results = <Loading />;
+    }
+    else if (this.props.pages instanceof Error) {
       results = this.renderError(`Could not load pages: ${this.props.pages.message}`);
     }
     else if (this.props.pages.length === 0) {
@@ -44,22 +43,18 @@ export default class PageList extends React.Component {
   }
 
   renderPages () {
-    if (this.props.isSearching) {
-      return <Loading />;
-    } else {
-      return (
-        <div className="row">
-          <div className="col-md-12">
-            <table className="table" styleName="page-list">
-              <thead>{this.renderHeader()}</thead>
-              <tbody>
-                {this.props.pages.map(page => this.renderRow(page))}
-              </tbody>
-            </table>
-          </div>
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          <table className="table" styleName="page-list">
+            <thead>{this.renderHeader()}</thead>
+            <tbody>
+              {this.props.pages.map(page => this.renderRow(page))}
+            </tbody>
+          </table>
         </div>
-      );
-    }
+      </div>
+    );
   }
 
   renderHeader () {
