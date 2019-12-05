@@ -2,6 +2,8 @@
 
 import PageList from '../page-list/page-list';
 import React from 'react';
+import SearchBar from '../search-bar/search-bar';
+import Loading from '../loading';
 import {shallow} from 'enzyme';
 import simplePages from '../../__mocks__/simple-pages.json';
 
@@ -29,5 +31,23 @@ describe('page-list', () => {
     );
     expect(pageList.find('tbody tr').first().childAt(1).text())
       .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
+  });
+
+  it('displays SearchBar component when searching', () => {
+    const pageList = shallow(
+      <PageList 
+        pages={null} 
+      />
+    );
+    expect(pageList.find(SearchBar).length).toBe(1);
+  });
+
+  it('displays Loading component when searching', () => {
+    const pageList = shallow(
+      <PageList 
+        pages={null} 
+      />
+    );
+    expect(pageList.find(Loading).length).toBe(1);
   });
 });
