@@ -70,7 +70,6 @@ export default class WebMonitoringUi extends React.Component {
 
   search (query) {
     this.setState({search: query, pages: null});
-    this.loadPages();
   }
 
   /**
@@ -129,6 +128,9 @@ export default class WebMonitoringUi extends React.Component {
     const withData = (ComponentType) => {
       return (routeProps) => {
         const pages = this.state.pages;
+        if (!pages){
+          this.loadPages();
+        }
         return <ComponentType
           {...routeProps}
           pages={pages}
