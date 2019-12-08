@@ -70,7 +70,7 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "10.15.3"
+    "node": "12.13.1"
   },
   "browserslist": [
     "last 2 versions",
