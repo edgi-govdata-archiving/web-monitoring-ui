@@ -21,7 +21,7 @@ export default class PageList extends React.Component {
   render () {
     let results;
 
-    if (!this.props.pages){
+    if (!this.props.pages) {
       results = <Loading />;
     }
     else if (this.props.pages instanceof Error) {

@@ -33,10 +33,9 @@ describe('page-list', () => {
       .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
   });
 
-  it('displays SearchBar component when searching', () => {
+  it('displays SearchBar component', () => {
     const pageList = shallow(
       <PageList 
-        pages={null} 
       />
     );
     expect(pageList.find(SearchBar).length).toBe(1);

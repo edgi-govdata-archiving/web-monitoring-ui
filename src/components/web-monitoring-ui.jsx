@@ -109,7 +109,6 @@ export default class WebMonitoringUi extends React.Component {
 
   componentDidMount () {
     this.loadUser();
-    this.loadPages();
   }
 
   render () {
@@ -128,7 +127,7 @@ export default class WebMonitoringUi extends React.Component {
     const withData = (ComponentType) => {
       return (routeProps) => {
         const pages = this.state.pages;
-        if (!pages){
+        if (!pages) {
           this.loadPages();
         }
         return <ComponentType
