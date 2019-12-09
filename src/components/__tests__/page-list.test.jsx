@@ -35,8 +35,7 @@ describe('page-list', () => {
 
   it('displays SearchBar component', () => {
     const pageList = shallow(
-      <PageList 
-      />
+      <PageList />
     );
     expect(pageList.find(SearchBar).length).toBe(1);
   });
