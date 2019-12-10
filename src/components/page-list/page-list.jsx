@@ -36,7 +36,9 @@ export default class PageList extends React.Component {
 
     return (
       <div className="container-fluid container-list-view">
-        <SearchBar onSearch={this.props.onSearch} />
+        <SearchBar
+          onSearch={this.props.onSearch}
+        />
         {results}
       </div>
     );
@@ -60,7 +62,7 @@ export default class PageList extends React.Component {
   renderHeader () {
     return (
       <tr>
-        <th data-name="capture-date">Capture Date</th>
+        <th data-name="capture-date">Last Capture Date</th>
         <th data-name="site">Site</th>
         <th data-name="page-name">Page Name</th>
         <th data-name="url">URL</th>
