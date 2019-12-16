@@ -164,6 +164,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
 | [💻](# "Code") | [Greg Merrill](https://github.com/g-merrill) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
+| [💻](# "Code") [⚠️](# "Tests") | [Johnson Phan](https://github.com/johnsonphan95) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
 | [📖](# "Documentation") | [@professionalzack](https://github.com/professionalzack) |
 | [📋](# "Organizer") [🔍](# "Funding/Grant Finder") | [Toly Rinberg](https://github.com/trinberg) |

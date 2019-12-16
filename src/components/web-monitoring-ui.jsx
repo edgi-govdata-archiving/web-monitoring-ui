@@ -37,7 +37,7 @@ export default class WebMonitoringUi extends React.Component {
       pages: null,
       search: null,
       showLogin: false,
-      user: null,
+      user: null
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
@@ -69,8 +69,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   search (query) {
-    this.setState({search: query});
-    this.loadPages();
+    this.setState({search: query, pages: null});
   }
 
   /**
