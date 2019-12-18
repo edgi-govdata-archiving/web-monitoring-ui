@@ -6,7 +6,7 @@ import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
-import LoginForm from './login-form';
+import LoginForm from './login-form/login-form';
 import NavBar from './nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list/page-list';
@@ -37,7 +37,7 @@ export default class WebMonitoringUi extends React.Component {
       pages: null,
       search: null,
       showLogin: false,
-      user: null,
+      user: null
     };
     this.showLogin = this.showLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
@@ -69,8 +69,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   search (query) {
-    this.setState({search: query});
-    this.loadPages();
+    this.setState({search: query, pages: null});
   }
 
   /**
@@ -89,7 +88,7 @@ export default class WebMonitoringUi extends React.Component {
         }
 
         const query = Object.assign({include_latest: true}, this.state.search);
-        
+
         return api.getPages(query);
       })
       // Set state.pages = error; downstream code should check `pages` type.
