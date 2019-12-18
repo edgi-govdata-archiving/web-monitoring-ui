@@ -5,6 +5,8 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 import ChangeView from './change-view';
 import Loading from './loading';
 
+import '../css/base.css';
+
 const cutoffDate = '2000-01-01';
 
 /**
@@ -166,7 +168,7 @@ export default class PageDetails extends React.Component {
       return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
     }
     else if (!(versionData.from && versionData.to)) {
-      return <div className="alert alert-danger">No saved versions of this page.</div>;
+      return <div styleName="alert alert-danger">No saved versions of this page.</div>;
     }
 
     return (

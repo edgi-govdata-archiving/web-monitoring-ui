@@ -4,6 +4,8 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 
+import '../css/base.css';
+
 export default class VersionRedirect extends React.Component {
   constructor (props) {
     super (props);
@@ -27,7 +29,7 @@ export default class VersionRedirect extends React.Component {
   render () {
     if (this.state.error) {
       return (
-        <p className="alert alert-danger" role="alert">
+        <p styleName="alert alert-danger" role="alert">
           Error: We couldn't find the version you're looking for.
           Please check you provided the correct versionID.
         </p>
