@@ -65,6 +65,10 @@
     },
     "setupFilesAfterEnv": [
       "<rootDir>src/test-setup.js"
+    ],
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/server"
     ]
   },
   "author": "",
