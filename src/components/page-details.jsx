@@ -50,7 +50,7 @@ export default class PageDetails extends React.Component {
    * @param {PageDetailsProps} previousProps
    */
   componentDidUpdate (previousProps) {
-    document.title = `Scanner | ${this.state.page.url}`;
+    document.title = this.state.page ? `Scanner | ${this.state.page.url}` : 'Scanner';
     const nextPageId = this.props.match.params.pageId;
     if (nextPageId !== previousProps.match.params.pageId) {
       this._loadPage(nextPageId);
