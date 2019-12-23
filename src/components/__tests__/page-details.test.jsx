@@ -10,23 +10,10 @@ describe('page-details', () => {
   simplePage.versions.forEach(version => {
     version.capture_time = new Date(version.capture_time);
   });
-  const match = { params: { pageId: 'samplePageId' }};
+  const match = { params: { pageId: simplePage.uuid }};
   const mockApi = Object.assign(Object.create(WebMonitoringDb.prototype), {
-    getDiff () {
-      return new Promise(resolve => resolve({
-        change_count: 1,
-        diff: [[0, 'Hi'], [1, '!']]
-      }));
-    },
-    getPage (a) {
-      return new Promise(resolve => resolve(simplePage));
-    },
-    getVersions (a, b, c) {
-      return new Promise(resolve => resolve(simplePage.versions));
-    },
-    annotateChange (a, b, c, d) {
-      return 'something';
-    }
+    getPage: jest.fn().mockResolvedValue(simplePage),
+    getVersions: jest.fn().mockResolvedValue(simplePage.versions)
   });
 
   it('can render', () => {
@@ -42,21 +29,20 @@ describe('page-details', () => {
     expect(pageDetails.get(0)).toBeTruthy();
   });
 
-  it('shows correct title', () => {
+  it('shows correct title', async () => {
     const pageDetails = shallow(
       <PageDetails
         match={match}
       />,
       {context: {api: mockApi}}
     );
-    const instance = pageDetails.instance();
-    instance.state.page = simplePage;
-    instance.componentDidUpdate(instance.props);
+
+    await mockApi.getPage.mock.results[0].value;
+    await mockApi.getVersions.mock.results[0].value;
 
     expect(document.title).toBe('Scanner | http://www.ncei.noaa.gov/news/earth-science-conference-convenes');
 
     pageDetails.unmount();
-
     expect(document.title).toBe('Scanner');
   });
 });
