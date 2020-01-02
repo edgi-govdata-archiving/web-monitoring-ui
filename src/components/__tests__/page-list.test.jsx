@@ -25,9 +25,7 @@ describe('page-list', () => {
 
   it('shows only sites from tags', () => {
     const pageList = shallow(
-      <PageList
-        pages={simplePages}
-      />
+      <PageList pages={simplePages} />
     );
     expect(pageList.find('tbody tr').first().childAt(1).text())
       .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
@@ -40,12 +38,17 @@ describe('page-list', () => {
     expect(pageList.find(SearchBar).length).toBe(1);
   });
 
-  it('displays Loading component when searching', () => {
+  it('displays Loading component when there are no pages', () => {
     const pageList = shallow(
-      <PageList 
-        pages={null} 
-      />
+      <PageList />
     );
     expect(pageList.find(Loading).length).toBe(1);
+  });
+
+  it('does not display Loading component when there are pages', () => {
+    const pageList = shallow(
+      <PageList pages={simplePages} />
+    );
+    expect(pageList.find(Loading).length).toBe(0);
   });
 });

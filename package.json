@@ -64,7 +64,11 @@
       "\\.css$": "<rootDir>/src/__mocks__/identity-object.js"
     },
     "setupFilesAfterEnv": [
-      "<rootDir>src/test-setup.js"
+      "<rootDir>/src/test-setup.js"
+    ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/\\..+/"
     ]
   },
   "author": "",
