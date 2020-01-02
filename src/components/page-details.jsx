@@ -43,18 +43,22 @@ export default class PageDetails extends React.Component {
 
   componentWillUnmount () {
     window.removeEventListener('keydown', this);
-    document.title = 'Scanner';
+    this.setTitle(true);
   }
 
   /**
    * @param {PageDetailsProps} previousProps
    */
   componentDidUpdate (previousProps) {
-    document.title = this.state.page ? `Scanner | ${this.state.page.url}` : 'Scanner';
+    this.setTitle();
     const nextPageId = this.props.match.params.pageId;
     if (nextPageId !== previousProps.match.params.pageId) {
       this._loadPage(nextPageId);
     }
+  }
+
+  setTitle (unmounting=false) {
+    document.title = !unmounting && this.state.page ? `Scanner | ${this.state.page.url}` : 'Scanner';
   }
 
   /**
