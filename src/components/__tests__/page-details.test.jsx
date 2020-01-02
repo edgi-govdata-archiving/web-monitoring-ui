@@ -13,10 +13,10 @@ describe('page-details', () => {
   const match = { params: { pageId: simplePage.uuid }};
   const createMockApi = () => {
     return Object.assign(Object.create(WebMonitoringDb.prototype), {
-        getPage: jest.fn().mockResolvedValue(simplePage),
-        getVersions: jest.fn().mockResolvedValue(simplePage.versions)
+      getPage: jest.fn().mockResolvedValue(simplePage),
+      getVersions: jest.fn().mockResolvedValue(simplePage.versions)
     });
-  }
+  };
 
   it('can render', () => {
     const mockApi = createMockApi();
