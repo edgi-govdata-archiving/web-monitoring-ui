@@ -24,7 +24,7 @@
     "dotenv": "^8.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.1",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.17.0",
     "extract-loader": "^3.1.0",
     "fetch-mock": "^8.3.0",
