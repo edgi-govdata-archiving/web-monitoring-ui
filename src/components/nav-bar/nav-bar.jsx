@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 
+import './nav-bar.css';
+
 /**
  * @typedef {Object} NavBarProps
  * @property {Function} logOut Callback requesting the user be logged out
@@ -14,31 +16,33 @@ import {Link, NavLink} from 'react-router-dom';
  * @param {NavBarProps} props
  */
 export default ({children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) => (
-  <nav className="navbar navbar-inverse">
-    <div className="container-fluid">
-      <div className="navbar-header">
-        <Link to="/" className="navbar-brand">{title}</Link>
-      </div>
-      <ul className="nav navbar-nav">
-        <li><NavLink to="/pages" exact>All Pages</NavLink></li>
+  <div styleName="container">
+    <nav styleName="navbar">
+      <Link to="/" styleName="brand">{title}</Link>
+      <ul styleName="nav-list">
+        <li>
+          <NavLink to="/pages" activeStyleName="nav-link-active" styleName="nav-link" exact>
+            All Pages
+          </NavLink>
+        </li>
         <li>{renderUserInfo(user, showLogin, logOut)}</li>
       </ul>
-    </div>
+    </nav>
     {children}
-  </nav>
+  </div>
 );
 
 function renderUserInfo (user, showLogin, logOut) {
   if (user) {
     return (
-      <span className="auth-status">
+      <span styleName="auth-status">
         {user.email}
         {' '}
-        <button className="btn btn-link" onClick={logOut}>(Log out)</button>
+        <button styleName="auth-btn" onClick={logOut}>(Log out)</button>
       </span>
     );
   }
   else {
-    return <button className="auth-status btn btn-link" onClick={showLogin}>Log In</button>;
+    return <button className="auth-status auth-btn" onClick={showLogin}>Log In</button>;
   }
 }

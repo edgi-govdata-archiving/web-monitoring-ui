@@ -56,9 +56,11 @@ export default class LoginPanel extends React.Component {
         </label>
 
         <div styleName="formStyles.footer">
-          <input className="btn btn-primary" type="submit" value="Log In" />
+          <input styleName="baseStyles.btn baseStyles.btn-primary" type="submit" value="Log In" />
           {' '}
-          <button className="btn btn-default" onClick={this._cancel}>Cancel</button>
+          <button styleName="baseStyles.btn baseStyles.btn-default" onClick={this._cancel}>
+            Cancel
+          </button>
         </div>
       </form>
     );

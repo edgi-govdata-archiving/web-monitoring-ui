@@ -12,6 +12,8 @@
     "@babel/preset-react"
   ],
   "plugins": [
-    ["react-css-modules"]
+    ["react-css-modules", {
+      "attributeNames": { "activeStyleName": "activeClassName" } // for React Router NavLink
+    }]
   ]
 }

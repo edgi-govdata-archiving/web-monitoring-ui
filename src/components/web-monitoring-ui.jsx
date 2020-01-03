@@ -7,7 +7,7 @@ import WebMonitoringDb from '../services/web-monitoring-db';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
 import LoginForm from './login-form/login-form';
-import NavBar from './nav-bar';
+import NavBar from './nav-bar/nav-bar';
 import PageDetails from './page-details';
 import PageList from './page-list/page-list';
 import VersionRedirect from './version-redirect';
