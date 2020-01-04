@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import ChangeView from './change-view';
+import ChangeView from './change-view/change-view';
 import Loading from './loading';
 
 import '../css/base.css';

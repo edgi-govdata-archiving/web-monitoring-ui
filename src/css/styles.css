@@ -95,27 +95,6 @@ body {
   margin-right: 0;
 }
 
-/* Change View */
-.change-view-actions {
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
-  margin: 1em 0 0.5em 0;
-  padding: 0.7em 0.2em;
-}
-
-.change-view-actions > div {
-  padding: 0;
-}
-
-.change-view-actions .btn-link {
-  border: none;
-  display: inline;
-  font-size: inherit;
-  line-height: inherit;
-  padding: 0;
-  vertical-align: baseline;
-}
-
 /* Version Selector */
 .version-selector {
   display: flex;

@@ -66,12 +66,9 @@
 }
 
 .auth-btn {
+  composes: btn from '../../css/base.css';
+  composes: btn-link from '../../css/base.css';
   color: #9d9d9d;
-  background: none;
-  border: none;
-  display: inline;
-  line-height: inherit;
-  margin: 0;
   padding: 0;
 }
 

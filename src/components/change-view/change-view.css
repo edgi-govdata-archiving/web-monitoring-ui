@@ -1,0 +1,18 @@
+.actions {
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  margin: 1em 0 0.5em 0;
+  padding: 0.7em 0.2em;
+}
+
+.actions > div {
+  padding: 0;
+}
+
+.action-btn {
+  composes: btn from '../../css/base.css';
+  composes: btn-link from '../../css/base.css';
+  border: none;
+  padding: 0;
+  vertical-align: baseline;
+}

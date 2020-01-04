@@ -1,22 +1,24 @@
-import AnnotationForm from './annotation-form';
-import DiffSettingsForm from './diff-settings-form';
-import {diffTypesFor} from '../constants/diff-types';
-import DiffView from './diff-view';
-import layeredStorage from '../scripts/layered-storage';
-import Loading from './loading';
+import AnnotationForm from '../annotation-form';
+import DiffSettingsForm from '../diff-settings-form';
+import {diffTypesFor} from '../../constants/diff-types';
+import DiffView from '../diff-view';
+import layeredStorage from '../../scripts/layered-storage';
+import Loading from '../loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SelectDiffType from './select-diff-type';
-import SelectVersion from './select-version';
-import SourceInfo from './source-info/source-info';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import SelectDiffType from '../select-diff-type';
+import SelectVersion from '../select-version';
+import SourceInfo from '../source-info/source-info';
+import WebMonitoringApi from '../../services/web-monitoring-api';
+import WebMonitoringDb from '../../services/web-monitoring-db';
 import {
   htmlType,
   mediaTypeForExtension,
   parseMediaType,
   unknownType
-} from '../scripts/media-type';
+} from '../../scripts/media-type';
+
+import './change-view.css';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
@@ -145,7 +147,9 @@ export default class ChangeView extends React.Component {
      * `canAnnotate` is arbitrary and DOES NOT reflect any intended permissions model or setup.
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
      */
-    const userCanAnnotate = this.props.user.canAnnotate || null;
+    // const userCanAnnotate = this.props.user.canAnnotate || null;
+    const userCanAnnotate = true;
+
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);
@@ -219,7 +223,7 @@ export default class ChangeView extends React.Component {
         <span className="lnk-action">
           <i className="fa fa-upload" aria-hidden="true" />
           <button
-            className="btn btn-link"
+            styleName="action-btn"
             disabled={this.state.addingToImportant}
             onClick={this._markAsSignificant}
           >
@@ -238,7 +242,7 @@ export default class ChangeView extends React.Component {
         <span>
           <i className="fa fa-database" aria-hidden="true" />
           <button
-            className="btn btn-link"
+            styleName="action-btn"
             disabled={this.state.addingToDictionary}
             onClick={this._addToDictionary}
           >
@@ -251,7 +255,7 @@ export default class ChangeView extends React.Component {
     // Returning array of controls so that we don't have an extraneous containing div
     return [
       (
-        <div className="row change-view-actions" key="change-view-actions">
+        <div className="row" styleName="actions" key="change-view-actions">
           <div className="col-md-6">
             <i className="fa fa-toggle-on" aria-hidden="true" />
             {/* TODO: should be buttons */}
