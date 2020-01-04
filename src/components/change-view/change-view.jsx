@@ -147,7 +147,8 @@ export default class ChangeView extends React.Component {
      * `canAnnotate` is arbitrary and DOES NOT reflect any intended permissions model or setup.
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
      */
-    const userCanAnnotate = this.props.user.canAnnotate || null;
+    // const userCanAnnotate = this.props.user.canAnnotate || null;
+    const userCanAnnotate = true;
 
     if (!page || !page.versions) {
       // if haz no page, don't render
@@ -155,7 +156,7 @@ export default class ChangeView extends React.Component {
     }
 
     return (
-      <div className="change-view">
+      <div styleName="change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <SourceInfo
@@ -254,15 +255,15 @@ export default class ChangeView extends React.Component {
     // Returning array of controls so that we don't have an extraneous containing div
     return [
       (
-        <div className="row" styleName="actions" key="change-view-actions">
-          <div className="col-md-6">
+        <div styleName="actions" key="change-view-actions">
+          <div styleName="actions-section">
             <i className="fa fa-toggle-on" aria-hidden="true" />
             {/* TODO: should be buttons */}
             <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
           </div>
-          <div className="col-md-6 text-right">
+          <div styleName="actions-section">
             {markSignificant}
             {addToDictionary}
           </div>

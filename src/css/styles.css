@@ -25,12 +25,6 @@ html,
   flex: 0 0 auto;
 }
 
-.change-view {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-}
-
 body {
   background: #136a8a;
   background: linear-gradient(45deg, #136a8a, #267871);
@@ -50,10 +44,6 @@ body {
   flex: 1 0 auto;
   flex-direction: column;
   padding: 15px;
-}
-
-.container-list-view > .alert {
-  margin-top: 1em;
 }
 
 /* ===== Page Detail View ===== */
@@ -245,11 +235,6 @@ legend {
 
   legend {
     margin-top: 1em;
-  }
-
-  /* TODO: Hacky, can probably clean this up when we remove Bootstrap */
-  .change-view-actions .text-right {
-    text-align: left;
   }
 }
 
