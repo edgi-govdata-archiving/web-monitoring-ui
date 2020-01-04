@@ -43,6 +43,6 @@ function renderUserInfo (user, showLogin, logOut) {
     );
   }
   else {
-    return <button className="auth-status auth-btn" onClick={showLogin}>Log In</button>;
+    return <button styleName="auth-status auth-btn" onClick={showLogin}>Log In</button>;
   }
 }

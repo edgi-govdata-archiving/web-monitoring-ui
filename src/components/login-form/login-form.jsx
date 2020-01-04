@@ -47,12 +47,12 @@ export default class LoginPanel extends React.Component {
 
         <label styleName="formStyles.group">
           E-mail Address:
-          <input className="form-control" type="text" name="email" onChange={this._updateEmail} />
+          <input styleName="formStyles.input" type="text" name="email" onChange={this._updateEmail} />
         </label>
 
         <label styleName="formStyles.group">
           Password:
-          <input className="form-control" type="password" name="password" onChange={this._updatePassword} />
+          <input styleName="formStyles.input" type="password" name="password" onChange={this._updatePassword} />
         </label>
 
         <div styleName="formStyles.footer">
