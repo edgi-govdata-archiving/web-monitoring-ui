@@ -148,7 +148,6 @@ export default class ChangeView extends React.Component {
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
      */
     const userCanAnnotate = this.props.user.canAnnotate || null;
-
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);

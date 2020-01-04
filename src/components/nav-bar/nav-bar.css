@@ -10,7 +10,7 @@
 
 .navbar {
   align-items: center;
-  color: #eee; /* TODO: .navbar-brand:hover and links */
+  color: #eee;
   display: flex;
   justify-content: space-between;
   width: 100%;
