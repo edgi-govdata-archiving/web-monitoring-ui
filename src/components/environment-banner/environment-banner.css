@@ -1,9 +1,10 @@
 .section {
-    color: #333;
-    background-color: #fcf8e3;
+  color: #333;
+  background-color: #fcf8e3;
+  padding: 0 15px;
 }
 
 .title {
-    display: inline-block;
-    margin: 10px 0;
+  display: inline-block;
+  margin: 10px 0;
 }

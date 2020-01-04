@@ -42,9 +42,7 @@ export default class EnvironmentBanner extends React.Component {
 
     return showBanner ? (
       <section styleName='section'>
-        <div className='container-fluid'>
-          <p styleName='title'>Environment: {this.state.apiEnvironment}</p>
-        </div>
+        <p styleName='title'>Environment: {this.state.apiEnvironment}</p>
       </section>
     ) : null;
   }

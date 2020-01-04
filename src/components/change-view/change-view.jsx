@@ -147,8 +147,7 @@ export default class ChangeView extends React.Component {
      * `canAnnotate` is arbitrary and DOES NOT reflect any intended permissions model or setup.
      * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
      */
-    // const userCanAnnotate = this.props.user.canAnnotate || null;
-    const userCanAnnotate = true;
+    const userCanAnnotate = this.props.user.canAnnotate || null;
 
     if (!page || !page.versions) {
       // if haz no page, don't render
