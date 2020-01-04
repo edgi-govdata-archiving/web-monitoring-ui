@@ -1,20 +1,9 @@
-.list-alert {
-  composes: alert from '../../css/base.css';
-  margin-top: 1em;
-}
-
-.alert-danger {
-  composes: list-alert;
-  composes: alert-danger from '../../css/base.css';
-}
-
-.alert-warning {
-  composes: list-alert;
-  composes: alert-warning from '../../css/base.css';
-}
-
 .container {
   padding: 0 15px;
+}
+
+.list-alert {
+  margin-top: 1em;
 }
 
 .page-list {

@@ -8,7 +8,7 @@ import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
 import LoginForm from './login-form/login-form';
 import NavBar from './nav-bar/nav-bar';
-import PageDetails from './page-details';
+import PageDetails from './page-details/page-details';
 import PageList from './page-list/page-list';
 import VersionRedirect from './version-redirect';
 

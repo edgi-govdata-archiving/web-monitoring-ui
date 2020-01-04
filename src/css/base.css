@@ -1,3 +1,10 @@
+.page-view {
+  background: white;
+  color: #444;
+  margin: 5px 0;
+}
+
+/* from Bootstrap */
 .alert {
   padding: 1em;
   margin-bottom: 1.5em;
@@ -166,3 +173,4 @@
   background-color: #337ab7;
   border-color: #2e6da4;
 }
+/* end from Bootstrap  */
