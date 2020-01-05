@@ -57,7 +57,7 @@ export default class PageDetails extends React.Component {
     }
   }
 
-  setTitle (unmounting=false) {
+  setTitle (unmounting = false) {
     document.title = !unmounting && this.state.page ? `Scanner | ${this.state.page.url}` : 'Scanner';
   }
 
