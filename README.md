@@ -162,7 +162,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💻](# "Code") [⚠️](# "Tests") | [Nick Echols](https://github.com/steryereo) |
 | [💻](# "Code") [⚠️](# "Tests") | [Katie Jones](https://github.com/katjone) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
-| [💻](# "Code") | [Greg Merrill](https://github.com/g-merrill) |
+| [💻](# "Code") [⚠️](# "Tests") | [Greg Merrill](https://github.com/g-merrill) |
 | [💻](# "Code") [🎨](# "Design") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Kevin Nguyen](https://github.com/lightandluck) |
 | [💻](# "Code") [⚠️](# "Tests") | [Johnson Phan](https://github.com/johnsonphan95) |
 | [📖](# "Documentation") [📋](# "Organizer") [📢](# "Talks") | [Matt Price](https://github.com/titaniumbones) |
