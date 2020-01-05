@@ -35,7 +35,7 @@ export default class WebMonitoringUi extends React.Component {
     this.state = {
       isLoading: true,
       pages: null,
-      search: null,
+      query: null,
       showLogin: false,
       user: null
     };
@@ -65,11 +65,27 @@ export default class WebMonitoringUi extends React.Component {
   logOut () {
     api.logOut();
     this.setState({user: api.userData});
-    this.loadPages('pages');
+    this.loadPages();
   }
 
-  search (query) {
-    this.setState({search: query, pages: null});
+
+  /**
+   * Updates query state with url and optionally capture_time information if startDate and/or endDate is passed in.
+   * Then calls loadPages.
+   *
+   * @param {Object} query
+   */
+  search ({url, startDate, endDate}) {
+    const formattedQuery = { url };
+
+    if (startDate || endDate) {
+      formattedQuery.capture_time = {
+        startDate: startDate,
+        endDate: endDate
+      };
+    }
+
+    this.setState({ query: formattedQuery, pages: null });
   }
 
   /**
@@ -87,7 +103,10 @@ export default class WebMonitoringUi extends React.Component {
           return Promise.reject(new Error('You must be logged in to view pages'));
         }
 
-        const query = Object.assign({include_latest: true}, this.state.search);
+        const query = Object.assign(
+          {include_latest: true},
+          this.state.query
+        );
 
         return api.getPages(query);
       })
