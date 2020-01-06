@@ -6,7 +6,7 @@ import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
 describe('login-form', () => {
-  const getMockedApi = (overrides={}) => Object.assign(
+  const getMockedApi = (overrides = {}) => Object.assign(
     Object.create(WebMonitoringDb.prototype),
     overrides
   );
