@@ -1,3 +1,4 @@
+import {formatDateRange} from '../scripts/db-helpers';
 const defaultApiUrl = 'https://api-staging.monitoring.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
@@ -277,7 +278,7 @@ export default class WebMonitoringDb {
     if (query) {
       const queryList = [];
       for (const key in query) {
-        const value = query[key];
+        let value = query[key];
         if (value == null) {
           queryList.push(encodeURIComponent(key));
         }
@@ -288,6 +289,9 @@ export default class WebMonitoringDb {
           }
         }
         else {
+          if (key === CAPTURE_TIME) {
+            value = formatDateRange(value);
+          }
           queryList.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
         }
       }
@@ -401,6 +405,8 @@ export default class WebMonitoringDb {
       });
   }
 }
+
+const CAPTURE_TIME = 'capture_time';
 
 function parsePage (data) {
   const page = Object.assign({}, data, {
