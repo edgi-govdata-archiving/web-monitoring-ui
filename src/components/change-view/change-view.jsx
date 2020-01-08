@@ -18,7 +18,8 @@ import {
   unknownType
 } from '../../scripts/media-type';
 
-import './change-view.css';
+import baseStyles from '../../css/base.css'; // eslint-disable-line
+import viewStyles from './change-view.css'; // eslint-disable-line
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
@@ -154,7 +155,7 @@ export default class ChangeView extends React.Component {
     }
 
     return (
-      <div styleName="change-view">
+      <div styleName="viewStyles.change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <SourceInfo
@@ -221,9 +222,9 @@ export default class ChangeView extends React.Component {
         <span className="lnk-action">
           <i className="fa fa-upload" aria-hidden="true" />
           <button
-            styleName="action-btn"
             disabled={this.state.addingToImportant}
             onClick={this._markAsSignificant}
+            styleName="baseStyles.btn baseStyles.btn-link viewStyles.action-btn"
           >
               Add Important Change
           </button>
@@ -240,9 +241,9 @@ export default class ChangeView extends React.Component {
         <span>
           <i className="fa fa-database" aria-hidden="true" />
           <button
-            styleName="action-btn"
             disabled={this.state.addingToDictionary}
             onClick={this._addToDictionary}
+            styleName="baseStyles.btn baseStyles.btn-link viewStyles.action-btn"
           >
               Add to Dictionary
           </button>
@@ -253,15 +254,15 @@ export default class ChangeView extends React.Component {
     // Returning array of controls so that we don't have an extraneous containing div
     return [
       (
-        <div styleName="actions" key="change-view-actions">
-          <div styleName="actions-section">
+        <div styleName="viewStyles.actions" key="change-view-actions">
+          <div styleName="viewStyles.actions-section">
             <i className="fa fa-toggle-on" aria-hidden="true" />
             {/* TODO: should be buttons */}
             <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
           </div>
-          <div styleName="actions-section">
+          <div styleName="viewStyles.actions-section">
             {markSignificant}
             {addToDictionary}
           </div>

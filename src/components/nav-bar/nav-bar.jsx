@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 
-import './nav-bar.css';
-
+import baseStyles from '../../css/base.css'; // eslint-disable-line
+import navStyles from './nav-bar.css'; // eslint-disable-line
 /**
  * @typedef {Object} NavBarProps
  * @property {Function} logOut Callback requesting the user be logged out
@@ -16,12 +16,12 @@ import './nav-bar.css';
  * @param {NavBarProps} props
  */
 export default ({children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) => (
-  <div styleName="container">
-    <nav styleName="navbar">
-      <Link to="/" styleName="brand">{title}</Link>
-      <ul styleName="nav-list">
+  <div styleName="navStyles.container">
+    <nav styleName="navStyles.navbar">
+      <Link to="/" styleName="navStyles.brand">{title}</Link>
+      <ul styleName="navStyles.nav-list">
         <li>
-          <NavLink to="/pages" activeStyleName="nav-link-active" styleName="nav-link" exact>
+          <NavLink to="/pages" activeStyleName="navStyles.nav-link-active" styleName="navStyles.nav-link" exact>
             All Pages
           </NavLink>
         </li>
@@ -35,14 +35,20 @@ export default ({children = null, title = 'EDGI Web Monitoring', user = null, sh
 function renderUserInfo (user, showLogin, logOut) {
   if (user) {
     return (
-      <span styleName="auth-status">
+      <span styleName="navStyles.auth-status">
         {user.email}
         {' '}
-        <button styleName="auth-btn" onClick={logOut}>(Log out)</button>
+        <button styleName="baseStyles.btn baseStyles.btn-link navStyles.auth-btn" onClick={logOut}>
+          (Log out)
+        </button>
       </span>
     );
   }
   else {
-    return <button styleName="auth-status auth-btn" onClick={showLogin}>Log In</button>;
+    return (
+      <button styleName="baseStyles.btn baseStyles.btn-link navStyles.auth-btn navStyles.auth-status" onClick={showLogin}>
+        Log In
+      </button>
+    );
   }
 }

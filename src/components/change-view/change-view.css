@@ -14,8 +14,6 @@
 }
 
 .action-btn {
-  composes: btn from '../../css/base.css';
-  composes: btn-link from '../../css/base.css';
   border: none;
   padding: 0;
   vertical-align: baseline;
