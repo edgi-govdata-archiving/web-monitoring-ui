@@ -81,8 +81,11 @@
     "node": "12.13.1"
   },
   "browserslist": [
-    "last 2 versions",
-    "not Explorer < 11",
-    "not ExplorerMobile > 0"
+    "last 3 versions",
+    "not < 1%",
+    "not ie < 1000",
+    "not op_mini all",
+    "not android < 1000",
+    "not dead"
   ]
 }
