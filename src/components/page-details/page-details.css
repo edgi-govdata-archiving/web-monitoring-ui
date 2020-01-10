@@ -1,14 +1,21 @@
 .header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  margin: 0 -15px;
 }
 
-.header-section {
-  flex: 1 0 auto;
+.header-section-title, .header-section-pager {
+  padding: 0 15px;
 }
 
-.page-view {
+.header-section-title {
+  flex: 1 0 75%;
+}
+
+.header-section-pager {
+  flex: 1 0 25%;
+}
+
+.page-details-main {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -41,7 +48,7 @@
 
 .pager li {
   display: flex;
-  flex: 1 0 auto;
+  flex: 1 0 50%;
 }
 
 .pager li > a:focus {
@@ -60,4 +67,14 @@
 
 .pager-prev .fa {
   margin-right: 0;
+}
+
+@media (max-width: 992px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .header-section-title, .header-section-pager {
+    flex: 1 0 auto;
+  }
 }

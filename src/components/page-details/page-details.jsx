@@ -98,24 +98,22 @@ export default class PageDetails extends React.Component {
 
     // TODO: this HTML should probably be broken up a bit
     return (
-      <div styleName="baseStyles.page-view pageStyles.page-view">
+      <div styleName="baseStyles.main pageStyles.page-details-main">
         <div styleName="pageStyles.header">
-          <div styleName="pageStyles.header-section">
-            <header>
-              <h2 styleName="pageStyles.page-title">
-                {this.state.page.title}
-              </h2>
-              <a
-                className="diff_page_url"
-                href={this.state.page.url}
-                target="_blank"
-                rel="noopener"
-              >
-                {this.state.page.url}
-              </a>
-            </header>
-          </div>
-          <div styleName="pageStyles.header-section">
+          <header styleName="pageStyles.header-section-title">
+            <h2 styleName="pageStyles.page-title">
+              {this.state.page.title}
+            </h2>
+            <a
+              className="diff_page_url"
+              href={this.state.page.url}
+              target="_blank"
+              rel="noopener"
+            >
+              {this.state.page.url}
+            </a>
+          </header>
+          <div styleName="pageStyles.header-section-pager">
             {this._renderPager()}
           </div>
         </div>
