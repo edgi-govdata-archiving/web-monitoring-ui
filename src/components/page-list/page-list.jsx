@@ -38,7 +38,7 @@ export default class PageList extends React.Component {
     }
 
     return (
-      <div styleName="baseStyles.page-view">
+      <div styleName="baseStyles.main">
         <SearchBar
           onSearch={this.props.onSearch}
         />
