@@ -62,13 +62,13 @@
 }
 
 .auth-status {
-  line-height: 20px;
-  padding: 15px;
+  padding: var(--container-padding);
 }
 
 .auth-btn {
   color: #9d9d9d;
   padding: 0;
+  vertical-align: baseline;
 }
 
 .auth-btn:active,
