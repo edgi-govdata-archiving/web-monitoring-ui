@@ -1,5 +1,33 @@
 /* Put styles to be applied globally here */
 
+/* global custom properties */
+:root {
+  /* colors */
+  --brand-primary: #337ab7;
+  --default-border: #ccc;
+
+  --danger-text: #a94442;
+  --danger-bg: #f2dede;
+  --danger-border: #ebccd1;
+
+  --info-text: #31708f;
+  --info-bg: #d9edf7;
+  --info-border: #bce8f1;
+
+  --warning-text: #8a6d3b;
+  --warning-bg: #fcf8e3;
+  --warning-border: #faebcc;
+
+  --gray-darker: #222;
+  --gray-dark: #333;
+  --gray: #555;
+  --gray-light: #777;
+  --gray-lighter: #eee;
+
+  /* layout (TODO: decide on and adopt a layout/grid system to replace bootstrap grid) */
+  --container-padding: 0 15px;
+}
+
 :global(.fa) {
   margin-right: 0.5em;
 }
@@ -28,7 +56,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #333;
+  color: var(--gray-darker);
   background-color: #fff;
 }
 input,

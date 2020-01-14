@@ -13,21 +13,21 @@
 }
 
 .alert-danger {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
+  color: var(--danger-text);
+  background-color: var(--danger-bg);
+  border-color: var(--danger-border);
 }
 
 .alert-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
+  color: var(--info-text);
+  background-color: var(--info-bg);
+  border-color: var(--info-border);
 }
 
 .alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
+  color: var(--warning-text);
+  background-color: var(--warning-bg);
+  border-color: var(--warning-border);
 }
 
 .btn {
@@ -53,7 +53,7 @@
 
 .btn:hover,
 .btn:focus {
-  color: #333;
+  color: var(--gray-darker);
   text-decoration: none;
 }
 
@@ -68,32 +68,32 @@
 }
 
 .btn-default {
-  color: #333;
+  color: var(--gray-darker);
   background-color: #fff;
-  border-color: #ccc;
+  border-color: var(--default-border);
 }
 
 .btn-default:focus {
-  color: #333;
+  color: var(--gray-darker);
   background-color: #e6e6e6;
   border-color: #8c8c8c;
 }
 
 .btn-default:hover {
-  color: #333;
+  color: var(--gray-darker);
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 
 .btn-default:active {
-  color: #333;
+  color: var(--gray-darker);
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 
 .btn-default:active:hover,
 .btn-default:active:focus {
-  color: #333;
+  color: var(--gray-darker);
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
@@ -101,12 +101,12 @@
 .btn-default[disabled]:hover,
 .btn-default[disabled]:focus {
   background-color: #fff;
-  border-color: #ccc;
+  border-color: var(--default-border);
 }
 
 .btn-link {
   font-weight: normal;
-  color: #337ab7;
+  color: var(--brand-primary);
   border-radius: 0;
 }
 
@@ -133,13 +133,13 @@
 
 .btn-link[disabled]:hover,
 .btn-link[disabled]:focus {
-  color: #777;
+  color: var(--gray-light);
   text-decoration: none;
 }
 
 .btn-primary {
   color: #fff;
-  background-color: #337ab7;
+  background-color: var(--brand-primary);
   border-color: #2e6da4;
 }
 
@@ -170,7 +170,7 @@
 
 .btn-primary[disabled]:hover,
 .btn-primary[disabled]:focus {
-  background-color: #337ab7;
+  background-color: var(--brand-primary);
   border-color: #2e6da4;
 }
 /* end from Bootstrap  */

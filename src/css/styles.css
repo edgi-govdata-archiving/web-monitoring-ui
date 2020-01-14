@@ -66,7 +66,7 @@ body {
 .annotation-form textarea {
   border: 1px solid #c3c3c3;
   border-radius: 3px;
-  color: #555;
+  color: var(--gray);
   height: 3em;
   padding: 0.5em;
   width: 100%;
@@ -189,7 +189,7 @@ legend {
 }
 
 iframe {
-  border: 1px solid #ccc;
+  border: 1px solid var(--default-border);
   border-radius: 2px;
   width: 100%;
 }

@@ -25,7 +25,7 @@ ins {
 
 .side-by-side-render > iframe,
 .inline-render > iframe {
-  border: 1px solid #ccc;
+  border: 1px solid var(--default-border);
   border-radius: 2px;
   width: 100%;
 }
@@ -35,8 +35,8 @@ ins {
 }
 
 .diff-source-inline {
-  background: #eee;
-  border: 1px solid #ccc;
+  background: var(--gray-lighter);
+  border: 1px solid var(--default-border);
   font-family: monospace;
   overflow: auto;
   padding: 1em;
@@ -44,8 +44,8 @@ ins {
 }
 
 .diff-text-inline {
-  background: #eee;
-  border: 1px solid #ccc;
+  background: var(--gray-lighter);
+  border: 1px solid var(--default-border);
   padding: 1em;
   white-space: pre-wrap;
 }

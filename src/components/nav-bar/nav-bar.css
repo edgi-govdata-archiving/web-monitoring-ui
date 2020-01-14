@@ -1,5 +1,5 @@
 .container {
-  background-color: #222;
+  background-color: var(--gray-darker);
   border-color: #080808;
   box-shadow: 0px 2px 5px rgba(100, 100, 100, 0.7);
   position: sticky;
@@ -9,10 +9,11 @@
 }
 
 .navbar {
-  align-items: center;
-  color: #eee;
+  align-items: baseline;
+  color: var(--gray-lighter);
   display: flex;
   justify-content: space-between;
+  padding: var(--container-padding);
   width: 100%;
 }
 
@@ -28,12 +29,12 @@
 .nav-link:active,
 .nav-link:focus,
 .nav-link:hover {
-  color: #eee;
+  color: var(--gray-lighter);
   text-decoration: none;
 }
 
 .nav-link-active {
-  background-color: #337ab7;
+  background-color: var(--brand-primary);
 }
 
 .nav-list {
@@ -49,7 +50,6 @@
   font-size: 1.4em;
   font-weight: bold;
   letter-spacing: 2px;
-  padding: 15px 0 15px 15px;
   text-transform: uppercase;
 }
 

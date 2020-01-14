@@ -5,8 +5,8 @@
 }
 
 .actions {
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
+  border-bottom: 1px solid var(--gray-lighter);
+  border-top: 1px solid var(--gray-lighter);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

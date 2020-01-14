@@ -1,5 +1,5 @@
 .search-bar {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--default-border);
   margin-bottom: 0.5em;
   display: flex;
 }

@@ -1,7 +1,7 @@
 .section {
-  color: #333;
-  background-color: #fcf8e3;
-  padding: 0 15px;
+  color: var(--gray-darker);
+  background-color: var(--warning-bg);
+  padding: var(--container-padding);
 }
 
 .title {

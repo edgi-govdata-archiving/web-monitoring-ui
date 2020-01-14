@@ -1,5 +1,5 @@
 .container {
-  padding: 0 15px;
+  padding: var(--container-padding);
 }
 
 .list-alert {
@@ -15,7 +15,7 @@
 }
 
 .page-list > tbody > tr:hover {
-  background-color: #eee;
+  background-color: var(--gray-lighter);
 }
 
 .page-list > tbody > tr > td {
