@@ -1,0 +1,77 @@
+.container {
+  background-color: var(--gray-darker);
+  border-color: #080808;
+  box-shadow: 0px 2px 5px rgba(100, 100, 100, 0.7);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.navbar {
+  align-items: baseline;
+  color: var(--gray-lighter);
+  display: flex;
+  justify-content: space-between;
+  padding: var(--container-padding);
+  width: 100%;
+}
+
+.nav-link {
+  border: 1px solid #666;
+  border-radius: 2px;
+  display: inline-block;
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
+.nav-link,
+.nav-link:active,
+.nav-link:focus,
+.nav-link:hover {
+  color: var(--gray-lighter);
+  text-decoration: none;
+}
+
+.nav-link-active {
+  background-color: var(--brand-primary);
+}
+
+.nav-list {
+  align-items: center;
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.brand {
+  display: block;
+  font-size: 1.4em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.brand,
+.brand:active,
+.brand:focus,
+.brand:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.auth-status {
+  padding: var(--container-padding);
+}
+
+.auth-btn {
+  color: #9d9d9d;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+.auth-btn:active,
+.auth-btn:hover {
+  color: white;
+}

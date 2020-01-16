@@ -1,0 +1,25 @@
+.change-view {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+.actions {
+  border-bottom: 1px solid var(--gray-lighter);
+  border-top: 1px solid var(--gray-lighter);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1em 0 0.5em 0;
+}
+
+.action-btn {
+  border: none;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+.actions-section {
+  padding: 0.7em 0.2em;
+  flex: 0 0 auto;
+}

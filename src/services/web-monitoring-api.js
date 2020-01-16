@@ -51,7 +51,7 @@ export default class WebMonitoringApi {
     );
   }
 
-  _postChange (page, fromVersion, toVersion, annotation, url, description='save a change') {
+  _postChange (page, fromVersion, toVersion, annotation, url, description = 'save a change') {
     if (!this.dbApi.userData) {
       return Promise.reject(
         new Error(`You must be logged in to ${description}.`));

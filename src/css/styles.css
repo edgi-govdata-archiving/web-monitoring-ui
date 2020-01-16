@@ -20,170 +20,14 @@ html,
   flex-direction: column;
 }
 
-.container-page-view > .row,
 .version-selector {
   flex: 0 0 auto;
-}
-
-.change-view {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
 }
 
 body {
   background: #136a8a;
   background: linear-gradient(45deg, #136a8a, #267871);
   height: 100%;
-}
-
-/* ===== Containers ===== */
-.container-list-view,
-.container-page-view {
-  background: white;
-  color: #444;
-  margin: 5px 0;
-}
-
-.container-page-view {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-  padding: 15px;
-}
-
-.container-list-view > .alert {
-  margin-top: 1em;
-}
-
-/* ===== Nav Bar ===== */
-#bootstrap-override .navbar-brand {
-  font-size: 1.4em;
-  font-weight: bold;
-  letter-spacing: 2px;
-  margin-right: 6px;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
-#bootstrap-override .navbar-inverse,
-#bootstrap-override .navbar-inverse a,
-#bootstrap-override .navbar-brand:hover {
-  color: #eee;
-}
-
-.nav,
-.navbar > .container-fluid {
-  align-items: center;
-  display: flex;
-}
-
-#bootstrap-override .navbar-header {
-  margin-right: auto;
-}
-
-.nav > li > a {
-  border: 1px solid #666666;
-  border-radius: 2px;
-  margin: 5px;
-  padding: 5px;
-  text-decoration: none;
-}
-
-#bootstrap-override a.active,
-#bootstrap-override a.active:focus,
-#bootstrap-override a.active:hover {
-  background-color: #337ab7;
-}
-
-.navbar {
-  border-radius: 0;
-  box-shadow: 0px 2px 5px rgba(100, 100, 100, 0.7);
-  flex: 0 0 auto;
-  margin-bottom: 0;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-}
-
-.navbar-text {
-  font-size: 2.2rem;
-}
-
-.navbar .auth-status {
-  border: none;
-  line-height: 20px;
-  padding: 15px;
-}
-
-.navbar .auth-status button {
-  border: none;
-  display: inline;
-  line-height: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-/* ===== Page Detail View ===== */
-.page-title {
-  font-size: 1.5em;
-  margin-bottom: 0;
-  margin-top: 0.3em;
-}
-
-.pager {
-  display: flex;
-  margin: 0;
-}
-
-.pager li {
-  display: flex;
-  flex: 1;
-}
-
-.pager li > a {
-  background-color: #f7f7f7;
-  border-radius: 3px;
-  flex: 1;
-}
-
-#bootstrap-override .pager li > a:focus {
-  background-color: #f7f7f7;
-}
-
-#bootstrap-override .pager li > a:hover {
-  background-color: rgba(139, 227, 255, 0.46);
-}
-
-.pager__previous {
-  margin-right: 5px;
-}
-
-.pager__previous .fa {
-  margin-right: 0;
-}
-
-/* Change View */
-.change-view-actions {
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
-  margin: 1em 0 0.5em 0;
-  padding: 0.7em 0.2em;
-}
-
-.change-view-actions > div {
-  padding: 0;
-}
-
-.change-view-actions .btn-link {
-  border: none;
-  display: inline;
-  font-size: inherit;
-  line-height: inherit;
-  padding: 0;
-  vertical-align: baseline;
 }
 
 /* Version Selector */
@@ -222,7 +66,7 @@ body {
 .annotation-form textarea {
   border: 1px solid #c3c3c3;
   border-radius: 3px;
-  color: #555;
+  color: var(--gray);
   height: 3em;
   padding: 0.5em;
   width: 100%;
@@ -337,11 +181,6 @@ legend {
   legend {
     margin-top: 1em;
   }
-
-  /* TODO: Hacky, can probably clean this up when we remove Bootstrap */
-  .change-view-actions .text-right {
-    text-align: left;
-  }
 }
 
 /* ===== Diff View ===== */
@@ -350,7 +189,7 @@ legend {
 }
 
 iframe {
-  border: 1px solid #ccc;
+  border: 1px solid var(--default-border);
   border-radius: 2px;
   width: 100%;
 }

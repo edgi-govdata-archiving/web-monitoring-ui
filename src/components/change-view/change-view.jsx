@@ -1,22 +1,25 @@
-import AnnotationForm from './annotation-form';
-import DiffSettingsForm from './diff-settings-form';
-import {diffTypesFor} from '../constants/diff-types';
-import DiffView from './diff-view';
-import layeredStorage from '../scripts/layered-storage';
-import Loading from './loading';
+import AnnotationForm from '../annotation-form';
+import DiffSettingsForm from '../diff-settings-form';
+import {diffTypesFor} from '../../constants/diff-types';
+import DiffView from '../diff-view';
+import layeredStorage from '../../scripts/layered-storage';
+import Loading from '../loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SelectDiffType from './select-diff-type';
-import SelectVersion from './select-version';
-import SourceInfo from './source-info/source-info';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import SelectDiffType from '../select-diff-type';
+import SelectVersion from '../select-version';
+import SourceInfo from '../source-info/source-info';
+import WebMonitoringApi from '../../services/web-monitoring-api';
+import WebMonitoringDb from '../../services/web-monitoring-db';
 import {
   htmlType,
   mediaTypeForExtension,
   parseMediaType,
   unknownType
-} from '../scripts/media-type';
+} from '../../scripts/media-type';
+
+import baseStyles from '../../css/base.css'; // eslint-disable-line
+import viewStyles from './change-view.css'; // eslint-disable-line
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
@@ -152,7 +155,7 @@ export default class ChangeView extends React.Component {
     }
 
     return (
-      <div className="change-view">
+      <div styleName="viewStyles.change-view">
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <SourceInfo
@@ -219,9 +222,9 @@ export default class ChangeView extends React.Component {
         <span className="lnk-action">
           <i className="fa fa-upload" aria-hidden="true" />
           <button
-            className="btn btn-link"
             disabled={this.state.addingToImportant}
             onClick={this._markAsSignificant}
+            styleName="baseStyles.btn baseStyles.btn-link viewStyles.action-btn"
           >
               Add Important Change
           </button>
@@ -238,9 +241,9 @@ export default class ChangeView extends React.Component {
         <span>
           <i className="fa fa-database" aria-hidden="true" />
           <button
-            className="btn btn-link"
             disabled={this.state.addingToDictionary}
             onClick={this._addToDictionary}
+            styleName="baseStyles.btn baseStyles.btn-link viewStyles.action-btn"
           >
               Add to Dictionary
           </button>
@@ -251,15 +254,15 @@ export default class ChangeView extends React.Component {
     // Returning array of controls so that we don't have an extraneous containing div
     return [
       (
-        <div className="row change-view-actions" key="change-view-actions">
-          <div className="col-md-6">
+        <div styleName="viewStyles.actions" key="change-view-actions">
+          <div styleName="viewStyles.actions-section">
             <i className="fa fa-toggle-on" aria-hidden="true" />
             {/* TODO: should be buttons */}
             <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
           </div>
-          <div className="col-md-6 text-right">
+          <div styleName="viewStyles.actions-section">
             {markSignificant}
             {addToDictionary}
           </div>

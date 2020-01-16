@@ -1,16 +1,19 @@
 {
   "presets": [
     ["@babel/preset-env", {
-      // Uncomment to check query results when building.
+      // Uncomment to check browser query results when building.
       // "debug": true,
 
-      // Preview the results of this query at:
-      // https://browserl.ist/?q=last+3+versions%2C+not+%3C+1%25%2C+not+ie+%3C+100%2C+not+op_mini+all
-      "targets": "last 3 versions, not < 1%, not ie < 100, not op_mini all"
+      // NOTE: the actual query is in package.json, so all tools (not just
+      // Babel) can make use of it.
+      // Preview the results a query at: https://browserl.ist/
+      // "targets": "xyz"
     }],
     "@babel/preset-react"
   ],
   "plugins": [
-    ["react-css-modules"]
+    ["react-css-modules", {
+      "attributeNames": { "activeStyleName": "activeClassName" } // for React Router NavLink
+    }]
   ]
 }

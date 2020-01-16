@@ -6,7 +6,7 @@ import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
 describe('login-form', () => {
-  const getMockedApi = (overrides={}) => Object.assign(
+  const getMockedApi = (overrides = {}) => Object.assign(
     Object.create(WebMonitoringDb.prototype),
     overrides
   );
@@ -93,7 +93,7 @@ describe('login-form', () => {
       panel.find('form').simulate('submit', document.createEvent('UIEvents'));
 
       await expect(api.logIn.mock.results[0].value).rejects.toThrow();
-      expect(panel.find('.alert.alert-danger').text()).toBe('Login unsuccessful');
+      expect(panel.find('[className*="danger"]').text()).toBe('Login unsuccessful');
     });
 
     it('Does not call "logIn" if email and password are not both present', () => {
@@ -106,7 +106,7 @@ describe('login-form', () => {
       panel.find('form').simulate('submit', document.createEvent('UIEvents'));
 
       expect(api.logIn).not.toHaveBeenCalled();
-      expect(panel.find('.alert.alert-danger').text()).toBeTruthy();
+      expect(panel.find('[className*="danger"]').text()).toBeTruthy();
     });
   });
 });
