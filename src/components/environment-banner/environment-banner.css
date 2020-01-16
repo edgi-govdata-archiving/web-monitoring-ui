@@ -1,8 +1,10 @@
 .section {
-    color: #333;
+  color: var(--gray-darker);
+  background-color: var(--warning-bg);
+  padding: var(--container-padding);
 }
 
 .title {
-    display: inline-block;
-    margin: 10px 0;
+  display: inline-block;
+  margin: 10px 0;
 }

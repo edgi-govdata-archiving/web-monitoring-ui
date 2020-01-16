@@ -41,10 +41,8 @@ export default class EnvironmentBanner extends React.Component {
       && !this.state.dismissed;
 
     return showBanner ? (
-      <section styleName='section' className='bg-warning'>
-        <div className='container-fluid'>
-          <p styleName='title'>Environment: {this.state.apiEnvironment}</p>
-        </div>
+      <section styleName='section'>
+        <p styleName='title'>Environment: {this.state.apiEnvironment}</p>
       </section>
     ) : null;
   }

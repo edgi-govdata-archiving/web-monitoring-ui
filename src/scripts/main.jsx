@@ -1,3 +1,4 @@
+import 'normalize.css';
 import '../css/styles.css';
 import '../css/diff.css';
 import '../css/global.css';

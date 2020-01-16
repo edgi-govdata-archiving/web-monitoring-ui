@@ -9,6 +9,7 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "googleapis": "^46.0.0",
+    "normalize.css": "^8.0.1",
     "request": "^2.88.0"
   },
   "devDependencies": {

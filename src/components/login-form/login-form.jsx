@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import WebMonitoringDb from '../../services/web-monitoring-db';
-import './login-form.css';
+
+import baseStyles from '../../css/base.css'; // eslint-disable-line
+import formStyles from './login-form.css'; // eslint-disable-line
 
 /**
  * @typedef {Object} LoginFormProps
@@ -36,27 +38,29 @@ export default class LoginPanel extends React.Component {
 
   render () {
     return (
-      <form styleName="form" onSubmit={this._logIn}>
-        <h1 styleName="title">Log In</h1>
-        <p className="alert alert-info" role="alert">
+      <form styleName="formStyles.form" onSubmit={this._logIn}>
+        <h1 styleName="formStyles.title">Log In</h1>
+        <p styleName="baseStyles.alert baseStyles.alert-info" role="alert">
           You must be logged in to view pages
         </p>
         {this._renderError()}
 
-        <label className="form-group" styleName="group">
-          <span className="info-text">E-mail Address:</span>
-          <input className="form-control" type="text" name="email" onChange={this._updateEmail} />
+        <label styleName="formStyles.group">
+          E-mail Address:
+          <input styleName="formStyles.input" type="text" name="email" onChange={this._updateEmail} />
         </label>
 
-        <label className="form-group" styleName="group">
-          <span className="info-text">Password:</span>
-          <input className="form-control" type="password" name="password" onChange={this._updatePassword} />
+        <label styleName="formStyles.group">
+          Password:
+          <input styleName="formStyles.input" type="password" name="password" onChange={this._updatePassword} />
         </label>
 
-        <div styleName="footer">
-          <input className="btn btn-primary" type="submit" value="Log In" />
+        <div styleName="formStyles.footer">
+          <input styleName="baseStyles.btn baseStyles.btn-primary" type="submit" value="Log In" />
           {' '}
-          <button className="btn btn-default" onClick={this._cancel}>Cancel</button>
+          <button styleName="baseStyles.btn baseStyles.btn-default" onClick={this._cancel}>
+            Cancel
+          </button>
         </div>
       </form>
     );
@@ -68,7 +72,7 @@ export default class LoginPanel extends React.Component {
     }
 
     return (
-      <p className="alert alert-danger" role="alert">
+      <p styleName="baseStyles.alert baseStyles.alert-danger" role="alert">
         {this.state.error}
       </p>
     );

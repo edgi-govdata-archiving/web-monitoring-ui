@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import WebMonitoringDb from '../services/web-monitoring-db';
-import ChangeView from './change-view';
-import Loading from './loading';
+import WebMonitoringDb from '../../services/web-monitoring-db';
+import ChangeView from '../change-view/change-view';
+import Loading from '../loading';
+
+import baseStyles from '../../css/base.css'; // eslint-disable-line
+import pageStyles from './page-details.css'; // eslint-disable-line
 
 const cutoffDate = '2000-01-01';
 
@@ -95,24 +98,22 @@ export default class PageDetails extends React.Component {
 
     // TODO: this HTML should probably be broken up a bit
     return (
-      <div className="container-fluid container-page-view">
-        <div className="row">
-          <div className="col-md-9">
-            <header>
-              <h2 className="page-title">
-                {this.state.page.title}
-              </h2>
-              <a
-                className="diff_page_url"
-                href={this.state.page.url}
-                target="_blank"
-                rel="noopener"
-              >
-                {this.state.page.url}
-              </a>
-            </header>
-          </div>
-          <div className="col-md-3">
+      <div styleName="baseStyles.main pageStyles.page-details-main">
+        <div styleName="pageStyles.header">
+          <header styleName="pageStyles.header-section-title">
+            <h2 styleName="pageStyles.page-title">
+              {this.state.page.title}
+            </h2>
+            <a
+              className="diff_page_url"
+              href={this.state.page.url}
+              target="_blank"
+              rel="noopener"
+            >
+              {this.state.page.url}
+            </a>
+          </header>
+          <div styleName="pageStyles.header-section-pager">
             {this._renderPager()}
           </div>
         </div>
@@ -134,14 +135,14 @@ export default class PageDetails extends React.Component {
 
     return (
       <nav aria-label="...">
-        <ul className="pager">
+        <ul styleName="pageStyles.pager">
           <li>
-            <Link to={previousUrl} className="pager__previous">
+            <Link to={previousUrl} styleName="pageStyles.pager-prev">
               <i className="fa fa-arrow-left" aria-hidden="true" /> Previous
             </Link>
           </li>
           <li>
-            <Link to={nextUrl} className="pager__next">
+            <Link to={nextUrl}>
               Next <i className="fa fa-arrow-right" aria-hidden="true" />
             </Link>
           </li>
@@ -166,7 +167,7 @@ export default class PageDetails extends React.Component {
       return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
     }
     else if (!(versionData.from && versionData.to)) {
-      return <div className="alert alert-danger">No saved versions of this page.</div>;
+      return <div styleName="baseStyles.alert baseStyles.alert-danger">No saved versions of this page.</div>;
     }
 
     return (

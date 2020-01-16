@@ -1,3 +1,11 @@
+.container {
+  padding: var(--container-padding);
+}
+
+.list-alert {
+  margin-top: 1em;
+}
+
 .page-list {
   table-layout: fixed;
 }
@@ -7,7 +15,7 @@
 }
 
 .page-list > tbody > tr:hover {
-  background-color: #eee;
+  background-color: var(--gray-lighter);
 }
 
 .page-list > tbody > tr > td {
@@ -29,4 +37,33 @@
 
 .page-list > tbody > tr > th[data-name="url"] {
   width: 40%;
+}
+
+/* .table styles copied from bootstrap */
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+
+.table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+  border-top: 0;
 }

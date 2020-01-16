@@ -2,7 +2,10 @@ import {dateFormatter, formatSites} from '../../scripts/formatters';
 import Loading from '../loading';
 import React from 'react';
 import SearchBar from '../search-bar/search-bar';
-import './page-list.css';
+
+import baseStyles from '../../css/base.css'; // eslint-disable-line
+import listStyles from './page-list.css'; // eslint-disable-line
+
 /**
  * These props also inherit from React Router's RouteComponent props
  * @typedef {Object} PageListProps
@@ -35,7 +38,7 @@ export default class PageList extends React.Component {
     }
 
     return (
-      <div className="container-fluid container-list-view">
+      <div styleName="baseStyles.main">
         <SearchBar
           onSearch={this.props.onSearch}
         />
@@ -46,15 +49,13 @@ export default class PageList extends React.Component {
 
   renderPages () {
     return (
-      <div className="row">
-        <div className="col-md-12">
-          <table className="table" styleName="page-list">
-            <thead>{this.renderHeader()}</thead>
-            <tbody>
-              {this.props.pages.map(page => this.renderRow(page))}
-            </tbody>
-          </table>
-        </div>
+      <div styleName="listStyles.container">
+        <table styleName="listStyles.table listStyles.page-list">
+          <thead>{this.renderHeader()}</thead>
+          <tbody>
+            {this.props.pages.map(page => this.renderRow(page))}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -86,8 +87,8 @@ export default class PageList extends React.Component {
   // TODO: we use similar markup elsewhere, consider making this a component
   renderError (message, type = 'danger') {
     return (
-      <div className="container-fluid container-list-view">
-        <p className={`alert alert-${type}`} role="alert">
+      <div styleName="listStyles.container">
+        <p styleName={`listStyles.list-alert baseStyles.alert baseStyles.alert-${type}`} role="alert">
           {message}
         </p>
       </div>

@@ -11,6 +11,8 @@ import ChangesOnlyDiff from './changes-only-diff';
 import RawVersion from './raw-version';
 import SideBySideRawVersions from './side-by-side-raw-versions';
 
+import '../css/base.css';
+
 /**
  * @typedef DiffViewProps
  * @property {Page} page
@@ -68,7 +70,7 @@ export default class DiffView extends React.Component {
     }
     else if (this.state.diffData instanceof Error) {
       return (
-        <p className="alert alert-danger" role="alert">
+        <p styleName="alert alert-danger" role="alert">
           Error: {this.state.diffData.message}
         </p>
       );
@@ -87,15 +89,16 @@ export default class DiffView extends React.Component {
       && this.props.b
       && this.props.a.version_hash === this.props.b.version_hash;
 
-    const className = 'diff-view__alert alert alert-warning';
+    const className = 'diff-view__alert';
+    const styleName = 'alert alert-warning';
 
     if (sameContent) {
-      return <div className={className}>
+      return <div className={className} styleName={styleName}>
         These two versions are <strong>exactly the same</strong>.
       </div>;
     }
     else if (this.state.diffData.change_count === 0) {
-      return <div className={className}>
+      return <div className={className} styleName={styleName}>
         There were <strong>no changes for this diff type</strong>. (Other diff
         types may show changes.)
       </div>;
@@ -107,7 +110,7 @@ export default class DiffView extends React.Component {
   renderUndiffableMessage () {
     if (this.state.diffData.raw) {
       return (
-        <div className="diff-view__alert alert alert-info">
+        <div className="diff-view__alert" styleName="alert alert-info">
           We can’t compare the selected versions of page; you are viewing the
           content without deletions and insertions highlighted.
         </div>
