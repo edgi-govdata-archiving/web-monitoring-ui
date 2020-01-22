@@ -64,7 +64,6 @@ export default class ChangeView extends React.Component {
       ? findDiffType(props.from, props.to, page)
       : undefined;
 
-
     // TODO: should we use layeredStorage for this too? Do we still need to check for sessionStorage?
     const collapsedView = ('sessionStorage' in window)
       ? sessionStorage.getItem(collapsedViewStorage) !== 'false'
@@ -80,7 +79,6 @@ export default class ChangeView extends React.Component {
       diffType,
       updating: false,
     };
-
 
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
