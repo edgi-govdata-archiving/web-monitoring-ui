@@ -44,7 +44,8 @@ const diffTypeStorage = 'edgi.wm.ui.diff_type';
  * @param {ChangeViewProps} props
  */
 export default class ChangeView extends React.Component {
-  // TODO: This fires more often than necessary. see about alternatives to getDerivedStateFromProps
+  // TODO: This fires more often than is probably necessary.
+  // see about alternatives to getDerivedStateFromProps
   // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
   static getDerivedStateFromProps (props, state) {
     // Ensure that the current diff type is relevant to the content we are
