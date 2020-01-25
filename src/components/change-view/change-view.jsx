@@ -44,14 +44,11 @@ const diffTypeStorage = 'edgi.wm.ui.diff_type';
  * @param {ChangeViewProps} props
  */
 export default class ChangeView extends React.Component {
-  // TODO: This fires more often than is probably necessary.
-  // see about alternatives to getDerivedStateFromProps
-  // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
   static getDerivedStateFromProps (props, state) {
     // Ensure that the current diff type is relevant to the content we are
     // comparing. If not, switch to a relevant type.
     if (props.from && props.to) {
-      return {diffType: findDiffType(props.from, props.to, props.page, state.diffType)};
+      return {diffType: ensureValidDiffType(props.from, props.to, props.page, state.diffType)};
     }
 
     return null;
@@ -60,24 +57,14 @@ export default class ChangeView extends React.Component {
   constructor (props) {
     super(props);
 
-    const page = props.page;
-    const diffType = (page.versions && page.versions.length > 1)
-      ? findDiffType(props.from, props.to, page)
-      : undefined;
-
-    // TODO: should we use layeredStorage for this too? Do we still need to check for sessionStorage?
-    const collapsedView = ('sessionStorage' in window)
-      ? sessionStorage.getItem(collapsedViewStorage) !== 'false'
-      : true;
-
     this.state = {
       addingToDictionary: false,
       addingToImportant: false,
       annotation: {},
       change: null,
-      collapsedView,
+      collapsedView: loadCollapsedView(),
       diffSettings: loadDiffSettings(),
-      diffType,
+      diffType: undefined,
       updating: false,
     };
 
@@ -101,16 +88,12 @@ export default class ChangeView extends React.Component {
       this._getChange(this.props.from, this.props.to);
     }
 
-    if ('sessionStorage' in window) {
-      sessionStorage.setItem(
-        collapsedViewStorage,
-        this.state.collapsedView.toString()
-      );
-    }
+    saveCollapsedView(this.state.collapsedView);
   }
 
   handleDiffTypeChange (diffType) {
-    this.setState({diffType}, () => saveDiffType(diffType));
+    this.setState({diffType});
+    saveDiffType(diffType);
   }
 
   handleDiffSettingsChange (diffSettings) {
@@ -424,6 +407,15 @@ function mediaTypeForUrl (url) {
   return extension && mediaTypeForExtension[extension[2]];
 }
 
+function loadCollapsedView () {
+  // defaults to true if storage is not set
+  return layeredStorage.getItem(collapsedViewStorage) !== 'false';
+}
+
+function saveCollapsedView (collapsedView) {
+  layeredStorage.setItem(collapsedViewStorage, collapsedView);
+}
+
 function loadDiffSettings () {
   return layeredStorage.getItem(diffSettingsStorage) || {
     removeFormatting: false,
@@ -435,17 +427,20 @@ function saveDiffSettings (settings) {
   layeredStorage.setItem(diffSettingsStorage, settings);
 }
 
-function findDiffType(from, to, page, stateDiffType = null) {
-  const preferredDiffType = stateDiffType || loadDiffType();
+function ensureValidDiffType(from, to, page, stateDiffType = null) {
   const relevantTypes = relevantDiffTypes(from, to, page);
+  const typesToTry = ([stateDiffType, loadDiffType(), defaultDiffType]).filter(t => t);
 
-  return (relevantTypes.find(type => type.value === preferredDiffType))
-    ? preferredDiffType
-    : relevantTypes[0].value;
+  return typesToTry.find(diffType => isDiffTypeRelevant(relevantTypes, diffType))
+    || relevantTypes[0].value;
+}
+
+function isDiffTypeRelevant(relevantTypes, diffType) {
+  return (relevantTypes.find(type => type.value === diffType)) ? true : false;
 }
 
 function loadDiffType () {
-  return layeredStorage.getItem(diffTypeStorage) || defaultDiffType;
+  return layeredStorage.getItem(diffTypeStorage);
 }
 
 function saveDiffType (diffType) {
