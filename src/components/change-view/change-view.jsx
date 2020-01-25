@@ -48,7 +48,8 @@ export default class ChangeView extends React.Component {
     // Ensure that the current diff type is relevant to the content we are
     // comparing. If not, switch to a relevant type.
     if (props.from && props.to) {
-      return {diffType: ensureValidDiffType(props.from, props.to, props.page, state.diffType)};
+      const diffType = ensureValidDiffType(props.from, props.to, props.page, state.diffType);
+      if (diffType !== state.diffType) return {diffType};
     }
 
     return null;
