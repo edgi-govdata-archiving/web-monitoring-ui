@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import ChangeView from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
@@ -26,9 +26,7 @@ const mockChange = {
 // the relevant types for "text/*" are a subset of the relevant types for "text/html"
 // the relevant types for 'text/html' and "*/*" are mutually exclusive
 
-const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
 const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
-const diffSettingsStorage = 'edgi.wm.ui.diff_settings';
 const diffTypeStorage = 'edgi.wm.ui.diff_type';
 
 describe('change-view', () => {
