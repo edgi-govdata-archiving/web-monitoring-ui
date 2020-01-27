@@ -410,7 +410,7 @@ function mediaTypeForUrl (url) {
 
 function loadCollapsedView () {
   // defaults to true if storage is not set
-  return layeredStorage.getItem(collapsedViewStorage) !== 'false';
+  return layeredStorage.getItem(collapsedViewStorage) !== false;
 }
 
 function saveCollapsedView (collapsedView) {
