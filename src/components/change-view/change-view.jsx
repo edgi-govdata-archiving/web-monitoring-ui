@@ -21,8 +21,9 @@ import {
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import viewStyles from './change-view.css'; // eslint-disable-line
 
+export const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
+
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
-const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 const diffSettingsStorage = 'edgi.wm.ui.diff_settings';
 const diffTypeStorage = 'edgi.wm.ui.diff_type';
 

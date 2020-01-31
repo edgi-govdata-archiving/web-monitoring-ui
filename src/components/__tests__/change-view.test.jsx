@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import ChangeView from '../change-view/change-view';
+import ChangeView, {defaultDiffType} from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';
@@ -26,7 +26,6 @@ const mockChange = {
 // the relevant types for "text/*" are a subset of the relevant types for "text/html"
 // the relevant types for 'text/html' and "*/*" are mutually exclusive
 
-const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 const diffTypeStorage = 'edgi.wm.ui.diff_type';
 
 describe('change-view', () => {
@@ -81,7 +80,7 @@ describe('change-view', () => {
             const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
             layeredStorage.getItem.mockReturnValue(storedDiffType);
 
-            const mediaType = 'text/*';
+            const mediaType = 'text/xml';
             const relevantTypes = diffTypesFor(mediaType);
 
             const changeView = shallow(
@@ -102,7 +101,7 @@ describe('change-view', () => {
 
     describe('when a diffType has NOT been stored in layeredStorage', () => {
       describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is relevant to the pages being compared', () => {
-        it('sets state.diffType to SIDE_BY_SIDE_RENDERED', () => {
+        it('sets state.diffType to defaultDiffType', () => {
           layeredStorage.getItem.mockReturnValue(null);
 
           const changeView = shallow(
@@ -115,7 +114,7 @@ describe('change-view', () => {
             {context: {api: mockApi}}
           );
 
-          expect(changeView.state().diffType).toBe('SIDE_BY_SIDE_RENDERED');
+          expect(changeView.state().diffType).toBe(defaultDiffType);
         });
       });
 
@@ -123,7 +122,7 @@ describe('change-view', () => {
         it('sets state.diffType to the first relevant diff type', () => {
           layeredStorage.getItem.mockReturnValue(null);
 
-          const mediaType = 'text/*';
+          const mediaType = 'text/xml';
           const relevantTypes = diffTypesFor(mediaType);
 
           const changeView = shallow(
@@ -147,7 +146,7 @@ describe('change-view', () => {
       it('leaves state.diffType at its current value', () => {
 
         const oldMediaType = 'text/html';
-        const newMediaType = 'text/*';
+        const newMediaType = 'text/xml';
 
         const newRelevantTypes = diffTypesFor(newMediaType);
         const diffType = newRelevantTypes[0].value;
@@ -178,7 +177,7 @@ describe('change-view', () => {
         describe('when that diffType is relevant to the pages being compared', () => {
           it('sets state.diffType to the stored value', () => {
             const oldMediaType = 'text/html';
-            const newMediaType = '*/*';
+            const newMediaType = 'image/jpeg';
 
             const stateDiffType = diffTypesFor(oldMediaType)[0].value;
             const storedDiffType = diffTypesFor(newMediaType)[1].value;
@@ -209,7 +208,7 @@ describe('change-view', () => {
         describe('when the stored diffType is NOT relevant to the pages being compared', () => {
           describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is relevant to the pages being compared', () => {
             it('sets state.diffType to SIDE_BY_SIDE_RENDERED', () => {
-              const oldMediaType = '*/*';
+              const oldMediaType = 'image/jpeg';
               const newMediaType = 'text/html';
 
               const stateDiffType = diffTypesFor(oldMediaType)[0].value;
@@ -241,7 +240,7 @@ describe('change-view', () => {
           describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is NOT relevant to the pages being compared', () => {
             it('sets state.diffType to the first relevant diff type', () => {
               const oldMediaType = 'text/html';
-              const newMediaType = '*/*';
+              const newMediaType = 'image/jpeg';
 
               const stateDiffType = diffTypesFor(oldMediaType)[0].value;
               const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
@@ -277,7 +276,7 @@ describe('change-view', () => {
         it('sets state.diffType to SIDE_BY_SIDE_RENDERED', () => {
           layeredStorage.getItem.mockReturnValue(null);
 
-          const oldMediaType = '*/*';
+          const oldMediaType = 'image/jpeg';
           const newMediaType = 'text/html';
 
           const stateDiffType = diffTypesFor(oldMediaType)[0].value;
@@ -308,7 +307,7 @@ describe('change-view', () => {
           layeredStorage.getItem.mockReturnValue(null);
 
           const oldMediaType = 'text/html';
-          const newMediaType = '*/*';
+          const newMediaType = 'image/jpeg';
 
           const stateDiffType = diffTypesFor(oldMediaType)[0].value;
 
