@@ -437,7 +437,7 @@ function ensureValidDiffType(from, to, page, stateDiffType = null) {
 }
 
 function isDiffTypeRelevant(relevantTypes, diffType) {
-  return (relevantTypes.find(type => type.value === diffType)) ? true : false;
+  return relevantTypes.some((type) => type.value === diffType);
 }
 
 function loadDiffType () {
