@@ -39,8 +39,6 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     - Username: `public.access@envirodatagov.org`
     - Password: `PUBLIC_ACCESS`
 
-5. (Optional) Set up Google Sheets for saving important changes and repeated, “dictionary” changes. See the section below on [Google Sheets](#google-sheets-tasking-and-significant-changes).
-
 [nodenv]: https://github.com/nodenv/nodenv
 [nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
 [nvm-install]: https://github.com/creationix/nvm#install-script
@@ -66,44 +64,6 @@ Access the main view at `http://localhost:3001`
 
 Screenshot:
 ![screenshot](screenshot.png)
-
-
-## Google Sheets (Significant Changes)
-
-The analysis UI keeps some data and runtime configuration separate from the public web monitoring database ([`web-monitoring-db`](http://github.com/edgi-govdata-archiving/web-monitoring-db)). This data is kept in 2 Google Docs spreadsheets. You can use the UI without configuring them, but you will be missing some functionality.
-
-First, you’ll need to create a *service account* the application can use to access the sheets. To do so, follow the first half of [this tutorial](http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/). During the process, you should have downloaded a `.json` file with authentication information. Add the `client_email` and `private_key` fields from the file to your `.env` file:
-
-```sh
-GOOGLE_SERVICE_CLIENT_EMAIL=73874number-example@developer.gserviceaccount.com
-GOOGLE_SHEETS_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\EXAMPLEExampleG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCsBjS7qpN+vUhz\nXRhcL3pwKZtewjZ478rs7FylT+YAJMmy1wOS3ze2FVYaBHelloFromXm9gL82OCSJn1ZThePastuwGA0\npe9oZSAtiB4ujaHhcWCO7ZYZzBvsPRJZR2eo4UokDpmgAS9ExTU7zN+eKTBTFGB4\nKDc7FAxqhk9dBcYFpLU34wuQsS/SZY1j3I/pmqQ7CHnGG+KLhyRiZ6UvlT8KjWejWTFdfMoredksjfGibberishkljfkls+\nkerGibberishll7\n7oU0VVs3xY5nhkjd#r34jkd7vxjknfy3jsdhf5zjkGYfyXFNhVjsl/bJ3AHA/C9Fd5z9JmOCsZE\nyD9Yjy72C50CjOgCp568pse85A==\n-----END PRIVATE KEY-----\n
-```
-
-In the next section, you’ll create the 2 sheets.
-
-
-### Important Changes and Dictionary Sheets
-
-Two Google Docs spreadsheets are used to keep track of changes that users mark as “important” or add to the “dictionary” of repeated, common changes. This information also gets saved to the database, but since analysts’ current workflow is spreadsheet-based, we *also* send this data to the spreadsheets. To get this working:
-
-1) Make copies of these spreadsheets:
-
-    * [Important Changes](https://docs.google.com/spreadsheets/d/1S2mZKuV2v7-uec2eGA0zp3X1v1IAnoCHkLXmL-ChqnM/edit#gid=1804226491)
-    * [Dictionary](https://docs.google.com/spreadsheets/d/1YRo1uNRRX92eSo2JiGEu50TpPVXYaLchrUVOZ3UW0Bs/edit#gid=554811086)
-
-    Make note the of [sheet IDs](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) of your new spreadsheets.
-
-2) Share the spreadsheets with the e-mail address of the service account you created earlier. You must give it **write** access.
-
-3) Update your `.env` file with the IDs of the sheets:
-
-```sh
-GOOGLE_IMPORTANT_CHANGE_SHEET_ID=examplesdf8Za7sdft39a_osnzhJBI2dsftasdf
-GOOGLE_DICTIONARY_SHEET_ID=examplesdf8Za7sdft39a_osnzhJBI2dsftasdf
-```
-
-Restart your app server and try clicking on the “add important change” or “add to dictionary” buttons. A new line should be added to the relevant sheet.
-
 
 ## Code of Conduct
 
