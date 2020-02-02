@@ -145,11 +145,10 @@ describe('change-view', () => {
     describe('when state.diffType is relevant to the new pages being compared', () => {
       it('leaves state.diffType at its current value', () => {
 
-        const oldMediaType = 'text/html';
-        const newMediaType = 'text/xml';
+        const oldMediaType = 'text/xml';
+        const newMediaType = 'text/html';
 
-        const newRelevantTypes = diffTypesFor(newMediaType);
-        const diffType = newRelevantTypes[0].value;
+        const diffType = diffTypesFor(oldMediaType)[0].value;
 
         const changeView = shallow(
           <ChangeView
@@ -160,8 +159,6 @@ describe('change-view', () => {
           />,
           {context: {api: mockApi}}
         );
-
-        changeView.setState({diffType});
 
         changeView.setProps({
           from: {content_type: newMediaType},
@@ -179,7 +176,6 @@ describe('change-view', () => {
             const oldMediaType = 'text/html';
             const newMediaType = 'image/jpeg';
 
-            const stateDiffType = diffTypesFor(oldMediaType)[0].value;
             const storedDiffType = diffTypesFor(newMediaType)[1].value;
 
             layeredStorage.getItem.mockReturnValue(storedDiffType);
@@ -194,8 +190,6 @@ describe('change-view', () => {
               {context: {api: mockApi}}
             );
 
-            changeView.setState({diffType: stateDiffType});
-
             changeView.setProps({
               from: {content_type: newMediaType},
               to: {content_type: newMediaType},
@@ -207,13 +201,11 @@ describe('change-view', () => {
 
         describe('when the stored diffType is NOT relevant to the pages being compared', () => {
           describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is relevant to the pages being compared', () => {
-            it('sets state.diffType to SIDE_BY_SIDE_RENDERED', () => {
+            it('sets state.diffType to defaultDiffType', () => {
               const oldMediaType = 'image/jpeg';
               const newMediaType = 'text/html';
 
-              const stateDiffType = diffTypesFor(oldMediaType)[0].value;
               const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-
               layeredStorage.getItem.mockReturnValue(storedDiffType);
 
               const changeView = shallow(
@@ -225,8 +217,6 @@ describe('change-view', () => {
                 />,
                 {context: {api: mockApi}}
               );
-
-              changeView.setState({diffType: stateDiffType});
 
               changeView.setProps({
                 from: {content_type: newMediaType},
@@ -242,9 +232,7 @@ describe('change-view', () => {
               const oldMediaType = 'text/html';
               const newMediaType = 'image/jpeg';
 
-              const stateDiffType = diffTypesFor(oldMediaType)[0].value;
               const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-
               layeredStorage.getItem.mockReturnValue(storedDiffType);
 
               const changeView = shallow(
@@ -256,8 +244,6 @@ describe('change-view', () => {
                 />,
                 {context: {api: mockApi}}
               );
-
-              changeView.setState({diffType: stateDiffType});
 
               changeView.setProps({
                 from: {content_type: newMediaType},
@@ -279,8 +265,6 @@ describe('change-view', () => {
           const oldMediaType = 'image/jpeg';
           const newMediaType = 'text/html';
 
-          const stateDiffType = diffTypesFor(oldMediaType)[0].value;
-
           const changeView = shallow(
             <ChangeView
               page={simplePage}
@@ -290,8 +274,6 @@ describe('change-view', () => {
             />,
             {context: {api: mockApi}}
           );
-
-          changeView.setState({diffType: stateDiffType});
 
           changeView.setProps({
             from: {content_type: newMediaType},
@@ -309,8 +291,6 @@ describe('change-view', () => {
           const oldMediaType = 'text/html';
           const newMediaType = 'image/jpeg';
 
-          const stateDiffType = diffTypesFor(oldMediaType)[0].value;
-
           const changeView = shallow(
             <ChangeView
               page={simplePage}
@@ -320,8 +300,6 @@ describe('change-view', () => {
             />,
             {context: {api: mockApi}}
           );
-
-          changeView.setState({diffType: stateDiffType});
 
           changeView.setProps({
             from: {content_type: newMediaType},
