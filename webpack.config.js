@@ -2,6 +2,8 @@ const autoprefixer = require('autoprefixer');
 const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
 const zopfli = require('@gfx/zopfli');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
@@ -139,7 +141,11 @@ module.exports = {
       }
     ],
   },
-  plugins: [],
+  plugins: [
+    // Strip *all* locales from Moment.js.
+    new MomentLocalesPlugin(),
+    new BundleAnalyzerPlugin()
+  ],
 };
 
 // Production-specific additions
