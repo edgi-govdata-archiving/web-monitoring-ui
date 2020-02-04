@@ -2,13 +2,22 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import ChangeView, {defaultDiffType} from '../change-view/change-view';
+import ChangeView, {defaultDiffType, diffTypeStorage} from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import {diffTypesFor} from '../../constants/diff-types';
 
-jest.mock('../../scripts/layered-storage');
+jest.mock('../../scripts/layered-storage', () => ({
+  __esModule: true,
+  default: {
+    getItem (key) { return this._data[key]; },
+    setItem (key, value) { return this._data[key] = value; },
+    removeItem (key) { return delete this._data[key]; },
+    clear () { this._data = {}; },
+    _data: {}
+  }
+}));
 
 const mockChange = {
   uuid: 'adc70e01-0723-4a28-a8e4-ca4b551ed2ae..0772dc83-7966-4881-8901-eceb051b9536',
@@ -26,20 +35,22 @@ const mockChange = {
 // the relevant types for "text/*" are a subset of the relevant types for "text/html"
 // the relevant types for 'text/html' and "*/*" are mutually exclusive
 
-const diffTypeStorage = 'edgi.wm.ui.diff_type';
-
 describe('change-view', () => {
   const mockApi = Object.assign(
     Object.create(WebMonitoringDb.prototype),
     {getChange: () => Promise.resolve(mockChange)}
   );
 
+  afterEach(() => {
+    layeredStorage.clear();
+  });
+
   describe('initial diffType', () => {
     describe('when a diffType has been stored in layeredStorage', () => {
       describe('when that diffType is relevant to the pages being compared', () => {
         it('sets state.diffType to the stored value', () => {
           const storedDiffType = 'CHANGES_ONLY_TEXT';
-          layeredStorage.getItem.mockReturnValue(storedDiffType);
+          layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
           const changeView = shallow(
             <ChangeView
@@ -59,7 +70,7 @@ describe('change-view', () => {
         describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is relevant to the pages being compared', () => {
           it('sets state.diffType to SIDE_BY_SIDE_RENDERED', () => {
             const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-            layeredStorage.getItem.mockReturnValue(storedDiffType);
+            layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
             const changeView = shallow(
               <ChangeView
@@ -78,7 +89,7 @@ describe('change-view', () => {
         describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is NOT relevant to the pages being compared', () => {
           it('sets state.diffType to the first relevant diff type', () => {
             const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-            layeredStorage.getItem.mockReturnValue(storedDiffType);
+            layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
             const mediaType = 'text/xml';
             const relevantTypes = diffTypesFor(mediaType);
@@ -102,8 +113,6 @@ describe('change-view', () => {
     describe('when a diffType has NOT been stored in layeredStorage', () => {
       describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is relevant to the pages being compared', () => {
         it('sets state.diffType to defaultDiffType', () => {
-          layeredStorage.getItem.mockReturnValue(null);
-
           const changeView = shallow(
             <ChangeView
               page={simplePage}
@@ -120,8 +129,6 @@ describe('change-view', () => {
 
       describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is NOT relevant to the pages being compared', () => {
         it('sets state.diffType to the first relevant diff type', () => {
-          layeredStorage.getItem.mockReturnValue(null);
-
           const mediaType = 'text/xml';
           const relevantTypes = diffTypesFor(mediaType);
 
@@ -178,7 +185,7 @@ describe('change-view', () => {
 
             const storedDiffType = diffTypesFor(newMediaType)[1].value;
 
-            layeredStorage.getItem.mockReturnValue(storedDiffType);
+            layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
             const changeView = shallow(
               <ChangeView
@@ -206,7 +213,7 @@ describe('change-view', () => {
               const newMediaType = 'text/html';
 
               const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-              layeredStorage.getItem.mockReturnValue(storedDiffType);
+              layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
               const changeView = shallow(
                 <ChangeView
@@ -233,7 +240,7 @@ describe('change-view', () => {
               const newMediaType = 'image/jpeg';
 
               const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-              layeredStorage.getItem.mockReturnValue(storedDiffType);
+              layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
               const changeView = shallow(
                 <ChangeView
@@ -260,8 +267,6 @@ describe('change-view', () => {
     describe('when a diffType has NOT been stored in layeredStorage', () => {
       describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is relevant to the pages being compared', () => {
         it('sets state.diffType to SIDE_BY_SIDE_RENDERED', () => {
-          layeredStorage.getItem.mockReturnValue(null);
-
           const oldMediaType = 'image/jpeg';
           const newMediaType = 'text/html';
 
@@ -286,8 +291,6 @@ describe('change-view', () => {
 
       describe('when defaultDiffType (SIDE_BY_SIDE_RENDERED) is NOT relevant to the pages being compared', () => {
         it('sets state.diffType to the first relevant diff type', () => {
-          layeredStorage.getItem.mockReturnValue(null);
-
           const oldMediaType = 'text/html';
           const newMediaType = 'image/jpeg';
 
@@ -351,6 +354,6 @@ describe('change-view', () => {
     const newType = diffTypesFor('text/html')[0].value;
     changeView.find('SelectDiffType').props().onChange(newType);
 
-    expect(layeredStorage.setItem).toHaveBeenLastCalledWith(diffTypeStorage, newType);
+    expect(layeredStorage.getItem(diffTypeStorage)).toBe(newType);
   });
 });
