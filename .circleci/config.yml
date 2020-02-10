@@ -68,6 +68,7 @@ jobs:
             # NOTE: on CircleCI, the local master branch seems to be the same
             # as the branch being tested. So always specify `origin/master`.
             git checkout origin/master
+            npm ci
             npm run build-production
             wc -c < dist/bundle.js | tr -d ' ' > stats-master-raw-size.txt
             wc -c < dist/bundle.js.gz | tr -d ' ' > stats-master-compressed-size.txt
@@ -83,22 +84,12 @@ jobs:
             CHANGE="$(echo "scale=1; 100 * (${RAW_SIZE} - ${MASTER_RAW_SIZE}) / ${MASTER_RAW_SIZE}" | bc)"
             CHANGE_COMPRESSED="$(echo "scale=1; 100 * (${COMPRESSED_SIZE} - ${MASTER_COMPRESSED_SIZE}) / ${MASTER_COMPRESSED_SIZE}" | bc)"
 
-            # Ensure there's always a sign.
-            SIGNED_CHANGE="${CHANGE}"
-            if [[ $CHANGE != -* ]]; then
-              SIGNED_CHANGE="+${CHANGE}"
-            fi
-            SIGNED_CHANGE_COMPRESSED="${CHANGE_COMPRESSED}"
-            if [[ $CHANGE_COMPRESSED != -* ]]; then
-              SIGNED_CHANGE_COMPRESSED="+${CHANGE_COMPRESSED}"
-            fi
-
             echo "Current Release Size:"
-            echo "  Bundle: ${MASTER_RAW_SIZE} bytes"
-            echo "  Compressed: ${MASTER_COMPRESSED_SIZE} bytes"
+            printf "  Bundle:     %7s bytes\n" "${MASTER_RAW_SIZE}"
+            printf "  Compressed: %7s bytes\n" "${MASTER_COMPRESSED_SIZE}"
             echo "This Branch Size:"
-            echo "  Bundle: ${RAW_SIZE} bytes (${SIGNED_CHANGE}%)"
-            echo "  Compressed: ${COMPRESSED_SIZE} bytes (${SIGNED_CHANGE_COMPRESSED}%)"
+            printf "  Bundle:     %7s bytes (%+d%%)\n" "${RAW_SIZE}" "${CHANGE}"
+            printf "  Compressed: %7s bytes (%+d%%)\n" "${COMPRESSED_SIZE}" "${CHANGE_COMPRESSED}"
 
             # If we increased in size by a lot, fail the test.
             if [[ $CHANGE > 20 || $CHANGE_COMPRESSED > 20 ]]; then
