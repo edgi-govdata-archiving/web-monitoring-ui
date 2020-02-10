@@ -311,22 +311,22 @@ describe('change-view', () => {
 
       expect(changeView.state().diffType).toBe(newType);
     });
-  });
 
-  it('stores the new diffType in layeredStorage',  () => {
-    const changeView = shallow(
-      <ChangeView
-        page={simplePage}
-        from={{content_type: 'text/html'}}
-        to={{content_type: 'text/html'}}
-        user={{email: 'me'}}
-      />,
-      {context: {api: mockApi}}
-    );
+    it('stores the new diffType in layeredStorage',  () => {
+      const changeView = shallow(
+        <ChangeView
+          page={simplePage}
+          from={{content_type: 'text/html'}}
+          to={{content_type: 'text/html'}}
+          user={{email: 'me'}}
+        />,
+        {context: {api: mockApi}}
+      );
 
-    const newType = diffTypesFor('text/html')[0].value;
-    changeView.find('SelectDiffType').props().onChange(newType);
+      const newType = diffTypesFor('text/html')[0].value;
+      changeView.find('SelectDiffType').props().onChange(newType);
 
-    expect(layeredStorage.getItem(diffTypeStorage)).toBe(newType);
+      expect(layeredStorage.getItem(diffTypeStorage)).toBe(newType);
+    });
   });
 });
