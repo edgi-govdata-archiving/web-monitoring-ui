@@ -43,6 +43,7 @@ jobs:
     docker:
       - image: circleci/node:12.13.1
     steps:
+      - run: sudo apt-get install bc
       - checkout
       - restore_cache:
           keys:
@@ -59,15 +60,15 @@ jobs:
           name: Build Branch
           command: |
             npm run build-production
-            stat -f '%z' dist/bundle.js > stats-raw-size.txt
-            stat -f '%z' dist/bundle.js.gz > stats-compressed-size.txt
+            wc -c < dist/bundle.js | tr -d ' ' > stats-raw-size.txt
+            wc -c < dist/bundle.js.gz | tr -d ' ' > stats-compressed-size.txt
       - run:
           name: Build Master
           command: |
             git checkout master
             npm run build-production
-            stat -f '%z' dist/bundle.js > stats-master-raw-size.txt
-            stat -f '%z' dist/bundle.js.gz > stats-master-compressed-size.txt
+            wc -c < dist/bundle.js | tr -d ' ' > stats-master-raw-size.txt
+            wc -c < dist/bundle.js.gz | tr -d ' ' > stats-master-compressed-size.txt
       - run:
           name: Compare Build Sizes
           command: |
