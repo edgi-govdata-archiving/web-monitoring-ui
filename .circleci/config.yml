@@ -88,8 +88,8 @@ jobs:
             printf "  Bundle:     %7s bytes\n" "${MASTER_RAW_SIZE}"
             printf "  Compressed: %7s bytes\n" "${MASTER_COMPRESSED_SIZE}"
             echo "This Branch Size:"
-            printf "  Bundle:     %7s bytes (%+d%%)\n" "${RAW_SIZE}" "${CHANGE}"
-            printf "  Compressed: %7s bytes (%+d%%)\n" "${COMPRESSED_SIZE}" "${CHANGE_COMPRESSED}"
+            printf "  Bundle:     %7s bytes (%+.1f%%)\n" "${RAW_SIZE}" "${CHANGE}"
+            printf "  Compressed: %7s bytes (%+.1f%%)\n" "${COMPRESSED_SIZE}" "${CHANGE_COMPRESSED}"
 
             # If we increased in size by a lot, fail the test.
             if [[ $CHANGE > 20 || $CHANGE_COMPRESSED > 20 ]]; then
