@@ -53,6 +53,7 @@
     "webpack-dev-middleware": "^3.7.2"
   },
   "scripts": {
+    "analyze": "ANALYZE=true npm run build-production",
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",

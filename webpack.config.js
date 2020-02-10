@@ -7,6 +7,8 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
+// Set `ANALYZE=true` to view a tree map of the bundle Webpack produces.
+const shouldAnalyze = !!process.env.ANALYZE;
 const context = __dirname;
 
 function removeSrcDirectory (filePath) {
@@ -143,10 +145,13 @@ module.exports = {
   },
   plugins: [
     // Strip *all* locales from Moment.js.
-    new MomentLocalesPlugin(),
-    new BundleAnalyzerPlugin()
+    new MomentLocalesPlugin()
   ],
 };
+
+if (shouldAnalyze) {
+  module.exports.plugins.push(new BundleAnalyzerPlugin());
+}
 
 // Production-specific additions
 if (isProduction) {
