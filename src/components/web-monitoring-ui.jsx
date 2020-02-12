@@ -12,6 +12,20 @@ import PageDetails from './page-details/page-details';
 import PageList from './page-list/page-list';
 import VersionRedirect from './version-redirect';
 
+import forge from 'node-forge';
+import _ from 'lodash';
+import compressor from 'compressorjs';
+import {useDropzone} from 'react-dropzone';
+import Draggable from 'react-draggable';
+import ReactQuill from 'react-quill';
+
+console.log('Forge:', forge);
+console.log('Lodash:', _);
+console.log('compressor:', compressor);
+console.log('Draggable:', Draggable);
+console.log('dropzone:', useDropzone);
+console.log('ReactQuill:', ReactQuill);
+
 const configuration = window.webMonitoringConfig;
 
 const api = new WebMonitoringDb({
