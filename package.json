@@ -31,7 +31,7 @@
     "extract-loader": "^4.0.3",
     "fetch-mock": "^8.3.0",
     "file-loader": "^5.0.2",
-    "husky": "^3.1.0",
+    "husky": "^4.2.3",
     "jest": "^24.8.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.2.0",
