@@ -75,7 +75,7 @@ export default class PageList extends React.Component {
     const onClick = this.didClickRow.bind(this, record);
 
     return (
-      <tr key={record.uuid} onClick={onClick}>
+      <tr key={record.uuid} onClick={onClick} data-name="info-row">
         <td>{record.latest ? dateFormatter.format(record.latest.capture_time) : 'No saved versions'}</td>
         <td>{formatSites(record.tags)}</td>
         <td>{record.title}</td>
@@ -96,11 +96,17 @@ export default class PageList extends React.Component {
   }
 
   didClickRow (page, event) {
+    const relativeUrl = `/page/${page.uuid}`;
     if (isInAnchor(event.target)) {
       return;
     }
 
-    this.props.history.push(`/page/${page.uuid}`);
+    if (event.ctrlKey || event.metaKey) {
+      window.open(relativeUrl, '_blank');
+      return;
+    }
+
+    this.props.history.push(relativeUrl);
   }
 }
 
