@@ -390,12 +390,8 @@ function relevantDiffTypes (versionA, versionB, page) {
 const extensionExpression = /^([^:]+:\/\/)?.*\/[^/]*(\.[^/]+)$/;
 
 function mediaTypeForVersion (version, page) {
-  const contentType = version.content_type
-    || version.source_metadata.content_type
-    || version.source_metadata.mime_type;
-
-  if (contentType) {
-    return parseMediaType(contentType);
+  if (version.media_type) {
+    return parseMediaType(version.media_type);
   }
 
   const extensionType = mediaTypeForUrl(version.uri)
