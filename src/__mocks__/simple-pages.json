@@ -11,6 +11,9 @@
       "capture_time": "2018-03-04T16:33:33.000Z",
       "uri": "https://edgi-versionista-archive.s3.amazonaws.com/versionista2/74300-6219628/version-14835175.xml",
       "version_hash": "e6f32277c22dece27b719310a65c46f4e21eb3f1c3d13fe82d9cead78bc52186",
+      "media_type": "application/xml",
+      "media_type_parameters": "charset=utf-8",
+      "content_length": 8013,
       "source_type": "versionista",
       "source_metadata": {
         "url": "https://versionista.com/74300/6219628/14835175/",
@@ -86,6 +89,9 @@
       "capture_time": "2017-06-19T11:59:22.000Z",
       "uri": "https://edgi-versionista-archive.s3.amazonaws.com/versionista1/71555-6026676/version-11816086.html",
       "version_hash": "10c2283c9e8768980bcc343e7b76a6f51b4dae3632a7f35cd037b8add71b9d0e",
+      "media_type": null,
+      "media_type_parameters": null,
+      "content_length": 31190,
       "source_type": "versionista",
       "source_metadata": {
         "url": "https://versionista.com/71555/6026676/11816086/",
