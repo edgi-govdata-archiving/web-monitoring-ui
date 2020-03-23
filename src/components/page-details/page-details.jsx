@@ -34,7 +34,10 @@ export default class PageDetails extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state = { page: null };
+    this.state = {
+      page: null,
+      error: null
+    };
     this._annotateChange = this._annotateChange.bind(this);
     this._navigateToChange = this._navigateToChange.bind(this);
   }
@@ -92,6 +95,14 @@ export default class PageDetails extends React.Component {
   }
 
   render () {
+    if (this.state.error) {
+      return (
+        <div styleName="baseStyles.alert baseStyles.alert-danger">
+          {this.state.error.message}
+        </div>
+      );
+    }
+
     if (!this.state.page) {
       return (<Loading />);
     }
@@ -254,10 +265,11 @@ export default class PageDetails extends React.Component {
             page.versions = versions;
             this.setState({page});
           });
-      });
+      })
+      .catch(error => this.setState({error}));
   }
 
-  _loadVersions(page, dateFrom, dateTo) {
+  _loadVersions (page, dateFrom, dateTo) {
     const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
     return this.context.api.getVersions(page.uuid, capture_time, Infinity);
   }
