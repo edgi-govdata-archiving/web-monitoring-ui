@@ -97,7 +97,7 @@ export default class AnnotationForm extends React.Component {
   }
 
   _onNotesChange (event) {
-    this._onFieldChange({ notes: event.target.value });
+    this._onFieldChange({notes: event.target.value});
   }
 }
 
@@ -106,12 +106,12 @@ AnnotationForm.defaultProps = {
   collapsed: true
 };
 
-function Checkbox ({ children, formValues, name, onChange, collapsed }) {
+function Checkbox ({children, formValues, name, onChange, collapsed}) {
   const fieldNumber = name.split('_')[1];
   const checked = !!(formValues && formValues[name]);
   const uuid = getUUID();
   const changeHandler = (event) =>
-    onChange({ [name]: event.currentTarget.checked });
+    onChange({[name]: event.currentTarget.checked});
   return (
     <li className="signifier-list-item">
       <input
@@ -135,4 +135,6 @@ function Checkbox ({ children, formValues, name, onChange, collapsed }) {
 }
 
 // Unique IDs - https://gist.github.com/jed/982883
-function getUUID (a) { return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, getUUID); }
+function getUUID (a) {
+  return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, getUUID); 
+}

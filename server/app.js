@@ -85,7 +85,7 @@ app.set('views', path.join(__dirname, '../views'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 
-app.get('/healthcheck', function(request, response) {
+app.get('/healthcheck', function (request, response) {
   response.json({});
 });
 
@@ -134,7 +134,7 @@ app.post(
   '/api/importantchange',
   authorizeRequest,
   validateChangeBody,
-  function(request, response) {
+  function (request, response) {
     sheetData.addChangeToImportant(request.body)
       .then(data => response.json(data))
       .catch(createErrorHandler(response));
@@ -145,7 +145,7 @@ app.post(
   '/api/dictionary',
   authorizeRequest,
   validateChangeBody,
-  function(request, response) {
+  function (request, response) {
     sheetData.addChangeToDictionary(request.body)
       .then(data => response.json(data))
       .catch(createErrorHandler(response));

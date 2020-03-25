@@ -21,7 +21,7 @@ function _formatDate (date) {
  *
  * @returns {String}
  */
-export function formatDateRange(timeRange) {
+export function formatDateRange (timeRange) {
   if (typeof timeRange === 'string') return timeRange;
 
   return `${_formatDate(timeRange.startDate)}..${_formatDate(timeRange.endDate)}`;

@@ -10,9 +10,13 @@ export class SafeStorage {
     this.store = backingStore;
   }
 
-  get length () { return this.store.length; }
+  get length () {
+    return this.store.length; 
+  }
 
-  clear () { return this.store.clear(); }
+  clear () {
+    return this.store.clear(); 
+  }
 
   getItem (key) {
     const value = this.store.getItem(key);
@@ -24,9 +28,13 @@ export class SafeStorage {
     }
   }
 
-  key (index) { return this.store.key(index); }
+  key (index) {
+    return this.store.key(index); 
+  }
 
-  removeItem (key) { return this.store.removeItem(key); }
+  removeItem (key) {
+    return this.store.removeItem(key); 
+  }
 
   setItem (key, value) {
     const actualValue = JSON.stringify(value);

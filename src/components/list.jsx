@@ -9,7 +9,7 @@ export default class List extends React.Component {
   render () {
     // This strange props destructuring is so props.component
     // can be referenced as a jsx component below
-    const { data, onSelectItem, className } = this.props;
+    const {data, onSelectItem, className} = this.props;
     const selectFunc = (fn, d, i) => {
       return () => {
         if (fn) {

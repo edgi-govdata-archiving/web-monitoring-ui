@@ -35,7 +35,7 @@ export default class DiffView extends React.Component {
     if (!specifiesSameDiff(props, state.previousDiff)) {
       return {
         diffData: null,
-        previousDiff: { a: props.a, b: props.b, diffType: props.diffType }
+        previousDiff: {a: props.a, b: props.b, diffType: props.diffType}
       };
     }
     return null;
@@ -191,7 +191,7 @@ export default class DiffView extends React.Component {
 
   _loadDiffData (page, a, b, diffType) {
     // If this diff request is already in flight, just stop now.
-    const specifier = { a, b, diffType };
+    const specifier = {a, b, diffType};
     if (specifiesSameDiff(specifier, this._loadingDiff)) {
       return;
     }
@@ -208,7 +208,7 @@ export default class DiffView extends React.Component {
         .catch(error => error)
         .then(data => {
           this._loadingDiff = specifier;
-          this.setState({ diffData: data });
+          this.setState({diffData: data});
         });
     }
 
@@ -224,7 +224,7 @@ export default class DiffView extends React.Component {
       })
       .then(data => {
         this._loadingDiff = specifier;
-        this.setState({ diffData: data });
+        this.setState({diffData: data});
       });
   }
 }

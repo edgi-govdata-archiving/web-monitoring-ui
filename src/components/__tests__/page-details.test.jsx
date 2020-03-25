@@ -10,7 +10,7 @@ describe('page-details', () => {
   simplePage.versions.forEach(version => {
     version.capture_time = new Date(version.capture_time);
   });
-  const match = { params: { pageId: simplePage.uuid }};
+  const match = {params: {pageId: simplePage.uuid}};
   const createMockApi = () => {
     return Object.assign(Object.create(WebMonitoringDb.prototype), {
       getPage: jest.fn().mockResolvedValue(simplePage),

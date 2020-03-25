@@ -27,14 +27,14 @@ export default class PageDetails extends React.Component {
   static getDerivedStateFromProps (props, state) {
     // Clear existing content when switching pages
     if (state.page && state.page.uuid !== props.match.params.pageId) {
-      return { page: null };
+      return {page: null};
     }
     return null;
   }
 
   constructor (props) {
     super(props);
-    this.state = { page: null };
+    this.state = {page: null};
     this._annotateChange = this._annotateChange.bind(this);
     this._navigateToChange = this._navigateToChange.bind(this);
   }
@@ -257,7 +257,7 @@ export default class PageDetails extends React.Component {
       });
   }
 
-  _loadVersions(page, dateFrom, dateTo) {
+  _loadVersions (page, dateFrom, dateTo) {
     const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
     return this.context.api.getVersions(page.uuid, capture_time, Infinity);
   }

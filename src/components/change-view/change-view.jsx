@@ -114,7 +114,7 @@ export default class ChangeView extends React.Component {
   }
 
   render () {
-    const { page } = this.props;
+    const {page} = this.props;
     /**
      * TODO: Update `userCanAnnotate` to reflect real user permissions once implemented.
      * `canAnnotate` doesn't exist yet, so always defaults to null.
@@ -314,12 +314,12 @@ export default class ChangeView extends React.Component {
   }
 
   _saveAnnotation (annotation) {
-    this.setState({ updating: true });
+    this.setState({updating: true});
     annotation = annotation || this.state.annotation;
     const fromVersion = this.props.from.uuid;
     const toVersion = this.props.to.uuid;
     this.props.annotateChange(fromVersion, toVersion, annotation)
-      .then(() => this.setState({ updating: false }));
+      .then(() => this.setState({updating: false}));
   }
 
   _changeSelectedVersions (from, to) {
@@ -365,7 +365,9 @@ ChangeView.contextTypes = {
  * @returns {boolean}
  */
 function changeMatches (change, other) {
-  if (!other) { return false; }
+  if (!other) {
+    return false; 
+  }
   const uuidFrom = other.from ? other.from.uuid : other.uuid_from;
   const uuidTo = other.to ? other.to.uuid : other.uuid_to;
   return change && change.uuid_from === uuidFrom && change.uuid_to === uuidTo;
@@ -425,7 +427,7 @@ function saveDiffSettings (settings) {
   layeredStorage.setItem(diffSettingsStorage, settings);
 }
 
-function ensureValidDiffType(from, to, page, stateDiffType = null) {
+function ensureValidDiffType (from, to, page, stateDiffType = null) {
   const relevantTypes = relevantDiffTypes(from, to, page);
   const typesToTry = ([stateDiffType, loadDiffType(), defaultDiffType]).filter(t => t);
 
@@ -433,7 +435,7 @@ function ensureValidDiffType(from, to, page, stateDiffType = null) {
     || relevantTypes[0].value;
 }
 
-function isDiffTypeRelevant(relevantTypes, diffType) {
+function isDiffTypeRelevant (relevantTypes, diffType) {
   return relevantTypes.some((type) => type.value === diffType);
 }
 

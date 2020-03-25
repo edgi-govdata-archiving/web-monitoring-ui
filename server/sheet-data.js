@@ -158,7 +158,7 @@ function addChangeToImportant (data) {
  *   appends *after those rows.*
  * @returns {Promise<Object>} Response data from Google Sheets
  */
-function appendRowToSheet(values, spreadsheetId, range = 'A3:ZZZ') {
+function appendRowToSheet (values, spreadsheetId, range = 'A3:ZZZ') {
   return addAuthentication({
     spreadsheetId,
     // supply a cell where data exists, Google decides for itself where the data table ends and appends, using extreme range again to grab everything

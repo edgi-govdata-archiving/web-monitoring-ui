@@ -76,7 +76,7 @@ export default class WebMonitoringUi extends React.Component {
    * @param {Object} query
    */
   search ({url, startDate, endDate}) {
-    const formattedQuery = { url };
+    const formattedQuery = {url};
 
     if (startDate || endDate) {
       formattedQuery.capture_time = {
@@ -85,7 +85,7 @@ export default class WebMonitoringUi extends React.Component {
       };
     }
 
-    this.setState({ query: formattedQuery, pages: null });
+    this.setState({query: formattedQuery, pages: null});
   }
 
   /**
