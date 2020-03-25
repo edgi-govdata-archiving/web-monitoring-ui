@@ -8,6 +8,17 @@ import {shallow} from 'enzyme';
 import simplePages from '../../__mocks__/simple-pages.json';
 
 describe('page-list', () => {
+  let globalOpen;
+
+  /* eslint-disable no-undef */
+  beforeEach(() => {
+    globalOpen = global.open;
+  });
+
+  afterEach(() => {
+    global.open = globalOpen;
+  });
+
   // Change string values to date objects so they're parsed correctly
   simplePages.forEach(record => {
     record.latest.capture_time = new Date(record.latest.capture_time);
@@ -51,4 +62,28 @@ describe('page-list', () => {
     );
     expect(pageList.find(Loading).length).toBe(0);
   });
+
+  it('opens a new window when a user control clicks on a page row', () => {
+    global.open = jest.fn();
+    const pageList = shallow(
+      <PageList pages={simplePages} />
+    );
+
+    pageList.find('tr[data-name="info-row"]').first().simulate('click', { ctrlKey : true});
+
+    expect(global.open.mock.calls[0][0]).toBe('/page/9420d91c-2fd8-411a-a756-5bf976574d10');
+    expect(global.open.mock.calls[0][1]).toBe('_blank');
+  });
+
+  it('opens a new window when a user command clicks on a page row', () => {
+    global.open = jest.fn();
+    const pageList = shallow(
+      <PageList pages={simplePages} />
+    );
+
+    pageList.find('tr[data-name="info-row"]').first().simulate('click', { metaKey : true});
+
+    expect(global.open.mock.calls.length).toBe(1);
+  });
+  /* eslint-enable no-undef */
 });
