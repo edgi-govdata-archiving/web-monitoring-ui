@@ -7,9 +7,7 @@ describe('LayeredStorage module', () => {
     test('SafeStorage should call through to getItem()', () => {
       const data = {whatever: 'example'};
       const storage = new SafeStorage({
-        getItem (key) {
-          return data[key]; 
-        }
+        getItem (key) { return data[key]; }
       });
 
       expect(storage.getItem('whatever')).toEqual('example');
@@ -18,9 +16,7 @@ describe('LayeredStorage module', () => {
     test('SafeStorage should call through to setItem()', () => {
       const data = {};
       const storage = new SafeStorage({
-        setItem (key, value) {
-          data[key] = value; 
-        }
+        setItem (key, value) { data[key] = value; }
       });
 
       storage.setItem('whatever', 'example');
@@ -40,9 +36,7 @@ describe('LayeredStorage module', () => {
     test('SafeStorage should call through to clear()', () => {
       let cleared = false;
       const storage = new SafeStorage({
-        clear () {
-          cleared = true; 
-        }
+        clear () { cleared = true; }
       });
 
       storage.clear();
@@ -52,9 +46,7 @@ describe('LayeredStorage module', () => {
     test('SafeStorage should call through to removeItem()', () => {
       let calledWith = null;
       const storage = new SafeStorage({
-        removeItem (key) {
-          calledWith = key; 
-        }
+        removeItem (key) { calledWith = key; }
       });
 
       storage.removeItem('whatever');
@@ -64,9 +56,7 @@ describe('LayeredStorage module', () => {
     test('SafeStorage should serialize objects', () => {
       let storedValue = null;
       const storage = new SafeStorage({
-        setItem (key, value) {
-          storedValue = value; 
-        }
+        setItem (key, value) { storedValue = value; }
       });
 
       storage.setItem('whatever', {somekey: 'somevalue'});
@@ -75,9 +65,7 @@ describe('LayeredStorage module', () => {
 
     test('SafeStorage should deserialize objects', () => {
       const storage = new SafeStorage({
-        getItem (key) {
-          return '{"somekey":"somevalue"}'; 
-        }
+        getItem (key) { return '{"somekey":"somevalue"}'; }
       });
 
       expect(storage.getItem('whatever')).toEqual({somekey: 'somevalue'});
@@ -85,9 +73,7 @@ describe('LayeredStorage module', () => {
 
     test('SafeStorage should not fail on non-JSON data', () => {
       const storage = new SafeStorage({
-        getItem (key) {
-          return 'Plain old string'; 
-        }
+        getItem (key) { return 'Plain old string'; }
       });
 
       expect(storage.getItem('whatever')).toEqual('Plain old string');
@@ -97,15 +83,9 @@ describe('LayeredStorage module', () => {
   describe('LayeredStorage class', () => {
     test('LayeredStorage should getItem() from the first with a value', () => {
       const storage = new LayeredStorage([
-        {getItem (key) {
-          return null; 
-        }},
-        {getItem (key) {
-          return 'a'; 
-        }},
-        {getItem (key) {
-          return 'b'; 
-        }}
+        {getItem (key) { return null; }},
+        {getItem (key) { return 'a'; }},
+        {getItem (key) { return 'b'; }}
       ]);
 
       expect(storage.getItem('whatever')).toEqual('a');
@@ -114,15 +94,9 @@ describe('LayeredStorage module', () => {
     test('LayeredStorage should setItem() on all layers', () => {
       const called = [];
       const storage = new LayeredStorage([
-        {setItem (key) {
-          called.push('a'); 
-        }},
-        {setItem (key) {
-          called.push('b'); 
-        }},
-        {setItem (key) {
-          called.push('c'); 
-        }}
+        {setItem (key) { called.push('a'); }},
+        {setItem (key) { called.push('b'); }},
+        {setItem (key) { called.push('c'); }}
       ]);
 
       storage.setItem('whatever');

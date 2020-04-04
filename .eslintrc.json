@@ -11,14 +11,13 @@
   "rules": {
     "brace-style": [
       "error",
-      "stroustrup"
+      "stroustrup",
+      {"allowSingleLine": true}
     ],
     "indent": [
       "error",
       2,
-      {
-        "SwitchCase": 1
-      }
+      {"SwitchCase": 1}
     ],
     "linebreak-style": [
       "error",
@@ -28,9 +27,7 @@
       "error",
       // Allow functions to include the full signature of a protocol they adhere
       // to, even if they don’t use some args.
-      {
-        "args": "none"
-      }
+      {"args": "none"}
     ],
     "quotes": [
       "error",
@@ -48,8 +45,6 @@
       "error",
       "always"
     ],
-    "space-infix-ops": [
-      "error"
-    ]
+    "space-infix-ops": ["error"]
   }
 }

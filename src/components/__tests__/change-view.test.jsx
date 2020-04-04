@@ -11,18 +11,10 @@ import {diffTypesFor} from '../../constants/diff-types';
 jest.mock('../../scripts/layered-storage', () => ({
   __esModule: true,
   default: {
-    getItem (key) {
-      return this._data[key]; 
-    },
-    setItem (key, value) {
-      return this._data[key] = value; 
-    },
-    removeItem (key) {
-      return delete this._data[key]; 
-    },
-    clear () {
-      this._data = {}; 
-    },
+    getItem (key) { return this._data[key]; },
+    setItem (key, value) { return this._data[key] = value; },
+    removeItem (key) { return delete this._data[key]; },
+    clear () { this._data = {}; },
     _data: {}
   }
 }));

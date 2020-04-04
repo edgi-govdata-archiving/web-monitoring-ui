@@ -365,9 +365,7 @@ ChangeView.contextTypes = {
  * @returns {boolean}
  */
 function changeMatches (change, other) {
-  if (!other) {
-    return false; 
-  }
+  if (!other) { return false; }
   const uuidFrom = other.from ? other.from.uuid : other.uuid_from;
   const uuidTo = other.to ? other.to.uuid : other.uuid_to;
   return change && change.uuid_from === uuidFrom && change.uuid_to === uuidTo;

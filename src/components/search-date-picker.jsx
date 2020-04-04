@@ -36,9 +36,7 @@ export default class SearchDatePicker extends React.Component {
         endDate={this.props.endDate}
         onDatesChange={this.props.onDateSearch}
         focusedInput={this.state.focusedInput}
-        onFocusChange={(focusedInput) => {
-          this.setState({focusedInput});
-        }}
+        onFocusChange={(focusedInput) => { this.setState({focusedInput});}}
         isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
         readOnly
         showClearDates />
