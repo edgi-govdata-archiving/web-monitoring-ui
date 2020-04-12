@@ -10,13 +10,18 @@ describe('page-details', () => {
   simplePage.versions.forEach(version => {
     version.capture_time = new Date(version.capture_time);
   });
-  const match = { params: { pageId: simplePage.uuid }};
-  const createMockApi = () => {
-    return Object.assign(Object.create(WebMonitoringDb.prototype), {
-      getPage: jest.fn().mockResolvedValue(simplePage),
-      getVersions: jest.fn().mockResolvedValue(simplePage.versions)
-    });
-  };
+  const match = {params: {pageId: simplePage.uuid}};
+
+  function createMockApi (overrides) {
+    return Object.assign(
+      Object.create(WebMonitoringDb.prototype),
+      {
+        getPage: jest.fn().mockResolvedValue(simplePage),
+        getVersions: jest.fn().mockResolvedValue(simplePage.versions),
+      },
+      overrides
+    );
+  }
 
   it('can render', () => {
     const mockApi = createMockApi();
@@ -48,5 +53,22 @@ describe('page-details', () => {
 
     pageDetails.unmount();
     expect(document.title).toBe('Scanner');
+  });
+
+  it('shows an error message if api.getPage throws an error', async () => {
+    const error = new Error('Page does not exist');
+    const mockApi = createMockApi({getPage: jest.fn().mockRejectedValue(error)});
+
+    const pageDetails = shallow(
+      <PageDetails
+        match={match}
+      />,
+      {context: {api: mockApi}}
+    );
+
+    await expect(mockApi.getPage.mock.results[0].value).rejects.toThrow();
+    await Promise.resolve(); // wait a tick for the error message to render
+
+    expect(pageDetails.find('[className*="danger"]').text()).toBe(error.message);
   });
 });
