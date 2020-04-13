@@ -1,6 +1,6 @@
 'use strict';
 
-const {google} = require('googleapis');
+const { google } = require('googleapis');
 const config = require('./configuration');
 const sheets = google.sheets('v4');
 const formatters = require('../src/scripts/formatters');
@@ -50,7 +50,7 @@ function addChangeToDictionary (data) {
     row,
     config.baseConfiguration().GOOGLE_DICTIONARY_SHEET_ID
   )
-    .then(() => ({success: 'appended'}));
+    .then(() => ({ success: 'appended' }));
 }
 
 function addChangeToImportant (data) {
@@ -144,7 +144,7 @@ function addChangeToImportant (data) {
     config.baseConfiguration().GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
     'A6:AN6'
   )
-    .then(() => ({success: 'appended'}));
+    .then(() => ({ success: 'appended' }));
 }
 
 /**
@@ -206,11 +206,11 @@ function addAuthentication (requestData) {
       authClient.authorize((error, tokens) => {
         if (error) return reject(error);
         authTokens = tokens;
-        resolve(Object.assign({auth: authClient}, requestData));
+        resolve(Object.assign({ auth: authClient }, requestData));
       });
     }
     else {
-      resolve(Object.assign({auth: authClient}, requestData));
+      resolve(Object.assign({ auth: authClient }, requestData));
     }
   });
 }

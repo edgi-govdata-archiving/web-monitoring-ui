@@ -29,7 +29,7 @@ export const diffTypes = {
   SIDE_BY_SIDE_RENDERED: {
     description: 'Side-by-Side Rendered',
     diffService: 'html_token',
-    options: {include: 'all'}
+    options: { include: 'all' }
   },
   OUTGOING_LINKS: {
     description: 'Outgoing Links',

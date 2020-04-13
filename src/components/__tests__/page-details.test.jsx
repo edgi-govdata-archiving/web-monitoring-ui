@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import PageDetails from '../page-details/page-details';
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
@@ -10,7 +10,7 @@ describe('page-details', () => {
   simplePage.versions.forEach(version => {
     version.capture_time = new Date(version.capture_time);
   });
-  const match = {params: {pageId: simplePage.uuid}};
+  const match = { params: { pageId: simplePage.uuid } };
   const createMockApi = () => {
     return Object.assign(Object.create(WebMonitoringDb.prototype), {
       getPage: jest.fn().mockResolvedValue(simplePage),
@@ -24,7 +24,7 @@ describe('page-details', () => {
       <PageDetails
         match={match}
       />,
-      {context: {api: mockApi}}
+      { context: { api: mockApi } }
     );
 
     expect(pageDetails.exists()).toEqual(true);
@@ -38,7 +38,7 @@ describe('page-details', () => {
       <PageDetails
         match={match}
       />,
-      {context: {api: mockApi}}
+      { context: { api: mockApi } }
     );
 
     await mockApi.getPage.mock.results[0].value;

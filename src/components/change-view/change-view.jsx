@@ -1,6 +1,6 @@
 import AnnotationForm from '../annotation-form';
 import DiffSettingsForm from '../diff-settings-form';
-import {diffTypesFor} from '../../constants/diff-types';
+import { diffTypesFor } from '../../constants/diff-types';
 import DiffView from '../diff-view';
 import layeredStorage from '../../scripts/layered-storage';
 import Loading from '../loading';
@@ -50,7 +50,7 @@ export default class ChangeView extends React.Component {
     // comparing. If not, switch to a relevant type.
     if (props.from && props.to) {
       const diffType = ensureValidDiffType(props.from, props.to, props.page, state.diffType);
-      if (diffType !== state.diffType) return {diffType};
+      if (diffType !== state.diffType) return { diffType };
     }
 
     return null;
@@ -94,12 +94,12 @@ export default class ChangeView extends React.Component {
   }
 
   handleDiffTypeChange (diffType) {
-    this.setState({diffType});
+    this.setState({ diffType });
     saveDiffType(diffType);
   }
 
   handleDiffSettingsChange (diffSettings) {
-    this.setState({diffSettings});
+    this.setState({ diffSettings });
     if (diffSettings) {
       saveDiffSettings(diffSettings);
     }
@@ -114,7 +114,7 @@ export default class ChangeView extends React.Component {
   }
 
   render () {
-    const {page} = this.props;
+    const { page } = this.props;
     /**
      * TODO: Update `userCanAnnotate` to reflect real user permissions once implemented.
      * `canAnnotate` doesn't exist yet, so always defaults to null.
@@ -255,7 +255,7 @@ export default class ChangeView extends React.Component {
 
   _toggleCollapsedView (event) {
     event.preventDefault();
-    this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
+    this.setState(previousState => ({ collapsedView: !previousState.collapsedView }));
   }
 
   _markAsSignificant (event) {
@@ -264,12 +264,12 @@ export default class ChangeView extends React.Component {
 
     let annotation = this.state.annotation;
     if (!annotation.significance || annotation.significance < 0.5) {
-      annotation = Object.assign({}, annotation, {significance: 0.5});
+      annotation = Object.assign({}, annotation, { significance: 0.5 });
       this._updateAnnotation(annotation);
       this._saveAnnotation(annotation);
 
-      this.setState({addingToImportant: true});
-      const onComplete = () => this.setState({addingToImportant: false});
+      this.setState({ addingToImportant: true });
+      const onComplete = () => this.setState({ addingToImportant: false });
 
       this.context.localApi.addChangeToImportant(
         this.props.page,
@@ -287,12 +287,12 @@ export default class ChangeView extends React.Component {
 
     let annotation = this.state.annotation;
     if (!annotation.isDictionary) {
-      annotation = Object.assign({}, annotation, {isDictionary: true});
+      annotation = Object.assign({}, annotation, { isDictionary: true });
       this._updateAnnotation(annotation);
       this._saveAnnotation(annotation);
 
-      this.setState({addingToDictionary: true});
-      const onComplete = () => this.setState({addingToDictionary: false});
+      this.setState({ addingToDictionary: true });
+      const onComplete = () => this.setState({ addingToDictionary: false });
 
       this.context.localApi.addChangeToDictionary(
         this.props.page,
@@ -305,7 +305,7 @@ export default class ChangeView extends React.Component {
   }
 
   _updateAnnotation (newAnnotation) {
-    this.setState({annotation: newAnnotation});
+    this.setState({ annotation: newAnnotation });
   }
 
   _annotateChange (event) {
@@ -314,12 +314,12 @@ export default class ChangeView extends React.Component {
   }
 
   _saveAnnotation (annotation) {
-    this.setState({updating: true});
+    this.setState({ updating: true });
     annotation = annotation || this.state.annotation;
     const fromVersion = this.props.from.uuid;
     const toVersion = this.props.to.uuid;
     this.props.annotateChange(fromVersion, toVersion, annotation)
-      .then(() => this.setState({updating: false}));
+      .then(() => this.setState({ updating: false }));
   }
 
   _changeSelectedVersions (from, to) {

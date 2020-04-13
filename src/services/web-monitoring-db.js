@@ -1,4 +1,4 @@
-import {formatDateRange} from '../scripts/db-helpers';
+import { formatDateRange } from '../scripts/db-helpers';
 const defaultApiUrl = 'https://api-staging.monitoring.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
@@ -247,7 +247,7 @@ export default class WebMonitoringDb {
      * @returns {Promise<DiffData>}
      */
   getDiff (pageId, aId, bId, diffType, options) {
-    const query = Object.assign({format: 'json'}, options);
+    const query = Object.assign({ format: 'json' }, options);
     return this._request(this._createUrl(`pages/${pageId}/changes/${aId}..${bId}/diff/${diffType}`, query))
       .then(response => response.json())
       .then(throwIfError('Could not load diff'))
@@ -304,7 +304,7 @@ export default class WebMonitoringDb {
 
   _request (url, options = {}) {
     const final_options = {
-      headers: {'X-Requested-With': 'XMLHttpRequest'}
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
     };
 
     if (this.authToken) {
@@ -441,7 +441,7 @@ function parseAnnotation (data) {
 }
 
 function parseChange (data) {
-  const updatedValues = {uuid: `${data.uuid_from}..${data.uuid_to}`};
+  const updatedValues = { uuid: `${data.uuid_from}..${data.uuid_to}` };
   if (data.created_at) {
     updatedValues.created_at = new Date(data.created_at);
   }

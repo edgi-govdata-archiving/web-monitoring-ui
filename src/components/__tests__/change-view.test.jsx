@@ -1,12 +1,12 @@
 /* eslint-env jest */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import ChangeView, {defaultDiffType, diffTypeStorage} from '../change-view/change-view';
+import { shallow } from 'enzyme';
+import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';
-import {diffTypesFor} from '../../constants/diff-types';
+import { diffTypesFor } from '../../constants/diff-types';
 
 jest.mock('../../scripts/layered-storage', () => ({
   __esModule: true,
@@ -38,7 +38,7 @@ const mockChange = {
 describe('change-view', () => {
   const mockApi = Object.assign(
     Object.create(WebMonitoringDb.prototype),
-    {getChange: () => Promise.resolve(mockChange)}
+    { getChange: () => Promise.resolve(mockChange) }
   );
 
   afterEach(() => {
@@ -54,11 +54,11 @@ describe('change-view', () => {
         const changeView = shallow(
           <ChangeView
             page={simplePage}
-            from={{media_type: 'text/html'}}
-            to={{media_type: 'text/html'}}
-            user={{email: 'me'}}
+            from={{ media_type: 'text/html' }}
+            to={{ media_type: 'text/html' }}
+            user={{ email: 'me' }}
           />,
-          {context: {api: mockApi}}
+          { context: { api: mockApi } }
         );
 
         expect(changeView.state().diffType).toBe(storedDiffType);
@@ -72,11 +72,11 @@ describe('change-view', () => {
           const changeView = shallow(
             <ChangeView
               page={simplePage}
-              from={{media_type: 'text/html'}}
-              to={{media_type: 'text/html'}}
-              user={{email: 'me'}}
+              from={{ media_type: 'text/html' }}
+              to={{ media_type: 'text/html' }}
+              user={{ email: 'me' }}
             />,
-            {context: {api: mockApi}}
+            { context: { api: mockApi } }
           );
 
           expect(changeView.state().diffType).toBe(defaultDiffType);
@@ -92,11 +92,11 @@ describe('change-view', () => {
           const changeView = shallow(
             <ChangeView
               page={simplePage}
-              from={{media_type: mediaType}}
-              to={{media_type: mediaType}}
-              user={{email: 'me'}}
+              from={{ media_type: mediaType }}
+              to={{ media_type: mediaType }}
+              user={{ email: 'me' }}
             />,
-            {context: {api: mockApi}}
+            { context: { api: mockApi } }
           );
 
           expect(changeView.state().diffType).toBe(relevantTypes[0].value);
@@ -109,11 +109,11 @@ describe('change-view', () => {
         const changeView = shallow(
           <ChangeView
             page={simplePage}
-            from={{media_type: 'text/html'}}
-            to={{media_type: 'text/html'}}
-            user={{email: 'me'}}
+            from={{ media_type: 'text/html' }}
+            to={{ media_type: 'text/html' }}
+            user={{ email: 'me' }}
           />,
-          {context: {api: mockApi}}
+          { context: { api: mockApi } }
         );
 
         expect(changeView.state().diffType).toBe(defaultDiffType);
@@ -126,11 +126,11 @@ describe('change-view', () => {
         const changeView = shallow(
           <ChangeView
             page={simplePage}
-            from={{media_type: mediaType}}
-            to={{media_type: mediaType}}
-            user={{email: 'me'}}
+            from={{ media_type: mediaType }}
+            to={{ media_type: mediaType }}
+            user={{ email: 'me' }}
           />,
-          {context: {api: mockApi}}
+          { context: { api: mockApi } }
         );
 
         expect(changeView.state().diffType).toBe(relevantTypes[0].value);
@@ -148,16 +148,16 @@ describe('change-view', () => {
       const changeView = shallow(
         <ChangeView
           page={simplePage}
-          from={{media_type: oldMediaType}}
-          to={{media_type: oldMediaType}}
-          user={{email: 'me'}}
+          from={{ media_type: oldMediaType }}
+          to={{ media_type: oldMediaType }}
+          user={{ email: 'me' }}
         />,
-        {context: {api: mockApi}}
+        { context: { api: mockApi } }
       );
 
       changeView.setProps({
-        from: {media_type: newMediaType},
-        to: {media_type: newMediaType},
+        from: { media_type: newMediaType },
+        to: { media_type: newMediaType },
       });
 
       expect(changeView.state().diffType).toBe(diffType);
@@ -176,16 +176,16 @@ describe('change-view', () => {
           const changeView = shallow(
             <ChangeView
               page={simplePage}
-              from={{media_type: oldMediaType}}
-              to={{media_type: oldMediaType}}
-              user={{email: 'me'}}
+              from={{ media_type: oldMediaType }}
+              to={{ media_type: oldMediaType }}
+              user={{ email: 'me' }}
             />,
-            {context: {api: mockApi}}
+            { context: { api: mockApi } }
           );
 
           changeView.setProps({
-            from: {media_type: newMediaType},
-            to: {media_type: newMediaType},
+            from: { media_type: newMediaType },
+            to: { media_type: newMediaType },
           });
 
           expect(changeView.state().diffType).toBe(storedDiffType);
@@ -201,16 +201,16 @@ describe('change-view', () => {
           const changeView = shallow(
             <ChangeView
               page={simplePage}
-              from={{media_type: oldMediaType}}
-              to={{media_type: oldMediaType}}
-              user={{email: 'me'}}
+              from={{ media_type: oldMediaType }}
+              to={{ media_type: oldMediaType }}
+              user={{ email: 'me' }}
             />,
-            {context: {api: mockApi}}
+            { context: { api: mockApi } }
           );
 
           changeView.setProps({
-            from: {media_type: newMediaType},
-            to: {media_type: newMediaType},
+            from: { media_type: newMediaType },
+            to: { media_type: newMediaType },
           });
 
           expect(changeView.state().diffType).toBe(defaultDiffType);
@@ -226,16 +226,16 @@ describe('change-view', () => {
           const changeView = shallow(
             <ChangeView
               page={simplePage}
-              from={{media_type: oldMediaType}}
-              to={{media_type: oldMediaType}}
-              user={{email: 'me'}}
+              from={{ media_type: oldMediaType }}
+              to={{ media_type: oldMediaType }}
+              user={{ email: 'me' }}
             />,
-            {context: {api: mockApi}}
+            { context: { api: mockApi } }
           );
 
           changeView.setProps({
-            from: {media_type: newMediaType},
-            to: {media_type: newMediaType},
+            from: { media_type: newMediaType },
+            to: { media_type: newMediaType },
           });
 
           expect(changeView.state().diffType).toBe(diffTypesFor(newMediaType)[0].value);
@@ -250,16 +250,16 @@ describe('change-view', () => {
       const changeView = shallow(
         <ChangeView
           page={simplePage}
-          from={{media_type: oldMediaType}}
-          to={{media_type: oldMediaType}}
-          user={{email: 'me'}}
+          from={{ media_type: oldMediaType }}
+          to={{ media_type: oldMediaType }}
+          user={{ email: 'me' }}
         />,
-        {context: {api: mockApi}}
+        { context: { api: mockApi } }
       );
 
       changeView.setProps({
-        from: {media_type: newMediaType},
-        to: {media_type: newMediaType},
+        from: { media_type: newMediaType },
+        to: { media_type: newMediaType },
       });
 
       expect(changeView.state().diffType).toBe(defaultDiffType);
@@ -272,16 +272,16 @@ describe('change-view', () => {
       const changeView = shallow(
         <ChangeView
           page={simplePage}
-          from={{media_type: oldMediaType}}
-          to={{media_type: oldMediaType}}
-          user={{email: 'me'}}
+          from={{ media_type: oldMediaType }}
+          to={{ media_type: oldMediaType }}
+          user={{ email: 'me' }}
         />,
-        {context: {api: mockApi}}
+        { context: { api: mockApi } }
       );
 
       changeView.setProps({
-        from: {media_type: newMediaType},
-        to: {media_type: newMediaType},
+        from: { media_type: newMediaType },
+        to: { media_type: newMediaType },
       });
 
       expect(changeView.state().diffType).toBe(diffTypesFor(newMediaType)[0].value);
@@ -293,11 +293,11 @@ describe('change-view', () => {
       const changeView = shallow(
         <ChangeView
           page={simplePage}
-          from={{media_type: 'text/html'}}
-          to={{media_type: 'text/html'}}
-          user={{email: 'me'}}
+          from={{ media_type: 'text/html' }}
+          to={{ media_type: 'text/html' }}
+          user={{ email: 'me' }}
         />,
-        {context: {api: mockApi}}
+        { context: { api: mockApi } }
       );
 
       expect(changeView.state().diffType).toBe(defaultDiffType);
@@ -316,11 +316,11 @@ describe('change-view', () => {
       const changeView = shallow(
         <ChangeView
           page={simplePage}
-          from={{media_type: 'text/html'}}
-          to={{media_type: 'text/html'}}
-          user={{email: 'me'}}
+          from={{ media_type: 'text/html' }}
+          to={{ media_type: 'text/html' }}
+          user={{ email: 'me' }}
         />,
-        {context: {api: mockApi}}
+        { context: { api: mockApi } }
       );
 
       const newType = diffTypesFor('text/html')[0].value;

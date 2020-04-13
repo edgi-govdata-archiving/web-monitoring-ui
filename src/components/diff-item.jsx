@@ -8,7 +8,7 @@ import React from 'react';
  */
 export default class DiffItem extends React.Component {
   render () {
-    const {data, onSelect} = this.props;
+    const { data, onSelect } = this.props;
 
     // here we do inline style-editing and class switching.
     // in the real world it's probably a good idea to associate

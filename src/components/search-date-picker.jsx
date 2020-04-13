@@ -1,9 +1,9 @@
 import React from 'react';
 import 'react-dates/initialize';
-import {DateRangePicker} from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import moment from 'moment';
-import {isInclusivelyBeforeDay} from 'react-dates';
+import { isInclusivelyBeforeDay } from 'react-dates';
 
 /**
  * @typedef SearchDatePickerProps
@@ -24,7 +24,7 @@ import {isInclusivelyBeforeDay} from 'react-dates';
 export default class SearchDatePicker extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {focusedInput: null};
+    this.state = { focusedInput: null };
   }
 
   render () {
@@ -36,7 +36,7 @@ export default class SearchDatePicker extends React.Component {
         endDate={this.props.endDate}
         onDatesChange={this.props.onDateSearch}
         focusedInput={this.state.focusedInput}
-        onFocusChange={(focusedInput) => { this.setState({focusedInput});}}
+        onFocusChange={(focusedInput) => { this.setState({ focusedInput });}}
         isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
         readOnly
         showClearDates />

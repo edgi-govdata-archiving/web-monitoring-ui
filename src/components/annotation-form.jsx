@@ -97,7 +97,7 @@ export default class AnnotationForm extends React.Component {
   }
 
   _onNotesChange (event) {
-    this._onFieldChange({notes: event.target.value});
+    this._onFieldChange({ notes: event.target.value });
   }
 }
 
@@ -106,12 +106,12 @@ AnnotationForm.defaultProps = {
   collapsed: true
 };
 
-function Checkbox ({children, formValues, name, onChange, collapsed}) {
+function Checkbox ({ children, formValues, name, onChange, collapsed }) {
   const fieldNumber = name.split('_')[1];
   const checked = !!(formValues && formValues[name]);
   const uuid = getUUID();
   const changeHandler = (event) =>
-    onChange({[name]: event.currentTarget.checked});
+    onChange({ [name]: event.currentTarget.checked });
   return (
     <li className="signifier-list-item">
       <input

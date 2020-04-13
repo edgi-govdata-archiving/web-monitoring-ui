@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import {diffTypes} from '../constants/diff-types';
+import { diffTypes } from '../constants/diff-types';
 import Loading from './loading';
 
 import HighlightedTextDiff from './highlighted-text-diff';
@@ -35,7 +35,7 @@ export default class DiffView extends React.Component {
     if (!specifiesSameDiff(props, state.previousDiff)) {
       return {
         diffData: null,
-        previousDiff: {a: props.a, b: props.b, diffType: props.diffType}
+        previousDiff: { a: props.a, b: props.b, diffType: props.diffType }
       };
     }
     return null;
@@ -191,7 +191,7 @@ export default class DiffView extends React.Component {
 
   _loadDiffData (page, a, b, diffType) {
     // If this diff request is already in flight, just stop now.
-    const specifier = {a, b, diffType};
+    const specifier = { a, b, diffType };
     if (specifiesSameDiff(specifier, this._loadingDiff)) {
       return;
     }
@@ -199,16 +199,16 @@ export default class DiffView extends React.Component {
     this._loadingDiff = specifier;
     if (!diffTypes[diffType].diffService) {
       return Promise.all([
-        fetch(a.uri, {mode: 'cors'}),
-        fetch(b.uri, {mode: 'cors'})
+        fetch(a.uri, { mode: 'cors' }),
+        fetch(b.uri, { mode: 'cors' })
       ])
         .then(([rawA, rawB]) => {
-          return {raw: true, rawA, rawB};
+          return { raw: true, rawA, rawB };
         })
         .catch(error => error)
         .then(data => {
           this._loadingDiff = specifier;
-          this.setState({diffData: data});
+          this.setState({ diffData: data });
         });
     }
 
@@ -224,7 +224,7 @@ export default class DiffView extends React.Component {
       })
       .then(data => {
         this._loadingDiff = specifier;
-        this.setState({diffData: data});
+        this.setState({ diffData: data });
       });
   }
 }

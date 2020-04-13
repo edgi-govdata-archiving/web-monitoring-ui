@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import SourceInfo from '../source-info/source-info';
 
 describe('source-info', () => {
@@ -44,7 +44,7 @@ describe('source-info', () => {
     expect(sInfo.text()).toBe('Wayback Machine calendar view');
     const anchorTag = sInfo.find('a');
     expect(anchorTag.length).toBe(1);
-    const {props: {href}} = anchorTag.get(0);
+    const { props: { href } } = anchorTag.get(0);
     expect(href).toBe('https://web.archive.org/web/*/https://19january2017snapshot.epa.gov/test-url');
   });
 
@@ -53,8 +53,8 @@ describe('source-info', () => {
     expect(sInfo.text()).toBe('Wayback Machine calendar view | Wayback Machine previous page version | Wayback Machine next page version');
     const anchorTags = sInfo.find('a');
     expect(anchorTags.length).toBe(3);
-    const {props: {href : href1}} = anchorTags.get(1);
-    const {props: {href: href2}} = anchorTags.get(2);
+    const { props: { href : href1 } } = anchorTags.get(1);
+    const { props: { href: href2 } } = anchorTags.get(2);
     expect(href1).toBe('http://web.archive.org/web/1111111/https://19january2017snapshot.epa.gov/test-url');
     expect(href2).toBe('http://web.archive.org/web/22222/https://19january2017snapshot.epa.gov/test-url');
   });

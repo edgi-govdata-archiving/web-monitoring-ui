@@ -81,7 +81,7 @@ export default class SearchBar extends React.Component {
       }
     }
 
-    this.setState({url: url || null});
+    this.setState({ url: url || null });
   }
 
   /**
@@ -90,8 +90,8 @@ export default class SearchBar extends React.Component {
    * @param {Date} startDate moment object from date picker
    * @param {Date} endDate moment object from date picker
    */
-  _dateSearch ({startDate, endDate}) {
-    this.setState({startDate, endDate});
+  _dateSearch ({ startDate, endDate }) {
+    this.setState({ startDate, endDate });
   }
 
   render () {

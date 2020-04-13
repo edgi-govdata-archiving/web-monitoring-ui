@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import {removeStyleAndScript, addTargetBlank} from '../html-transforms';
+import { removeStyleAndScript, addTargetBlank } from '../html-transforms';
 
 
 describe('HtmlTransforms module', () => {

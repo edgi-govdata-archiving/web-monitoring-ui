@@ -27,12 +27,12 @@ export default class EnvironmentBanner extends React.Component {
     // TODO: see about querying the data via this.context.api
     const environment = (this.props.apiUrl.match(/api-([^.]+)/i) || [])[1];
     if (environment) {
-      this.setState({apiEnvironment: environment});
+      this.setState({ apiEnvironment: environment });
     }
   }
 
   dismiss () {
-    this.setState({dismissed: true});
+    this.setState({ dismissed: true });
   }
 
   render () {

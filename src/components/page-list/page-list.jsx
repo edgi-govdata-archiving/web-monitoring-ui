@@ -1,4 +1,4 @@
-import {dateFormatter, formatSites} from '../../scripts/formatters';
+import { dateFormatter, formatSites } from '../../scripts/formatters';
 import Loading from '../loading';
 import React from 'react';
 import SearchBar from '../search-bar/search-bar';

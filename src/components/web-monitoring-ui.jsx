@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AriaModal from 'react-aria-modal';
-import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
 import WebMonitoringApi from '../services/web-monitoring-api';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import EnvironmentBanner from './environment-banner/environment-banner';
@@ -48,23 +48,23 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   showLogin () {
-    this.setState({showLogin: true});
+    this.setState({ showLogin: true });
   }
 
   hideLogin () {
-    this.setState({showLogin: false, user: api.userData});
+    this.setState({ showLogin: false, user: api.userData });
   }
 
   afterLogin (user) {
     // Clear page lists (they could have held not-logged-in errors)
-    this.setState({pages: null});
+    this.setState({ pages: null });
     this.hideLogin();
     this.loadPages();
   }
 
   logOut () {
     api.logOut();
-    this.setState({user: api.userData});
+    this.setState({ user: api.userData });
     this.loadPages();
   }
 
@@ -75,8 +75,8 @@ export default class WebMonitoringUi extends React.Component {
    *
    * @param {Object} query
    */
-  search ({url, startDate, endDate}) {
-    const formattedQuery = {url};
+  search ({ url, startDate, endDate }) {
+    const formattedQuery = { url };
 
     if (startDate || endDate) {
       formattedQuery.capture_time = {
@@ -85,7 +85,7 @@ export default class WebMonitoringUi extends React.Component {
       };
     }
 
-    this.setState({query: formattedQuery, pages: null});
+    this.setState({ query: formattedQuery, pages: null });
   }
 
   /**
@@ -104,7 +104,7 @@ export default class WebMonitoringUi extends React.Component {
         }
 
         const query = Object.assign(
-          {include_latest: true},
+          { include_latest: true },
           this.state.query
         );
 
@@ -122,7 +122,7 @@ export default class WebMonitoringUi extends React.Component {
   loadUser () {
     api.isLoggedIn()
       .then(loggedIn => {
-        this.setState({user: api.userData, isLoading: false});
+        this.setState({ user: api.userData, isLoading: false });
       });
   }
 
@@ -202,7 +202,7 @@ export default class WebMonitoringUi extends React.Component {
   }
 
   getChildContext () {
-    return {api, localApi};
+    return { api, localApi };
   }
 }
 
