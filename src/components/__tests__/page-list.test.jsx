@@ -4,7 +4,7 @@ import PageList from '../page-list/page-list';
 import React from 'react';
 import SearchBar from '../search-bar/search-bar';
 import Loading from '../loading';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import simplePages from '../../__mocks__/simple-pages.json';
 
 describe('page-list', () => {
@@ -69,7 +69,7 @@ describe('page-list', () => {
       <PageList pages={simplePages} />
     );
 
-    pageList.find('tr[data-name="info-row"]').first().simulate('click', { ctrlKey : true});
+    pageList.find('tr[data-name="info-row"]').first().simulate('click', { ctrlKey : true });
 
     expect(global.open.mock.calls[0][0]).toBe('/page/9420d91c-2fd8-411a-a756-5bf976574d10');
     expect(global.open.mock.calls[0][1]).toBe('_blank');
@@ -81,7 +81,7 @@ describe('page-list', () => {
       <PageList pages={simplePages} />
     );
 
-    pageList.find('tr[data-name="info-row"]').first().simulate('click', { metaKey : true});
+    pageList.find('tr[data-name="info-row"]').first().simulate('click', { metaKey : true });
 
     expect(global.open.mock.calls.length).toBe(1);
   });

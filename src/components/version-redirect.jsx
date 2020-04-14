@@ -1,7 +1,7 @@
 import Loading from './loading';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 
 import '../css/base.css';
@@ -20,10 +20,10 @@ export default class VersionRedirect extends React.Component {
     this.context.api.getVersion(versionId)
       .then(data => {
         if (this.props.match.params.versionId === versionId) {
-          this.setState({pageId: data.page_uuid});
+          this.setState({ pageId: data.page_uuid });
         }
       })
-      .catch(error => this.setState({error: error}));
+      .catch(error => this.setState({ error: error }));
   }
 
   render () {

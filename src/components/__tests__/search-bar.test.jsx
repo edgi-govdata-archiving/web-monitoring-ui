@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import SearchBar from '../search-bar/search-bar';
 import moment from 'moment';
 
@@ -19,7 +19,7 @@ describe('search-bar', () => {
     const onSearch = jest.fn();
     const searchBar = shallow(<SearchBar onSearch={onSearch} />);
     const searchBarInput = searchBar.find('input');
-    searchBarInput.simulate('change', {target: {value: 'http://epa'}});
+    searchBarInput.simulate('change', { target: { value: 'http://epa' } });
 
     jest.runAllTimers();
     expect(onSearch).toHaveBeenCalledWith({
@@ -33,7 +33,7 @@ describe('search-bar', () => {
     const onSearch = jest.fn();
     const searchBar = shallow(<SearchBar onSearch={onSearch} />);
     const searchBarInput = searchBar.find('input');
-    searchBarInput.simulate('change', {target: {value: 'epa'}});
+    searchBarInput.simulate('change', { target: { value: 'epa' } });
 
     jest.runAllTimers();
     expect(onSearch).toHaveBeenCalledWith({

@@ -1,6 +1,6 @@
 import AnnotationForm from '../annotation-form';
 import DiffSettingsForm from '../diff-settings-form';
-import {diffTypesFor} from '../../constants/diff-types';
+import { diffTypesFor } from '../../constants/diff-types';
 import DiffView from '../diff-view';
 import layeredStorage from '../../scripts/layered-storage';
 import Loading from '../loading';
@@ -50,7 +50,7 @@ export default class ChangeView extends React.Component {
     // comparing. If not, switch to a relevant type.
     if (props.from && props.to) {
       const diffType = ensureValidDiffType(props.from, props.to, props.page, state.diffType);
-      if (diffType !== state.diffType) return {diffType};
+      if (diffType !== state.diffType) return { diffType };
     }
 
     return null;
@@ -94,12 +94,12 @@ export default class ChangeView extends React.Component {
   }
 
   handleDiffTypeChange (diffType) {
-    this.setState({diffType});
+    this.setState({ diffType });
     saveDiffType(diffType);
   }
 
   handleDiffSettingsChange (diffSettings) {
-    this.setState({diffSettings});
+    this.setState({ diffSettings });
     if (diffSettings) {
       saveDiffSettings(diffSettings);
     }
@@ -255,7 +255,7 @@ export default class ChangeView extends React.Component {
 
   _toggleCollapsedView (event) {
     event.preventDefault();
-    this.setState(previousState => ({collapsedView: !previousState.collapsedView}));
+    this.setState(previousState => ({ collapsedView: !previousState.collapsedView }));
   }
 
   _markAsSignificant (event) {
@@ -264,12 +264,12 @@ export default class ChangeView extends React.Component {
 
     let annotation = this.state.annotation;
     if (!annotation.significance || annotation.significance < 0.5) {
-      annotation = Object.assign({}, annotation, {significance: 0.5});
+      annotation = Object.assign({}, annotation, { significance: 0.5 });
       this._updateAnnotation(annotation);
       this._saveAnnotation(annotation);
 
-      this.setState({addingToImportant: true});
-      const onComplete = () => this.setState({addingToImportant: false});
+      this.setState({ addingToImportant: true });
+      const onComplete = () => this.setState({ addingToImportant: false });
 
       this.context.localApi.addChangeToImportant(
         this.props.page,
@@ -287,12 +287,12 @@ export default class ChangeView extends React.Component {
 
     let annotation = this.state.annotation;
     if (!annotation.isDictionary) {
-      annotation = Object.assign({}, annotation, {isDictionary: true});
+      annotation = Object.assign({}, annotation, { isDictionary: true });
       this._updateAnnotation(annotation);
       this._saveAnnotation(annotation);
 
-      this.setState({addingToDictionary: true});
-      const onComplete = () => this.setState({addingToDictionary: false});
+      this.setState({ addingToDictionary: true });
+      const onComplete = () => this.setState({ addingToDictionary: false });
 
       this.context.localApi.addChangeToDictionary(
         this.props.page,
@@ -305,7 +305,7 @@ export default class ChangeView extends React.Component {
   }
 
   _updateAnnotation (newAnnotation) {
-    this.setState({annotation: newAnnotation});
+    this.setState({ annotation: newAnnotation });
   }
 
   _annotateChange (event) {
@@ -425,7 +425,7 @@ function saveDiffSettings (settings) {
   layeredStorage.setItem(diffSettingsStorage, settings);
 }
 
-function ensureValidDiffType(from, to, page, stateDiffType = null) {
+function ensureValidDiffType (from, to, page, stateDiffType = null) {
   const relevantTypes = relevantDiffTypes(from, to, page);
   const typesToTry = ([stateDiffType, loadDiffType(), defaultDiffType]).filter(t => t);
 
@@ -433,7 +433,7 @@ function ensureValidDiffType(from, to, page, stateDiffType = null) {
     || relevantTypes[0].value;
 }
 
-function isDiffTypeRelevant(relevantTypes, diffType) {
+function isDiffTypeRelevant (relevantTypes, diffType) {
   return relevantTypes.some((type) => type.value === diffType);
 }
 

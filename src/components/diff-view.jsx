@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import WebMonitoringDb from '../services/web-monitoring-db';
-import {diffTypes} from '../constants/diff-types';
+import { diffTypes } from '../constants/diff-types';
 import Loading from './loading';
 
 import HighlightedTextDiff from './highlighted-text-diff';
@@ -199,11 +199,11 @@ export default class DiffView extends React.Component {
     this._loadingDiff = specifier;
     if (!diffTypes[diffType].diffService) {
       return Promise.all([
-        fetch(a.uri, {mode: 'cors'}),
-        fetch(b.uri, {mode: 'cors'})
+        fetch(a.uri, { mode: 'cors' }),
+        fetch(b.uri, { mode: 'cors' })
       ])
         .then(([rawA, rawB]) => {
-          return {raw: true, rawA, rawB};
+          return { raw: true, rawA, rawB };
         })
         .catch(error => error)
         .then(data => {

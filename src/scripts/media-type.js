@@ -111,7 +111,7 @@ export function parseMediaType (mediaType, canonicalize = true) {
   if (canonicalize) {
     let canonicalType = canonicalTypes[parsed.mediaType];
     if (canonicalType) {
-      parsed = Object.create(canonicalType, {exactType: {value: parsed}});
+      parsed = Object.create(canonicalType, { exactType: { value: parsed } });
     }
   }
 

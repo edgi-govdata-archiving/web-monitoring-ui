@@ -23,7 +23,7 @@ import SearchDatePicker from '../search-date-picker';
  * @param {SearchBarProps} props
  */
 export default class SearchBar extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       url: null,

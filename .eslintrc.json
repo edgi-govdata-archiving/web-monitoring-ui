@@ -9,6 +9,11 @@
     "sourceType": "module"
   },
   "rules": {
+    "brace-style": [
+      "error",
+      "stroustrup",
+      {"allowSingleLine": true}
+    ],
     "indent": [
       "error",
       2,
@@ -28,7 +33,15 @@
       "error",
       "single"
     ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "semi": [
+      "error",
+      "always"
+    ],
+    "space-before-function-paren": [
       "error",
       "always"
     ],

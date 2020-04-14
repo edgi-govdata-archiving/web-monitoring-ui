@@ -1,11 +1,11 @@
 /* eslint-env jest */
 
-import {SafeStorage, LayeredStorage} from '../layered-storage';
+import { SafeStorage, LayeredStorage } from '../layered-storage';
 
 describe('LayeredStorage module', () => {
   describe('SafeStorage class', () => {
     test('SafeStorage should call through to getItem()', () => {
-      const data = {whatever: 'example'};
+      const data = { whatever: 'example' };
       const storage = new SafeStorage({
         getItem (key) { return data[key]; }
       });
@@ -59,7 +59,7 @@ describe('LayeredStorage module', () => {
         setItem (key, value) { storedValue = value; }
       });
 
-      storage.setItem('whatever', {somekey: 'somevalue'});
+      storage.setItem('whatever', { somekey: 'somevalue' });
       expect(storedValue).toEqual('{"somekey":"somevalue"}');
     });
 
@@ -68,7 +68,7 @@ describe('LayeredStorage module', () => {
         getItem (key) { return '{"somekey":"somevalue"}'; }
       });
 
-      expect(storage.getItem('whatever')).toEqual({somekey: 'somevalue'});
+      expect(storage.getItem('whatever')).toEqual({ somekey: 'somevalue' });
     });
 
     test('SafeStorage should not fail on non-JSON data', () => {

@@ -29,7 +29,7 @@ import formStyles from './login-form.css'; // eslint-disable-line
 export default class LoginPanel extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {email: '', password: '', error: null};
+    this.state = { email: '', password: '', error: null };
     this._updateEmail = this._updateEmail.bind(this);
     this._updatePassword = this._updatePassword.bind(this);
     this._logIn = this._logIn.bind(this);
@@ -79,11 +79,11 @@ export default class LoginPanel extends React.Component {
   }
 
   _updateEmail (event) {
-    this.setState({email: event.currentTarget.value});
+    this.setState({ email: event.currentTarget.value });
   }
 
   _updatePassword (event) {
-    this.setState({password: event.currentTarget.value});
+    this.setState({ password: event.currentTarget.value });
   }
 
   _logIn (event) {
@@ -100,7 +100,7 @@ export default class LoginPanel extends React.Component {
         this.props.onLogin(userData);
       })
       .catch(error => {
-        this.setState({error: error.message});
+        this.setState({ error: error.message });
       });
   }
 

@@ -23,10 +23,10 @@ function createErrorHandler (response) {
     let errorData = error;
     if (error instanceof Error) {
       if (config.baseConfiguration().NODE_ENV !== 'production') {
-        errorData = {error: error.message, stack: error.stack};
+        errorData = { error: error.message, stack: error.stack };
       }
       else {
-        errorData = {error: 'An unknown error ocurred.'};
+        errorData = { error: 'An unknown error ocurred.' };
       }
     }
     response.status(error.status || 500).json(errorData);
@@ -85,7 +85,7 @@ app.set('views', path.join(__dirname, '../views'));
 app.engine('html', require('ejs').renderFile);
 app.use(bodyParser.json());
 
-app.get('/healthcheck', function(request, response) {
+app.get('/healthcheck', function (request, response) {
   response.json({});
 });
 
@@ -106,7 +106,7 @@ function validateChangeBody (request, response, next) {
 
 function authorizeRequest (request, response, next) {
   if (!request.headers.authorization) {
-    return response.status(401).json({error: 'You must include authorization headers'});
+    return response.status(401).json({ error: 'You must include authorization headers' });
   }
 
   let host = config.baseConfiguration().WEB_MONITORING_DB_URL;
@@ -116,11 +116,11 @@ function authorizeRequest (request, response, next) {
 
   makeRequest({
     url: `${host}users/session`,
-    headers: {Authorization: request.headers.authorization},
+    headers: { Authorization: request.headers.authorization },
     callback (error, authResponse, body) {
       if (error) {
         console.error(error);
-        return response.status(500).json({error: 'Authentication Error'});
+        return response.status(500).json({ error: 'Authentication Error' });
       }
       else if (authResponse.statusCode !== 200) {
         return response.status(authResponse.statusCode).end(body);
@@ -134,7 +134,7 @@ app.post(
   '/api/importantchange',
   authorizeRequest,
   validateChangeBody,
-  function(request, response) {
+  function (request, response) {
     sheetData.addChangeToImportant(request.body)
       .then(data => response.json(data))
       .catch(createErrorHandler(response));
@@ -145,7 +145,7 @@ app.post(
   '/api/dictionary',
   authorizeRequest,
   validateChangeBody,
-  function(request, response) {
+  function (request, response) {
     sheetData.addChangeToDictionary(request.body)
       .then(data => response.json(data))
       .catch(createErrorHandler(response));

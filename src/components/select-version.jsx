@@ -1,5 +1,5 @@
 import React from 'react';
-import {dateFormatter} from '../scripts/formatters';
+import { dateFormatter } from '../scripts/formatters';
 
 /**
  * A select dropdown listing page versions

@@ -22,12 +22,12 @@ import { isInclusivelyBeforeDay } from 'react-dates';
  * @param {SearchDatePickerProps} props
  */
 export default class SearchDatePicker extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = { focusedInput: null };
   }
 
-  render() {
+  render () {
     return (
       <DateRangePicker
         startDateId={'startDate' + (this.props.inputIdSuffix || '')}
