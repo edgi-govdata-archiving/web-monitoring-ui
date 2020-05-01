@@ -32,7 +32,7 @@
     "fetch-mock": "^9.4.0",
     "file-loader": "^6.0.0",
     "husky": "^4.2.5",
-    "jest": "^25.3.0",
+    "jest": "^25.5.3",
     "moment": "^2.25.0",
     "node-fetch": "^2.2.0",
     "postcss-loader": "^3.0.0",
