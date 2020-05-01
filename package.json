@@ -8,7 +8,7 @@
     "body-parser": "^1.18.3",
     "ejs": "^3.0.2",
     "express": "^4.17.1",
-    "googleapis": "^48.0.0",
+    "googleapis": "^49.0.0",
     "normalize.css": "^8.0.1",
     "request": "^2.88.0"
   },
