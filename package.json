@@ -33,7 +33,7 @@
     "file-loader": "^6.0.0",
     "husky": "^4.2.5",
     "jest": "^25.3.0",
-    "moment": "^2.24.0",
+    "moment": "^2.25.0",
     "node-fetch": "^2.2.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
