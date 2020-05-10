@@ -50,7 +50,7 @@ export function removeStyleAndScript (document) {
 
 /**
  * Prevents navigation from within a diff by forcing links to open in a new
- * tab when clicked. This helps ensure we don’t get in a state where one side
+ * tab when clicked (excluding intra-page links). This helps ensure we don’t get in a state where one side
  * of a side-by-side diff has been navigated and viewer does not realize they
  * are no longer actually looking at a *diff*.
  *
@@ -62,8 +62,14 @@ export function removeStyleAndScript (document) {
 export function addTargetBlank (document) {
   // Add target="_blank" to all <a>tags
   document.querySelectorAll('a').forEach(node => {
-    node.setAttribute('target', '_blank');
+    // set href to empty string in case attribute is null
+    const href = node.getAttribute('href') || '';
+
+    if (href.charAt(0) !== '#' && href.indexOf('javascript:') !== 0) {
+      node.setAttribute('target', '_blank');
+    }
   });
+
   return document;
 }
 
