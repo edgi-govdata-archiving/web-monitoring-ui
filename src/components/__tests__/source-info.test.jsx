@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import SourceInfo from '../source-info/source-info';
 
 describe('source-info', () => {

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
@@ -233,7 +233,7 @@ export default class PageDetails extends React.Component {
       }
     }
 
-    return {from, to, shouldRedirect};
+    return { from, to, shouldRedirect };
   }
 
   _loadPage (pageId) {
@@ -252,13 +252,13 @@ export default class PageDetails extends React.Component {
         this._loadVersions(page, cutoffDate, '')
           .then(versions => {
             page.versions = versions;
-            this.setState({page});
+            this.setState({ page });
           });
       });
   }
 
-  _loadVersions(page, dateFrom, dateTo) {
-    const capture_time = {'capture_time': `${dateFrom}..${dateTo}`};
+  _loadVersions (page, dateFrom, dateTo) {
+    const capture_time = { 'capture_time': `${dateFrom}..${dateTo}` };
     return this.context.api.getVersions(page.uuid, capture_time, Infinity);
   }
 

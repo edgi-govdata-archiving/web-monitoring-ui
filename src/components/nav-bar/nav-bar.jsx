@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, NavLink} from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import navStyles from './nav-bar.css'; // eslint-disable-line
@@ -15,7 +15,7 @@ import navStyles from './nav-bar.css'; // eslint-disable-line
  * The NavBar component renders an app title, user info, links, etc.
  * @param {NavBarProps} props
  */
-export default ({children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) => (
+export default ({ children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) => (
   <div styleName="navStyles.container">
     <nav styleName="navStyles.navbar">
       <Link to="/" styleName="navStyles.brand">{title}</Link>

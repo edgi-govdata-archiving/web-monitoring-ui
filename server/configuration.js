@@ -11,7 +11,7 @@ const clientFields = [
 const processEnvironment = Object.assign(
   {},
   process.env,
-  {NODE_ENV: (process.env.NODE_ENV || 'development').toLowerCase()}
+  { NODE_ENV: (process.env.NODE_ENV || 'development').toLowerCase() }
 );
 
 /**

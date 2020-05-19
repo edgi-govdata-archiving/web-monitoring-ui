@@ -14,7 +14,7 @@ import './environment-banner.css';
  * @param {EnvironmentBannerProps} props
  */
 export default class EnvironmentBanner extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       apiEnvironment: 'production',
@@ -22,20 +22,20 @@ export default class EnvironmentBanner extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // This is not a good method, but a proof of concept.
     // TODO: see about querying the data via this.context.api
     const environment = (this.props.apiUrl.match(/api-([^.]+)/i) || [])[1];
     if (environment) {
-      this.setState({apiEnvironment: environment});
+      this.setState({ apiEnvironment: environment });
     }
   }
 
-  dismiss() {
-    this.setState({dismissed: true});
+  dismiss () {
+    this.setState({ dismissed: true });
   }
 
-  render() {
+  render () {
     const showBanner =
       !(this.state.apiEnvironment === 'production')
       && !this.state.dismissed;

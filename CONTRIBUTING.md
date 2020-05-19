@@ -76,16 +76,16 @@ Don’t add spaces between the function name and parentheses or within the paren
 this.props.onChange(versions.find(v => v.uuid === newValue));
 ```
 
-Don’t add spaces between the brackets and content in object literals:
+Add spaces between the brackets and content in object literals:
 
 ```js
-this.setState({updating: true});
+this.setState({ updating: true });
 ```
 
-Don’t add spaces between the brackets and and variable names when de-structuring:
+Add spaces between the brackets and and variable names when de-structuring:
 
 ```js
-const {page} = this.props;
+const { page } = this.props;
 ```
 
 Use spaces between the function keyword, name, and arguments in function declarations:

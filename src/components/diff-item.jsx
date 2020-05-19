@@ -22,7 +22,8 @@ export default class DiffItem extends React.Component {
     if (itemType === -1) {
       diffTypeClass = 'removed';
       styles.background = '#ffc0cb';
-    } else if (itemType === 1) {
+    }
+    else if (itemType === 1) {
       diffTypeClass = 'added';
       styles.background = '#90ee90';
     }

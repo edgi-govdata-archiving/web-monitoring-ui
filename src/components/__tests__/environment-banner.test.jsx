@@ -2,7 +2,7 @@
 
 import EnvironmentBanner from '../environment-banner/environment-banner';
 import React from 'react';
-import {mount} from 'enzyme';
+import { mount } from 'enzyme';
 
 describe('EnvironmentBanner', () => {
   it('renders nothing in the production environment', () => {

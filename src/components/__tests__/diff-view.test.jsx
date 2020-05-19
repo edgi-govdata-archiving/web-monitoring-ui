@@ -2,7 +2,7 @@
 
 import DiffView from '../diff-view';
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
@@ -26,7 +26,7 @@ describe('diff-view', () => {
         a={simplePage.versions[1]}
         b={simplePage.versions[0]}
       />,
-      {context: {api: mockApi}}
+      { context: { api: mockApi } }
     );
 
     expect(diffView.exists()).toEqual(true);
@@ -35,7 +35,7 @@ describe('diff-view', () => {
   });
 
   it('renders an alert if there are no changes in the diff', () => {
-    mockApi.getDiff = jest.fn().mockReturnValue(Promise.resolve({change_count: 0}));
+    mockApi.getDiff = jest.fn().mockReturnValue(Promise.resolve({ change_count: 0 }));
 
     const diffView = shallow(
       <DiffView
@@ -44,7 +44,7 @@ describe('diff-view', () => {
         a={simplePage.versions[1]}
         b={simplePage.versions[0]}
       />,
-      {context: {api: mockApi}}
+      { context: { api: mockApi } }
     );
 
     // Wait for diff to load, state to change, and re-render to occur.
@@ -54,7 +54,7 @@ describe('diff-view', () => {
   });
 
   it('renders no alert if there are changes in the diff', () => {
-    mockApi.getDiff = jest.fn().mockReturnValue(Promise.resolve({change_count: 1}));
+    mockApi.getDiff = jest.fn().mockReturnValue(Promise.resolve({ change_count: 1 }));
 
     const diffView = shallow(
       <DiffView
@@ -63,7 +63,7 @@ describe('diff-view', () => {
         a={simplePage.versions[1]}
         b={simplePage.versions[0]}
       />,
-      {context: {api: mockApi}}
+      { context: { api: mockApi } }
     );
 
     // Wait for diff to load, state to change, and re-render to occur.
