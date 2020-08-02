@@ -13,10 +13,10 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.11.0",
     "@gfx/zopfli": "^1.0.14",
     "autoprefixer": "^9.8.6",
     "babel-core": "^7.0.0-bridge.0",
