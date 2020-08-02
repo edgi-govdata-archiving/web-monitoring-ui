@@ -21,6 +21,7 @@
     "autoprefixer": "^9.8.6",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.1.0",
+    "bundlewatch": "^0.2.7",
     "compression-webpack-plugin": "^4.0.0",
     "css-loader": "^4.2.0",
     "dotenv": "^8.2.0",
