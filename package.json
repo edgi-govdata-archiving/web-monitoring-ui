@@ -54,6 +54,7 @@
   "scripts": {
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
     "start": "node server/app.js",
     "test": "jest --colors",
