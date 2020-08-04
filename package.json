@@ -21,6 +21,7 @@
     "autoprefixer": "^9.8.6",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.1.0",
+    "bundlewatch": "^0.2.7",
     "compression-webpack-plugin": "^4.0.0",
     "css-loader": "^3.6.0",
     "dotenv": "^8.2.0",
@@ -53,6 +54,7 @@
   "scripts": {
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
     "start": "node server/app.js",
     "test": "jest --colors",
