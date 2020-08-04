@@ -1,5 +1,6 @@
 const autoprefixer = require('autoprefixer');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const path = require('path');
 const zopfli = require('@gfx/zopfli');
 
@@ -139,7 +140,10 @@ module.exports = {
       }
     ],
   },
-  plugins: [],
+  plugins: [
+    // Strip locales from Moment.js (we only use English)
+    new MomentLocalesPlugin()
+  ],
 };
 
 // Production-specific additions
