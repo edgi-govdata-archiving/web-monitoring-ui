@@ -1,4 +1,5 @@
 const autoprefixer = require('autoprefixer');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const path = require('path');
@@ -145,6 +146,14 @@ module.exports = {
     new MomentLocalesPlugin()
   ],
 };
+
+// Set `ANALYZE=true` in your environment to launch a browser with a tree map
+// that breaks down the contents of the bundle Webpack produces instead of
+// outputting the bundle and finishing as normal. e.g:
+//     $ ANALYZE=true webpack
+if (process.env.ANALYZE) {
+  module.exports.plugins.push(new BundleAnalyzerPlugin());
+}
 
 // Production-specific additions
 if (isProduction) {
