@@ -35,6 +35,7 @@
     "husky": "^4.2.5",
     "jest": "^26.2.2",
     "moment": "^2.25.0",
+    "moment-locales-webpack-plugin": "^1.2.0",
     "node-fetch": "^2.2.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
