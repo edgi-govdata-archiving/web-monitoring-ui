@@ -20,6 +20,6 @@ In our deployment, environment variables are named:
 The script takes 2 arguments that are optional.
 
 1. The name of the heroku remote to deploy to. This is useful if you have multiple heroku remotes or have renamed them. It defaults to `heroku`.
-2. The name of the local branch to be deployed. It defaults to `master`. Supplying this argument is useful if you want to deploy a branch other than master.
+2. The name of the local branch to be deployed. It defaults to `main`. Supplying this argument is useful if you want to deploy a branch other than main.
 
 The script assumes and pushes from a branch named `heroku-deploy`. It will create one or switch to it if it exists. You can't have a branch named `heroku-deploy` that you are working in if you plan on using the script.

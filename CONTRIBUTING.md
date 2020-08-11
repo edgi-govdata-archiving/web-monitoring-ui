@@ -11,7 +11,7 @@ Issues that are project-wide, or relate heavily to the interaction between diffe
 
 ### Code Style / Best Practices
 
-The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices for related to all the [web-monitoring] project (https://github.com/edgi-govdata-archiving/web-monitoring/blob/master/CONTRIBUTING.md) repo.
+The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices for related to all the [web-monitoring] project (https://github.com/edgi-govdata-archiving/web-monitoring/blob/main/CONTRIBUTING.md) repo.
 
 
 ### UI - Support
@@ -101,5 +101,5 @@ Pixels for borders. Rems for fonts and spacing. Flexbox and Grid for layout.
 
 
 <!-- Links -->
-[edgi-conduct]: https://github.com/edgi-govdata-archiving/overview/blob/master/CONDUCT.md
-[edgi-contributing]: https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md
+[edgi-conduct]: https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md
+[edgi-contributing]: https://github.com/edgi-govdata-archiving/overview/blob/main/CONTRIBUTING.md
