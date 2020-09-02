@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
 # @param {string} remote [heroku]       - heroku remote name
-# @param {string} deployFrom [master]   - local branch to deploy
+# @param {string} deployFrom [main]   - local branch to deploy
 
 # check and set defaults
 remote=${1:-heroku}
-deployFrom=${2:-master}
+deployFrom=${2:-main}
 deployTo="heroku-deploy"
 currentBranch=`git rev-parse --abbrev-ref HEAD`
 
@@ -26,7 +26,7 @@ fi
 npm run build-production
 git add -f dist/bundle.* dist/css/* dist/img/* dist/sourceMaps/*
 git commit -m "Deploy heroku app"
-git push -f ${remote} ${deployTo}:master
+git push -f ${remote} ${deployTo}:main
 git checkout ${currentBranch}
 
 if [ -n "$hasChanges" ]; then

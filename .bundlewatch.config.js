@@ -22,7 +22,7 @@ module.exports = {
   ],
 
   "ci": {
-      // NOTE: this will soon change to "main"
-      "trackBranches": ["master"]
+      // We use `main` instead of `master` for the primary branch.
+      "trackBranches": ["main"]
   }
 };
