@@ -5,17 +5,9 @@ updates:
   schedule:
     interval: monthly
     time: "10:00"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 20
   ignore:
   - dependency-name: css-loader
     versions:
     - ">= 4.2.a"
     - "< 4.3"
-  - dependency-name: enzyme
-    versions:
-    - "< 3.4.5"
-    - ">= 3.4.4.a"
-  - dependency-name: react-dom
-    versions:
-    - "< 16.4.3"
-    - ">= 16.4.2.a"
