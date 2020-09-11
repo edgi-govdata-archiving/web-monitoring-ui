@@ -36,7 +36,7 @@
     "jest": "^26.4.2",
     "moment": "^2.27.0",
     "moment-locales-webpack-plugin": "^1.2.0",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^2.6.1",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.13.1",
