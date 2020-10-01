@@ -159,7 +159,7 @@ if (process.env.ANALYZE) {
 if (isProduction) {
   module.exports.plugins.push(
     new CompressionPlugin({
-      filename: '[path].gz[query]',
+      filename: '[path][base].gz[query]',
       test: /\.(js|css|svg|map)$/i,
       compressionOptions: {
         numiterations: 15
