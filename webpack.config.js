@@ -71,9 +71,11 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              plugins: [
-                autoprefixer()
-              ]
+              postcssOptions: {
+                plugins: [
+                  autoprefixer()
+                ]
+              }
             },
           },
         ],
@@ -111,9 +113,11 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              plugins: [
-                autoprefixer()
-              ]
+              postcssOptions: {
+                plugins: [
+                  autoprefixer()
+                ]
+              }
             },
           },
         ],
