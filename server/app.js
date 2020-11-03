@@ -55,10 +55,7 @@ if (config.baseConfiguration().NODE_ENV === 'development') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackConfig = require('../webpack.config.js');
-
-  app.use(webpackDevMiddleware(webpack(webpackConfig), {
-    publicPath: webpackConfig.output.publicPath
-  }));
+  app.use(webpackDevMiddleware(webpack(webpackConfig)));
 }
 else {
   app.use(express.static('dist', {
