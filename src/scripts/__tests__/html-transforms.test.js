@@ -61,7 +61,7 @@ describe('HtmlTransforms module', () => {
     expect(document.querySelector('.wm-diff-other')).toBeInstanceOf(Element);
   });
 
-  test('addTargetBlank adds a target attribute of "_blank" to only <a> tags', () => {
+  test('addTargetBlank adds a target attribute of "_blank" to only <a> tags, excluding intra-page links', () => {
     let document = parser.parseFromString(`<!doctype html>
       <html>
         <head>
@@ -77,6 +77,8 @@ describe('HtmlTransforms module', () => {
             body { background: purple; }
           </style>
           <a href='google.com' id='goo'>Goo test</a>
+          <a href='#main' id='intra1'>Inta test for #</a>
+          <a href='javascript:;' id='intra2'>Intra test for javascript</a>
           <h1 style='color: orange;' id='orange'>Hello</h1>
         </body>
       </html>
@@ -85,5 +87,7 @@ describe('HtmlTransforms module', () => {
     document = addTargetBlank(document);
     expect(document.getElementById('goo').target).toEqual('_blank');
     expect(document.getElementById('orange').target).toBeFalsy();
+    expect(document.getElementById('intra1').target).toBeFalsy();
+    expect(document.getElementById('intra2').target).toBeFalsy();
   });
 });
