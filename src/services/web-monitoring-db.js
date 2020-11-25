@@ -1,5 +1,5 @@
 import { formatDateRange } from '../scripts/db-helpers';
-const defaultApiUrl = 'https://api-staging.monitoring.envirodatagov.org/';
+const defaultApiUrl = 'https://api.monitoring-staging.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
 /**

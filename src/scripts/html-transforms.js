@@ -28,7 +28,7 @@ export function compose (...transforms) {
  * the document. If any of them have a class or id that starts with 'wm-',
  * it keeps them as an exception.
  * Returns the resulting document.
- * @param {HTMLDocument} The html document to change.
+ * @param {HTMLDocument} document The html document to change.
  * @returns {HTMLDocument}
  */
 export function removeStyleAndScript (document) {
@@ -44,6 +44,55 @@ export function removeStyleAndScript (document) {
 
   // Inline style attributes
   document.querySelectorAll('[style]').forEach(node => node.removeAttribute('style'));
+
+  return document;
+}
+
+/**
+ * Removes any client-side redirects we can find and places a notice on the
+ * page about the redirect.
+ * @param {HTMLDocument} document The HTML document to change.
+ * @returns {HTMLDocument}
+ */
+export function removeClientRedirect (document) {
+  const metaRefresh = document.querySelector('meta[http-equiv="refresh"]');
+  if (metaRefresh) {
+    const targetMatch = (metaRefresh.content || '').match(/^\s*\d+;\s*url=(.*)$/);
+    if (targetMatch) {
+      metaRefresh.remove();
+      const target = targetMatch[1];
+
+      const banner = document.createElement('div');
+      banner.className = 'wm-redirect-banner';
+      Object.assign(banner.style, {
+        background: '#fcf8e3',
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        margin: '1.5em 1em',
+        padding: '1em'
+      });
+      banner.innerHTML = `
+        <h1>Client-Side Redirect</h1>
+        <p>
+          This page contains an automatic redirect that runs
+          <em style="font-style: italic !important;">after</em> the page loads.
+          Because the redirect happens after the page loads instead of before,
+          we can’t show a highlighted comparison of page.
+        </p>
+        <p>
+          This page redirects to:
+          <a href="${target}">
+            <code style="font-family: monospace !important">
+              ${escapeHtml(target)}
+            </code>
+          </a>
+        </p>
+      `;
+
+      document.body.prepend(banner);
+    }
+
+  }
 
   return document;
 }
@@ -155,4 +204,11 @@ function resolveUrl (url, baseUrl) {
 
 function twoDigit (number) {
   return number.toString().padStart(2, '0');
+}
+
+function escapeHtml (text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }

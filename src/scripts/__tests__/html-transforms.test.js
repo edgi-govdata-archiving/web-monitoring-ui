@@ -1,6 +1,10 @@
 /* eslint-env jest */
 
-import { removeStyleAndScript, addTargetBlank } from '../html-transforms';
+import {
+  removeClientRedirect,
+  removeStyleAndScript,
+  addTargetBlank
+} from '../html-transforms';
 
 
 describe('HtmlTransforms module', () => {
@@ -59,6 +63,50 @@ describe('HtmlTransforms module', () => {
     expect(document.getElementById('wm-diff-script')).toBeInstanceOf(Element);
     expect(document.querySelector('.wm-diff-other')).toBeInstanceOf(Element);
     expect(document.querySelector('.wm-diff-other')).toBeInstanceOf(Element);
+  });
+
+  describe('removeClientRedirect', () => {
+
+    test('removes meta refresh elements', () => {
+      let document = parser.parseFromString(`<!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Test!</title>
+            <meta http-equiv="refresh" content="0; url=https://www.epa.gov/pi" />
+            <meta name="description" content="THIS IS A TEST" />
+          </head>
+          <body>
+            <h1 style="color: orange;">Hello</h1>
+          </body>
+        </html>
+      `, 'text/html');
+
+      document = removeClientRedirect(document);
+      const metas = document.querySelectorAll('meta');
+      expect(metas).toHaveLength(2);
+      expect(metas[0].getAttribute('charset')).toEqual('utf-8');
+      expect(metas[1]).toHaveProperty('name', 'description');
+    });
+
+    test('displays a banner when meta refresh elements are present', () => {
+      let document = parser.parseFromString(`<!doctype html>
+        <html>
+          <head>
+            <meta http-equiv="refresh" content="0; url=https://www.epa.gov/pi" />
+          </head>
+          <body>
+            <h1 style="color: orange;">Hello</h1>
+          </body>
+        </html>
+      `, 'text/html');
+
+      document = removeClientRedirect(document);
+      const banner = document.querySelector('.wm-redirect-banner');
+      expect(banner).toBeInstanceOf(HTMLElement);
+      expect(banner.innerHTML).toContain('redirect');
+    });
+
   });
 
   test('addTargetBlank adds a target attribute of "_blank" to only <a> tags', () => {
