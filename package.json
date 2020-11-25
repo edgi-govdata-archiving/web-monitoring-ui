@@ -61,7 +61,7 @@
     "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
     "start": "node server/app.js",
-    "test": "jest --colors",
+    "test": "jest --colors --verbose",
     "test-watch": "jest --watch"
   },
   "husky": {

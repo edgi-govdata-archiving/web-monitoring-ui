@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   removeStyleAndScript,
+  removeClientRedirect,
   loadSubresourcesFromWayback,
   compose,
   addTargetBlank
@@ -26,7 +27,11 @@ import SandboxedHtml from './sandboxed-html';
  */
 export default class SideBySideRenderedDiff extends React.Component {
   render () {
-    const baseTransform = compose(this.props.removeFormatting && removeStyleAndScript, addTargetBlank);
+    const baseTransform = compose(
+      this.props.removeFormatting && removeStyleAndScript,
+      addTargetBlank,
+      removeClientRedirect
+    );
     let transformA = baseTransform;
     let transformB = baseTransform;
     if (this.props.useWaybackResources) {
