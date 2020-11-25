@@ -23,7 +23,9 @@ export default class SelectVersion extends React.PureComponent {
     const options = versions.map(version => {
       return (
         <option key={version.uuid} value={version.uuid}>
-          {dateFormatter.format(version.capture_time)}{sourceLabel(version)}
+          {statusLabel(version)}
+          {dateFormatter.format(version.capture_time)}
+          {sourceLabel(version)}
         </option>
       );
     });
@@ -42,5 +44,18 @@ function sourceLabel (version) {
     case 'versionista':      return ' (Versionista)';
     case 'internet_archive': return ' (Wayback)';
     default:                 return '';
+  }
+}
+
+function statusLabel (version) {
+  const status = version.status || 200;
+  if (status >= 400) {
+    return `✗ (${version.status} Error) `;
+  }
+  else if (version.content_length === 0) {
+    return '✗ (No Content) ';
+  }
+  else {
+    return '';
   }
 }
