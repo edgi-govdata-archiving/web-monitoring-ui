@@ -25,7 +25,8 @@ export default class EnvironmentBanner extends React.Component {
   componentDidMount () {
     // This is not a good method, but a proof of concept.
     // TODO: see about querying the data via this.context.api
-    const environment = (this.props.apiUrl.match(/api-([^.]+)/i) || [])[1];
+    const urlMatch = this.props.apiUrl.match(/(?:api|monitoring)-([^.]+)/i);
+    const environment = urlMatch ? urlMatch[1] : 'production';
     if (environment) {
       this.setState({ apiEnvironment: environment });
     }

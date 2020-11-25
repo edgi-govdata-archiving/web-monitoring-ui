@@ -13,7 +13,16 @@ describe('EnvironmentBanner', () => {
     expect(banner.children().exists()).toBe(false);
   });
 
-  it('renders a message indicating the environment in staging', () => {
+  it('displays the correct environment for staging', () => {
+    const banner = mount(<EnvironmentBanner
+      apiUrl="https://api.monitoring-staging.envirodatagov.org"
+    />);
+
+    expect(banner.children().exists()).toBe(true);
+    expect(banner.text()).toMatch(/\bstaging\b/);
+  });
+
+  it('displays the correct environment for the deprecated staging URL', () => {
     const banner = mount(<EnvironmentBanner
       apiUrl="https://api-staging.monitoring.envirodatagov.org"
     />);
