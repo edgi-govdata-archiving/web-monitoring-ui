@@ -9,7 +9,7 @@ This component works with [web-monitoring-db](https://github.com/edgi-govdata-ar
 It’s a React.js-based browser application with a Node.js backend with the following capabilities:
 * Consume subset of data from web-monitoring-db as proof of concept, read/write annotations
     * [DEMO](https://monitoring-staging.envirodatagov.org)
-    * LIST VIEW shows first page of records from [web-monitor-db](https://api-staging.monitoring.envirdatagov.org/api/v0/pages) JSON endpoint
+    * LIST VIEW shows first page of records from [web-monitor-db](https://api.monitoring-staging.envirdatagov.org/api/v0/pages) JSON endpoint
     * PAGE VIEW shows basic info about the latest version of that page: site, URLs and links to Wayback Machine calendar view and page versions
         * updates annotations
 
