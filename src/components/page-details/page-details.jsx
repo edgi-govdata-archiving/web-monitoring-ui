@@ -96,6 +96,12 @@ export default class PageDetails extends React.Component {
       return (<Loading />);
     }
 
+    if (this.state.page.merged_into) {
+      const targetId = this.state.page.merged_into;
+      const changeId = this.props.match.params.change || '';
+      return <Redirect to={`/page/${targetId}/${changeId}`} />;
+    }
+
     // TODO: this HTML should probably be broken up a bit
     return (
       <div styleName="baseStyles.main pageStyles.page-details-main">
@@ -249,6 +255,11 @@ export default class PageDetails extends React.Component {
      */
     Promise.resolve(fromList || this.context.api.getPage(pageId))
       .then(page => {
+        // If we redirected to a different page ID, store a special object so
+        // we can redirect on render.
+        if (page.uuid !== pageId) {
+          this.setState({ page: { uuid: pageId, merged_into: page.uuid } });
+        }
         this._loadVersions(page, cutoffDate, '')
           .then(versions => {
             page.versions = versions;
