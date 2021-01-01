@@ -28,7 +28,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.16.0",
-    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react": "^7.22.0",
     "extract-loader": "^5.1.0",
     "fetch-mock": "^9.11.0",
     "file-loader": "^6.2.0",
