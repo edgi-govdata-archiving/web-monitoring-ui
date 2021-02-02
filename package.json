@@ -52,7 +52,7 @@
     "webpack": "^4.44.2",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.4.0",
-    "webpack-dev-middleware": "^4.0.2"
+    "webpack-dev-middleware": "^4.1.0"
   },
   "scripts": {
     "analyze": "npm run build-production -- --analyze",
