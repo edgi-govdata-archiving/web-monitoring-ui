@@ -60,14 +60,10 @@
     "build-production": "NODE_ENV=production webpack",
     "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
+    "postinstall": "husky install",
     "start": "node server/app.js",
     "test": "jest --colors --verbose",
     "test-watch": "jest --watch"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   },
   "jest": {
     "moduleNameMapper": {
