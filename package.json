@@ -16,7 +16,7 @@
     "@babel/core": "^7.13.8",
     "@babel/preset-env": "^7.13.8",
     "@babel/preset-react": "^7.12.13",
-    "@babel/runtime": "^7.13.8",
+    "@babel/runtime": "^7.13.10",
     "@gfx/zopfli": "^1.0.15",
     "autoprefixer": "^10.2.5",
     "babel-core": "^7.0.0-bridge.0",
