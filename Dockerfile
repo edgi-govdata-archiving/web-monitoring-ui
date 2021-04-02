@@ -33,9 +33,7 @@ RUN npm run build-production
 FROM node:14.16.0-slim as release
 LABEL maintainer="enviroDGI@gmail.com"
 
-# apt-get in this base image does not have dumb-init
-RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64
-RUN chmod +x /usr/local/bin/dumb-init
+RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 ENV NODE_ENV=production
 
