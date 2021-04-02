@@ -43,23 +43,50 @@ jobs:
           name: Test
           command: npm test
 
-  publish_docker:
+  build_docker:
     machine: true
     steps:
       - checkout
-      - run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: |
-          docker build -t envirodgi/ui:$CIRCLE_SHA1 .
-          docker build -t envirodgi/ui:latest .
-      - run: |
-          docker push envirodgi/ui:$CIRCLE_SHA1
-          docker push envirodgi/ui:latest
+      - run:
+          name: Build Image
+          command: |
+            docker build -t envirodgi/ui:$CIRCLE_SHA1 .
+      - run:
+          name: Save Image
+          command: |
+            mkdir /tmp/workspace
+            docker save --output /tmp/workspace/docker-image envirodgi/ui:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - docker-image
+
+  publish_docker:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Load Built Docker Image
+          command: docker load --input /tmp/workspace/docker-image
+      - run:
+          name: Docker Login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Publish Images
+          command: |
+            docker image tag envirodgi/ui:${CIRCLE_SHA1} envirodgi/ui:latest
+            docker push envirodgi/web-monitoring-diff:${CIRCLE_SHA1}
+            docker push envirodgi/web-monitoring-diff:latest
 
 workflows:
   build:
     jobs:
       - build:
+          filters:
+            branches:
+              ignore: release
+      - build_docker:
           filters:
             branches:
               ignore: release
@@ -75,6 +102,12 @@ workflows:
             branches:
               only:
                 - release
+      - build_docker:
+          filters:
+            branches:
+              only:
+                - release
       - publish_docker:
           requires:
             - build
+            - build_docker
