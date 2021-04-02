@@ -76,8 +76,8 @@ jobs:
           name: Publish Images
           command: |
             docker image tag envirodgi/ui:${CIRCLE_SHA1} envirodgi/ui:latest
-            docker push envirodgi/web-monitoring-diff:${CIRCLE_SHA1}
-            docker push envirodgi/web-monitoring-diff:latest
+            docker push envirodgi/ui:${CIRCLE_SHA1}
+            docker push envirodgi/ui:latest
 
 workflows:
   build:
