@@ -52,5 +52,5 @@ COPY . .
 COPY --from=build /app/dist ./dist
 
 # Run server. Use dumb-init because Node does not handle Docker's stop signal.
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "run", "start"]
