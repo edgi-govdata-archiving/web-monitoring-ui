@@ -8,8 +8,8 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
 const context = __dirname;
 
-function removeSrcDirectory (filePath) {
-  let relativePath = path.relative(context, filePath);
+function removeSrcDirectory (data) {
+  let relativePath = path.relative(context, data.filename);
   if (relativePath.startsWith('src' + path.sep)) {
     relativePath = relativePath.slice(4);
   }
@@ -38,15 +38,7 @@ module.exports = {
     rules: [
       {
         test: /.*\.(png|svg|jpg|gif|ttc|ttf|woff|woff2|eot)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              // TODO: add hashes for production (server needs to be able to handle them)
-              name: removeSrcDirectory,
-            },
-          },
-        ],
+        type: 'asset/resource'
       },
       {
         test: /\.css$/,
@@ -82,6 +74,10 @@ module.exports = {
       // TODO: remove this entire pipeline when all legacy CSS is refactored
       {
         test: /\.css$/,
+        type: 'asset/resource',
+        generator: {
+          filename: removeSrcDirectory
+        },
         exclude: [
           path.resolve(__dirname, 'node_modules')
         ],
@@ -91,13 +87,6 @@ module.exports = {
           path.resolve(__dirname, 'src/css/diff.css')
         ],
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              // TODO: add hashes for production (server needs to be able to handle them)
-              name: removeSrcDirectory,
-            },
-          },
           {
             loader: 'extract-loader',
           },
