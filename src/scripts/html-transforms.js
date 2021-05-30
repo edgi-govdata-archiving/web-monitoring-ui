@@ -33,7 +33,7 @@ export function compose (...transforms) {
  */
 export function removeStyleAndScript (document) {
   // Stylesheets and scripts
-  document.querySelectorAll('link[rel="stylesheet"], style, script').forEach(node => {
+  document.querySelectorAll('link[rel*="stylesheet"], style, script').forEach(node => {
     const isDiffNode = node.id.startsWith('wm-') ||
       Array.from(node.classList).some(name => name.startsWith('wm-'));
 
