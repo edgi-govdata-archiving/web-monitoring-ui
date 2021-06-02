@@ -73,6 +73,7 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/test-setup.js"
     ],
+    "testEnvironment": "jsdom",
     "watchPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/\\..+/"
