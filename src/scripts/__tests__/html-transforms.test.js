@@ -16,7 +16,7 @@ describe('HtmlTransforms module', () => {
         <head>
           <link rel="canonical" href="somewhere.html" id="non-style-link">
           <link rel="stylesheet" type="text/css" href="sheet.css" id="external-sheet">
-           <link rel="stylesheet prefetch" type="text/css" href="sheet.css" id="external-sheet">
+          <link rel="stylesheet prefetch" type="text/css" href="sheet.css" id="external-sheet">
           <script type="text/javascript" src="script.js"></script>
           <script type="text/javascript">
             console.log('Inline javascript!');
