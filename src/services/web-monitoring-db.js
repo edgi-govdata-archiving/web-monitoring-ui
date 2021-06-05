@@ -7,8 +7,15 @@ const storageLocation = 'WebMonitoringDb.token';
  * @property {string} uuid
  * @property {string} page_uuid
  * @property {Date} capture_time
- * @property {string} uri
- * @property {string} version_hash
+ * @property {string} url
+ * @property {string} body_url
+ * @property {string} body_hash
+ * @property {number} status
+ * @property {Object} headers
+ * @property {number} content_length
+ * @property {string} media_type
+ * @property {string} title
+ * @property {boolean} different
  * @property {string} source_type
  * @property {Object} source_metadata
  * @property {Date} created_at
@@ -426,11 +433,31 @@ function parsePage (data) {
 }
 
 function parseVersion (data) {
-  return Object.assign({}, data, {
+  const result = Object.assign({}, data, {
     capture_time: new Date(data.capture_time),
     created_at: new Date(data.created_at),
     updated_at: new Date(data.updated_at)
   });
+
+  // Update fields that will soon be migrated to new names/locations.
+  // TODO: delete this section when API is fully migrated.
+  if (!result.headers && result.source_metadata) {
+    result.headers = result.source_metadata.headers;
+  }
+  if (result.version_hash) {
+    result.body_hash = result.version_hash;
+    delete result.version_hash;
+  }
+  if (result.uri) {
+    result.body_url = result.uri;
+    delete result.uri;
+  }
+  if (result.capture_url) {
+    result.url = result.capture_url;
+    delete result.capture_url;
+  }
+
+  return result;
 }
 
 function parseAnnotation (data) {

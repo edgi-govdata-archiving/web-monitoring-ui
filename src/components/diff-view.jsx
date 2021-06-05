@@ -87,7 +87,7 @@ export default class DiffView extends React.Component {
   renderNoChangeMessage () {
     const sameContent = this.props.a
       && this.props.b
-      && this.props.a.version_hash === this.props.b.version_hash;
+      && this.props.a.body_hash === this.props.b.body_hash;
 
     const className = 'diff-view__alert';
     const styleName = 'alert alert-warning';
