@@ -394,7 +394,7 @@ function mediaTypeForVersion (version, page) {
     return parseMediaType(version.media_type);
   }
 
-  const extensionType = mediaTypeForUrl(version.uri)
+  const extensionType = mediaTypeForUrl(version.body_url)
     || (page && mediaTypeForUrl(page.url));
 
   return extensionType || htmlType;
