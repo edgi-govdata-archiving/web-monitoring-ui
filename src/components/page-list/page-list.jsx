@@ -1,10 +1,11 @@
-import { dateFormatter, formatSites } from '../../scripts/formatters';
 import Loading from '../loading';
 import React from 'react';
 import SearchBar from '../search-bar/search-bar';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import listStyles from './page-list.css'; // eslint-disable-line
+
+const IGNORED_TAG_PREFIXES = ['site:', '2l-domain:', 'domain:'];
 
 /**
  * These props also inherit from React Router's RouteComponent props
@@ -63,23 +64,26 @@ export default class PageList extends React.Component {
   renderHeader () {
     return (
       <tr>
-        <th data-name="capture-date">Last Capture Date</th>
-        <th data-name="site">Site</th>
+        <th data-name="domain">Domain</th>
         <th data-name="page-name">Page Name</th>
         <th data-name="url">URL</th>
+        <th data-name="tags">Tags</th>
       </tr>
     );
   }
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
+    const tags = record.tags.filter(tag =>
+      !IGNORED_TAG_PREFIXES.some(prefix => tag.name.startsWith(prefix))
+    );
 
     return (
       <tr key={record.uuid} onClick={onClick} data-name="info-row">
-        <td>{record.latest ? dateFormatter.format(record.latest.capture_time) : 'No saved versions'}</td>
-        <td>{formatSites(record.tags)}</td>
+        <td>{getDomain(record.url)}</td>
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
+        <td>{tags.map(tag => <PageTag tag={tag} key="tag.name" />)}</td>
       </tr>
     );
   }
@@ -118,4 +122,35 @@ function isInAnchor (node) {
     return true;
   }
   return isInAnchor(node.parentNode);
+}
+
+const HOST_WITHOUT_WWW_PATTERN = /^[^:]+:\/\/(?:ww+\d*\.)?([^/]+)/;
+
+function getDomain (url) {
+  return url.match(HOST_WITHOUT_WWW_PATTERN)[1];
+}
+
+/**
+ * Helper component for rendering tags.
+ */
+function PageTag ({ tag }) {
+  let prefix = '';
+  let name = tag.name;
+  const colonIndex = name.indexOf(':');
+  if (colonIndex > -1) {
+    prefix = name.slice(0, colonIndex + 1);
+    name = name.slice(colonIndex + 1);
+  }
+
+  let prefixNode;
+  if (prefix) {
+    prefixNode = <span styleName="listStyles.page-tag--prefix">{prefix}</span>;
+  }
+
+  return (
+    <span styleName="listStyles.page-tag">
+      {prefixNode}
+      {name}
+    </span>
+  );
 }
