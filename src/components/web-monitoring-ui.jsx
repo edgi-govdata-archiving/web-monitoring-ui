@@ -103,10 +103,7 @@ export default class WebMonitoringUi extends React.Component {
           return Promise.reject(new Error('You must be logged in to view pages'));
         }
 
-        const query = Object.assign(
-          { include_latest: true },
-          this.state.query
-        );
+        const query = Object.assign({}, this.state.query);
 
         return api.getPages(query);
       })
