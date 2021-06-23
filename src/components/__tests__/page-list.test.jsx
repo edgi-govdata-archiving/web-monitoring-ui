@@ -34,12 +34,22 @@ describe('page-list', () => {
     expect(pageList.get(0)).toBeTruthy();
   });
 
-  it('shows only sites from tags', () => {
+  it('shows domain without www prefix', () => {
     const pageList = shallow(
       <PageList pages={simplePages} />
     );
-    expect(pageList.find('tbody tr').first().childAt(1).text())
-      .toBe('NOAA - ncei.noaa.gov, EPA - www3.epa.gov');
+    expect(pageList.find('tbody tr').first().childAt(0).text())
+      .toBe('ncei.noaa.gov');
+  });
+
+  it('shows non-URL related tags', () => {
+    const pageList = shallow(<PageList pages={simplePages} />);
+    const tagsCell = pageList.find('tbody tr').first().childAt(3);
+
+    expect(tagsCell.children().every('PageTag')).toBe(true);
+    expect(tagsCell.children().length).toBe(1);
+    expect(tagsCell.children().first().props())
+      .toHaveProperty('tag.name', 'Human');
   });
 
   it('displays SearchBar component', () => {
