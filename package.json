@@ -33,7 +33,7 @@
     "fetch-mock": "^9.11.0",
     "file-loader": "^6.2.0",
     "husky": "^6.0.0",
-    "jest": "^27.0.3",
+    "jest": "^27.0.6",
     "moment": "^2.29.1",
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-fetch": "^2.6.1",
