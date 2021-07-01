@@ -1,8 +1,8 @@
 'use strict';
 
-const { google } = require('googleapis');
+const googleSheets = require('@googleapis/sheets');
 const config = require('./configuration');
-const sheets = google.sheets('v4');
+const sheets = googleSheets.sheets('v4');
 const formatters = require('../src/scripts/formatters');
 
 function addChangeToDictionary (data) {
@@ -197,7 +197,7 @@ function addAuthentication (requestData) {
       // Replace `\n` in ENV variable with actual line breaks.
       const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
 
-      authClient = new google.auth.JWT(
+      authClient = new googleSheets.auth.JWT(
         clientEmail,
         null,
         privateKey,
