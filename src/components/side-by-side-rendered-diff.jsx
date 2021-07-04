@@ -6,6 +6,7 @@ import {
   compose,
   addTargetBlank
 } from '../scripts/html-transforms';
+import { versionUrl } from '../scripts/tools';
 import SandboxedHtml from './sandboxed-html';
 
 /**
@@ -49,12 +50,12 @@ export default class SideBySideRenderedDiff extends React.Component {
       <div className="side-by-side-render">
         <SandboxedHtml
           html={this.props.diffData.deletions}
-          baseUrl={this.props.page.url}
+          baseUrl={versionUrl(this.props.a)}
           transform={transformA}
         />
         <SandboxedHtml
           html={this.props.diffData.insertions}
-          baseUrl={this.props.page.url}
+          baseUrl={versionUrl(this.props.b)}
           transform={transformB}
         />
       </div>
