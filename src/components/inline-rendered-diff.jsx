@@ -5,6 +5,7 @@ import {
   loadSubresourcesFromWayback,
   compose
 } from '../scripts/html-transforms';
+import { versionUrl } from '../scripts/tools';
 import SandboxedHtml from './sandboxed-html';
 
 /**
@@ -37,7 +38,7 @@ export default class InlineRenderedDiff extends React.Component {
 
     return (
       <div className="inline-render">
-        <SandboxedHtml html={diff} baseUrl={this.props.page.url} transform={transformDocument}/>
+        <SandboxedHtml html={diff} baseUrl={versionUrl(this.props.b)} transform={transformDocument}/>
       </div>
     );
   }
