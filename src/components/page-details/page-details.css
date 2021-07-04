@@ -69,6 +69,18 @@
   margin-right: 0;
 }
 
+.redirect-tooltip {
+  max-width: 50em;
+}
+
+.redirect-tooltip p {
+  padding-left: 1em;
+}
+
+.redirect-tooltip p strong {
+  margin-left: -1em;
+}
+
 @media (max-width: 992px) {
   .header {
     flex-direction: column;

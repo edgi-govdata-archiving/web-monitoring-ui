@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
+import Tooltip from 'react-tooltip';
+import { escapeHtml } from '../../scripts/html-transforms';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import pageStyles from './page-details.css'; // eslint-disable-line
@@ -110,14 +112,7 @@ export default class PageDetails extends React.Component {
             <h2 styleName="pageStyles.page-title">
               {this.state.page.title}
             </h2>
-            <a
-              className="diff_page_url"
-              href={this.state.page.url}
-              target="_blank"
-              rel="noopener"
-            >
-              {this.state.page.url}
-            </a>
+            <PageUrlDisplay page={this.state.page} {...this._versionsToRender()} />
           </header>
           <div styleName="pageStyles.header-section-pager">
             {this._renderPager()}
@@ -283,6 +278,101 @@ export default class PageDetails extends React.Component {
     const url = this._getChangeUrl(from, to, page);
     this.props.history[replace ? 'replace' : 'push'](url);
   }
+}
+
+function PageUrlDisplay ({ page, from, to }) {
+  const fromRedirects = _redirectHistoryForVersion(from);
+  const toRedirects = _redirectHistoryForVersion(to);
+
+  if (fromRedirects.length > 1 || toRedirects.length > 1) {
+    const same = fromRedirects.length === toRedirects.length
+      && fromRedirects.every((value, index) => toRedirects[index] === value);
+    const target = toRedirects ? toRedirects[toRedirects.length - 1] : fromRedirects[fromRedirects.length - 1];
+
+    let arrowType = 'angle-right';
+    if (!same) {
+      arrowType = 'random';
+    }
+    else if (fromRedirects.length > 2 || toRedirects.length > 2) {
+      arrowType = 'angle-double-right';
+    }
+
+    let tooltip = '<strong>Redirects:</strong>';
+    if (same) {
+      tooltip += `<p>${fromRedirects.join(' →<br/>')}</p>`;
+    }
+    else {
+      const fromHtml = fromRedirects.length > 1
+        ? `<br />${fromRedirects.join(' →<br/>')}`
+        : '(None)';
+      tooltip += `<p><strong>From version:</strong>${fromHtml}</p>`;
+
+      const toHtml = toRedirects.length > 1
+        ? `<br />${toRedirects.join(' →<br/>')}`
+        : '(None)';
+      tooltip += `<p><strong>To version:</strong>${toHtml}</p>`;
+    }
+
+    return (
+      <>
+        <PageUrlLink url={to.url} />
+        <i
+          className={`fa fa-no-hover fa-right-icon fa-${arrowType}`}
+          aria-hidden="true"
+          data-for="redirect-tooltip"
+          data-tip={tooltip}
+          data-html
+        />
+        <PageUrlLink
+          url={target || '#'}
+          text={target || '(No redirect for “to” version)'}
+        />
+        <Tooltip
+          id="redirect-tooltip"
+          place="bottom"
+          effect="solid"
+          styleName="pageStyles.redirect-tooltip"
+        />
+      </>
+    );
+  }
+
+  return <PageUrlLink url={page.url} />;
+}
+
+function PageUrlLink ({ url, text = null }) {
+  return (
+    <a href={url} target="_blank" rel="noopener" className="diff_page_url">
+      {text || url}
+    </a>
+  );
+}
+
+/**
+ * Get an array of all the URLs that were requested to get a version's body.
+ * If the resulting array has length 1, there were no redirects.
+ * @param {Version} version
+ */
+function _redirectHistoryForVersion (version) {
+  if (!version) return [];
+
+  // Make a copy of the redirects
+  const redirects = (
+    version.source_metadata && version.source_metadata.redirects || []
+  ).slice();
+
+  // Ensure it starts with the URL we tried to capture here.
+  if (redirects[0] != version.url) {
+    redirects.unshift(version.url);
+  }
+
+  // ...and ends with the final URL. Some versions include this, while others
+  // have it in `source_metadata.redirected_url`.
+  if (version.redirected_url && redirects[redirects.length - 1] !== version.redirected_url) {
+    redirects.push(version.redirected_url);
+  }
+
+  return redirects;
 }
 
 PageDetails.contextTypes = {
