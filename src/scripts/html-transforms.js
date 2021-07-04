@@ -1,3 +1,5 @@
+import { versionUrl } from './tools';
+
 /**
  * HtmlTransforms are functions that take an HTML Document and modify it in
  * some useful way, such as removing scripts.
@@ -131,12 +133,13 @@ export function addTargetBlank (document) {
  */
 export function loadSubresourcesFromWayback (page, version) {
   return document => {
+    const url = versionUrl(version);
     const timestamp = createWaybackTimestamp(version.capture_time);
     document.querySelectorAll('link[rel="stylesheet"]').forEach(node => {
-      node.href = createWaybackUrl(node.getAttribute('href'), timestamp, page.url);
+      node.href = createWaybackUrl(node.getAttribute('href'), timestamp, url);
     });
     document.querySelectorAll('script[src],img[src]').forEach(node => {
-      node.src = createWaybackUrl(node.getAttribute('src'), timestamp, page.url);
+      node.src = createWaybackUrl(node.getAttribute('src'), timestamp, url);
     });
     // TODO: handle <picture> with all its subelements
     // TODO: SVG <use> directives
