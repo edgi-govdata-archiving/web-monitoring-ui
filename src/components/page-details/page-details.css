@@ -90,35 +90,3 @@
     flex: 1 0 auto;
   }
 }
-
-.url-history-details {
-  padding: 0 1em;
-}
-
-.url-history-details summary {
-  cursor: pointer;
-  margin-left: -1em;
-}
-
-.url-history-details ins {
-  font-weight: bold;
-  background: none !important;
-}
-
-.url-history-details a {
-  /*
-    Links here are full URLs are can sometimes have no good line break points.
-  */
-  line-break: anywhere;
-}
-
-.url-history-list {
-  list-style-type: none;
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.url-scheme {
-  display: inline-block;
-  width: 6em;
-}
