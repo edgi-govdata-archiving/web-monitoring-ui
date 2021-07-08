@@ -39,9 +39,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.children()).toHaveLength(1);
-    expect(view.find('ExternalLink')).toHaveLength(1);
-    expect(view.contains(<ins>/ something</ins>)).toEqual(true);
+    expect(view.debug()).toMatchSnapshot();
   });
 
   it("shows the versions' redirects", () => {
@@ -73,9 +71,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.children()).toHaveLength(1);
-    expect(view.find('ExternalLink')).toHaveLength(2);
-    expect(view.contains(<ins>/ something</ins>)).toEqual(true);
+    expect(view.debug()).toMatchSnapshot();
   });
 
   it('shows separate URL histories for each version if they differ', () => {
@@ -107,9 +103,6 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.children()).toHaveLength(1);
-    expect(view.find('ExternalLink')).toHaveLength(4);
-    expect(view.contains(<ins>/ something</ins>)).toEqual(true);
-    expect(view.contains(<ins>/ else</ins>)).toEqual(true);
+    expect(view.debug()).toMatchSnapshot();
   });
 });
