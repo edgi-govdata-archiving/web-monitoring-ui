@@ -4,8 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
-import Tooltip from 'react-tooltip';
-import { escapeHtml } from '../../scripts/html-transforms';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import pageStyles from './page-details.css'; // eslint-disable-line
@@ -112,7 +110,8 @@ export default class PageDetails extends React.Component {
             <h2 styleName="pageStyles.page-title">
               {this.state.page.title}
             </h2>
-            <PageUrlDisplay page={this.state.page} {...this._versionsToRender()} />
+            <PageUrlLink url={this.state.page.url} />
+            <PageUrlDetails page={this.state.page} {...this._versionsToRender()} />
           </header>
           <div styleName="pageStyles.header-section-pager">
             {this._renderPager()}
@@ -280,70 +279,191 @@ export default class PageDetails extends React.Component {
   }
 }
 
-function PageUrlDisplay ({ page, from, to }) {
+function PageUrlDetails ({ page, from, to }) {
   const fromRedirects = _redirectHistoryForVersion(from);
   const toRedirects = _redirectHistoryForVersion(to);
 
-  if (fromRedirects.length > 1 || toRedirects.length > 1) {
-    const same = fromRedirects.length === toRedirects.length
-      && fromRedirects.every((value, index) => toRedirects[index] === value);
-    const target = toRedirects ? toRedirects[toRedirects.length - 1] : fromRedirects[fromRedirects.length - 1];
-
-    let arrowType = 'angle-right';
-    if (!same) {
-      arrowType = 'random';
+  if (fromRedirects.join(',') === toRedirects.join(',')) {
+    if (toRedirects.length > 1) {
+      return (
+        <details styleName="pageStyles.url-history-details">
+          <summary>⚠️ Captured URL Redirected Somewhere Else</summary>
+          <UrlHistoryList urls={toRedirects} baseUrl={page.url} />
+        </details>
+      );
     }
-    else if (fromRedirects.length > 2 || toRedirects.length > 2) {
-      arrowType = 'angle-double-right';
+    else if (toRedirects[0] !== page.url) {
+      return (
+        <details styleName="pageStyles.url-history-details">
+          <summary>⚠️ Captured from a different URL</summary>
+          <PageUrlLink url={toRedirects[0]}>
+            <NaiveUrlDiff a={page.url} b={toRedirects[0]} />
+          </PageUrlLink>
+        </details>
+      );
     }
-
-    let tooltip = '<strong>Redirects:</strong>';
-    if (same) {
-      tooltip += `<p>${fromRedirects.join(' →<br/>')}</p>`;
-    }
-    else {
-      const fromHtml = fromRedirects.length > 1
-        ? `<br />${fromRedirects.join(' →<br/>')}`
-        : '(None)';
-      tooltip += `<p><strong>From version:</strong>${fromHtml}</p>`;
-
-      const toHtml = toRedirects.length > 1
-        ? `<br />${toRedirects.join(' →<br/>')}`
-        : '(None)';
-      tooltip += `<p><strong>To version:</strong>${toHtml}</p>`;
-    }
-
+  }
+  else {
     return (
-      <>
-        <PageUrlLink url={to.url} />
-        <i
-          className={`fa fa-no-hover fa-right-icon fa-${arrowType}`}
-          aria-hidden="true"
-          data-for="redirect-tooltip"
-          data-tip={tooltip}
-          data-html
-        />
-        <PageUrlLink
-          url={target || '#'}
-          text={target || '(No redirect for “to” version)'}
-        />
-        <Tooltip
-          id="redirect-tooltip"
-          place="bottom"
-          effect="solid"
-          styleName="pageStyles.redirect-tooltip"
-        />
-      </>
+      <details styleName="pageStyles.url-history-details">
+        <summary>⚠️ Versions come from different URLs</summary>
+        <strong>From Version URL and Redirects:</strong>
+        <UrlHistoryList urls={fromRedirects} baseUrl={page.url} />
+
+        <strong>To Version URL and Redirects:</strong>
+        <UrlHistoryList urls={toRedirects} baseUrl={page.url} />
+      </details>
     );
   }
 
-  return <PageUrlLink url={page.url} />;
+  return null;
 }
 
-function PageUrlLink ({ url, text = null }) {
+function UrlHistoryList ({ urls, baseUrl }) {
+  let previous = baseUrl ? parseUrlForDiff(baseUrl) : null;
+  const diffedUrls = urls.map(url => {
+    let parsed = parseUrlForDiff(url);
+    const rendered = <NaiveUrlDiff a={previous} b={parsed} />;
+    previous = parsed;
+    return { url, parsed, rendered };
+  });
+
+  return (
+    <ol styleName="pageStyles.url-history-list">
+      {diffedUrls.map((info, index) => {
+        return (
+          <li key={index}>
+            <PageUrlLink url={info.url}>{info.rendered}</PageUrlLink>
+            {index + 1 < urls.length ? <RedirectArrow /> : null}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+
+function parseUrlForDiff (url) {
+  let components = url.match(/^([\w+-]+:\/\/)([^/]+)(\/[^?#]*)?(\?[^#]*)?(#.*)?$/);
+  return {
+    scheme: components[1],
+    host: components[2].split('.'),
+    path: (components[3] || '').slice(1).split('/').map(x => `/ ${x}`),
+    query: components[4] || '',
+    hash: components[5] || ''
+  };
+}
+
+function NaiveUrlDiff ({ a, b }) {
+  let aParsed = (a && typeof a === 'string') ? parseUrlForDiff(a) : a;
+  let bParsed = (b && typeof b === 'string') ? parseUrlForDiff(b) : b;
+
+  if (a && b) {
+    const highlightDiff = (name) => {
+      const value = bParsed[name];
+      return value !== aParsed[name] ? <ins>{value}</ins> : value;
+    };
+
+    const hostDiff = naiveInsertionDiff(aParsed.host, bParsed.host);
+    const renderedHost = renderDiff(hostDiff, '.');
+
+    const pathDiff = naiveInsertionDiff(aParsed.path, bParsed.path);
+    const renderedPath = renderDiff(pathDiff, ' ');
+    return (
+      <>
+        {highlightDiff('scheme')}{' '}
+        {renderedHost}{' '}
+        {renderedPath}{' '}
+        {highlightDiff('query')}{' '}
+        {highlightDiff('hash')}
+      </>
+    );
+  }
+  else {
+    return (
+      <>
+        {bParsed.scheme}{' '}
+        {bParsed.host.join('.')}{' '}
+        {bParsed.path.join(' ')}{' '}
+        {bParsed.query}{' '}
+        {bParsed.hash}
+      </>
+    );
+  }
+}
+
+function renderDiff (diff, delimiter = null) {
+  const rendered = [];
+
+  for (let i = 0; i < diff.length; i++) {
+    if (delimiter != null && i > 0) rendered.push(delimiter);
+
+    if (diff[i][0] === 0) {
+      rendered.push(diff[i][1]);
+    }
+    else {
+      rendered.push(<ins key={i}>{diff[i][1]}</ins>);
+    }
+  }
+
+  return rendered;
+}
+
+/**
+ * Calculate a very simple diff between two lists. This only does a single,
+ * forward pass, and only includes items that were unchanged or inserted (not
+ * items that were deleted).
+ * @param {Array<any>} listA
+ * @param {Array<any>} listB
+ * @returns {Array<[number, any]>}
+ */
+function naiveInsertionDiff (listA, listB) {
+  const operations = [];
+  for (let iA = 0, iB = 0; iB < listB.length; iB++) {
+    const valueA = listA[iA];
+    const valueB = listB[iB];
+    if (valueA === valueB) {
+      operations.push([0, valueB]);
+      iA++;
+    }
+    else {
+      operations.push([1, valueB]);
+      // Does the current item from listA show up later in listB, implying the
+      // current item in listB is an *insertion* rather than a *change*?
+      if (listB.slice(iB + 1).includes(valueA)) {
+        // If yes, keep our current position in listA and don't increment iA.
+        // We want to hit the matching value on the next iteration.
+      }
+      else {
+        // Otherwise, does the current item from listB show up later in listA,
+        // implying we *deleted* some items from listA?
+        const nextIndexInA = listA.slice(iA).indexOf(valueB);
+        if (nextIndexInA > -1) {
+          // If yes, skip forward in listA to jump over deleted items.
+          iA += nextIndexInA + 1;
+        }
+        else {
+          iA++;
+        }
+      }
+    }
+  }
+  return operations;
+}
+
+function RedirectArrow () {
+  return (
+    <i
+      className="fa fa-no-hover fa-right-icon fa-angle-right"
+      title="Redirects to"
+    />
+  );
+}
+
+function PageUrlLink ({ url, children }) {
   return (
     <a href={url} target="_blank" rel="noopener" className="diff_page_url">
-      {text || url}
+      {children || url}
     </a>
   );
 }
@@ -370,6 +490,11 @@ function _redirectHistoryForVersion (version) {
   // have it in `source_metadata.redirected_url`.
   if (version.redirected_url && redirects[redirects.length - 1] !== version.redirected_url) {
     redirects.push(version.redirected_url);
+  }
+
+  // Make sure the final URL does not repeat (this happens for some).
+  if (redirects[redirects.length - 1] === redirects[redirects.length - 2]) {
+    redirects.pop();
   }
 
   return redirects;
