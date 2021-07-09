@@ -1,6 +1,6 @@
 export const NON_USER_TAGS = ['site:', '2l-domain:', 'domain:'];
 
-export function removeNonuserTags (tags) {
+export function removeNonUserTags (tags) {
   return tags.filter(tag =>
     !NON_USER_TAGS.some(prefix => tag.name.startsWith(prefix))
   );

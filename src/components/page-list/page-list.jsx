@@ -7,7 +7,7 @@ import {
   getHttpStatusCategory,
   describeHttpStatus
 } from '../../scripts/http-info';
-import { removeNonuserTags } from '../../scripts/tools';
+import { removeNonUserTags } from '../../scripts/tools';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import listStyles from './page-list.css'; // eslint-disable-line
@@ -82,7 +82,7 @@ export default class PageList extends React.Component {
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
-    const tags = removeNonuserTags(record.tags);
+    const tags = removeNonUserTags(record.tags);
     const statusCode = record.status || 200;
     let statusCategory = getHttpStatusCategory(statusCode);
 

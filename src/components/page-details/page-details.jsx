@@ -9,7 +9,7 @@ import PageUrlDetails from '../page-url-details/page-url-details';
 import PageTag from '../page-tag/page-tag';
 import StandardTooltip from '../standard-tooltip';
 import { describeHttpStatus } from '../../scripts/http-info';
-import { removeNonuserTags } from '../../scripts/tools';
+import { removeNonUserTags } from '../../scripts/tools';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import pageStyles from './page-details.css'; // eslint-disable-line
@@ -110,7 +110,7 @@ export default class PageDetails extends React.Component {
 
     const statusCode = this.state.page.status || 200;
     const statusError = statusCode >= 400;
-    const tags = removeNonuserTags(this.state.page.tags);
+    const tags = removeNonUserTags(this.state.page.tags);
 
     // TODO: this HTML should probably be broken up a bit
     return (
