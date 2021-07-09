@@ -8,8 +8,9 @@
     {
       "uuid": "ed4aed23-424e-4326-ac75-c3ad72797bad",
       "page_uuid": "9420d91c-2fd8-411a-a756-5bf976574d10",
+      "url": "http://www.ncei.noaa.gov/news/earth-science-conference-convenes",
       "capture_time": "2018-02-01T04:37:15.000Z",
-      "uri": "https://edgi-versionista-archive.s3.amazonaws.com/versionista2/74303-6222064/version-14470996.html",
+      "body_url": "https://edgi-versionista-archive.s3.amazonaws.com/versionista2/74303-6222064/version-14470996.html",
       "body_hash": "15e3e7f86e3f72acd360668b22250b9981f7b3d5f777b3d972557f00cd21153f",
       "media_type": "text/html",
       "media_type_parameters": "charset=UTF-8",
@@ -50,8 +51,9 @@
     {
       "uuid": "70aa8b7b-d485-48dc-8295-7635ff04dc5b",
       "page_uuid": "9420d91c-2fd8-411a-a756-5bf976574d10",
+      "url": "http://www.ncei.noaa.gov/news/earth-science-conference-convenes",
       "capture_time": "2017-01-17T13:46:48.000Z",
-      "uri": "https://edgi-versionista-archive.s3.amazonaws.com/versionista2/74303-6222064/version-9437401.html",
+      "body_url": "https://edgi-versionista-archive.s3.amazonaws.com/versionista2/74303-6222064/version-9437401.html",
       "body_hash": "03942355429ebd4bf526199777879fdf069a23ec040a9517b556df8aa4d1a8d3",
       "media_type": null,
       "media_type_parameters": null,

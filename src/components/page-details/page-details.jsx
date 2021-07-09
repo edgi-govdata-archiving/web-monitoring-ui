@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
+import ExternalLink from '../external-link';
+import PageUrlDetails from '../page-url-details/page-url-details';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import pageStyles from './page-details.css'; // eslint-disable-line
@@ -110,14 +112,8 @@ export default class PageDetails extends React.Component {
             <h2 styleName="pageStyles.page-title">
               {this.state.page.title}
             </h2>
-            <a
-              className="diff_page_url"
-              href={this.state.page.url}
-              target="_blank"
-              rel="noopener"
-            >
-              {this.state.page.url}
-            </a>
+            <ExternalLink href={this.state.page.url} />
+            <PageUrlDetails page={this.state.page} {...this._versionsToRender()} />
           </header>
           <div styleName="pageStyles.header-section-pager">
             {this._renderPager()}

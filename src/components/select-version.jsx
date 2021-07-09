@@ -24,6 +24,7 @@ export default class SelectVersion extends React.PureComponent {
       return (
         <option key={version.uuid} value={version.uuid}>
           {statusLabel(version)}
+          {redirectLabel(version)}
           {dateFormatter.format(version.capture_time)}
           {sourceLabel(version)}
         </option>
@@ -58,4 +59,12 @@ function statusLabel (version) {
   else {
     return '';
   }
+}
+
+function redirectLabel (version) {
+  const meta = version.source_metadata;
+  if (meta && (meta.redirects || meta.redirected_url)) {
+    return '⇢ ';
+  }
+  return '';
 }
