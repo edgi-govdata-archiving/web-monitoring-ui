@@ -6,6 +6,10 @@ import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
 import ExternalLink from '../external-link';
 import PageUrlDetails from '../page-url-details/page-url-details';
+import PageTag from '../page-tag/page-tag';
+import StandardTooltip from '../standard-tooltip';
+import { describeHttpStatus } from '../../scripts/http-info';
+import { removeNonUserTags } from '../../scripts/tools';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import pageStyles from './page-details.css'; // eslint-disable-line
@@ -104,16 +108,42 @@ export default class PageDetails extends React.Component {
       return <Redirect to={`/page/${targetId}/${changeId}`} />;
     }
 
+    const statusCode = this.state.page.status || 200;
+    const statusError = statusCode >= 400;
+    const tags = removeNonUserTags(this.state.page.tags);
+
     // TODO: this HTML should probably be broken up a bit
     return (
       <div styleName="baseStyles.main pageStyles.page-details-main">
+        <StandardTooltip id="page-tooltip" />
         <div styleName="pageStyles.header">
           <header styleName="pageStyles.header-section-title">
             <h2 styleName="pageStyles.page-title">
               {this.state.page.title}
             </h2>
-            <ExternalLink href={this.state.page.url} />
-            <PageUrlDetails page={this.state.page} {...this._versionsToRender()} />
+            {' '}
+            <div styleName="pageStyles.info-items">
+              <span
+                styleName="pageStyles.info-item"
+                data-page-active={this.state.page.active.toString()}
+              >
+                {this.state.page.active ? '•' : '✘ Not'} Actively Monitored
+              </span>
+              <span
+                styleName={`pageStyles.info-item pageStyles.${statusError ? 'status-error' : 'status-ok'}`}
+                data-http-status={statusCode}
+                data-for="page-tooltip"
+                data-tip={describeHttpStatus(statusCode)}
+              >
+                {statusError ? '✘' : '•'} HTTP Status: {statusCode}
+              </span>
+              {tags.map(tag => <PageTag tag={tag} key={tag.name} />)}
+            </div>
+            {/* TODO: can we restructure to remove this div? */}
+            <div>
+              <ExternalLink href={this.state.page.url} />
+              <PageUrlDetails page={this.state.page} {...this._versionsToRender()} />
+            </div>
           </header>
           <div styleName="pageStyles.header-section-pager">
             {this._renderPager()}
