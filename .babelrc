@@ -13,7 +13,9 @@
   ],
   "plugins": [
     ["react-css-modules", {
-      "attributeNames": { "activeStyleName": "activeClassName" } // for React Router NavLink
+      // for React Router NavLink
+      "attributeNames": { "activeStyleName": "activeClassName" },
+      "handleMissingStyleName": "warn"
     }]
   ]
 }

@@ -1,11 +1,16 @@
 import Loading from '../loading';
 import React from 'react';
 import SearchBar from '../search-bar/search-bar';
+import StandardTooltip from '../standard-tooltip';
+import PageTag from '../page-tag/page-tag';
+import {
+  getHttpStatusCategory,
+  describeHttpStatus
+} from '../../scripts/http-info';
+import { removeNonuserTags } from '../../scripts/tools';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import listStyles from './page-list.css'; // eslint-disable-line
-
-const IGNORED_TAG_PREFIXES = ['site:', '2l-domain:', 'domain:'];
 
 /**
  * These props also inherit from React Router's RouteComponent props
@@ -51,6 +56,7 @@ export default class PageList extends React.Component {
   renderPages () {
     return (
       <div styleName="listStyles.container">
+        <StandardTooltip id="list-tooltip" />
         <table styleName="listStyles.table listStyles.page-list">
           <thead>{this.renderHeader()}</thead>
           <tbody>
@@ -68,22 +74,34 @@ export default class PageList extends React.Component {
         <th data-name="page-name">Page Name</th>
         <th data-name="url">URL</th>
         <th data-name="tags">Tags</th>
+        <th data-name="status">HTTP Status</th>
+        <th data-name="active">Active?</th>
       </tr>
     );
   }
 
   renderRow (record) {
     const onClick = this.didClickRow.bind(this, record);
-    const tags = record.tags.filter(tag =>
-      !IGNORED_TAG_PREFIXES.some(prefix => tag.name.startsWith(prefix))
-    );
+    const tags = removeNonuserTags(record.tags);
+    const statusCode = record.status || 200;
+    let statusCategory = getHttpStatusCategory(statusCode);
 
     return (
       <tr key={record.uuid} onClick={onClick} data-name="info-row">
         <td>{getDomain(record.url)}</td>
         <td>{record.title}</td>
         <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
-        <td>{tags.map(tag => <PageTag tag={tag} key="tag.name" />)}</td>
+        <td>{tags.map(tag => <PageTag tag={tag} key={tag.name} />)}</td>
+        <td
+          data-status-category={statusCategory}
+          data-for="list-tooltip"
+          data-tip={describeHttpStatus(statusCode)}
+        >
+          {statusCode >= 400 ? '✘' : '•'} {record.status}
+        </td>
+        <td data-page-active={record.active.toString()}>
+          {record.active ? '•' : '✘'}
+        </td>
       </tr>
     );
   }
@@ -128,29 +146,4 @@ const HOST_WITHOUT_WWW_PATTERN = /^[^:]+:\/\/(?:ww+\d*\.)?([^/]+)/;
 
 function getDomain (url) {
   return url.match(HOST_WITHOUT_WWW_PATTERN)[1];
-}
-
-/**
- * Helper component for rendering tags.
- */
-function PageTag ({ tag }) {
-  let prefix = '';
-  let name = tag.name;
-  const colonIndex = name.indexOf(':');
-  if (colonIndex > -1) {
-    prefix = name.slice(0, colonIndex + 1);
-    name = name.slice(colonIndex + 1);
-  }
-
-  let prefixNode;
-  if (prefix) {
-    prefixNode = <span styleName="listStyles.page-tag--prefix">{prefix}</span>;
-  }
-
-  return (
-    <span styleName="listStyles.page-tag">
-      {prefixNode}
-      {name}
-    </span>
-  );
 }

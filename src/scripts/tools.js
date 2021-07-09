@@ -1,3 +1,11 @@
+export const NON_USER_TAGS = ['site:', '2l-domain:', 'domain:'];
+
+export function removeNonuserTags (tags) {
+  return tags.filter(tag =>
+    !NON_USER_TAGS.some(prefix => tag.name.startsWith(prefix))
+  );
+}
+
 /**
  * Get the URL that a version's body came from. If a version included redirects,
  * then its `url` property won't corresponded with the URL the response body
