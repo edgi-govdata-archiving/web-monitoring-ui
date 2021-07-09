@@ -3,6 +3,7 @@
     "uuid": "9420d91c-2fd8-411a-a756-5bf976574d10",
     "url": "http://www.ncei.noaa.gov/news/earth-science-conference-convenes",
     "title": "Earth Science Conference Convenes | National Centers for Environmental Information (NCEI)",
+    "active": true,
     "created_at": "2017-05-02T23:55:57.021Z",
     "updated_at": "2018-02-01T05:20:52.203Z",
     "latest": {
@@ -81,6 +82,7 @@
     "uuid": "fba5c998-4f11-4e69-a3ff-66c0a4e9e7d3",
     "url": "https://www3.epa.gov/climatechange/impacts/society.html",
     "title": "Page being updated | US EPA",
+    "active": true,
     "agency": "EPA",
     "site": "EPA - www3.epa.gov",
     "created_at": "2017-11-09T02:50:37Z",
