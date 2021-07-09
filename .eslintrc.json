@@ -31,7 +31,8 @@
     ],
     "quotes": [
       "error",
-      "single"
+      "single",
+      {"avoidEscape": true}
     ],
     "object-curly-spacing": [
       "error",

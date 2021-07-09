@@ -1,0 +1,32 @@
+.page-url-details {
+  margin: 0.25em 0 0;
+  padding: 0 1em;
+}
+
+.page-url-details summary {
+  cursor: pointer;
+  margin-left: -1em;
+}
+
+.page-url-details ins {
+  font-weight: bold;
+  background: none !important;
+}
+
+.page-url-details a {
+  /*
+    Links here are full URLs are can sometimes have no good line break points.
+  */
+  line-break: anywhere;
+}
+
+.url-history-list {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.url-scheme {
+  display: inline-block;
+  width: 6em;
+}
