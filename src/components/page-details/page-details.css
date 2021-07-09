@@ -37,6 +37,7 @@
 
 .info-item {
   margin-right: 1em;
+  white-space: nowrap;
 }
 
 .info-item[data-page-active="false"] {

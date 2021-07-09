@@ -121,6 +121,7 @@ export default class PageDetails extends React.Component {
             <h2 styleName="pageStyles.page-title">
               {this.state.page.title}
             </h2>
+            {' '}
             <div styleName="pageStyles.info-items">
               <span
                 styleName="pageStyles.info-item"
