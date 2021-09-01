@@ -32,7 +32,7 @@
     "extract-loader": "^5.1.0",
     "fetch-mock": "^9.11.0",
     "file-loader": "^6.2.0",
-    "husky": "^7.0.1",
+    "husky": "^7.0.2",
     "jest": "^27.0.6",
     "moment": "^2.29.1",
     "moment-locales-webpack-plugin": "^1.2.0",
