@@ -1,6 +1,6 @@
 ### Baseline image for development/test/build ###
 # We require a lot of extras for building (Python, GCC) because of Node-Zopfli.
-FROM node:14.16.0 as dev
+FROM node:14.18.0 as dev
 LABEL maintainer="enviroDGI@gmail.com"
 
 RUN mkdir -p /app
@@ -30,7 +30,7 @@ RUN npm run build-production
 ### Release Image ###
 # It might feel ridiculous to build up all the same things again, but the
 # resulting image is less than half the size!
-FROM node:14.16.0-slim as release
+FROM node:14.18.0-slim as release
 LABEL maintainer="enviroDGI@gmail.com"
 
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
