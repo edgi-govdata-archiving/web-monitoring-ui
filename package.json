@@ -60,7 +60,7 @@
     "build-production": "NODE_ENV=production webpack",
     "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
-    "postinstall": "husky install",
+    "prepare": "if [ -d .git ]; then husky install; fi",
     "start": "node server/app.js",
     "test": "jest --colors --verbose",
     "test-watch": "jest --watch"
@@ -82,7 +82,7 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "14.18.0"
+    "node": "16.13.1"
   },
   "browserslist": [
     "last 3 versions",
