@@ -6,7 +6,7 @@
   "dependencies": {
     "@googleapis/sheets": "^0.3.0",
     "babel-plugin-react-css-modules": "^5.2.6",
-    "body-parser": "^1.19.1",
+    "body-parser": "^1.19.2",
     "ejs": "^3.1.6",
     "express": "^4.17.2",
     "normalize.css": "^8.0.1",
