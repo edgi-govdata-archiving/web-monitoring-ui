@@ -44,7 +44,8 @@ jobs:
           command: npm test
 
   build_docker:
-    machine: true
+    machine:
+      image: ubuntu-2004:202111-02
     steps:
       - checkout
       - run:
@@ -62,7 +63,8 @@ jobs:
             - docker-image
 
   publish_docker:
-    machine: true
+    machine:
+      image: ubuntu-2004:202111-02
     steps:
       - attach_workspace:
           at: /tmp/workspace
