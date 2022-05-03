@@ -49,7 +49,7 @@
     "react-tooltip": "^4.2.21",
     "react-with-direction": "^1.4.0",
     "style-loader": "^3.3.1",
-    "webpack": "^5.71.0",
+    "webpack": "^5.72.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-middleware": "^5.3.1"
