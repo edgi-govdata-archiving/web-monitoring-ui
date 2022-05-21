@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import './environment-banner.css';
 
 /**
@@ -10,10 +10,10 @@ import './environment-banner.css';
  * A banner to conditionally display warnings to users about the environment.
  *
  * @class EnvironmentBanner
- * @extends {React.Component}
+ * @extends {Component}
  * @param {EnvironmentBannerProps} props
  */
-export default class EnvironmentBanner extends React.Component {
+export default class EnvironmentBanner extends Component {
   constructor (props) {
     super(props);
     this.state = {

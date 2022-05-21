@@ -1,12 +1,12 @@
 import Loading from './loading';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../services/web-monitoring-db';
 
 import '../css/base.css';
 
-export default class VersionRedirect extends React.Component {
+export default class VersionRedirect extends Component {
   constructor (props) {
     super (props);
     this.state = {

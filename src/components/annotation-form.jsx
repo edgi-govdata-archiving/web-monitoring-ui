@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import StandardTooltip from './standard-tooltip';
 
 /**
@@ -13,10 +13,10 @@ import StandardTooltip from './standard-tooltip';
  * Form layout for marking/viewing simple annotations of changes.
  *
  * @class AnnotationForm
- * @extends {React.Component}
+ * @extends {Component}
  * @param {AnnotationFormProps} props
  */
-export default class AnnotationForm extends React.Component {
+export default class AnnotationForm extends Component {
   constructor (props) {
     super(props);
     this._onFieldChange = this._onFieldChange.bind(this);

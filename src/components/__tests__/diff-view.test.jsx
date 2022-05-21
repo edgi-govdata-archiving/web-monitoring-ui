@@ -1,7 +1,6 @@
 /* eslint-env jest */
 
 import DiffView from '../diff-view';
-import React from 'react';
 import { shallow } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';

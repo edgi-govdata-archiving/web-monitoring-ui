@@ -1,4 +1,3 @@
-import React from 'react';
 import Tooltip from 'react-tooltip';
 
 export default function StandardTooltip (props) {

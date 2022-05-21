@@ -1,5 +1,5 @@
 import Loading from '../loading';
-import React from 'react';
+import { Component } from 'react';
 import SearchBar from '../search-bar/search-bar';
 import StandardTooltip from '../standard-tooltip';
 import PageTag from '../page-tag/page-tag';
@@ -23,10 +23,10 @@ import listStyles from './page-list.css'; // eslint-disable-line
  * Display a list of pages.
  *
  * @class PageList
- * @extends {React.Component}
+ * @extends {Component}
  * @param {PageListProps} props
  */
-export default class PageList extends React.Component {
+export default class PageList extends Component {
   render () {
     let results;
 

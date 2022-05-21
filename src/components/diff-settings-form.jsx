@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 
 // Diff types that we can remove formatting from
 const typesWithFormatting = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
@@ -16,10 +16,10 @@ const mergeObjects = (...objects) => Object.assign({}, ...objects);
 /**
  * A form for changing settings related to a diff, like whether to remove
  * formatting from it.
- * @extends {React.PureComponent}
+ * @extends {PureComponent}
  * @param {DiffSettingsFormProps} props
  */
-export default class DiffSettingsForm extends React.PureComponent {
+export default class DiffSettingsForm extends PureComponent {
   constructor (props) {
     super(props);
 

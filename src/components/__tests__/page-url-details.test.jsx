@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import PageUrlDetails from '../page-url-details/page-url-details';
-import React from 'react';
 import { mount } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
 

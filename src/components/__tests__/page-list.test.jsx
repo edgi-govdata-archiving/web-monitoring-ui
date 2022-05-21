@@ -1,7 +1,6 @@
 /* eslint-env jest */
 
 import PageList from '../page-list/page-list';
-import React from 'react';
 import SearchBar from '../search-bar/search-bar';
 import Loading from '../loading';
 import { shallow } from 'enzyme';

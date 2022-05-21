@@ -1,17 +1,17 @@
-import React from 'react';
+import { Component } from 'react';
 
 /**
  * A dropdown select box for types of diffs
  *
  * @class SelectDiffType
- * @extends {React.Component}
+ * @extends {Component}
  * @param {Object} props
  * @param {string} value Identifier for the selected diff type
  * @param {Function} onChange Callback when a new value is selected. Signature:
  *                            `string => void`
  * @param {DiffType[]} types
  */
-export default class SelectDiffType extends React.Component {
+export default class SelectDiffType extends Component {
   render () {
     const handleChange = (event) => {
       this.props.onChange(event.target.value);

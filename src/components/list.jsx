@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 
 // Basic list component taken from http://github.com/datatogether/context
 // List accepts an array of data, and an item component. It iterates through the
 // data array, creating an item component for each item in the array, passing
 // it a prop "data" with the array element.
-export default class List extends React.Component {
+export default class List extends Component {
   // const List = (props) => {
   render () {
     // This strange props destructuring is so props.component

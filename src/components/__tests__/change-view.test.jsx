@@ -1,6 +1,5 @@
 /* eslint-env jest */
 
-import React from 'react';
 import { shallow } from 'enzyme';
 import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';

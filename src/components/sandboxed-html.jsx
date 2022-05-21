@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 
 /**
  * @typedef {Object} SandboxedHtmlProps
@@ -12,10 +12,10 @@ import React from 'react';
  * Display HTML source code or document in a sandboxed frame.
  *
  * @class SandboxedHtml
- * @extends {React.Component}
- * @params {SandboxedHtmlProps} props
+ * @extends {PureComponent}
+ * @param {SandboxedHtmlProps} props
  */
-export default class SandboxedHtml extends React.PureComponent {
+export default class SandboxedHtml extends PureComponent {
   constructor (props) {
     super(props);
     this._frame = null;

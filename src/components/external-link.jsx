@@ -1,10 +1,8 @@
-import React from 'react';
-
 /**
  * Create a link that opens in a new tab/window with no referer information.
  * @param {any} props
  * @param {string} props.href URL of the link
- * @returns React.Component
+ * @returns {React.Component}
  */
 export default function ExternalLink ({ href, children, ...otherProps }) {
   return (

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
@@ -24,9 +24,9 @@ import formStyles from './login-form.css'; // eslint-disable-line
  * session tokens for the user when they log in.
  *
  * @class LoginPannel
- * @extends {React.Component}
+ * @extends {Component}
  */
-export default class LoginPanel extends React.Component {
+export default class LoginPanel extends Component {
   constructor (props) {
     super(props);
     this.state = { email: '', password: '', error: null };

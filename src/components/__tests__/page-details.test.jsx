@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import PageDetails from '../page-details/page-details';
-import React from 'react';
 import { shallow } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';

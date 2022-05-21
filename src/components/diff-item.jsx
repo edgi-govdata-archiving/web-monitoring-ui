@@ -1,12 +1,12 @@
-import React from 'react';
+import { Component } from 'react';
 
 /**
  * Display a single deleted/added/unchanged element within a diff
  *
  * @class DiffItem
- * @extends {React.Component}
+ * @extends {Component}
  */
-export default class DiffItem extends React.Component {
+export default class DiffItem extends Component {
   render () {
     const { data, onSelect } = this.props;
 
@@ -41,8 +41,8 @@ export default class DiffItem extends React.Component {
 }
 
 // DiffItem.propTypes = {
-//   data: React.PropTypes.object.isRequired,
-//   onSelect: React.PropTypes.func,
+//   data: PropTypes.object.isRequired,
+//   onSelect: PropTypes.func,
 // };
 
 // DiffItem.defaultProps = {
