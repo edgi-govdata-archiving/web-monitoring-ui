@@ -34,7 +34,7 @@
     "file-loader": "^6.2.0",
     "husky": "^7.0.4",
     "jest": "^28.0.3",
-    "jest-environment-jsdom": "^28.0.2",
+    "jest-environment-jsdom": "^28.1.0",
     "moment": "^2.29.3",
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-fetch": "^3.2.4",
