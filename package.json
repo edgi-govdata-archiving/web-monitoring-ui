@@ -14,9 +14,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
-    "@babel/preset-env": "^7.17.10",
-    "@babel/preset-react": "^7.16.7",
-    "@babel/runtime": "^7.17.9",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "@babel/runtime": "^7.18.3",
     "@gfx/zopfli": "^1.0.15",
     "autoprefixer": "^10.4.7",
     "babel-core": "^7.0.0-bridge.0",
