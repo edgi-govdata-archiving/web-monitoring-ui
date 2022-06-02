@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import {
   removeStyleAndScript,
   removeClientRedirect,
@@ -23,10 +23,10 @@ import SandboxedHtml from './sandboxed-html';
  * Display two versions of a page, side-by-side.
  *
  * @class SideBySideRenderedDiff
- * @extends {React.Component}
+ * @extends {Component}
  * @param {SideBySideRenderedDiffProps} props
  */
-export default class SideBySideRenderedDiff extends React.Component {
+export default class SideBySideRenderedDiff extends Component {
   render () {
     const baseTransform = compose(
       this.props.removeFormatting && removeStyleAndScript,

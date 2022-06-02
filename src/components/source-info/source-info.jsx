@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import './source-info.css';
 
 /**
@@ -13,7 +13,7 @@ import './source-info.css';
  * If one or both of the versions were sourced from Wayback, this component renders links to the Wayback Machine source url(s)
  *
  * @class SourceInfo
- * @extends {React.Component}
+ * @extends {Component}
  * @param {SourceInfoProps} props
  */
 
@@ -21,7 +21,7 @@ const sourceTypeName = {
   internet_archive: 'Wayback Machine'
 };
 
-export default class SourceInfo extends React.Component {
+export default class SourceInfo extends Component {
   render () {
     const waybackCalendarUrl = `https://web.archive.org/web/*/${this.props.pageUrl}`;
     const waybackCalendarLink = (

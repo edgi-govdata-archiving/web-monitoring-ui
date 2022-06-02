@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement } from 'react';
 
 /**
  * Similar to function.bind, but binds props to component types. Returns a
@@ -30,5 +30,5 @@ export default function bindComponent (props, Component) {
   if (!Component) {
     return bindComponent.bind(null, props);
   }
-  return (addedProps) => React.createElement(Component, Object.assign({}, props, addedProps));
+  return (addedProps) => createElement(Component, Object.assign({}, props, addedProps));
 }

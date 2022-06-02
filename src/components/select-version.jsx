@@ -1,17 +1,17 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { dateFormatter } from '../scripts/formatters';
 
 /**
  * A select dropdown listing page versions
  *
  * @class SelectVersion
- * @extends {React.PureComponent}
+ * @extends {PureComponent}
  * @param {Object} props
  * @param {Version} [props.value] The currently selected version
  * @param {Version[]} props.versions The list of versions to display
  * @param {Version} props.onChange Callback for new selection. `Version => void`
  */
-export default class SelectVersion extends React.PureComponent {
+export default class SelectVersion extends PureComponent {
   render () {
     const value = this.props.value ? this.props.value.uuid : '';
     const versions = this.props.versions;

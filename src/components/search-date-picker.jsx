@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
@@ -18,10 +18,10 @@ import { isInclusivelyBeforeDay } from 'react-dates';
  * Dates can also be cleared out after selected.
  *
  * @class SearchDatePicker
- * @extends {React.Component}
+ * @extends {Component}
  * @param {SearchDatePickerProps} props
  */
-export default class SearchDatePicker extends React.Component {
+export default class SearchDatePicker extends Component {
   constructor (props) {
     super(props);
     this.state = { focusedInput: null };

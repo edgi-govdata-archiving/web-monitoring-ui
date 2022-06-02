@@ -1,12 +1,11 @@
 /* eslint-env jest */
 
-import React from 'react';
 import { shallow } from 'enzyme';
 import SourceInfo from '../source-info/source-info';
 
 describe('source-info', () => {
   const noViewUrl = {
-    source_type: 'versionista', 
+    source_type: 'versionista',
     source_metadata: {
       url: 'https://versionista.com/1111/2222/3333/',
       account: 'versionista1',

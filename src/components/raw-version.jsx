@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import SandboxedHtml from './sandboxed-html';
 
 /**
@@ -12,10 +12,10 @@ import SandboxedHtml from './sandboxed-html';
  * Display the raw content of a version.
  *
  * @class RawVersion
- * @extends {React.Component}
+ * @extends {Component}
  * @param {RawVersionProps} props
  */
-export default class RawVersion extends React.Component {
+export default class RawVersion extends Component {
   render () {
     if (this.props.content && /^[\s\n\r]*</.test(this.props.content)) {
       return (
