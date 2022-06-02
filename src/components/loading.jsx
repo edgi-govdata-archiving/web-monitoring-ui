@@ -1,7 +1,7 @@
 import infinityLoaderPath from '../img/infinity-loader.svg';
-import React from 'react';
+import { Component } from 'react';
 
-export default class Loading extends React.Component {
+export default class Loading extends Component {
   render () {
     return (
       <div className="loading">

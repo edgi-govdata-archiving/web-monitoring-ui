@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
 import WebMonitoringApi from '../services/web-monitoring-api';
@@ -27,9 +27,9 @@ const localApi = new WebMonitoringApi(api);
  * with the same filters and conditions.
  *
  * @class WebMonitoringUi
- * @extends {React.Component}
+ * @extends {Component}
  */
-export default class WebMonitoringUi extends React.Component {
+export default class WebMonitoringUi extends Component {
   constructor (props) {
     super(props);
     this.state = {

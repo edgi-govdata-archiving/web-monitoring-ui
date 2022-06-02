@@ -1,4 +1,3 @@
-import React from 'react';
 import ExternalLink from '../external-link';
 import styles from './page-url-details.css'; // eslint-disable-line
 

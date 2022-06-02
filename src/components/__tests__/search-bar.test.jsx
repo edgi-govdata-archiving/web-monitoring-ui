@@ -1,6 +1,5 @@
 /* eslint-env jest */
 
-import React from 'react';
 import { shallow, mount } from 'enzyme';
 import SearchBar from '../search-bar/search-bar';
 import moment from 'moment';

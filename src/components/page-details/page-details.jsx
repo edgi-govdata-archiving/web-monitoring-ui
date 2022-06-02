@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import ChangeView from '../change-view/change-view';
@@ -26,10 +26,10 @@ const cutoffDate = '2000-01-01';
  * Renders detailed, full-screen view of a page and its versions, changes, etc.
  *
  * @class PageDetails
- * @extends {React.Component}
+ * @extends {Component}
  * @param {PageDetailsProps} props
  */
-export default class PageDetails extends React.Component {
+export default class PageDetails extends Component {
   static getDerivedStateFromProps (props, state) {
     // Clear existing content when switching pages
     if (state.page && state.page.uuid !== props.match.params.pageId) {

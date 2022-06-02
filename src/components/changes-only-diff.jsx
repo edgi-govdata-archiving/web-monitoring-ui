@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import DiffItem from './diff-item';
 import List from './list';
 
@@ -11,12 +11,12 @@ const maxContextLineLength = 300;
  * Display a plaintext diff with additions and removals inline.
  *
  * @class ChangesOnlyDiff
- * @extends {React.Component}
+ * @extends {Component}
  * @param {Object} props
  * @param {DiffData} props.diffData
  * @param {string} props.className
  */
-export default class ChangesOnlyDiff extends React.Component {
+export default class ChangesOnlyDiff extends Component {
   render () {
     const changesOnly = this.props.diffData.diff.reduce(
       getContextualDiff, []);

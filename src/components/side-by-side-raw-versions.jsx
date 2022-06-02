@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import SandboxedHtml from './sandboxed-html';
 
 /**
@@ -13,10 +13,10 @@ import SandboxedHtml from './sandboxed-html';
  * Display two versions of a page, side-by-side.
  *
  * @class SideBySideRawVersions
- * @extends {React.Component}
+ * @extends {Component}
  * @param {SideBySideRawVersionsProps} props
  */
-export default class SideBySideRawVersions extends React.Component {
+export default class SideBySideRawVersions extends Component {
   render () {
     return (
       <div className="side-by-side-render">

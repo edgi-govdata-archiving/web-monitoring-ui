@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import './search-bar.css';
 import SearchDatePicker from '../search-date-picker';
 
@@ -19,10 +19,10 @@ import SearchDatePicker from '../search-date-picker';
  * Calls onSearch function with SearchBarQuery when query state object is updated.
  *
  * @class SearchBar
- * @extends {React.Component}
+ * @extends {Component}
  * @param {SearchBarProps} props
  */
-export default class SearchBar extends React.Component {
+export default class SearchBar extends Component {
   constructor (props) {
     super(props);
     this.state = {

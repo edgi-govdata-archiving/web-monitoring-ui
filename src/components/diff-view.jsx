@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import WebMonitoringDb from '../services/web-monitoring-db';
 import { diffTypes } from '../constants/diff-types';
 import Loading from './loading';
@@ -26,10 +26,10 @@ import '../css/base.css';
  * Fetches and renders all sorts of diffs between two versions (props a and b)
  *
  * @class DiffView
- * @extends {React.Component}
+ * @extends {Component}
  * @param {DiffViewProps} props
  */
-export default class DiffView extends React.Component {
+export default class DiffView extends Component {
   static getDerivedStateFromProps (props, state) {
     // Clear out stale diff data before trying to render
     if (!specifiesSameDiff(props, state.previousDiff)) {

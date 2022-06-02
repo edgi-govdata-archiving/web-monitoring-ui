@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import {
   removeStyleAndScript,
@@ -22,10 +22,10 @@ import SandboxedHtml from './sandboxed-html';
  * Display two versions of a page with their changes inline together.
  *
  * @class InlineRenderedDiff
- * @extends {React.Component}
+ * @extends {Component}
  * @param {InlineRenderedDiffProps} props
  */
-export default class InlineRenderedDiff extends React.Component {
+export default class InlineRenderedDiff extends Component {
   render () {
     const diff = this.props.diffData.combined || this.props.diffData.diff;
     const transformDocument = compose(

@@ -1,6 +1,5 @@
 /* eslint-env jest */
 
-import React from 'react';
 import { shallow } from 'enzyme';
 import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';

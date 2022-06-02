@@ -5,7 +5,7 @@ import DiffView from '../diff-view';
 import layeredStorage from '../../scripts/layered-storage';
 import Loading from '../loading';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import SelectDiffType from '../select-diff-type';
 import SelectVersion from '../select-version';
 import SourceInfo from '../source-info/source-info';
@@ -41,10 +41,10 @@ const diffSettingsStorage = 'edgi.wm.ui.diff_settings';
  * Display a change between two versions of a page.
  *
  * @class ChangeView
- * @extends {React.Component}
+ * @extends {Component}
  * @param {ChangeViewProps} props
  */
-export default class ChangeView extends React.Component {
+export default class ChangeView extends Component {
   static getDerivedStateFromProps (props, state) {
     // Ensure that the current diff type is relevant to the content we are
     // comparing. If not, switch to a relevant type.
