@@ -14,8 +14,6 @@ import { removeNonUserTags } from '../../scripts/tools';
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import pageStyles from './page-details.css'; // eslint-disable-line
 
-const cutoffDate = '2000-01-01';
-
 /**
  * @typedef {Object} PageDetailsProps
  * @property {Page[]} pages
@@ -286,7 +284,7 @@ export default class PageDetails extends Component {
         if (page.uuid !== pageId) {
           this.setState({ page: { uuid: pageId, merged_into: page.uuid } });
         }
-        this._loadVersions(page, cutoffDate, '')
+        this._loadVersions(page)
           .then(versions => {
             page.versions = versions;
             this.setState({ page });
@@ -294,9 +292,11 @@ export default class PageDetails extends Component {
       });
   }
 
-  _loadVersions (page, dateFrom, dateTo) {
-    const capture_time = { 'capture_time': `${dateFrom}..${dateTo}` };
-    return this.context.api.getVersions(page.uuid, capture_time, Infinity);
+  _loadVersions (page) {
+    // TODO: This simply returns the sampled versions, but it might be nice to
+    // show how many versions were elided (`sample.version_count`).
+    return this.context.api.sampleVersions(page.uuid, Infinity)
+      .then(versions => versions.map(sample => sample.version));
   }
 
   _getChangeUrl (from, to, page) {
