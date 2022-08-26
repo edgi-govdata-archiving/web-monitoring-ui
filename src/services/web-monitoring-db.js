@@ -206,6 +206,19 @@ export default class WebMonitoringDb {
   }
 
   /**
+   * Get sample of versions (1 per day) for a given page. This is generally
+   * much faster and more efficient than `getVersions` for pages that have a
+   * lot of snapshots, like the EPA homepage.
+   * @param {string} pageId
+   * @param {number} limitChunks
+   * @returns {Promise<Array<{time: string, version_count: number, version: Version}>>}
+   */
+  sampleVersions (pageId, limitChunks = 1) {
+    const url = this._createUrl(`pages/${pageId}/versions/sampled`);
+    return this._getListChunks(url, parseVersionSample, limitChunks);
+  }
+
+  /**
    * Get list of versions for a given page.
    * @param {string} pageId
    * @param {string} query
@@ -458,6 +471,13 @@ function parseVersion (data) {
   }
 
   return result;
+}
+
+function parseVersionSample (data) {
+  return Object.assign({}, data, {
+    time: new Date(data.time),
+    version: parseVersion(data.version)
+  });
 }
 
 function parseAnnotation (data) {
