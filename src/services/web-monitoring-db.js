@@ -211,7 +211,7 @@ export default class WebMonitoringDb {
    * lot of snapshots, like the EPA homepage.
    * @param {string} pageId
    * @param {number} limitChunks
-   * @returns {Promise<Version[]>}
+   * @returns {Promise<Array<{time: string, version_count: number, version: Version}>>}
    */
   sampleVersions (pageId, limitChunks = 1) {
     const url = this._createUrl(`pages/${pageId}/versions/sampled`);

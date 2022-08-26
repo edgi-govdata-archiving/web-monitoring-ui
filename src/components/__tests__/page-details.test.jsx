@@ -11,9 +11,26 @@ describe('page-details', () => {
   });
   const match = { params: { pageId: simplePage.uuid } };
   const createMockApi = () => {
+    let samples = simplePage.versions.reduce((samples, version) => {
+      const key = version.capture_time.toISOString().slice(0, 10);
+      if (key in samples) {
+        samples[key].version_count += 1;
+      }
+      else {
+        samples[key] = {
+          time: key,
+          version_count: 1,
+          version
+        };
+      }
+      return samples;
+    }, {});
+    samples = Object.values(samples).sort((a, b) => a.time < b.time ? 1 : -1);
+
     return Object.assign(Object.create(WebMonitoringDb.prototype), {
       getPage: jest.fn().mockResolvedValue(simplePage),
-      getVersions: jest.fn().mockResolvedValue(simplePage.versions)
+      getVersions: jest.fn().mockResolvedValue(simplePage.versions),
+      sampleVersions: jest.fn().mockResolvedValue(samples)
     });
   };
 
@@ -40,8 +57,9 @@ describe('page-details', () => {
       { context: { api: mockApi } }
     );
 
+    // Wait for mock APIs to have been called.
     await mockApi.getPage.mock.results[0].value;
-    await mockApi.getVersions.mock.results[0].value;
+    await mockApi.sampleVersions.mock.results[0].value;
 
     expect(document.title).toBe('Scanner | http://www.ncei.noaa.gov/news/earth-science-conference-convenes');
 
