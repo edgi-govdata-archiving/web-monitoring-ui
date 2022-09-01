@@ -2,18 +2,18 @@
 
 exports[`PageUrlDetails Component shows separate URL histories for each version if they differ 1`] = `
 "<PageUrlDetails page={{...}} from={{...}} to={{...}}>
-  <details className=\\"src-components-page-url-details-___page-url-details__page-url-details___1F8v5\\">
+  <details className="src-components-page-url-details-___page-url-details__page-url-details___1F8v5">
     <summary>
       ⚠️ Versions come from different URLs
     </summary>
     <strong>
       From Version URL and Redirects:
     </strong>
-    <UrlHistoryList urls={{...}} baseUrl=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\">
-      <ol className=\\"src-components-page-url-details-___page-url-details__url-history-list___3qirP\\">
+    <UrlHistoryList urls={{...}} baseUrl="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
+      <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
         <li>
-          <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\">
-            <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\" target=\\"_blank\\" rel=\\"noopener\\">
+          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -34,12 +34,12 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
             </a>
           </ExternalLink>
           <RedirectIcon>
-            <i className=\\"fa fa-no-hover fa-right-icon fa-angle-right\\" title=\\"Redirects to\\" />
+            <i className="fa fa-no-hover fa-right-icon fa-angle-right" title="Redirects to" />
           </RedirectIcon>
         </li>
         <li>
-          <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\">
-            <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\" target=\\"_blank\\" rel=\\"noopener\\">
+          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -69,11 +69,11 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
     <strong>
       To Version URL and Redirects:
     </strong>
-    <UrlHistoryList urls={{...}} baseUrl=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\">
-      <ol className=\\"src-components-page-url-details-___page-url-details__url-history-list___3qirP\\">
+    <UrlHistoryList urls={{...}} baseUrl="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
+      <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
         <li>
-          <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\">
-            <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\" target=\\"_blank\\" rel=\\"noopener\\">
+          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -94,12 +94,12 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
             </a>
           </ExternalLink>
           <RedirectIcon>
-            <i className=\\"fa fa-no-hover fa-right-icon fa-angle-right\\" title=\\"Redirects to\\" />
+            <i className="fa fa-no-hover fa-right-icon fa-angle-right" title="Redirects to" />
           </RedirectIcon>
         </li>
         <li>
-          <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else\\">
-            <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else\\" target=\\"_blank\\" rel=\\"noopener\\">
+          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else" target="_blank" rel="noopener">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -136,13 +136,13 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
 
 exports[`PageUrlDetails Component shows the versions' URL if it differs from the page's 1`] = `
 "<PageUrlDetails page={{...}} from={{...}} to={{...}}>
-  <details className=\\"src-components-page-url-details-___page-url-details__page-url-details___1F8v5\\">
+  <details className="src-components-page-url-details-___page-url-details__page-url-details___1F8v5">
     <summary>
       ⚠️ Captured from a different URL
     </summary>
-    <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\">
-      <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\" target=\\"_blank\\" rel=\\"noopener\\">
-        <NaiveUrlDiff a=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\" b=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\">
+    <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
+      <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener">
+        <NaiveUrlDiff a="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" b="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
           http://
            
           www
@@ -171,15 +171,15 @@ exports[`PageUrlDetails Component shows the versions' URL if it differs from the
 
 exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
 "<PageUrlDetails page={{...}} from={{...}} to={{...}}>
-  <details className=\\"src-components-page-url-details-___page-url-details__page-url-details___1F8v5\\">
+  <details className="src-components-page-url-details-___page-url-details__page-url-details___1F8v5">
     <summary>
       ⚠️ Captured URL Redirected Somewhere Else
     </summary>
-    <UrlHistoryList urls={{...}} baseUrl=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\">
-      <ol className=\\"src-components-page-url-details-___page-url-details__url-history-list___3qirP\\">
+    <UrlHistoryList urls={{...}} baseUrl="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
+      <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
         <li>
-          <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\">
-            <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes\\" target=\\"_blank\\" rel=\\"noopener\\">
+          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -200,12 +200,12 @@ exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
             </a>
           </ExternalLink>
           <RedirectIcon>
-            <i className=\\"fa fa-no-hover fa-right-icon fa-angle-right\\" title=\\"Redirects to\\" />
+            <i className="fa fa-no-hover fa-right-icon fa-angle-right" title="Redirects to" />
           </RedirectIcon>
         </li>
         <li>
-          <ExternalLink href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\">
-            <a href=\\"http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something\\" target=\\"_blank\\" rel=\\"noopener\\">
+          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
