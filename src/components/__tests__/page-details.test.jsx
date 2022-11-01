@@ -1,4 +1,5 @@
 /* eslint-env jest */
+import timers from 'node:timers/promises';
 import PageDetails from '../page-details/page-details';
 import { shallow } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
@@ -60,6 +61,7 @@ describe('page-details', () => {
     // Wait for mock APIs to have been called.
     await mockApi.getPage.mock.results[0].value;
     await mockApi.sampleVersions.mock.results[0].value;
+    await timers.setTimeout(10);
 
     expect(document.title).toBe('Scanner | http://www.ncei.noaa.gov/news/earth-science-conference-convenes');
 
