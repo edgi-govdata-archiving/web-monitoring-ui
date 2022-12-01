@@ -37,7 +37,7 @@
     "jest-environment-jsdom": "^29.2.2",
     "moment": "^2.29.4",
     "moment-locales-webpack-plugin": "^1.2.0",
-    "node-fetch": "^3.2.10",
+    "node-fetch": "^3.3.0",
     "postcss": "^8.4.18",
     "postcss-loader": "^7.0.1",
     "prop-types": "^15.8.1",
