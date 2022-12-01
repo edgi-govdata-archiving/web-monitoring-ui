@@ -39,7 +39,7 @@
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-fetch": "^3.3.0",
     "postcss": "^8.4.18",
-    "postcss-loader": "^7.0.1",
+    "postcss-loader": "^7.0.2",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-aria-modal": "^4.0.2",
