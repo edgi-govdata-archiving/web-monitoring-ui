@@ -99,7 +99,7 @@ export default class WebMonitoringUi extends Component {
   loadPages () {
     api.isLoggedIn()
       .then(loggedIn => {
-        if (!loggedIn) {
+        if (!configuration.ALLOW_PUBLIC_VIEW && !loggedIn) {
           return Promise.reject(new Error('You must be logged in to view pages'));
         }
 
@@ -136,7 +136,7 @@ export default class WebMonitoringUi extends Component {
      * need this check anymore because users should have
      * some level of access without logging in.
      */
-    if (!this.state.user) {
+    if (!configuration.ALLOW_PUBLIC_VIEW && !this.state.user) {
       return this.renderLoginDialog();
     }
 
