@@ -2,7 +2,7 @@
 
 const defaultValues = {
   WEB_MONITORING_DB_URL: 'https://api.monitoring-staging.envirodatagov.org',
-  ALLOW_PUBLIC_VIEW: false
+  ALLOW_PUBLIC_VIEW: true
 };
 
 const clientFields = [
