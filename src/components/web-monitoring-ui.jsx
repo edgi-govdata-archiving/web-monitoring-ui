@@ -132,10 +132,8 @@ export default class WebMonitoringUi extends Component {
       return <Loading />;
     }
 
-    /** TODO: When we move to a public platform, we might not
-     * need this check anymore because users should have
-     * some level of access without logging in.
-     */
+    // If logging in is required, don't bother rendering the requested route
+    // and *only* show the login dialog.
     if (!configuration.ALLOW_PUBLIC_VIEW && !this.state.user) {
       return this.renderLoginDialog();
     }
