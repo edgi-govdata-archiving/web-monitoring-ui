@@ -1,11 +1,13 @@
 'use strict';
 
 const defaultValues = {
-  WEB_MONITORING_DB_URL: 'https://api.monitoring-staging.envirodatagov.org'
+  WEB_MONITORING_DB_URL: 'https://api.monitoring-staging.envirodatagov.org',
+  ALLOW_PUBLIC_VIEW: false
 };
 
 const clientFields = [
-  'WEB_MONITORING_DB_URL'
+  'WEB_MONITORING_DB_URL',
+  'ALLOW_PUBLIC_VIEW'
 ];
 
 const processEnvironment = Object.assign(
@@ -13,6 +15,17 @@ const processEnvironment = Object.assign(
   process.env,
   { NODE_ENV: (process.env.NODE_ENV || 'development').toLowerCase() }
 );
+
+function parseBoolean (text, options = { default: false }) {
+  if (text == null || text === '') return options.default;
+
+  if (typeof text === 'string') {
+    return /^t|true|1$/.test(text.trim().toLowerCase());
+  }
+  else {
+    return !!text;
+  }
+}
 
 /**
  * Get the current configuration for the app. This consists of the process's
@@ -41,6 +54,15 @@ function baseConfiguration () {
     else if (fromFile.parsed) {
       localEnvironment = Object.assign(fromFile.parsed, localEnvironment);
     }
+  }
+
+  // Special parsing
+  localEnvironment.ALLOW_PUBLIC_VIEW = parseBoolean(
+    localEnvironment.ALLOW_PUBLIC_VIEW,
+    { default: null }
+  );
+  if (localEnvironment.ALLOW_PUBLIC_VIEW == null) {
+    delete localEnvironment.ALLOW_PUBLIC_VIEW;
   }
 
   return Object.assign({}, defaultValues, localEnvironment);
