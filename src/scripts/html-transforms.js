@@ -133,7 +133,9 @@ export function addTargetBlank (document) {
  */
 export function loadSubresourcesFromWayback (page, version) {
   return document => {
-    const url = versionUrl(version);
+    // In some rare instances, there is old, messy version data from Versionista
+    // that doesn't have a URL for the version, so fall back to page URL. :(
+    const url = versionUrl(version) || page.url;
     const timestamp = createWaybackTimestamp(version.capture_time);
     document.querySelectorAll('link[rel="stylesheet"]').forEach(node => {
       node.href = createWaybackUrl(node.getAttribute('href'), timestamp, url);
