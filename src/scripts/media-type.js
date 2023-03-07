@@ -17,11 +17,11 @@
  */
 export const unknownType = {
   genericType: '*/*',
-  mediaType: '*/*',
+  essence: '*/*',
   type: '*',
   subType: '*',
   equals (otherType) {
-    return !!otherType && this.mediaType === otherType.mediaType;
+    return !!otherType && this.essence === otherType.essence;
   }
 };
 
@@ -43,7 +43,7 @@ export default function MediaType (type, subtype) {
 
   return Object.assign(Object.create(unknownType), {
     genericType: `${type}/*`,
-    mediaType: `${type}/${subtype || '*'}`,
+    essence: `${type}/${subtype || '*'}`,
     type,
     subtype,
   });
@@ -98,7 +98,7 @@ export function parseMediaType (mediaType, canonicalize = true) {
   if (mediaType == null) {
     mediaType = '*/*';
   }
-  else if (mediaType.mediaType) {
+  else if (mediaType.essence) {
     return mediaType;
   }
   else if (!(typeof mediaType === 'string')) {
@@ -109,7 +109,7 @@ export function parseMediaType (mediaType, canonicalize = true) {
   let parsed = MediaType(parts[1], parts[2]);
 
   if (canonicalize) {
-    let canonicalType = canonicalTypes[parsed.mediaType];
+    let canonicalType = canonicalTypes[parsed.essence];
     if (canonicalType) {
       parsed = Object.create(canonicalType, { exactType: { value: parsed } });
     }
