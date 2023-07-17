@@ -1,5 +1,9 @@
 [![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md) &nbsp;[![Project Status Board](https://img.shields.io/badge/✔-Project%20Status%20Board-green.svg?style=flat)](https://github.com/orgs/edgi-govdata-archiving/projects/4)
 
+
+⚠️ **This project is no longer maintained.** ⚠️ It may receive security updates, but we are no longer making major changes or improvements. EDGI no longer makes active use of this toolset and it is hard to re-deploy in other contexts.
+
+
 # web-monitoring-ui
 
 This repository is part of the EDGI [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring).
