@@ -7,7 +7,7 @@ describe('MediaType module', () => {
     const type = MediaType('type', 'subtype');
     expect(type.type).toBe('type');
     expect(type.subtype).toBe('subtype');
-    expect(type.mediaType).toBe('type/subtype');
+    expect(type.essence).toBe('type/subtype');
     expect(type.genericType).toBe('type/*');
   });
 
@@ -15,7 +15,7 @@ describe('MediaType module', () => {
     const type = MediaType('type');
     expect(type.type).toBe('type');
     expect(type.subtype).toBe('*');
-    expect(type.mediaType).toBe('type/*');
+    expect(type.essence).toBe('type/*');
     expect(type.genericType).toBe('type/*');
   });
 
@@ -35,7 +35,7 @@ describe('MediaType module', () => {
     const type = parseMediaType('type/subtype');
     expect(type.type).toBe('type');
     expect(type.subtype).toBe('subtype');
-    expect(type.mediaType).toBe('type/subtype');
+    expect(type.essence).toBe('type/subtype');
     expect(type.genericType).toBe('type/*');
   });
 
@@ -53,12 +53,12 @@ describe('MediaType module', () => {
 
   test('parseMediaType should return a known canonical type if one matches the parsed type', () => {
     const type = parseMediaType('application/xhtml+xml');
-    expect(type.mediaType).toBe('text/html');
-    expect(type.exactType.mediaType).toBe('application/xhtml+xml');
+    expect(type.essence).toBe('text/html');
+    expect(type.exactType.essence).toBe('application/xhtml+xml');
   });
 
   test('parseMediaType should not return a canonical type if `canonicalize` is false', () => {
     const type = parseMediaType('application/xhtml+xml', false);
-    expect(type.mediaType).toBe('application/xhtml+xml');
+    expect(type.essence).toBe('application/xhtml+xml');
   });
 });

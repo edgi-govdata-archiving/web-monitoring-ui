@@ -87,8 +87,8 @@ export function diffTypesFor (mediaType) {
     type = parseMediaType(mediaType);
   }
 
-  return diffTypesByMediaType[type.mediaType]
+  return diffTypesByMediaType[type.essence]
     || diffTypesByMediaType[type.genericType]
-    || diffTypesByMediaType[unknownType.mediaType]
+    || diffTypesByMediaType[unknownType.essence]
     || [];
 }
