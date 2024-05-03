@@ -7,7 +7,7 @@
     "@googleapis/sheets": "^4.0.1",
     "babel-plugin-react-css-modules": "^5.2.6",
     "body-parser": "^1.20.1",
-    "ejs": "^3.1.8",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "normalize.css": "^8.0.1",
     "request": "^2.88.0"
