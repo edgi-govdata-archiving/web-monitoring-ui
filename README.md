@@ -20,9 +20,10 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 ## Installation
 
-1. Install Node 18.12.1
-    - We recommend [installing Node Version Manager][nvm-install], then: `nvm install 18.12.1`
-    - If you are using Windows, check out [Nodenv][nodenv] or any of [these alternatives][nvm-alternatives].
+1. Install Node 18.20.4.
+    - We recommend using [Nodenv][nodenv], which will automatically select the correct version of Node.js to run for you.
+        - If you don’t yet have the right version of Node.js installed, enter the root directory for this project and then run `nodenv install`.
+    - Alternatively, you can use [NVM][nvm] or a variety of [alternatives][nodenv-alternatives] for managing multiple versions of Node.js.
 
 2. Install node dependencies with `npm`
 
@@ -44,8 +45,8 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     - Password: `PUBLIC_ACCESS`
 
 [nodenv]: https://github.com/nodenv/nodenv
-[nvm-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
-[nvm-install]: https://github.com/creationix/nvm#install-script
+[nodenv-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
+[nvm]: https://github.com/creationix/nvm
 
 
 ## Running tests
