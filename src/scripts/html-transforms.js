@@ -138,7 +138,12 @@ export function loadSubresourcesFromWayback (page, version) {
     const url = versionUrl(version) || page.url;
     const timestamp = createWaybackTimestamp(version.capture_time);
     document.querySelectorAll('link[rel="stylesheet"]').forEach(node => {
-      node.href = createWaybackUrl(node.getAttribute('href'), timestamp, url);
+      for (const attribute of ['href', 'data-href']) {
+        const value = node.getAttribute(attribute);
+        if (value) {
+          node.setAttribute(attribute, createWaybackUrl(value, timestamp, url));
+        }
+      }
     });
     document.querySelectorAll('script[src],img[src]').forEach(node => {
       node.src = createWaybackUrl(node.getAttribute('src'), timestamp, url);
