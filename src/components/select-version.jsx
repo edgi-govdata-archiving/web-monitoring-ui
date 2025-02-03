@@ -42,15 +42,19 @@ export default class SelectVersion extends PureComponent {
 
 function sourceLabel (version) {
   switch (version.source_type) {
-    case 'versionista':      return ' (Versionista)';
-    case 'internet_archive': return ' (Wayback)';
-    default:                 return '';
+    case 'versionista':         return ' (Versionista)';
+    case 'internet_archive':    return ' (Wayback)';
+    case 'edgi_statuscheck_v0': return ' (EDGI)';
+    default:                    return '';
   }
 }
 
 function statusLabel (version) {
   const status = version.status || 200;
-  if (status >= 400) {
+  if (version.network_error) {
+    return '✗ (Error) ';
+  }
+  else if (status >= 400) {
     return `✗ (${version.status} Error) `;
   }
   else if (version.content_length === 0) {
