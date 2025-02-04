@@ -45,6 +45,7 @@ function sourceLabel (version) {
     case 'versionista':         return ' (Versionista)';
     case 'internet_archive':    return ' (Wayback)';
     case 'edgi_statuscheck_v0': return ' (EDGI)';
+    case 'edgi_crawl_v0':       return ' (EDGI)';
     default:                    return '';
   }
 }
