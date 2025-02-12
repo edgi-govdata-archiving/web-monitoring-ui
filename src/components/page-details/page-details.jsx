@@ -96,6 +96,16 @@ export default class PageDetails extends Component {
   }
 
   render () {
+    if (this.state.error) {
+      return (
+        <div styleName="baseStyles.main pageStyles.page-details-main">
+          <p styleName="baseStyles.alert baseStyles.alert-danger" role="alert">
+            Error: {this.state.error.message}
+          </p>
+        </div>
+      );
+    }
+
     if (!this.state.page) {
       return (<Loading />);
     }
@@ -193,8 +203,26 @@ export default class PageDetails extends Component {
     /** TODO: should we show 404 for bad versions? */
     const versionData = this._versionsToRender();
 
+    let targetUrl = null;
     if (versionData.shouldRedirect && versionData.from && versionData.to) {
-      return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
+      targetUrl = this._getChangeUrl(versionData.from, versionData.to);
+    }
+
+    if (this.state.versionError) {
+      let message = this.state.versionError.message;
+      if (!/[!.]$/.test(message)) {
+        message += '.';
+      }
+
+      return (
+        <div styleName="baseStyles.alert baseStyles.alert-danger">
+          {message}
+          {targetUrl ? (<span> <a href={targetUrl}>See supported versions.</a></span>) : ''}
+        </div>
+      );
+    }
+    else if (targetUrl) {
+      return <Redirect to={targetUrl} />;
     }
     else if (!(versionData.from && versionData.to)) {
       return <div styleName="baseStyles.alert baseStyles.alert-danger">No saved versions of this page.</div>;
@@ -280,6 +308,12 @@ export default class PageDetails extends Component {
     const fromList = this.props.pages && this.props.pages.find(
       (page) => page.uuid === pageId && !!page.versions);
 
+    this.setState({
+      error: null,
+      versionError: null,
+      page: fromList === this.state.page ? fromList : null
+    });
+
     /** HACK: To deal with the huge number of versions coming from Internet Archive,
      * we're returning only versions captured after November 1, 2016 until we figure out a
      * better solution. Probably an improved iteration of timeline idea:
@@ -293,11 +327,14 @@ export default class PageDetails extends Component {
         if (page.uuid !== pageId) {
           this.setState({ page: { uuid: pageId, merged_into: page.uuid } });
         }
-        this._loadVersions(page, ...this._versionIdsFromProps())
-          .then(versions => {
+        return this._loadVersions(page, ...this._versionIdsFromProps())
+          .then(({ versions, error }) => {
             page.versions = versions;
-            this.setState({ page });
+            this.setState({ page, versionError: error });
           });
+      })
+      .catch(error => {
+        this.setState({ error });
       });
   }
 
@@ -314,13 +351,17 @@ export default class PageDetails extends Component {
           extraLoads.push(this.context.api.getVersion(fromId));
         }
         if (toId && !versions.some(v => v.uuid === toId)) {
-          extraLoads(this.context.api.getVersion(toId));
+          extraLoads.push(this.context.api.getVersion(toId));
         }
-        return Promise.all(extraLoads).then((extraVersions) => {
-          versions.push(...extraVersions);
-          versions.sort((a, b) => b.capture_time - a.capture_time);
-          return versions;
-        });
+        return Promise.all(extraLoads)
+          .then((extraVersions) => {
+            versions.push(...extraVersions);
+            versions.sort((a, b) => b.capture_time - a.capture_time);
+            return { versions, error: null };
+          })
+          .catch((error) => {
+            return { versions, error };
+          });
       });
   }
 
