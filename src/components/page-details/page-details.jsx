@@ -96,6 +96,16 @@ export default class PageDetails extends Component {
   }
 
   render () {
+    if (this.state.error) {
+      return (
+        <div styleName="baseStyles.main pageStyles.page-details-main">
+          <p styleName="baseStyles.alert baseStyles.alert-danger" role="alert">
+            Error: {this.state.error.message}
+          </p>
+        </div>
+      );
+    }
+
     if (!this.state.page) {
       return (<Loading />);
     }
@@ -193,8 +203,26 @@ export default class PageDetails extends Component {
     /** TODO: should we show 404 for bad versions? */
     const versionData = this._versionsToRender();
 
+    let targetUrl = null;
     if (versionData.shouldRedirect && versionData.from && versionData.to) {
-      return <Redirect to={this._getChangeUrl(versionData.from, versionData.to)} />;
+      targetUrl = this._getChangeUrl(versionData.from, versionData.to);
+    }
+
+    if (this.state.versionError) {
+      let message = this.state.versionError.message;
+      if (!/[!.]$/.test(message)) {
+        message += '.';
+      }
+
+      return (
+        <div styleName="baseStyles.alert baseStyles.alert-danger">
+          {message}
+          {targetUrl ? (<span> <a href={targetUrl}>See supported versions.</a></span>) : ''}
+        </div>
+      );
+    }
+    else if (targetUrl) {
+      return <Redirect to={targetUrl} />;
     }
     else if (!(versionData.from && versionData.to)) {
       return <div styleName="baseStyles.alert baseStyles.alert-danger">No saved versions of this page.</div>;
@@ -213,6 +241,15 @@ export default class PageDetails extends Component {
   }
 
   /**
+   * Get the `from` and `to` version IDs specified in the props/URL.
+   * @private
+   * @returns {[string|null, string|null]}
+   */
+  _versionIdsFromProps () {
+    return (this.props.match.params.change || '').split('..');
+  }
+
+  /**
    * Return `from` and `to` versions to display based on uuids in url.
    * There are various shortcuts that can be used when both uuids are not provided.
    *
@@ -226,7 +263,7 @@ export default class PageDetails extends Component {
    * @returns {Object}
    */
   _versionsToRender () {
-    const [fromId, toId] = (this.props.match.params.change || '').split('..');
+    const [fromId, toId] = this._versionIdsFromProps();
     const versions = this.state.page.versions;
     let from, to, shouldRedirect = false;
 
@@ -271,6 +308,12 @@ export default class PageDetails extends Component {
     const fromList = this.props.pages && this.props.pages.find(
       (page) => page.uuid === pageId && !!page.versions);
 
+    this.setState({
+      error: null,
+      versionError: null,
+      page: fromList === this.state.page ? fromList : null
+    });
+
     /** HACK: To deal with the huge number of versions coming from Internet Archive,
      * we're returning only versions captured after November 1, 2016 until we figure out a
      * better solution. Probably an improved iteration of timeline idea:
@@ -284,19 +327,42 @@ export default class PageDetails extends Component {
         if (page.uuid !== pageId) {
           this.setState({ page: { uuid: pageId, merged_into: page.uuid } });
         }
-        this._loadVersions(page)
-          .then(versions => {
+        return this._loadVersions(page, ...this._versionIdsFromProps())
+          .then(({ versions, error }) => {
             page.versions = versions;
-            this.setState({ page });
+            this.setState({ page, versionError: error });
           });
+      })
+      .catch(error => {
+        this.setState({ error });
       });
   }
 
-  _loadVersions (page) {
+  _loadVersions (page, fromId = null, toId = null) {
     // TODO: This simply returns the sampled versions, but it might be nice to
     // show how many versions were elided (`sample.version_count`).
     return this.context.api.sampleVersions(page.uuid, Infinity)
-      .then(versions => versions.map(sample => sample.version));
+      .then(versions => versions.map(sample => sample.version))
+      .then(versions => {
+        // If the specific versions we need aren't in the sample, load them and
+        // merge them into the list of samples.
+        const extraLoads = [];
+        if (fromId && !versions.some(v => v.uuid === fromId)) {
+          extraLoads.push(this.context.api.getVersion(fromId));
+        }
+        if (toId && !versions.some(v => v.uuid === toId)) {
+          extraLoads.push(this.context.api.getVersion(toId));
+        }
+        return Promise.all(extraLoads)
+          .then((extraVersions) => {
+            versions.push(...extraVersions);
+            versions.sort((a, b) => b.capture_time - a.capture_time);
+            return { versions, error: null };
+          })
+          .catch((error) => {
+            return { versions, error };
+          });
+      });
   }
 
   _getChangeUrl (from, to, page) {
