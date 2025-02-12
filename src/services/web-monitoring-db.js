@@ -236,7 +236,8 @@ export default class WebMonitoringDb {
    * @returns {Promise<Version>}
    */
   getVersion (versionId) {
-    return this._request(this._createUrl(`versions/${versionId}`))
+    const url = this._createUrl(`versions/${versionId}`, { different: false });
+    return this._request(url)
       .then(response => response.json())
       .then(throwIfError(`Could not load version: ${versionId}`))
       .then(data => parseVersion(data.data));

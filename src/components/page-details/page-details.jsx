@@ -213,6 +213,15 @@ export default class PageDetails extends Component {
   }
 
   /**
+   * Get the `from` and `to` version IDs specified in the props/URL.
+   * @private
+   * @returns {[string|null, string|null]}
+   */
+  _versionIdsFromProps () {
+    return (this.props.match.params.change || '').split('..');
+  }
+
+  /**
    * Return `from` and `to` versions to display based on uuids in url.
    * There are various shortcuts that can be used when both uuids are not provided.
    *
@@ -226,7 +235,7 @@ export default class PageDetails extends Component {
    * @returns {Object}
    */
   _versionsToRender () {
-    const [fromId, toId] = (this.props.match.params.change || '').split('..');
+    const [fromId, toId] = this._versionIdsFromProps();
     const versions = this.state.page.versions;
     let from, to, shouldRedirect = false;
 
@@ -284,7 +293,7 @@ export default class PageDetails extends Component {
         if (page.uuid !== pageId) {
           this.setState({ page: { uuid: pageId, merged_into: page.uuid } });
         }
-        this._loadVersions(page)
+        this._loadVersions(page, ...this._versionIdsFromProps())
           .then(versions => {
             page.versions = versions;
             this.setState({ page });
@@ -292,11 +301,27 @@ export default class PageDetails extends Component {
       });
   }
 
-  _loadVersions (page) {
+  _loadVersions (page, fromId = null, toId = null) {
     // TODO: This simply returns the sampled versions, but it might be nice to
     // show how many versions were elided (`sample.version_count`).
     return this.context.api.sampleVersions(page.uuid, Infinity)
-      .then(versions => versions.map(sample => sample.version));
+      .then(versions => versions.map(sample => sample.version))
+      .then(versions => {
+        // If the specific versions we need aren't in the sample, load them and
+        // merge them into the list of samples.
+        const extraLoads = [];
+        if (fromId && !versions.some(v => v.uuid === fromId)) {
+          extraLoads.push(this.context.api.getVersion(fromId));
+        }
+        if (toId && !versions.some(v => v.uuid === toId)) {
+          extraLoads(this.context.api.getVersion(toId));
+        }
+        return Promise.all(extraLoads).then((extraVersions) => {
+          versions.push(...extraVersions);
+          versions.sort((a, b) => b.capture_time - a.capture_time);
+          return versions;
+        });
+      });
   }
 
   _getChangeUrl (from, to, page) {
