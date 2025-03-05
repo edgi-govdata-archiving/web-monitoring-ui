@@ -251,3 +251,35 @@ iframe {
   margin: 0 0.5rem;
 }
 
+.file-preview {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.file-preview dl {
+  margin: 1rem 0;
+}
+
+.file-preview dt {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.file-preview .button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #0366d6;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.side-by-side-file-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+

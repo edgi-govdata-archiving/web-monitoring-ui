@@ -10,6 +10,8 @@ import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 import ChangesOnlyDiff from './changes-only-diff';
 import RawVersion from './raw-version';
 import SideBySideRawVersions from './side-by-side-raw-versions';
+import { FilePreview } from './file-preview';
+import { SideBySideFilePreview } from './side-by-side-file-preview';
 
 import '../css/base.css';
 
@@ -111,7 +113,7 @@ export default class DiffView extends Component {
     if (this.state.diffData.raw) {
       return (
         <div className="diff-view__alert" styleName="alert alert-info">
-          We can’t compare the selected versions of page; you are viewing the
+          We can't compare the selected versions of page; you are viewing the
           content without deletions and insertions highlighted.
         </div>
       );
@@ -174,6 +176,10 @@ export default class DiffView extends Component {
         return (
           <ChangesOnlyDiff diffData={this.state.diffData} className='diff-source-inline' />
         );
+      case diffTypes.FILE_PREVIEW:
+        return <FilePreview version={this.props.b || this.props.a} />;
+      case diffTypes.SIDE_BY_SIDE_FILE_PREVIEW:
+        return <SideBySideFilePreview from={this.props.a} to={this.props.b} />;
       default:
         return null;
     }
