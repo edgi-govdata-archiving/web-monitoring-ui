@@ -6,7 +6,7 @@
  */
 export default function ExternalLink ({ href, children, ...otherProps }) {
   return (
-    <a href={href} target="_blank" rel="noopener" { ...otherProps }>
+    <a href={href} target="_blank" rel="noopener noreferrer" { ...otherProps }>
       {children || href}
     </a>
   );
