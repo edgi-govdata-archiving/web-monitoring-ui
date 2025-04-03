@@ -13,7 +13,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
       <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
         <li>
           <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener noreferrer">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -39,7 +39,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
         </li>
         <li>
           <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener noreferrer">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -73,7 +73,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
       <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
         <li>
           <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener noreferrer">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -99,7 +99,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
         </li>
         <li>
           <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else" target="_blank" rel="noopener">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else" target="_blank" rel="noopener noreferrer">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -141,7 +141,7 @@ exports[`PageUrlDetails Component shows the versions' URL if it differs from the
       ⚠️ Captured from a different URL
     </summary>
     <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
-      <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener">
+      <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener noreferrer">
         <NaiveUrlDiff a="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" b="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
           http://
            
@@ -179,7 +179,7 @@ exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
       <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
         <li>
           <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener noreferrer">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
@@ -205,7 +205,7 @@ exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
         </li>
         <li>
           <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener">
+            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener noreferrer">
               <NaiveUrlDiff a={{...}} b={{...}}>
                 http://
                  
