@@ -156,31 +156,55 @@ export function loadSubresourcesFromWayback (page, version) {
   };
 }
 
+/**
+ * Add support for synchronized scrolling, which keeps side-by-side views
+ * scrolled to matching locations.
+ *
+ * This finds landmarks that should match across both views being compared and
+ * injects scripts that broadcast a page's scroll position and that scroll the
+ * page in response to messages about the other page being scrolled.
+ *
+ * @param {string} identifier Unique identifier for the page being modified.
+ * @returns {Document}
+ */
 export function managedScrolling (identifier) {
   const origin = window.origin;
   return (document) => {
     markScrollLandmarks(document);
-
-    if (!document.head) {
-      const head = document.createElement('head');
-      const firstChild = document.documentElement.firstChild;
-      if (firstChild) {
-        document.documentElement.insertBefore(head, firstChild);
-      }
-      else {
-        document.documentElement.appendChild(head);
-      }
-    }
-
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = `(${inPageScrollModule})('${identifier}', '${origin}');`;
-    document.head.appendChild(script);
+    injectScriptModule(document, inPageScrollModule, identifier, origin);
     return document;
   };
 }
 
 // ---------------------- Support Functions -----------------------------
+
+/**
+ * If a document is missing a `<head>` element, add one.
+ * @param {Document} document
+ */
+function ensureDocumentHead (document) {
+  if (!document.head) {
+    const head = document.createElement('head');
+    document.documentElement.insertAdjacentElement('afterbegin', head);
+  }
+}
+
+function injectScriptModule (document, moduleFunction, ...args) {
+  const injectedArgs = args.map(x => JSON.stringify(x)).join(',');
+
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.innerHTML = `(${moduleFunction})(${injectedArgs});`;
+
+  ensureDocumentHead(document);
+  const charsetDirective = document.head.querySelector('meta[charset]');
+  if (charsetDirective) {
+    charsetDirective.insertAdjacentElement('afterend', script);
+  }
+  else {
+    document.head.insertAdjacentElement('afterbegin', script);
+  }
+}
 
 /**
  * Find elements that are usable as scrolling landmarks and mark them in the
@@ -200,9 +224,14 @@ export function managedScrolling (identifier) {
  * @param {Document} document
  */
 function markScrollLandmarks (document) {
-  const candidates = [...document.querySelectorAll(
-    'h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,header,footer,section,article'
-  )];
+  // This could probably use significant massaging over time for weird but
+  // common patterns, like `.box`.
+  const candidates = [...document.querySelectorAll(`
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6,
+    header,footer,section,article,nav
+    .box
+  `)];
   let index = 0;
   for (const e of candidates) {
     if (e.matches(':is(.wm-diff *)')) continue;
@@ -246,7 +275,7 @@ function inPageScrollModule (identifier, appOrigin) {
   let __wm_scrollLandmarks = [];
 
   window.addEventListener('scroll', (e) => {
-    //console.log('SCROLL EVENT in frame ${identifier}, auto:', __wm_autoScrolling, e);
+    // console.log('SCROLL EVENT in frame ${identifier}, auto:', __wm_autoScrolling, e);
     if (__wm_autoScrolling) {
       __wm_autoScrolling = false;
       return;
@@ -271,12 +300,6 @@ function inPageScrollModule (identifier, appOrigin) {
           break;
         }
       }
-      // if (nextLandmark.id > 0) {
-      //   const landmark = __wm_scrollLandmarks[nextLandmark.id - 1];
-      //   landmarkId = landmark.id;
-      //   anchorY = landmark.y;
-      //   anchorText = landmark.text;
-      // }
     }
     else if (__wm_scrollLandmarks.length) {
       for (let i = __wm_scrollLandmarks.length - 1; i >= 0; i--) {
@@ -288,13 +311,13 @@ function inPageScrollModule (identifier, appOrigin) {
           break;
         }
       }
-      // const landmark = __wm_scrollLandmarks.at(-1);
-      // landmarkId = landmark.id;
-      // anchorY = landmark.y;
-      // anchorText = landmark.text;
     }
 
-    console.log(`SCROLL CALC: anchorY=${anchorY}, y=${y}, nextY=${nextY} (anchor: "${anchorText}", next: "${nextText}")`, __wm_scrollLandmarks);
+    // Need some better debug tooling.
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
+      console.log(`SCROLL CALC: anchorY=${anchorY}, y=${y}, nextY=${nextY} (anchor: "${anchorText}", next: "${nextText}")`, __wm_scrollLandmarks);
+    }
 
     window.top.postMessage({
       from: identifier,
@@ -308,7 +331,6 @@ function inPageScrollModule (identifier, appOrigin) {
   window.addEventListener('message', (event) => {
     if (event.data.type === '__wm_scroll_to') {
       updateScrollLandmarks();
-      //console.log('RECEIVED scroll command in ${identifier}');
       let x = event.data.position.x;
       let y = event.data.position.y;
 
@@ -334,9 +356,6 @@ function inPageScrollModule (identifier, appOrigin) {
           }
         }
         y = anchorY + event.data.offset * (nextY - anchorY);
-        // const nextLandmark = __wm_scrollLandmarks[event.data.landmark + 1];
-        // const nextY = nextLandmark?.y ?? window.scrollMaxY;
-        // y = anchorY + event.data.offset * (nextY - anchorY);
       }
 
       __wm_autoScrolling = true;
@@ -365,10 +384,6 @@ function inPageScrollModule (identifier, appOrigin) {
 
         return {
           id,
-          // x: bounds.left - rootBounds.left,
-          // y: bounds.top - rootBounds.top,
-          // x: bounds.left + baseX,
-          // y: bounds.top + baseY,
           x,
           y,
           usable,
@@ -376,7 +391,6 @@ function inPageScrollModule (identifier, appOrigin) {
         };
       })
       .filter(Boolean);
-    // result.push()
     if (result.some((x, index) => x.id !== index)) {
       console.error(`SCROLL LANDMARK IDS OUT OF SYNC in ${identifier}:`, result);
     }
@@ -393,32 +407,19 @@ function inPageScrollModule (identifier, appOrigin) {
       return;
     }
     lastUpdate = now;
-    console.log(`Scroll landmakr update in ${identifier}`);
     __wm_scrollLandmarks = getScrollLandmarks();
-    // window.top.postMessage({
-    //   from: identifier,
-    //   type: '__wm_scroll_landmarks',
-    //   landmarks: getScrollLandmarks()
-    // });
   }
-
-  // TODO: update and send landmarks at appropriate times:
-  // - immediately
-  // - on DOM mutation
-  // - after load/error events
-  // - after page load
 
   updateScrollLandmarks();
   window.addEventListener('load', updateScrollLandmarks);
   window.addEventListener('resize', updateScrollLandmarks);
   document.addEventListener('load', updateScrollLandmarks, true);
-  // document.addEventListener('error', updateScrollLandmarks, true);
-  document.addEventListener('DOMContentLoaded', updateScrollLandmarks);
-  // document.addEventListener('DOMContentLoaded', () => {
-  //   setInterval(updateScrollLandmarks, 10000);
-  //   // const observer = new MutationObserver(updateScrollLandmarks);
-  //   // observer.observe(document.body, { subtree: true, childList: true, attributes: true });
-  // });
+  document.addEventListener('DOMContentLoaded', () => {
+    updateScrollLandmarks();
+    // setInterval(updateScrollLandmarks, 10000);
+    const observer = new MutationObserver(updateScrollLandmarks);
+    observer.observe(document.body, { subtree: true, childList: true, attributes: true });
+  });
 
 }
 

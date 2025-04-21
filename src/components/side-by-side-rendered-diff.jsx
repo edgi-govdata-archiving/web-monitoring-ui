@@ -84,16 +84,16 @@ export default class SideBySideRenderedDiff extends Component {
   }
 
   /**
-   * Broker scroll events between the two pages. When one page scrolls, it will
-   * post a message with scroll info. We basically just forward that to the
+   * Handle `message` events sent to this window via `postMessage()`.
+   *
+   * This brokers scroll events between the two pages. When one page scrolls,
+   * it will post a message with scroll position info. We forward that to the
    * other page so it can update its scroll position to match.
    * @param {MessageEvent} event
    */
   _receiveWindowMessage (event) {
-    if (!this.props.syncScrolling) return;
-    if (event.data.type !== '__wm_scroll') return;
+    if (!this.props.syncScrolling || event.data.type !== '__wm_scroll') return;
 
-    console.log('Scroll update:', event.data);
     const target = event.data.from === 'A' ? this._htmlViewB : this._htmlViewA;
     if (target) {
       target.postMessage({
@@ -102,7 +102,9 @@ export default class SideBySideRenderedDiff extends Component {
       });
     }
     else {
-      console.error('Could not find target SandboxedHtml to send scroll command to.');
+      console.error(
+        'Could not find target SandboxedHtml to forward scroll command to!'
+      );
     }
   }
 }
