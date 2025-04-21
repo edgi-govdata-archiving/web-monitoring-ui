@@ -418,6 +418,7 @@ function loadDiffSettings () {
   return layeredStorage.getItem(diffSettingsStorage) || {
     removeFormatting: false,
     useWaybackResources: true,
+    syncScrolling: true,
   };
 }
 

@@ -37,6 +37,21 @@ export default class SandboxedHtml extends PureComponent {
     />;
   }
 
+  /**
+   * Use the `window.postMessage()` API to send a message to the JS code
+   * running in this SandboxedHtml view. To use this, you'll need to keep a ref
+   * to this component.
+   * @param {any} message
+   */
+  postMessage (message) {
+    if (this._frame) {
+      this._frame.contentWindow.postMessage(message, '*');
+    }
+    else {
+      console.warn('Tried to post message with no reference to `_frame`');
+    }
+  }
+
   _updateContent () {
     let source = transformSource(this.props.html, document => {
       if (this.props.transform) {
