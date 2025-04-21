@@ -410,6 +410,7 @@ function inPageScrollModule (identifier, appOrigin) {
 
   updateScrollLandmarks();
   window.addEventListener('load', updateScrollLandmarks);
+  window.addEventListener('resize', updateScrollLandmarks);
   document.addEventListener('load', updateScrollLandmarks, true);
   // document.addEventListener('error', updateScrollLandmarks, true);
   document.addEventListener('DOMContentLoaded', updateScrollLandmarks);
