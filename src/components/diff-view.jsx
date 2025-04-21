@@ -152,7 +152,8 @@ export default class DiffView extends Component {
         return (
           <SideBySideRenderedDiff {...commonProps}
             removeFormatting={this.props.diffSettings.removeFormatting}
-            useWaybackResources={this.props.diffSettings.useWaybackResources} />
+            useWaybackResources={this.props.diffSettings.useWaybackResources}
+            syncScrolling={this.props.diffSettings.syncScrolling} />
         );
       case diffTypes.OUTGOING_LINKS.value:
         return (
