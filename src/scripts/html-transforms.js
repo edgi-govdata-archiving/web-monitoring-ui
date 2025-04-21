@@ -200,13 +200,36 @@ export function managedScrolling (identifier) {
  * @param {Document} document
  */
 function markScrollLandmarks (document) {
-  const candidates = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6')];
+  const candidates = [...document.querySelectorAll(
+    'h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,header,footer,section,article'
+  )];
   let index = 0;
   for (const e of candidates) {
-    const noChanges = !e.querySelector('.wm-diff') && !e.matches(':is(.wm-diff *)');
-    const text = e.textContent.trim().replace(/[\s\n]+/, '');
+    if (e.matches(':is(.wm-diff *)')) continue;
 
-    if (noChanges && text) {
+    // Look through the first few characters of text in the candidate landmark
+    // to see if it starts with a change. If so, don't use it.
+    // It seems safe to have a change embedded later in the element; in that
+    // case a matching element should still be present on both sides of the diff
+    // and be usable as a landmark. This lets us use items with complex content
+    // like header/footer or nested content like section as landmarks.
+    let usable = true;
+    const change = e.querySelector('.wm-diff');
+    if (change) {
+      const texts = document.createNodeIterator(e, NodeFilter.SHOW_TEXT);
+      let characters = 0;
+      let textNode = null;
+      while (characters < 30 && (textNode = texts.nextNode())) {
+        if (textNode.parentElement.matches('.wm-diff,:is(.wm-diff *)')) {
+          usable = false;
+          break;
+        }
+        characters += textNode.nodeValue.trim().replace(/[\s\n]/g, '').length;
+      }
+      usable = usable && characters > 0;
+    }
+
+    if (usable) {
       // This element should be present in some form on both sides, and is
       // usable as a landmark.
       e.classList.add('wm-scroll-landmark');
