@@ -54,7 +54,28 @@ export default class DiffSettingsForm extends PureComponent {
           </input>
           Load Resources from Wayback Machine
         </label>
+
+        {this._renderSideBySideSettings()}
       </form>
+    );
+  }
+
+  _renderSideBySideSettings () {
+    if (this.props.diffType !== 'SIDE_BY_SIDE_RENDERED') {
+      return null;
+    }
+
+    return (
+      <label className="utilities__label">
+        <input
+          checked={this.props.settings.syncScrolling}
+          className="utilities__input"
+          name="syncScrolling"
+          onChange={this._handleCheckboxChange}
+          type="checkbox">
+        </input>
+        Sync Scrolling
+      </label>
     );
   }
 
