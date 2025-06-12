@@ -57,6 +57,7 @@ export default class PageDetails extends Component {
    * @param {PageDetailsProps} previousProps
    */
   componentDidUpdate (previousProps) {
+    // console.warn('UPADATING!!', this.state);
     this.setTitle();
     const nextPageId = this.props.match.params.pageId;
     if (nextPageId !== previousProps.match.params.pageId) {
@@ -65,6 +66,7 @@ export default class PageDetails extends Component {
   }
 
   setTitle (unmounting = false) {
+    // console.warn(`SETTING TITLE, unmounting = ${unmounting}, page = ${this.state.page?.url}`);
     document.title = !unmounting && this.state.page ? `Scanner | ${this.state.page.url}` : 'Scanner';
   }
 

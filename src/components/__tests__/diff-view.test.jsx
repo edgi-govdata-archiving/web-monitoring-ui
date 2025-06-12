@@ -1,73 +1,73 @@
 /* eslint-env jest */
 
+import { render, screen, waitFor } from '@testing-library/react';
 import DiffView from '../diff-view';
-import { shallow } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
+import { TestApiContextProvider } from '../../__mocks__/api-context-provider';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
 describe('diff-view', () => {
-  const mockApi = Object.assign(Object.create(WebMonitoringDb.prototype), {
-    getDiff () {
-      return new Promise(resolve => resolve({
+  let mockApi;
+  
+  beforeEach(() => {
+    mockApi = Object.assign(Object.create(WebMonitoringDb.prototype), {
+      getDiff: jest.fn().mockResolvedValue({
         change_count: 1,
         diff: [[0, 'Hi'], [1, '!']]
-      }));
-    }
-  });
-
-  const waitForNextTurn = () => new Promise(resolve => setTimeout(resolve, 0));
-
-  it('can render', () => {
-    const diffView = shallow(
-      <DiffView
-        diffType="HIGHLIGHTED_TEXT"
-        page={simplePage}
-        a={simplePage.versions[1]}
-        b={simplePage.versions[0]}
-      />,
-      { context: { api: mockApi } }
-    );
-
-    expect(diffView.exists()).toEqual(true);
-    // It should always have rendered *something.*
-    expect(diffView.get(0)).toBeTruthy();
-  });
-
-  it('renders an alert if there are no changes in the diff', () => {
-    mockApi.getDiff = jest.fn().mockReturnValue(Promise.resolve({ change_count: 0 }));
-
-    const diffView = shallow(
-      <DiffView
-        diffType="HIGHLIGHTED_TEXT"
-        page={simplePage}
-        a={simplePage.versions[1]}
-        b={simplePage.versions[0]}
-      />,
-      { context: { api: mockApi } }
-    );
-
-    // Wait for diff to load, state to change, and re-render to occur.
-    return waitForNextTurn().then(() => {
-      expect(diffView.find('.diff-view__alert').length).toBe(1);
+      })
     });
   });
 
-  it('renders no alert if there are changes in the diff', () => {
-    mockApi.getDiff = jest.fn().mockReturnValue(Promise.resolve({ change_count: 1 }));
-
-    const diffView = shallow(
-      <DiffView
-        diffType="HIGHLIGHTED_TEXT"
-        page={simplePage}
-        a={simplePage.versions[1]}
-        b={simplePage.versions[0]}
-      />,
-      { context: { api: mockApi } }
+  it('can render', async () => {
+    const { container } = render(
+      <TestApiContextProvider api={mockApi}>
+        <DiffView
+          diffType="HIGHLIGHTED_TEXT"
+          page={simplePage}
+          a={simplePage.versions[1]}
+          b={simplePage.versions[0]}
+        />
+      </TestApiContextProvider>
     );
 
-    // Wait for diff to load, state to change, and re-render to occur.
-    return waitForNextTurn().then(() => {
-      expect(diffView.find('.diff-view__alert').length).toBe(0);
-    });
+    expect(container).not.toBeEmptyDOMElement();
+  });
+
+  it('renders an alert if there are no changes in the diff', async () => {
+    const noChangeApi = {
+      __proto__: WebMonitoringDb.prototype,
+      ...mockApi,
+      getDiff: jest.fn().mockResolvedValue({ change_count: 0, diff: [] })
+    };
+
+    render(
+      <TestApiContextProvider api={noChangeApi}>
+        <DiffView
+          diffType="HIGHLIGHTED_TEXT"
+          page={simplePage}
+          a={simplePage.versions[1]}
+          b={simplePage.versions[0]}
+        />
+      </TestApiContextProvider>
+    );
+
+    await waitFor(() => screen.getByText(/no changes for this diff/));
+  });
+
+  it('renders no alert if there are changes in the diff', async () => {
+    render(
+      <TestApiContextProvider api={mockApi}>
+        <DiffView
+          diffType="HIGHLIGHTED_TEXT"
+          page={simplePage}
+          a={simplePage.versions[1]}
+          b={simplePage.versions[0]}
+        />
+      </TestApiContextProvider>
+    );
+
+    await waitFor(() => expect(mockApi.getDiff).toHaveBeenCalled());
+    expect(screen.queryByText(/no changes for this diff/)).toBeNull();
+    screen.getByText('Hi');
   });
 });

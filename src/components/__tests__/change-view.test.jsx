@@ -1,11 +1,15 @@
 /* eslint-env jest */
 
-import { shallow } from 'enzyme';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { TestApiContextProvider } from '../../__mocks__/api-context-provider';
 import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import { diffTypesFor } from '../../constants/diff-types';
+
+// The mock simply renders a list of props so we can inspect them.
+jest.mock('../diff-view');
 
 jest.mock('../../scripts/layered-storage', () => ({
   __esModule: true,
@@ -18,16 +22,24 @@ jest.mock('../../scripts/layered-storage', () => ({
   }
 }));
 
+// Change string values to date objects so they're parsed correctly
+simplePage.versions.forEach(version => {
+  version.capture_time = new Date(version.capture_time);
+});
+
 const mockChange = {
-  uuid: 'adc70e01-0723-4a28-a8e4-ca4b551ed2ae..0772dc83-7966-4881-8901-eceb051b9536',
-  uuid_from: 'adc70e01-0723-4a28-a8e4-ca4b551ed2ae',
-  uuid_to: '0772dc83-7966-4881-8901-eceb051b9536',
+  uuid: '70aa8b7b-d485-48dc-8295-7635ff04dc5b..ed4aed23-424e-4326-ac75-c3ad72797bad',
+  uuid_from: '70aa8b7b-d485-48dc-8295-7635ff04dc5b',
+  uuid_to: 'ed4aed23-424e-4326-ac75-c3ad72797bad',
   priority: null,
   current_annotation: {},
   created_at: null,
   updated_at: null,
   significance: null
 };
+
+const mockChangeFrom = simplePage.versions.find(v => v.uuid === mockChange.uuid_from);
+const mockChangeTo = simplePage.versions.find(v => v.uuid === mockChange.uuid_to);
 
 // Note for testing relevant diffTypes:
 // the defaultDiffType (SIDE_BY_SIDE_RENDERED) is only relevant for the "text/html" media type
@@ -40,6 +52,34 @@ describe('change-view', () => {
     { getChange: () => Promise.resolve(mockChange) }
   );
 
+  function createChangeView ({ mediaType = null, fromMediaType = null, toMediaType = null } = {}) {
+    if (mediaType) {
+      fromMediaType = toMediaType = mediaType;
+    }
+    else {
+      fromMediaType = fromMediaType || 'text/html';
+      toMediaType = toMediaType || 'text/html';
+    }
+
+    return (
+      <TestApiContextProvider api={mockApi}>
+        <ChangeView
+          page={simplePage}
+          from={{ ...mockChangeFrom, media_type: fromMediaType }}
+          to={{ ...mockChangeTo, media_type: toMediaType }}
+          user={{ email: 'me' }}
+        />
+      </TestApiContextProvider>
+    );
+  }
+
+  function renderBasicChangeView (options) {
+    const result = render(createChangeView(options));
+    const rerender = result.rerender;
+    result.rerender = (newOptions) => rerender(createChangeView(newOptions));
+    return result;
+  }
+
   afterEach(() => {
     layeredStorage.clear();
   });
@@ -50,17 +90,18 @@ describe('change-view', () => {
         const storedDiffType = 'CHANGES_ONLY_TEXT';
         layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-        const changeView = shallow(
-          <ChangeView
-            page={simplePage}
-            from={{ media_type: 'text/html' }}
-            to={{ media_type: 'text/html' }}
-            user={{ email: 'me' }}
-          />,
-          { context: { api: mockApi } }
+        render(
+          <TestApiContextProvider api={mockApi}>
+            <ChangeView
+              page={simplePage}
+              from={{ ...mockChangeFrom, media_type: 'text/html' }}
+              to={{ ...mockChangeTo, media_type: 'text/html' }}
+              user={{ email: 'me' }}
+            />
+          </TestApiContextProvider>
         );
 
-        expect(changeView.state().diffType).toBe(storedDiffType);
+        screen.getByText(`diffType="${storedDiffType}"`);
       });
 
       describe('when a diffType has been stored in layeredStorage and is is NOT relevant to the pages being compared', () => {
@@ -68,17 +109,18 @@ describe('change-view', () => {
           const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
           layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-          const changeView = shallow(
-            <ChangeView
-              page={simplePage}
-              from={{ media_type: 'text/html' }}
-              to={{ media_type: 'text/html' }}
-              user={{ email: 'me' }}
-            />,
-            { context: { api: mockApi } }
+          render(
+            <TestApiContextProvider api={mockApi}>
+              <ChangeView
+                page={simplePage}
+                from={{ ...mockChangeFrom, media_type: 'text/html' }}
+                to={{ ...mockChangeTo, media_type: 'text/html' }}
+                user={{ email: 'me' }}
+              />
+            </TestApiContextProvider>
           );
 
-          expect(changeView.state().diffType).toBe(defaultDiffType);
+          screen.getByText(`diffType="${defaultDiffType}"`);
         });
 
         it('sets state.diffType to the first relevant diff type if defaultDiffType is NOT relevant to the pages being compared', () => {
@@ -88,51 +130,54 @@ describe('change-view', () => {
           const mediaType = 'text/xml';
           const relevantTypes = diffTypesFor(mediaType);
 
-          const changeView = shallow(
-            <ChangeView
-              page={simplePage}
-              from={{ media_type: mediaType }}
-              to={{ media_type: mediaType }}
-              user={{ email: 'me' }}
-            />,
-            { context: { api: mockApi } }
+          render(
+            <TestApiContextProvider api={mockApi}>
+              <ChangeView
+                page={simplePage}
+                from={{ ...mockChangeFrom, media_type: mediaType }}
+                to={{ ...mockChangeTo, media_type: mediaType }}
+                user={{ email: 'me' }}
+              />
+            </TestApiContextProvider>
           );
 
-          expect(changeView.state().diffType).toBe(relevantTypes[0].value);
+          screen.getByText(`diffType="${relevantTypes[0].value}"`);
         });
       });
     });
 
     describe('when a diffType has NOT been stored in layeredStorage', () => {
       it('sets state.diffType to defaultDiffType if that is relevant to the pages being compared', () => {
-        const changeView = shallow(
-          <ChangeView
-            page={simplePage}
-            from={{ media_type: 'text/html' }}
-            to={{ media_type: 'text/html' }}
-            user={{ email: 'me' }}
-          />,
-          { context: { api: mockApi } }
+        render(
+          <TestApiContextProvider api={mockApi}>
+            <ChangeView
+              page={simplePage}
+              from={mockChangeFrom}
+              to={mockChangeTo}
+              user={{ email: 'me' }}
+            />
+          </TestApiContextProvider>
         );
 
-        expect(changeView.state().diffType).toBe(defaultDiffType);
+        screen.getByText(`diffType="${defaultDiffType}"`);
       });
 
       it('sets state.diffType to the first relevant diff type if defautDiffType is NOT relevant to the pages being compared', () => {
         const mediaType = 'text/xml';
         const relevantTypes = diffTypesFor(mediaType);
 
-        const changeView = shallow(
-          <ChangeView
-            page={simplePage}
-            from={{ media_type: mediaType }}
-            to={{ media_type: mediaType }}
-            user={{ email: 'me' }}
-          />,
-          { context: { api: mockApi } }
+        render(
+          <TestApiContextProvider api={mockApi}>
+            <ChangeView
+              page={simplePage}
+              from={{ ...mockChangeFrom, media_type: mediaType }}
+              to={{ ...mockChangeTo, media_type: mediaType }}
+              user={{ email: 'me' }}
+            />
+          </TestApiContextProvider>
         );
 
-        expect(changeView.state().diffType).toBe(relevantTypes[0].value);
+        screen.getByText(`diffType="${relevantTypes[0].value}"`);
       });
     });
   });
@@ -144,22 +189,29 @@ describe('change-view', () => {
 
       const diffType = diffTypesFor(oldMediaType)[0].value;
 
-      const changeView = shallow(
-        <ChangeView
-          page={simplePage}
-          from={{ media_type: oldMediaType }}
-          to={{ media_type: oldMediaType }}
-          user={{ email: 'me' }}
-        />,
-        { context: { api: mockApi } }
+      const { rerender } = render(
+        <TestApiContextProvider api={mockApi}>
+          <ChangeView
+            page={simplePage}
+            from={{ ...mockChangeFrom, media_type: oldMediaType }}
+            to={{ ...mockChangeTo, media_type: oldMediaType }}
+            user={{ email: 'me' }}
+          />
+        </TestApiContextProvider>
       );
 
-      changeView.setProps({
-        from: { media_type: newMediaType },
-        to: { media_type: newMediaType },
-      });
+      rerender(
+        <TestApiContextProvider api={mockApi}>
+          <ChangeView
+            page={simplePage}
+            from={{ ...mockChangeFrom, media_type: newMediaType }}
+            to={{ ...mockChangeTo, media_type: newMediaType }}
+            user={{ email: 'me' }}
+          />
+        </TestApiContextProvider>
+      );
 
-      expect(changeView.state().diffType).toBe(diffType);
+      screen.getByText(`diffType="${diffType}"`);
     });
 
     describe('when state.diffType is NOT relevant to the new pages being compared', () => {
@@ -169,25 +221,12 @@ describe('change-view', () => {
           const newMediaType = 'image/jpeg';
 
           const storedDiffType = diffTypesFor(newMediaType)[1].value;
-
           layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-          const changeView = shallow(
-            <ChangeView
-              page={simplePage}
-              from={{ media_type: oldMediaType }}
-              to={{ media_type: oldMediaType }}
-              user={{ email: 'me' }}
-            />,
-            { context: { api: mockApi } }
-          );
+          const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
+          rerender({ mediaType: newMediaType });
 
-          changeView.setProps({
-            from: { media_type: newMediaType },
-            to: { media_type: newMediaType },
-          });
-
-          expect(changeView.state().diffType).toBe(storedDiffType);
+          screen.getByText(`diffType="${storedDiffType}"`);
         });
 
         it('sets state.diffType to defaultDiffType if the stored diffType is NOT relevant to the pages being compared but defaultDiffType is', () => {
@@ -197,22 +236,10 @@ describe('change-view', () => {
           const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
           layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-          const changeView = shallow(
-            <ChangeView
-              page={simplePage}
-              from={{ media_type: oldMediaType }}
-              to={{ media_type: oldMediaType }}
-              user={{ email: 'me' }}
-            />,
-            { context: { api: mockApi } }
-          );
+          const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
+          rerender({ mediaType: newMediaType });
 
-          changeView.setProps({
-            from: { media_type: newMediaType },
-            to: { media_type: newMediaType },
-          });
-
-          expect(changeView.state().diffType).toBe(defaultDiffType);
+          screen.getByText(`diffType="${defaultDiffType}"`);
         });
 
         it('sets state.diffType to the first relevant diff type if neither the stored diffType nor defaultDiffType are relevant to the pages being compared', () => {
@@ -222,22 +249,10 @@ describe('change-view', () => {
           const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
           layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-          const changeView = shallow(
-            <ChangeView
-              page={simplePage}
-              from={{ media_type: oldMediaType }}
-              to={{ media_type: oldMediaType }}
-              user={{ email: 'me' }}
-            />,
-            { context: { api: mockApi } }
-          );
+          const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
+          rerender({ mediaType: newMediaType });
 
-          changeView.setProps({
-            from: { media_type: newMediaType },
-            to: { media_type: newMediaType },
-          });
-
-          expect(changeView.state().diffType).toBe(diffTypesFor(newMediaType)[0].value);
+          screen.getByText(`diffType="${diffTypesFor(newMediaType)[0].value}"`);
         });
       });
     });
@@ -246,84 +261,45 @@ describe('change-view', () => {
       const oldMediaType = 'image/jpeg';
       const newMediaType = 'text/html';
 
-      const changeView = shallow(
-        <ChangeView
-          page={simplePage}
-          from={{ media_type: oldMediaType }}
-          to={{ media_type: oldMediaType }}
-          user={{ email: 'me' }}
-        />,
-        { context: { api: mockApi } }
-      );
+      const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
+      rerender({ mediaType: newMediaType });
 
-      changeView.setProps({
-        from: { media_type: newMediaType },
-        to: { media_type: newMediaType },
-      });
-
-      expect(changeView.state().diffType).toBe(defaultDiffType);
+      screen.getByText(`diffType="${defaultDiffType}"`);
     });
 
     it('sets state.diffType to the first relevant diff type if defaultDiffType is NOT relevant to the pages being compared', () => {
       const oldMediaType = 'text/html';
       const newMediaType = 'image/jpeg';
 
-      const changeView = shallow(
-        <ChangeView
-          page={simplePage}
-          from={{ media_type: oldMediaType }}
-          to={{ media_type: oldMediaType }}
-          user={{ email: 'me' }}
-        />,
-        { context: { api: mockApi } }
-      );
+      const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
+      rerender({ mediaType: newMediaType });
 
-      changeView.setProps({
-        from: { media_type: newMediaType },
-        to: { media_type: newMediaType },
-      });
-
-      expect(changeView.state().diffType).toBe(diffTypesFor(newMediaType)[0].value);
+      screen.getByText(`diffType="${diffTypesFor(newMediaType)[0].value}"`);
     });
   });
 
   describe('when the user chooses a new diffType', () => {
-    it('sets state.diffType to the new diffType',  () => {
-      const changeView = shallow(
-        <ChangeView
-          page={simplePage}
-          from={{ media_type: 'text/html' }}
-          to={{ media_type: 'text/html' }}
-          user={{ email: 'me' }}
-        />,
-        { context: { api: mockApi } }
-      );
-
-      expect(changeView.state().diffType).toBe(defaultDiffType);
+    it('sets state.diffType to the new diffType',  async () => {
+      renderBasicChangeView({ mediaType: 'text/html' });
+      screen.getByText(`diffType="${defaultDiffType}"`);
 
       const newType = diffTypesFor('text/html')[0].value;
-
       // sanity check
       expect(newType).not.toEqual(defaultDiffType);
 
-      changeView.find('SelectDiffType').props().onChange(newType);
-
-      expect(changeView.state().diffType).toBe(newType);
+      const diffSelector = screen.getByLabelText('Comparison:');
+      diffSelector.value = newType;
+      fireEvent.change(diffSelector);
+      screen.getByText(`diffType="${newType}"`);
     });
 
     it('stores the new diffType in layeredStorage',  () => {
-      const changeView = shallow(
-        <ChangeView
-          page={simplePage}
-          from={{ media_type: 'text/html' }}
-          to={{ media_type: 'text/html' }}
-          user={{ email: 'me' }}
-        />,
-        { context: { api: mockApi } }
-      );
+      renderBasicChangeView({ mediaType: 'text/html' });
 
       const newType = diffTypesFor('text/html')[0].value;
-      changeView.find('SelectDiffType').props().onChange(newType);
+      const diffSelector = screen.getByLabelText('Comparison:');
+      diffSelector.value = newType;
+      fireEvent.change(diffSelector);
 
       expect(layeredStorage.getItem(diffTypeStorage)).toBe(newType);
     });

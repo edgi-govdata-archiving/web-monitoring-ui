@@ -5,7 +5,7 @@ export default class Loading extends Component {
   render () {
     return (
       <div className="loading">
-        <object type="image/svg+xml" data={infinityLoaderPath} />
+        <object type="image/svg+xml" data={infinityLoaderPath}>Loading…</object>
       </div>
     );
   }
