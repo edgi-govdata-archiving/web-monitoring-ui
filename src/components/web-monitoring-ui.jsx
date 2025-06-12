@@ -196,6 +196,9 @@ export default class WebMonitoringUi extends Component {
     );
   }
 
+  // TODO: This should be upgraded to the new context API (`createContext()`).
+  // That API did not exist when this was first written, but was introduced in
+  // v16.4. This legacy API was fully removed in v19.
   getChildContext () {
     return { api, localApi };
   }

@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { shallow, mount } from 'enzyme';
+import { render, screen, fireEvent } from '@testing-library/react';
 import SearchBar from '../search-bar/search-bar';
 import moment from 'moment';
 
@@ -9,18 +9,19 @@ describe('search-bar', () => {
   jest.useFakeTimers();
 
   it('Renders the search-bar', () => {
-    const searchBar = shallow(<SearchBar />);
-    const searchBarInput = searchBar.find('input');
-    expect(searchBarInput.prop('placeholder')).toBe('Search for a URL...');
+    render(<SearchBar />);
+    const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
+    expect(searchBarInput).toBeInTheDocument();
   });
 
   it('Handles search queries with a protocol correctly', () => {
     const onSearch = jest.fn();
-    const searchBar = shallow(<SearchBar onSearch={onSearch} />);
-    const searchBarInput = searchBar.find('input');
-    searchBarInput.simulate('change', { target: { value: 'http://epa' } });
+    render(<SearchBar onSearch={onSearch} />);
+    const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
 
+    fireEvent.change(searchBarInput, { target: { value: 'http://epa' } });
     jest.runAllTimers();
+
     expect(onSearch).toHaveBeenCalledWith({
       url: 'http://epa*',
       startDate: null,
@@ -30,11 +31,12 @@ describe('search-bar', () => {
 
   it('Handles search queries without a protocol correctly', () => {
     const onSearch = jest.fn();
-    const searchBar = shallow(<SearchBar onSearch={onSearch} />);
-    const searchBarInput = searchBar.find('input');
-    searchBarInput.simulate('change', { target: { value: 'epa' } });
+    render(<SearchBar onSearch={onSearch} />);
+    const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
 
+    fireEvent.change(searchBarInput, { target: { value: 'epa' } });
     jest.runAllTimers();
+
     expect(onSearch).toHaveBeenCalledWith({
       url: '*//epa*',
       startDate: null,
@@ -44,10 +46,17 @@ describe('search-bar', () => {
 
   it('Handles date range search queries for startDate', () => {
     const onSearch = jest.fn();
-    const searchBar = mount(<SearchBar inputIdSuffix="1" onSearch={onSearch} />);
-    searchBar.find('input#startDate1').simulate('focus');
+    render(<SearchBar inputIdSuffix="1" onSearch={onSearch} />);
+    
+    // To open and interact with the calendar, we first need to focus the input it's attached to.
+    const startDateInput = screen.getByLabelText(/start date/i);
+    fireEvent.focus(startDateInput);
 
-    searchBar.find('.CalendarDay.CalendarDay_1').first().simulate('click');
+    // The actual button text is something like "Choose Sunday, June 1, 2025, blah blah".
+    // This should get us close enough. There will be more than one (for the current and previous month).
+    const calendarDay = screen.getAllByRole('button', { name: /Choose .* 1,/ });
+    fireEvent.click(calendarDay[0]);
+
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
       startDate: expect.any(moment),
@@ -57,10 +66,16 @@ describe('search-bar', () => {
 
   it('Handles date range search queries for endDate', () => {
     const onSearch = jest.fn();
-    const searchBar = mount(<SearchBar inputIdSuffix="1" onSearch={onSearch} />);
+    render(<SearchBar inputIdSuffix="1" onSearch={onSearch} />);
+    
+    const endDateInput = screen.getByLabelText(/end date/i);
+    fireEvent.focus(endDateInput);
 
-    searchBar.find('input#endDate1').simulate('focus');
-    searchBar.find('.CalendarDay.CalendarDay_1').first().simulate('click');
+    // The actual button text is something like "Choose Sunday, June 1, 2025, blah blah".
+    // This should get us close enough. There will be more than one (for the current and previous month).
+    const calendarDay = screen.getAllByRole('button', { name: /Choose .* 1,/ });
+    fireEvent.click(calendarDay[0]);
+
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
       startDate: null,
