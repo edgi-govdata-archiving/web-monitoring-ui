@@ -3,7 +3,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';
-import { TestApiContextProvider } from '../../__mocks__/api-context-provider';
+import { ApiContext } from '../api-context';
 
 describe('login-form', () => {
   const getMockedApi = (overrides = {}) => Object.assign(
@@ -46,9 +46,9 @@ describe('login-form', () => {
     it('Calls "logIn" on the api service if email and password are present', async () => {
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({}) });
       render(
-        <TestApiContextProvider api={api}>
+        <ApiContext.Provider value={{ api }}>
           <LoginPanel />
-        </TestApiContextProvider>
+        </ApiContext.Provider>
       );
 
       fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
@@ -62,9 +62,9 @@ describe('login-form', () => {
       const onLogin = jest.fn();
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({ id: 5 }) });
       render(
-        <TestApiContextProvider api={api}>
+        <ApiContext.Provider value={{ api }}>
           <LoginPanel onLogin={onLogin} />
-        </TestApiContextProvider>
+        </ApiContext.Provider>
       );
 
       fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
@@ -78,9 +78,9 @@ describe('login-form', () => {
       const onLogin = jest.fn();
       const api = getMockedApi({ logIn: jest.fn().mockRejectedValue(new Error('Login unsuccessful')) });
       render(
-        <TestApiContextProvider api={api}>
+        <ApiContext.Provider value={{ api }}>
           <LoginPanel onLogin={onLogin} />
-        </TestApiContextProvider>
+        </ApiContext.Provider>
       );
 
       fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
@@ -93,9 +93,9 @@ describe('login-form', () => {
     it('Does not call "logIn" if email and password are not both present', async () => {
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({}) });
       render(
-        <TestApiContextProvider api={api}>
+        <ApiContext.Provider value={{ api }}>
           <LoginPanel />
-        </TestApiContextProvider>
+        </ApiContext.Provider>
       );
 
       fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });

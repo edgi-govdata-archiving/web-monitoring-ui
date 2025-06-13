@@ -39,11 +39,3 @@ export default class DiffItem extends Component {
     );
   }
 }
-
-// DiffItem.propTypes = {
-//   data: PropTypes.object.isRequired,
-//   onSelect: PropTypes.func,
-// };
-
-// DiffItem.defaultProps = {
-// };

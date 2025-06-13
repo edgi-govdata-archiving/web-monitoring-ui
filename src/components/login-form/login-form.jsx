@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import { Component } from 'react';
-import WebMonitoringDb from '../../services/web-monitoring-db';
+import { ApiContext } from '../api-context';
 
 import baseStyles from '../../css/base.css'; // eslint-disable-line
 import formStyles from './login-form.css'; // eslint-disable-line
@@ -27,6 +26,8 @@ import formStyles from './login-form.css'; // eslint-disable-line
  * @extends {Component}
  */
 export default class LoginPanel extends Component {
+  static contextType = ApiContext;
+
   constructor (props) {
     super(props);
     this.state = { email: '', password: '', error: null };
@@ -109,7 +110,3 @@ export default class LoginPanel extends Component {
     this.props.cancelLogin();
   }
 }
-
-LoginPanel.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb)
-};

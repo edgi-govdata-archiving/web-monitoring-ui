@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import WebMonitoringDb from '../../services/web-monitoring-db';
+import { ApiContext } from '../api-context';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
 import ExternalLink from '../external-link';
@@ -28,6 +27,8 @@ import pageStyles from './page-details.css'; // eslint-disable-line
  * @param {PageDetailsProps} props
  */
 export default class PageDetails extends Component {
+  static contextType = ApiContext;
+
   static getDerivedStateFromProps (props, state) {
     // Clear existing content when switching pages
     if (state.page && state.page.uuid !== props.match.params.pageId) {
@@ -376,7 +377,3 @@ export default class PageDetails extends Component {
     this.props.history[replace ? 'replace' : 'push'](url);
   }
 }
-
-PageDetails.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb)
-};
