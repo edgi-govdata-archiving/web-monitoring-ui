@@ -32,7 +32,7 @@
     "extract-loader": "^5.1.0",
     "fetch-mock": "^9.11.0",
     "file-loader": "^6.2.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "moment": "^2.30.1",
@@ -59,7 +59,7 @@
     "build-production": "NODE_ENV=production webpack",
     "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
     "lint": "eslint --ignore-path .gitignore './**/*.{js,jsx}'",
-    "prepare": "if [ -d .git ]; then husky install; fi",
+    "prepare": "if [ -d .git ]; then husky; fi",
     "start": "node server/app.js",
     "test": "jest --colors --verbose",
     "test-watch": "jest --watch"
