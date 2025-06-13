@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import { Component } from 'react';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import { ApiContext } from './api-context';
 import { diffTypes } from '../constants/diff-types';
 import Loading from './loading';
 
@@ -30,6 +29,8 @@ import '../css/base.css';
  * @param {DiffViewProps} props
  */
 export default class DiffView extends Component {
+  static contextType = ApiContext;
+
   static getDerivedStateFromProps (props, state) {
     // Clear out stale diff data before trying to render
     if (!specifiesSameDiff(props, state.previousDiff)) {
@@ -229,10 +230,6 @@ export default class DiffView extends Component {
       });
   }
 }
-
-DiffView.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb),
-};
 
 /**
  * Determine whether a set of props specifies the same diff as another set of

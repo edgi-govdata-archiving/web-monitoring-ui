@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { TestApiContextProvider } from '../../__mocks__/api-context-provider';
+import { ApiContext } from '../api-context';
 import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
@@ -62,14 +62,14 @@ describe('change-view', () => {
     }
 
     return (
-      <TestApiContextProvider api={mockApi}>
+      <ApiContext.Provider value={{ api: mockApi }}>
         <ChangeView
           page={simplePage}
           from={{ ...mockChangeFrom, media_type: fromMediaType }}
           to={{ ...mockChangeTo, media_type: toMediaType }}
           user={{ email: 'me' }}
         />
-      </TestApiContextProvider>
+      </ApiContext.Provider>
     );
   }
 

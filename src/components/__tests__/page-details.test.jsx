@@ -2,7 +2,7 @@
 import { render, waitFor } from '@testing-library/react';
 import PageDetails from '../page-details/page-details';
 import simplePage from '../../__mocks__/simple-page.json';
-import { TestApiContextProvider } from '../../__mocks__/api-context-provider';
+import { ApiContext } from '../api-context';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 
 jest.mock('../change-view/change-view');
@@ -48,9 +48,9 @@ describe('page-details', () => {
   it('can render', () => {
     const mockApi = createMockApi();
     const { container } = render(
-      <TestApiContextProvider api={mockApi}>
+      <ApiContext.Provider value={{ api: mockApi }}>
         <PageDetails match={match} />
-      </TestApiContextProvider>
+      </ApiContext.Provider>
     );
 
     expect(container).not.toBeEmptyDOMElement();
@@ -59,9 +59,9 @@ describe('page-details', () => {
   it('shows correct title', async () => {
     const mockApi = createMockApi();
     const { unmount } = render(
-      <TestApiContextProvider api={mockApi}>
+      <ApiContext.Provider value={{ api: mockApi }}>
         <PageDetails match={match} />
-      </TestApiContextProvider>
+      </ApiContext.Provider>
     );
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());
@@ -76,7 +76,7 @@ describe('page-details', () => {
     const allVersions = simplePage.versions;
     const mockApi = createMockApi();
     const { container } = render(
-      <TestApiContextProvider api={mockApi}>
+      <ApiContext.Provider value={{ api: mockApi }}>
         <PageDetails
           match={{
             ...match,
@@ -86,7 +86,7 @@ describe('page-details', () => {
             }
           }}
         />,
-      </TestApiContextProvider>
+      </ApiContext.Provider>
     );
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());

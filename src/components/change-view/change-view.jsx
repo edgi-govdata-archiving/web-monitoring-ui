@@ -4,13 +4,11 @@ import { diffTypesFor } from '../../constants/diff-types';
 import DiffView from '../diff-view';
 import layeredStorage from '../../scripts/layered-storage';
 import Loading from '../loading';
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 import SelectDiffType from '../select-diff-type';
 import SelectVersion from '../select-version';
 import SourceInfo from '../source-info/source-info';
-import WebMonitoringApi from '../../services/web-monitoring-api';
-import WebMonitoringDb from '../../services/web-monitoring-db';
+import { ApiContext } from '../api-context';
 import {
   htmlType,
   mediaTypeForExtension,
@@ -45,6 +43,8 @@ const diffSettingsStorage = 'edgi.wm.ui.diff_settings';
  * @param {ChangeViewProps} props
  */
 export default class ChangeView extends Component {
+  static contextType = ApiContext;
+
   static getDerivedStateFromProps (props, state) {
     // Ensure that the current diff type is relevant to the content we are
     // comparing. If not, switch to a relevant type.
@@ -350,11 +350,6 @@ export default class ChangeView extends Component {
       });
   }
 }
-
-ChangeView.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb),
-  localApi: PropTypes.instanceOf(WebMonitoringApi)
-};
 
 /**
  * Determine whether a change object represents the same change as another
