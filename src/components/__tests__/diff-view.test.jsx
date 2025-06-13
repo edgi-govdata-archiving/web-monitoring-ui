@@ -8,7 +8,7 @@ import WebMonitoringDb from '../../services/web-monitoring-db';
 
 describe('diff-view', () => {
   let mockApi;
-  
+
   beforeEach(() => {
     mockApi = Object.assign(Object.create(WebMonitoringDb.prototype), {
       getDiff: jest.fn().mockResolvedValue({
@@ -34,14 +34,10 @@ describe('diff-view', () => {
   });
 
   it('renders an alert if there are no changes in the diff', async () => {
-    const noChangeApi = {
-      __proto__: WebMonitoringDb.prototype,
-      ...mockApi,
-      getDiff: jest.fn().mockResolvedValue({ change_count: 0, diff: [] })
-    };
+    mockApi.getDiff.mockResolvedValue({ change_count: 0, diff: [] });
 
     render(
-      <TestApiContextProvider api={noChangeApi}>
+      <TestApiContextProvider api={mockApi}>
         <DiffView
           diffType="HIGHLIGHTED_TEXT"
           page={simplePage}
@@ -51,7 +47,7 @@ describe('diff-view', () => {
       </TestApiContextProvider>
     );
 
-    await waitFor(() => screen.getByText(/no changes for this diff/));
+    await waitFor(() => screen.getByRole('alert'));
   });
 
   it('renders no alert if there are changes in the diff', async () => {
@@ -67,7 +63,7 @@ describe('diff-view', () => {
     );
 
     await waitFor(() => expect(mockApi.getDiff).toHaveBeenCalled());
-    expect(screen.queryByText(/no changes for this diff/)).toBeNull();
+    expect(screen.queryByRole('alert')).toBeNull();
     screen.getByText('Hi');
   });
 });

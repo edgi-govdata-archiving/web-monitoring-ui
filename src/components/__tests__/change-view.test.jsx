@@ -90,16 +90,7 @@ describe('change-view', () => {
         const storedDiffType = 'CHANGES_ONLY_TEXT';
         layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-        render(
-          <TestApiContextProvider api={mockApi}>
-            <ChangeView
-              page={simplePage}
-              from={{ ...mockChangeFrom, media_type: 'text/html' }}
-              to={{ ...mockChangeTo, media_type: 'text/html' }}
-              user={{ email: 'me' }}
-            />
-          </TestApiContextProvider>
-        );
+        renderBasicChangeView({ mediaType: 'text/html' });
 
         screen.getByText(`diffType="${storedDiffType}"`);
       });
@@ -109,16 +100,7 @@ describe('change-view', () => {
           const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
           layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
-          render(
-            <TestApiContextProvider api={mockApi}>
-              <ChangeView
-                page={simplePage}
-                from={{ ...mockChangeFrom, media_type: 'text/html' }}
-                to={{ ...mockChangeTo, media_type: 'text/html' }}
-                user={{ email: 'me' }}
-              />
-            </TestApiContextProvider>
-          );
+          renderBasicChangeView({ mediaType: 'text/html' });
 
           screen.getByText(`diffType="${defaultDiffType}"`);
         });
@@ -130,16 +112,7 @@ describe('change-view', () => {
           const mediaType = 'text/xml';
           const relevantTypes = diffTypesFor(mediaType);
 
-          render(
-            <TestApiContextProvider api={mockApi}>
-              <ChangeView
-                page={simplePage}
-                from={{ ...mockChangeFrom, media_type: mediaType }}
-                to={{ ...mockChangeTo, media_type: mediaType }}
-                user={{ email: 'me' }}
-              />
-            </TestApiContextProvider>
-          );
+          renderBasicChangeView({ mediaType });
 
           screen.getByText(`diffType="${relevantTypes[0].value}"`);
         });
@@ -148,17 +121,7 @@ describe('change-view', () => {
 
     describe('when a diffType has NOT been stored in layeredStorage', () => {
       it('sets state.diffType to defaultDiffType if that is relevant to the pages being compared', () => {
-        render(
-          <TestApiContextProvider api={mockApi}>
-            <ChangeView
-              page={simplePage}
-              from={mockChangeFrom}
-              to={mockChangeTo}
-              user={{ email: 'me' }}
-            />
-          </TestApiContextProvider>
-        );
-
+        renderBasicChangeView();
         screen.getByText(`diffType="${defaultDiffType}"`);
       });
 
@@ -166,16 +129,7 @@ describe('change-view', () => {
         const mediaType = 'text/xml';
         const relevantTypes = diffTypesFor(mediaType);
 
-        render(
-          <TestApiContextProvider api={mockApi}>
-            <ChangeView
-              page={simplePage}
-              from={{ ...mockChangeFrom, media_type: mediaType }}
-              to={{ ...mockChangeTo, media_type: mediaType }}
-              user={{ email: 'me' }}
-            />
-          </TestApiContextProvider>
-        );
+        renderBasicChangeView({ mediaType });
 
         screen.getByText(`diffType="${relevantTypes[0].value}"`);
       });
@@ -189,27 +143,8 @@ describe('change-view', () => {
 
       const diffType = diffTypesFor(oldMediaType)[0].value;
 
-      const { rerender } = render(
-        <TestApiContextProvider api={mockApi}>
-          <ChangeView
-            page={simplePage}
-            from={{ ...mockChangeFrom, media_type: oldMediaType }}
-            to={{ ...mockChangeTo, media_type: oldMediaType }}
-            user={{ email: 'me' }}
-          />
-        </TestApiContextProvider>
-      );
-
-      rerender(
-        <TestApiContextProvider api={mockApi}>
-          <ChangeView
-            page={simplePage}
-            from={{ ...mockChangeFrom, media_type: newMediaType }}
-            to={{ ...mockChangeTo, media_type: newMediaType }}
-            user={{ email: 'me' }}
-          />
-        </TestApiContextProvider>
-      );
+      const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
+      rerender({ mediaType: newMediaType });
 
       screen.getByText(`diffType="${diffType}"`);
     });

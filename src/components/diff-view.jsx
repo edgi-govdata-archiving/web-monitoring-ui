@@ -93,12 +93,12 @@ export default class DiffView extends Component {
     const styleName = 'alert alert-warning';
 
     if (sameContent) {
-      return <div className={className} styleName={styleName}>
+      return <div className={className} styleName={styleName} role="alert">
         These two versions are <strong>exactly the same</strong>.
       </div>;
     }
     else if (this.state.diffData.change_count === 0) {
-      return <div className={className} styleName={styleName}>
+      return <div className={className} styleName={styleName} role="alert">
         There were <strong>no changes for this diff type</strong>. (Other diff
         types may show changes.)
       </div>;

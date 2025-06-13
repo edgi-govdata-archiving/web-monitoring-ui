@@ -94,4 +94,8 @@ describe('page-details', () => {
     expect(mockApi.getVersion).toHaveBeenCalled();
     expect(container).not.toBeEmptyDOMElement();
   });
+
+  // TODO: We should have some tests that verify redirects when no versions
+  // or only a from or to version was specified, or when a page ID was merged
+  // into another page. That requires some complex interaction with the router.
 });
