@@ -1,14 +1,13 @@
 /* eslint-env jest */
 
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import SandboxedHtml from '../sandboxed-html';
 
 describe('sandboxed-html', () => {
   it('renders an iframe with a sandbox attribute', () => {
-    const sandbox = mount(<SandboxedHtml />);
-    const frame = sandbox.find('iframe').first();
-    expect(frame).toBeDefined();
-    expect(frame.props().sandbox).toBeTruthy();
+    const { container } = render(<SandboxedHtml />);
+    const frame = container.querySelector('iframe');
+    expect(frame).toHaveAttribute('sandbox');
   });
 
   it('sets a <base> element for `baseUrl`', () => {
@@ -18,9 +17,9 @@ describe('sandboxed-html', () => {
         <body>Hello!</body>
       </html>`;
 
-    const sandbox = mount(<SandboxedHtml baseUrl="http://example.com" html={source} />);
-    const frame = sandbox.find('iframe').first().getDOMNode();
-    expect(frame.getAttribute('srcdoc')).toMatch(/<base\s+href="http:\/\/example\.com"/ig);
+    const { container } = render(<SandboxedHtml baseUrl="http://example.com" html={source} />);
+    const frame = container.querySelector('iframe');
+    expect(frame.srcdoc).toMatch(/<base\s+href="http:\/\/example\.com"/ig);
   });
 
   it('transforms the html with the `transform` prop', () => {
@@ -35,8 +34,8 @@ describe('sandboxed-html', () => {
       return document;
     };
 
-    const sandbox = mount(<SandboxedHtml html={source} transform={transform} />);
-    const frame = sandbox.find('iframe').first().getDOMNode();
-    expect(frame.getAttribute('srcdoc')).toMatch(/<body>Hello![\n\s]*Transformed!/ig);
+    const { container } = render(<SandboxedHtml html={source} transform={transform} />);
+    const frame = container.querySelector('iframe');
+    expect(frame.srcdoc).toMatch(/<body>Hello![\n\s]*Transformed!/ig);
   });
 });

@@ -1,6 +1,6 @@
 /* eslint-env jest */
+import { render } from '@testing-library/react';
 import PageUrlDetails from '../page-url-details/page-url-details';
-import { mount } from 'enzyme';
 import simplePage from '../../__mocks__/simple-page.json';
 
 describe('PageUrlDetails Component', () => {
@@ -10,7 +10,7 @@ describe('PageUrlDetails Component', () => {
   });
 
   it('shows nothing if version URLs and redirects match the page URL', () => {
-    const view = mount(
+    const { container } = render(
       <PageUrlDetails
         page={simplePage}
         from={simplePage.versions[1]}
@@ -18,7 +18,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.children()).toHaveLength(0);
+    expect(container).toBeEmptyDOMElement();
   });
 
   it("shows the versions' URL if it differs from the page's", () => {
@@ -30,7 +30,7 @@ describe('PageUrlDetails Component', () => {
       ...simplePage.versions[0],
       url: `${simplePage.url}/something`
     };
-    const view = mount(
+    const { container } = render(
       <PageUrlDetails
         page={simplePage}
         from={version1}
@@ -38,7 +38,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.debug()).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it("shows the versions' redirects", () => {
@@ -62,7 +62,7 @@ describe('PageUrlDetails Component', () => {
         ]
       }
     };
-    const view = mount(
+    const { container } = render(
       <PageUrlDetails
         page={simplePage}
         from={version1}
@@ -70,7 +70,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.debug()).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it('shows separate URL histories for each version if they differ', () => {
@@ -94,7 +94,7 @@ describe('PageUrlDetails Component', () => {
         ]
       }
     };
-    const view = mount(
+    const { container } = render(
       <PageUrlDetails
         page={simplePage}
         from={version1}
@@ -102,6 +102,6 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(view.debug()).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 });

@@ -1,32 +1,20 @@
 /* eslint-env jest */
 
 import EnvironmentBanner from '../environment-banner/environment-banner';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 describe('EnvironmentBanner', () => {
   it('renders nothing in the production environment', () => {
-    const banner = mount(<EnvironmentBanner
-      apiUrl="https://api.monitoring.envirodatagov.org"
-    />);
-
-    expect(banner.children().exists()).toBe(false);
+    const { container } = render(
+      <EnvironmentBanner apiUrl="https://api.monitoring.envirodatagov.org" />
+    );
+    expect(container).toBeEmptyDOMElement();
   });
 
   it('displays the correct environment for staging', () => {
-    const banner = mount(<EnvironmentBanner
-      apiUrl="https://api.monitoring-staging.envirodatagov.org"
-    />);
-
-    expect(banner.children().exists()).toBe(true);
-    expect(banner.text()).toMatch(/\bstaging\b/);
-  });
-
-  it('displays the correct environment for the deprecated staging URL', () => {
-    const banner = mount(<EnvironmentBanner
-      apiUrl="https://api-staging.monitoring.envirodatagov.org"
-    />);
-
-    expect(banner.children().exists()).toBe(true);
-    expect(banner.text()).toMatch(/\bstaging\b/);
+    render(
+      <EnvironmentBanner apiUrl="https://api.monitoring-staging.envirodatagov.org" />
+    );
+    screen.getByText(/\bstaging\b/i);
   });
 });

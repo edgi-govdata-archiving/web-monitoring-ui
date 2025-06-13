@@ -1,8 +1,9 @@
 /* eslint-env jest */
 
-import { shallow } from 'enzyme';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';
+import { TestApiContextProvider } from '../../__mocks__/api-context-provider';
 
 describe('login-form', () => {
   const getMockedApi = (overrides = {}) => Object.assign(
@@ -11,51 +12,48 @@ describe('login-form', () => {
   );
 
   it('Renders a label and input for email', () => {
-    const panel = shallow(<LoginPanel />);
-    const label = panel.find('label').at(0);
-
-    expect(label.text()).toMatch(/e-?mail/i);
-    expect(label.find('input').props()).toMatchObject({ name: 'email', type: 'text' });
+    render(<LoginPanel />);
+    const emailInput = screen.getByLabelText(/e-?mail/i);
+    expect(emailInput).toHaveAttribute('name', 'email');
+    expect(emailInput).toHaveAttribute('type', 'text');
   });
 
   it('Renders a label and input for password', () => {
-    const panel = shallow(<LoginPanel />);
-    const label = panel.find('label').at(1);
-
-    expect(label.text()).toMatch(/password/i);
-    expect(label.find('input').props()).toMatchObject({ name: 'password', type: 'password' });
+    render(<LoginPanel />);
+    const passwordLabel = screen.getByLabelText(/password/i);
+    expect(passwordLabel).toHaveAttribute('name', 'password');
+    expect(passwordLabel).toHaveAttribute('type', 'password');
   });
 
   it('Renders a submit button for the form', () => {
-    const panel = shallow(<LoginPanel />);
-    expect(panel.find('form input[type="submit"]').length).toBe(1);
+    render(<LoginPanel />);
+    screen.getByRole('button', { name: 'Log In' });
   });
 
   it('Renders a cancel button', () => {
-    const panel = shallow(<LoginPanel />);
-    expect(panel.findWhere(el => el.type() === 'button' && (/cancel/i).test(el.text())).length).toBe(1);
+    render(<LoginPanel />);
+    screen.getByRole('button', { name: 'Cancel' });
   });
 
   it('Calls props.cancelLogin when the cancel button is clicked', () => {
     const cancelLogin = jest.fn();
-    const panel = shallow(<LoginPanel cancelLogin={cancelLogin} />);
-    const cancelButton = panel.findWhere(el => el.type() === 'button' && (/cancel/i).test(el.text()));
-
-    cancelButton.simulate('click', document.createEvent('UIEvents'));
+    render(<LoginPanel cancelLogin={cancelLogin} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     expect(cancelLogin).toHaveBeenCalled();
   });
 
   describe('when the form is submitted', () => {
-    it('Calls "logIn" on the api service if email and password are present', () => {
+    it('Calls "logIn" on the api service if email and password are present', async () => {
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({}) });
-      const panel = shallow(<LoginPanel />, { context: { api } });
+      render(
+        <TestApiContextProvider api={api}>
+          <LoginPanel />
+        </TestApiContextProvider>
+      );
 
-      panel.find('input[name="email"]')
-        .simulate('change', { currentTarget: { value: 'aaa@aaa.aaa' } });
-      panel.find('input[name="password"]')
-        .simulate('change', { currentTarget: { value: 'password' } });
-
-      panel.find('form').simulate('submit', document.createEvent('UIEvents'));
+      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
 
       expect(api.logIn).toHaveBeenCalledWith('aaa@aaa.aaa', 'password');
     });
@@ -63,49 +61,48 @@ describe('login-form', () => {
     it('Calls props.onLogin if the api call is successful', async () => {
       const onLogin = jest.fn();
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({ id: 5 }) });
+      render(
+        <TestApiContextProvider api={api}>
+          <LoginPanel onLogin={onLogin} />
+        </TestApiContextProvider>
+      );
 
-      const panel = shallow(<LoginPanel onLogin={onLogin} />, { context: { api } });
+      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
 
-      panel.find('input[name="email"]')
-        .simulate('change', { currentTarget: { value: 'aaa@aaa.aaa' } });
-      panel.find('input[name="password"]')
-        .simulate('change', { currentTarget: { value: 'password' } });
-
-      panel.find('form').simulate('submit', document.createEvent('UIEvents'));
-
-      // we have asserted that api.logIn gets called in the previous test.
-      // this waits for it to resolve before testing that onLogin gets called
-      await api.logIn.mock.results[0].value;
-      expect(onLogin).toHaveBeenCalledWith({ id: 5 });
+      await waitFor(() => expect(onLogin).toHaveBeenCalledWith({ id: 5 }));
     });
 
     it('Displays an error if the api call is unsuccessful', async () => {
       const onLogin = jest.fn();
       const api = getMockedApi({ logIn: jest.fn().mockRejectedValue(new Error('Login unsuccessful')) });
-      const panel = shallow(<LoginPanel onLogin={onLogin} />, { context: { api } });
+      render(
+        <TestApiContextProvider api={api}>
+          <LoginPanel onLogin={onLogin} />
+        </TestApiContextProvider>
+      );
 
-      panel.find('input[name="email"]')
-        .simulate('change', { currentTarget: { value: 'aaa@aaa.aaa' } });
-      panel.find('input[name="password"]')
-        .simulate('change', { currentTarget: { value: 'password' } });
+      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
 
-      panel.find('form').simulate('submit', document.createEvent('UIEvents'));
-
-      await expect(api.logIn.mock.results[0].value).rejects.toThrow();
-      expect(panel.find('[className*="danger"]').text()).toBe('Login unsuccessful');
+      await screen.findByText('Login unsuccessful');
     });
 
-    it('Does not call "logIn" if email and password are not both present', () => {
+    it('Does not call "logIn" if email and password are not both present', async () => {
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({}) });
-      const panel = shallow(<LoginPanel />, { context: { api } });
+      render(
+        <TestApiContextProvider api={api}>
+          <LoginPanel />
+        </TestApiContextProvider>
+      );
 
-      panel.find('input[name="email"]')
-        .simulate('change', { currentTarget: { value: 'aaa@aaa.aaa' } });
-
-      panel.find('form').simulate('submit', document.createEvent('UIEvents'));
+      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
 
       expect(api.logIn).not.toHaveBeenCalled();
-      expect(panel.find('[className*="danger"]').text()).toBeTruthy();
+      await screen.findByText('Please enter an e-mail and password.');
     });
   });
 });
