@@ -2,7 +2,6 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const makeRequest = require('request');
 const app = express();
 const path = require('path');
 const sheetData = require('./sheet-data');
@@ -111,20 +110,22 @@ function authorizeRequest (request, response, next) {
     host += '/';
   }
 
-  makeRequest({
-    url: `${host}users/session`,
+  fetch(`${host}users/session`, {
     headers: { Authorization: request.headers.authorization },
-    callback (error, authResponse, body) {
-      if (error) {
-        console.error(error);
-        return response.status(500).json({ error: 'Authentication Error' });
-      }
-      else if (authResponse.statusCode !== 200) {
-        return response.status(authResponse.statusCode).end(body);
+  })
+    .then(authResponse => {
+      return authResponse.text().then(body => ({ authResponse, body }));
+    })
+    .then(({ authResponse, body }) => {
+      if (authResponse.status !== 200) {
+        return response.status(authResponse.status).end(body);
       }
       next();
-    }
-  });
+    })
+    .catch(error => {
+      console.error(error);
+      return response.status(500).json({ error: 'Authentication Error' });
+    });
 }
 
 app.post(
@@ -152,7 +153,7 @@ app.post(
 /**
  * Main view for manual entry
  */
-app.get('*', function (request, response) {
+app.get('/{*splat}', function (request, response) {
   const useGzip = config.baseConfiguration().NODE_ENV === 'production'
     && request.acceptsEncodings('gzip');
 
@@ -162,6 +163,8 @@ app.get('*', function (request, response) {
   });
 });
 
-app.listen(serverPort, function () {
+app.listen(serverPort, function (error) {
+  if (error) throw error;
+
   console.log(`Listening on port ${serverPort}`);
 });
