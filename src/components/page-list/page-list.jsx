@@ -1,7 +1,7 @@
 import Loading from '../loading';
 import { Component } from 'react';
 import SearchBar from '../search-bar/search-bar';
-import StandardTooltip from '../standard-tooltip';
+import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import PageTag from '../page-tag/page-tag';
 import {
   getHttpStatusCategory,
@@ -56,7 +56,7 @@ export default class PageList extends Component {
   renderPages () {
     return (
       <div styleName="listStyles.container">
-        <StandardTooltip id="list-tooltip" />
+        <StandardTooltip id="list-tooltip" delayHide={20_000} />
         <table styleName="listStyles.table listStyles.page-list">
           <thead>{this.renderHeader()}</thead>
           <tbody>
@@ -94,8 +94,8 @@ export default class PageList extends Component {
         <td>{tags.map(tag => <PageTag tag={tag} key={tag.name} />)}</td>
         <td
           data-status-category={statusCategory}
-          data-for="list-tooltip"
-          data-tip={describeHttpStatus(statusCode)}
+          data-tooltip-id="list-tooltip"
+          data-tooltip-content={describeHttpStatus(statusCode)}
         >
           {statusCode >= 400 ? '✘' : '•'} {record.status}
         </td>

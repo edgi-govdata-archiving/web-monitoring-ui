@@ -6,7 +6,7 @@ import Loading from '../loading';
 import ExternalLink from '../external-link';
 import PageUrlDetails from '../page-url-details/page-url-details';
 import PageTag from '../page-tag/page-tag';
-import StandardTooltip from '../standard-tooltip';
+import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import { describeHttpStatus } from '../../scripts/http-info';
 import { removeNonUserTags } from '../../scripts/tools';
 
@@ -141,8 +141,8 @@ export default class PageDetails extends Component {
               <span
                 styleName={`pageStyles.info-item pageStyles.${statusError ? 'status-error' : 'status-ok'}`}
                 data-http-status={statusCode}
-                data-for="page-tooltip"
-                data-tip={describeHttpStatus(statusCode)}
+                data-tooltip-id="page-tooltip"
+                data-tooltip-content={describeHttpStatus(statusCode)}
               >
                 {statusError ? '✘' : '•'} HTTP Status: {statusCode}
               </span>
