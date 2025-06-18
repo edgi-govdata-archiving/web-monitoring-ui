@@ -56,7 +56,7 @@ export default class PageList extends Component {
   renderPages () {
     return (
       <div styleName="listStyles.container">
-        <StandardTooltip id="list-tooltip" delayHide={20_000} />
+        <StandardTooltip id="list-tooltip" />
         <table styleName="listStyles.table listStyles.page-list">
           <thead>{this.renderHeader()}</thead>
           <tbody>
