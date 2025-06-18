@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import './environment-banner.css';
+import styles from './environment-banner.css';
 
 /**
  * @typedef EnvironmentBannerProps
@@ -42,8 +42,8 @@ export default class EnvironmentBanner extends Component {
       && !this.state.dismissed;
 
     return showBanner ? (
-      <section styleName='section'>
-        <p styleName='title'>Environment: {this.state.apiEnvironment}</p>
+      <section className={styles.section}>
+        <p className={styles.title}>Environment: {this.state.apiEnvironment}</p>
       </section>
     ) : null;
   }

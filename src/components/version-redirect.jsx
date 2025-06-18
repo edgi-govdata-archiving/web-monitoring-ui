@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { ApiContext } from './api-context';
 
-import '../css/base.css';
+import styles from '../css/base.css';
 
 export default class VersionRedirect extends Component {
   static contextType = ApiContext;
@@ -30,7 +30,7 @@ export default class VersionRedirect extends Component {
   render () {
     if (this.state.error) {
       return (
-        <p styleName="alert alert-danger" role="alert">
+        <p className={[styles.alert, styles.alertDanger].join(' ')} role="alert">
           Error: We couldn't find the version you're looking for.
           Please check you provided the correct versionID.
         </p>

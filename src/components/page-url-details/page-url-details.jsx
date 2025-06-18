@@ -1,5 +1,5 @@
 import ExternalLink from '../external-link';
-import styles from './page-url-details.css'; // eslint-disable-line
+import styles from './page-url-details.css';
 
 /**
  * Renders a disclosure box with detailed information about the URLs of a page
@@ -18,7 +18,7 @@ export default function PageUrlDetails ({ page, from, to }) {
   if (fromRedirects.join(',') === toRedirects.join(',')) {
     if (toRedirects.length > 1) {
       return (
-        <details styleName="styles.page-url-details">
+        <details className={styles.pageUrlDetails}>
           <summary>⚠️ Captured URL Redirected Somewhere Else</summary>
           <UrlHistoryList urls={toRedirects} baseUrl={page.url} />
         </details>
@@ -26,7 +26,7 @@ export default function PageUrlDetails ({ page, from, to }) {
     }
     else if (toRedirects[0] !== page.url) {
       return (
-        <details styleName="styles.page-url-details">
+        <details className={styles.pageUrlDetails}>
           <summary>⚠️ Captured from a different URL</summary>
           <ExternalLink href={toRedirects[0]}>
             <NaiveUrlDiff a={page.url} b={toRedirects[0]} />
@@ -37,7 +37,7 @@ export default function PageUrlDetails ({ page, from, to }) {
   }
   else {
     return (
-      <details styleName="styles.page-url-details">
+      <details className={styles.pageUrlDetails}>
         <summary>⚠️ Versions come from different URLs</summary>
         <strong>From Version URL and Redirects:</strong>
         <UrlHistoryList urls={fromRedirects} baseUrl={page.url} />
@@ -70,7 +70,7 @@ function UrlHistoryList ({ urls, baseUrl }) {
   });
 
   return (
-    <ol styleName="styles.url-history-list">
+    <ol className={styles.urlHistoryList}>
       {diffedUrls.map((info, index) => {
         return (
           <li key={index}>

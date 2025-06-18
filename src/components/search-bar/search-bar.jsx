@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import './search-bar.css';
+import styles from './search-bar.css';
 import SearchDatePicker from '../search-date-picker';
 
 /**
@@ -96,9 +96,9 @@ export default class SearchBar extends Component {
 
   render () {
     return (
-      <div styleName="search-bar">
+      <div className={styles.searchBar}>
         <input
-          styleName="search-bar-input"
+          className={styles.searchBarInput}
           type="text"
           placeholder="Search for a URL..."
           onChange={this._handleUrlInput}

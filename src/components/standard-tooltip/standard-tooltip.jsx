@@ -1,10 +1,10 @@
 import { Tooltip } from 'react-tooltip';
-import styles from './standard-tooltip.css'; // eslint-disable-line
+import styles from './standard-tooltip.css';
 
 export default function StandardTooltip (props) {
   return <Tooltip
     place="top"
-    styleName="styles.standard-tooltip"
+    className={styles.standardTooltip}
     {...props}
   />;
 }

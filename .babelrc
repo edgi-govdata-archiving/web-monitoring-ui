@@ -13,11 +13,5 @@
       "runtime": "automatic"
     }]
   ],
-  "plugins": [
-    ["react-css-modules", {
-      // for React Router NavLink
-      "attributeNames": { "activeStyleName": "activeClassName" },
-      "handleMissingStyleName": "warn"
-    }]
-  ]
+  "plugins": []
 }

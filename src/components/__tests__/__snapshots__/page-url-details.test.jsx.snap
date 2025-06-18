@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`PageUrlDetails Component shows separate URL histories for each version if they differ 1`] = `
 <div>
   <details
-    class="src-components-page-url-details-___page-url-details__page-url-details___1F8v5"
+    class="pageUrlDetails"
   >
     <summary>
       ⚠️ Versions come from different URLs
@@ -12,7 +12,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
       From Version URL and Redirects:
     </strong>
     <ol
-      class="src-components-page-url-details-___page-url-details__url-history-list___3qirP"
+      class="urlHistoryList"
     >
       <li>
         <a
@@ -77,7 +77,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
       To Version URL and Redirects:
     </strong>
     <ol
-      class="src-components-page-url-details-___page-url-details__url-history-list___3qirP"
+      class="urlHistoryList"
     >
       <li>
         <a
@@ -149,7 +149,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
 exports[`PageUrlDetails Component shows the versions' URL if it differs from the page's 1`] = `
 <div>
   <details
-    class="src-components-page-url-details-___page-url-details__page-url-details___1F8v5"
+    class="pageUrlDetails"
   >
     <summary>
       ⚠️ Captured from a different URL
@@ -188,13 +188,13 @@ exports[`PageUrlDetails Component shows the versions' URL if it differs from the
 exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
 <div>
   <details
-    class="src-components-page-url-details-___page-url-details__page-url-details___1F8v5"
+    class="pageUrlDetails"
   >
     <summary>
       ⚠️ Captured URL Redirected Somewhere Else
     </summary>
     <ol
-      class="src-components-page-url-details-___page-url-details__url-history-list___3qirP"
+      class="urlHistoryList"
     >
       <li>
         <a
