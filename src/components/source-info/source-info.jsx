@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import './source-info.css';
+import styles from './source-info.css';
 
 /**
  * @typedef SourceInfoProps
@@ -25,9 +25,9 @@ export default class SourceInfo extends Component {
   render () {
     const waybackCalendarUrl = `https://web.archive.org/web/*/${this.props.pageUrl}`;
     const waybackCalendarLink = (
-      <li styleName="source-info-list-item" key={waybackCalendarUrl}>
+      <li className={styles.sourceInfoListItem} key={waybackCalendarUrl}>
         <a
-          styleName="source-info-link"
+          className={styles.sourceInfoLink}
           href={waybackCalendarUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -41,10 +41,10 @@ export default class SourceInfo extends Component {
 
     if (this.props.from.source_metadata.view_url) {
       const fromLink = (
-        <li styleName="source-info-list-item" key={this.props.from.source_metadata.view_url}>
+        <li className={styles.sourceInfoListItem} key={this.props.from.source_metadata.view_url}>
           <span aria-hidden="true"> | </span>
           <a
-            styleName="source-info-link"
+            className={styles.sourceInfoLink}
             href={this.props.from.source_metadata.view_url}
             target="_blank"
             rel="noopener noreferrer"
@@ -60,10 +60,10 @@ export default class SourceInfo extends Component {
 
     if (this.props.to.source_metadata.view_url) {
       const toLink = (
-        <li styleName="source-info-list-item" key={this.props.to.source_metadata.view_url}>
+        <li className={styles.sourceInfoListItem} key={this.props.to.source_metadata.view_url}>
           <span aria-hidden="true"> | </span>
           <a
-            styleName="source-info-link"
+            className={styles.sourceInfoLink}
             href={this.props.to.source_metadata.view_url}
             target="_blank"
             rel="noopener noreferrer"
@@ -79,7 +79,7 @@ export default class SourceInfo extends Component {
 
     return (
       <aside>
-        <ol styleName="source-info-list">
+        <ol className={styles.sourceInfoList}>
           {links}
         </ol>
       </aside>

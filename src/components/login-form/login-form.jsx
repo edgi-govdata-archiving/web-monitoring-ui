@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { ApiContext } from '../api-context';
 
-import baseStyles from '../../css/base.css'; // eslint-disable-line
-import formStyles from './login-form.css'; // eslint-disable-line
+import baseStyles from '../../css/base.css';
+import formStyles from './login-form.css';
 
 /**
  * @typedef {Object} LoginFormProps
@@ -39,27 +39,27 @@ export default class LoginPanel extends Component {
 
   render () {
     return (
-      <form styleName="formStyles.form" onSubmit={this._logIn}>
-        <h1 styleName="formStyles.title">Log In</h1>
-        <p styleName="baseStyles.alert baseStyles.alert-info" role="alert">
+      <form className={formStyles.form} onSubmit={this._logIn}>
+        <h1 className={formStyles.title}>Log In</h1>
+        <p className={[baseStyles.alert, baseStyles.alertInfo].join(' ')} role="alert">
           You must be logged in to view pages
         </p>
         {this._renderError()}
 
-        <label styleName="formStyles.group">
+        <label className={formStyles.group}>
           E-mail Address:
-          <input styleName="formStyles.input" type="text" name="email" onChange={this._updateEmail} />
+          <input className={formStyles.input} type="text" name="email" onChange={this._updateEmail} />
         </label>
 
-        <label styleName="formStyles.group">
+        <label className={formStyles.group}>
           Password:
-          <input styleName="formStyles.input" type="password" name="password" onChange={this._updatePassword} />
+          <input className={formStyles.input} type="password" name="password" onChange={this._updatePassword} />
         </label>
 
-        <div styleName="formStyles.footer">
-          <input styleName="baseStyles.btn baseStyles.btn-primary" type="submit" value="Log In" />
+        <div className={formStyles.footer}>
+          <input className={[baseStyles.btn, baseStyles.btnPrimary].join(' ')} type="submit" value="Log In" />
           {' '}
-          <button styleName="baseStyles.btn baseStyles.btn-default" onClick={this._cancel}>
+          <button className={[baseStyles.btn, baseStyles.btnDefault].join(' ')} onClick={this._cancel}>
             Cancel
           </button>
         </div>
@@ -73,7 +73,7 @@ export default class LoginPanel extends Component {
     }
 
     return (
-      <p styleName="baseStyles.alert baseStyles.alert-danger" role="alert">
+      <p className={[baseStyles.alert, baseStyles.alertDanger].join(' ')} role="alert">
         {this.state.error}
       </p>
     );

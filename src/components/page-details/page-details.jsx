@@ -10,8 +10,8 @@ import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import { describeHttpStatus } from '../../scripts/http-info';
 import { removeNonUserTags } from '../../scripts/tools';
 
-import baseStyles from '../../css/base.css'; // eslint-disable-line
-import pageStyles from './page-details.css'; // eslint-disable-line
+import baseStyles from '../../css/base.css';
+import pageStyles from './page-details.css';
 
 /**
  * @typedef {Object} PageDetailsProps
@@ -99,8 +99,8 @@ export default class PageDetails extends Component {
   render () {
     if (this.state.error) {
       return (
-        <div styleName="baseStyles.main pageStyles.page-details-main">
-          <p styleName="baseStyles.alert baseStyles.alert-danger" role="alert">
+        <div className={[baseStyles.main, pageStyles.pageDetailsMain].join(' ')}>
+          <p className={[baseStyles.alert, baseStyles.alertDanger].join(' ')} role="alert">
             Error: {this.state.error.message}
           </p>
         </div>
@@ -123,23 +123,23 @@ export default class PageDetails extends Component {
 
     // TODO: this HTML should probably be broken up a bit
     return (
-      <div styleName="baseStyles.main pageStyles.page-details-main">
+      <div className={[baseStyles.main, pageStyles.pageDetailsMain].join(' ')}>
         <StandardTooltip id="page-tooltip" />
-        <div styleName="pageStyles.header">
-          <header styleName="pageStyles.header-section-title">
-            <h2 styleName="pageStyles.page-title">
+        <div className={pageStyles.header}>
+          <header className={pageStyles.headerSectionTitle}>
+            <h2 className={pageStyles.pageTitle}>
               {this.state.page.title}
             </h2>
             {' '}
-            <div styleName="pageStyles.info-items">
+            <div className={pageStyles.infoItems}>
               <span
-                styleName="pageStyles.info-item"
+                className={pageStyles.infoItem}
                 data-page-active={this.state.page.active.toString()}
               >
                 {this.state.page.active ? '•' : '✘ Not'} Actively Monitored
               </span>
               <span
-                styleName={`pageStyles.info-item pageStyles.${statusError ? 'status-error' : 'status-ok'}`}
+                className={[pageStyles.infoItem, pageStyles[statusError ? 'statusError' : 'statusOk']].join(' ')}
                 data-http-status={statusCode}
                 data-tooltip-id="page-tooltip"
                 data-tooltip-content={describeHttpStatus(statusCode)}
@@ -154,7 +154,7 @@ export default class PageDetails extends Component {
               <PageUrlDetails page={this.state.page} {...this._versionsToRender()} />
             </div>
           </header>
-          <div styleName="pageStyles.header-section-pager">
+          <div className={pageStyles.headerSectionPager}>
             {this._renderPager()}
           </div>
         </div>
@@ -176,9 +176,9 @@ export default class PageDetails extends Component {
 
     return (
       <nav aria-label="...">
-        <ul styleName="pageStyles.pager">
+        <ul className={pageStyles.pager}>
           <li>
-            <Link to={previousUrl} styleName="pageStyles.pager-prev">
+            <Link to={previousUrl} className={pageStyles.pagerPrev}>
               <i className="fa fa-arrow-left" aria-hidden="true" /> Previous
             </Link>
           </li>
@@ -216,7 +216,7 @@ export default class PageDetails extends Component {
       }
 
       return (
-        <div styleName="baseStyles.alert baseStyles.alert-danger">
+        <div className={[baseStyles.alert, baseStyles.alertDanger].join(' ')}>
           {message}
           {targetUrl ? (<span> <a href={targetUrl}>See supported versions.</a></span>) : ''}
         </div>
@@ -226,7 +226,7 @@ export default class PageDetails extends Component {
       return <Redirect to={targetUrl} />;
     }
     else if (!(versionData.from && versionData.to)) {
-      return <div styleName="baseStyles.alert baseStyles.alert-danger">No saved versions of this page.</div>;
+      return <div className={[baseStyles.alert, baseStyles.alertDanger].join(' ')}>No saved versions of this page.</div>;
     }
 
     return (

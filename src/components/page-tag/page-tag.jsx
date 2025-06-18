@@ -1,4 +1,4 @@
-import styles from './page-tag.css'; // eslint-disable-line
+import styles from './page-tag.css';
 
 /**
  * Helper component for rendering tags.
@@ -14,11 +14,11 @@ export default function PageTag ({ tag }) {
 
   let prefixNode;
   if (prefix) {
-    prefixNode = <span styleName="styles.page-tag--prefix">{prefix}</span>;
+    prefixNode = <span className={styles.prefix}>{prefix}</span>;
   }
 
   return (
-    <span styleName="styles.page-tag">
+    <span className={styles.pageTag}>
       {prefixNode}
       {name}
     </span>
