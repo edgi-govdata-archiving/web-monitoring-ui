@@ -1,5 +1,6 @@
 const autoprefixer = require('autoprefixer');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const path = require('path');
 const zopfli = require('@gfx/zopfli');
@@ -82,7 +83,6 @@ module.exports = {
       // TODO: remove this entire pipeline when all legacy CSS is refactored
       {
         test: /\.css$/,
-        type: 'asset/resource',
         generator: {
           filename: removeSrcDirectory
         },
@@ -96,12 +96,12 @@ module.exports = {
         ],
         use: [
           {
-            loader: 'extract-loader',
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: 'css-loader',
             options: {
-              import: false,
+              import: true,
               sourceMap: true
             },
           },
@@ -142,6 +142,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new MiniCssExtractPlugin({ runtime: false }),
     // Strip locales from Moment.js (we only use English)
     new MomentLocalesPlugin()
   ],
