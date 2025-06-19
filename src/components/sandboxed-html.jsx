@@ -60,7 +60,9 @@ export default class SandboxedHtml extends PureComponent {
       return setDocumentBase(document, this.props.baseUrl);
     });
 
-    this._frame.setAttribute('srcdoc', source);
+    if (source !== this._frame.getAttribute('srcdoc')) {
+      this._frame.setAttribute('srcdoc', source);
+    }
   }
 }
 
