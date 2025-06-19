@@ -9,14 +9,6 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
 const context = __dirname;
 
-function removeSrcDirectory (data) {
-  let relativePath = path.relative(context, data.filename);
-  if (relativePath.startsWith('src' + path.sep)) {
-    relativePath = relativePath.slice(4);
-  }
-  return relativePath;
-}
-
 module.exports = {
   context,
   mode: isProduction ? 'production' : 'development',
@@ -83,9 +75,6 @@ module.exports = {
       // TODO: remove this entire pipeline when all legacy CSS is refactored
       {
         test: /\.css$/,
-        generator: {
-          filename: removeSrcDirectory
-        },
         exclude: [
           path.resolve(__dirname, 'node_modules')
         ],
