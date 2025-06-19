@@ -1,15 +1,11 @@
 import { Component } from 'react';
-import 'react-dates/initialize';
-import { DateRangePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 import moment from 'moment';
-import { isInclusivelyBeforeDay } from 'react-dates';
 
 /**
  * @typedef SearchDatePickerProps
- * @property {({startDate: Moment, endDate: Moment}) => void} onDateSearch
- * @property {Date} startDate
- * @property {Date} endDate
+ * @property {({startDate: moment.Moment, endDate: Moment.moment}) => void} onDateSearch
+ * @property {Date|moment.Moment} startDate
+ * @property {Date|moment.Moment} endDate
  */
 
 /**
@@ -25,21 +21,40 @@ export default class SearchDatePicker extends Component {
   constructor (props) {
     super(props);
     this.state = { focusedInput: null };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange (event) {
+    const value = event.target.value ? moment(event.target.value) : null;
+    this.props.onDateSearch({
+      startDate: this.props.startDate,
+      endDate: this.props.endDate,
+      [event.target.name]: value,
+    });
   }
 
   render () {
     return (
-      <DateRangePicker
-        startDateId={'startDate' + (this.props.inputIdSuffix || '')}
-        endDateId={'endDate' + (this.props.inputIdSuffix || '')}
-        startDate={this.props.startDate}
-        endDate={this.props.endDate}
-        onDatesChange={this.props.onDateSearch}
-        focusedInput={this.state.focusedInput}
-        onFocusChange={(focusedInput) => { this.setState({ focusedInput });}}
-        isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())}
-        readOnly
-        showClearDates />
+      <>
+        <label className="searchDateField">
+          From date:
+          <input
+            type="date"
+            name="startDate"
+            value={this.props.startDate?.toISOString()?.slice(0, 10) ?? ''}
+            onChange={this.handleChange}
+          />
+        </label>
+        <label className="searchDateField">
+          To date:
+          <input
+            type="date"
+            name="endDate"
+            value={this.props.endDate?.toISOString()?.slice(0, 10) ?? ''}
+            onChange={this.handleChange}
+          />
+        </label>
+      </>
     );
   }
 }
