@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
-import WebMonitoringApi from '../services/web-monitoring-api';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import { ApiContext, WebMonitoringApi, WebMonitoringDb } from './api-context';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
 import LoginForm from './login-form/login-form';
@@ -155,29 +153,31 @@ export default class WebMonitoringUi extends Component {
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
-      <Router>
-        <div id="application">
-          <NavBar
-            title="EDGI"
-            user={this.state.user}
-            showLogin={this.showLogin}
-            logOut={this.logOut}
-          >
-            <EnvironmentBanner apiUrl={api.url}/>
-          </NavBar>
-          <Route exact path="/" render={() => <Redirect to="/pages" />}/>
-          <Route path="/pages" render={withData(PageList)} />
-          <Route path="/page/:pageId/:change?" render={(routeProps) =>
-            <PageDetails
-              {...routeProps}
+      <ApiContext.Provider value={{ api, localApi }}>
+        <Router>
+          <div id="application">
+            <NavBar
+              title="EDGI"
               user={this.state.user}
-              pages={this.state.pages}
-            />
-          }/>
-          <Route path="/version/:versionId" component={VersionRedirect} />
-          {modal}
-        </div>
-      </Router>
+              showLogin={this.showLogin}
+              logOut={this.logOut}
+            >
+              <EnvironmentBanner apiUrl={api.url}/>
+            </NavBar>
+            <Route exact path="/" render={() => <Redirect to="/pages" />}/>
+            <Route path="/pages" render={withData(PageList)} />
+            <Route path="/page/:pageId/:change?" render={(routeProps) =>
+              <PageDetails
+                {...routeProps}
+                user={this.state.user}
+                pages={this.state.pages}
+              />
+            }/>
+            <Route path="/version/:versionId" component={VersionRedirect} />
+            {modal}
+          </div>
+        </Router>
+      </ApiContext.Provider>
     );
   }
 
@@ -195,13 +195,4 @@ export default class WebMonitoringUi extends Component {
       </AriaModal>
     );
   }
-
-  getChildContext () {
-    return { api, localApi };
-  }
 }
-
-WebMonitoringUi.childContextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb),
-  localApi: PropTypes.instanceOf(WebMonitoringApi)
-};

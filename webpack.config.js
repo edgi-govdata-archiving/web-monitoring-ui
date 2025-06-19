@@ -54,7 +54,15 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
+                exportLocalsConvention: 'camel-case',
                 localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+
+                // Use a default export instead of namedExport so we can mock
+                // CSS modules for tests (see `__mocks__/identity-object.js`).
+                // Not sure how to mock:
+                //     import * as styles from ...
+                // which is the standard behavor of css-loader.
+                namedExport: false,
               },
             },
           },

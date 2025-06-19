@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import { Component } from 'react';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import { ApiContext } from './api-context';
 import { diffTypes } from '../constants/diff-types';
 import Loading from './loading';
 
@@ -11,7 +10,7 @@ import ChangesOnlyDiff from './changes-only-diff';
 import RawVersion from './raw-version';
 import SideBySideRawVersions from './side-by-side-raw-versions';
 
-import '../css/base.css';
+import styles from '../css/base.css';
 
 /**
  * @typedef DiffViewProps
@@ -30,6 +29,8 @@ import '../css/base.css';
  * @param {DiffViewProps} props
  */
 export default class DiffView extends Component {
+  static contextType = ApiContext;
+
   static getDerivedStateFromProps (props, state) {
     // Clear out stale diff data before trying to render
     if (!specifiesSameDiff(props, state.previousDiff)) {
@@ -70,7 +71,7 @@ export default class DiffView extends Component {
     }
     else if (this.state.diffData instanceof Error) {
       return (
-        <p styleName="alert alert-danger" role="alert">
+        <p className={[styles.alert, styles.alertDanger].join(' ')} role="alert">
           Error: {this.state.diffData.message}
         </p>
       );
@@ -89,16 +90,15 @@ export default class DiffView extends Component {
       && this.props.b
       && this.props.a.body_hash === this.props.b.body_hash;
 
-    const className = 'diff-view__alert';
-    const styleName = 'alert alert-warning';
+    const className = `diff-view__alert ${styles.alert} ${styles.alertWarning}`;
 
     if (sameContent) {
-      return <div className={className} styleName={styleName}>
+      return <div className={className} role="alert">
         These two versions are <strong>exactly the same</strong>.
       </div>;
     }
     else if (this.state.diffData.change_count === 0) {
-      return <div className={className} styleName={styleName}>
+      return <div className={className} role="alert">
         There were <strong>no changes for this diff type</strong>. (Other diff
         types may show changes.)
       </div>;
@@ -110,7 +110,7 @@ export default class DiffView extends Component {
   renderUndiffableMessage () {
     if (this.state.diffData.raw) {
       return (
-        <div className="diff-view__alert" styleName="alert alert-info">
+        <div className={`diff-view__alert ${styles.alert} ${styles.alertInfo}`}>
           We can’t compare the selected versions of page; you are viewing the
           content without deletions and insertions highlighted.
         </div>
@@ -229,10 +229,6 @@ export default class DiffView extends Component {
       });
   }
 }
-
-DiffView.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb),
-};
 
 /**
  * Determine whether a set of props specifies the same diff as another set of

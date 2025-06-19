@@ -4,13 +4,11 @@ import { diffTypesFor } from '../../constants/diff-types';
 import DiffView from '../diff-view';
 import layeredStorage from '../../scripts/layered-storage';
 import Loading from '../loading';
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 import SelectDiffType from '../select-diff-type';
 import SelectVersion from '../select-version';
 import SourceInfo from '../source-info/source-info';
-import WebMonitoringApi from '../../services/web-monitoring-api';
-import WebMonitoringDb from '../../services/web-monitoring-db';
+import { ApiContext } from '../api-context';
 import {
   htmlType,
   mediaTypeForExtension,
@@ -18,8 +16,8 @@ import {
   unknownType
 } from '../../scripts/media-type';
 
-import baseStyles from '../../css/base.css'; // eslint-disable-line
-import viewStyles from './change-view.css'; // eslint-disable-line
+import baseStyles from '../../css/base.css';
+import viewStyles from './change-view.css';
 
 export const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 export const diffTypeStorage = 'edgi.wm.ui.diff_type';
@@ -45,6 +43,8 @@ const diffSettingsStorage = 'edgi.wm.ui.diff_settings';
  * @param {ChangeViewProps} props
  */
 export default class ChangeView extends Component {
+  static contextType = ApiContext;
+
   static getDerivedStateFromProps (props, state) {
     // Ensure that the current diff type is relevant to the content we are
     // comparing. If not, switch to a relevant type.
@@ -129,7 +129,7 @@ export default class ChangeView extends Component {
     }
 
     return (
-      <div styleName="viewStyles.change-view">
+      <div className={viewStyles.changeView}>
         {userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <SourceInfo
@@ -198,7 +198,7 @@ export default class ChangeView extends Component {
           <button
             disabled={this.state.addingToImportant}
             onClick={this._markAsSignificant}
-            styleName="baseStyles.btn baseStyles.btn-link viewStyles.action-btn"
+            className={[baseStyles.btn, baseStyles.btnLink, viewStyles.actionBtn].join(' ')}
           >
               Add Important Change
           </button>
@@ -217,7 +217,7 @@ export default class ChangeView extends Component {
           <button
             disabled={this.state.addingToDictionary}
             onClick={this._addToDictionary}
-            styleName="baseStyles.btn baseStyles.btn-link viewStyles.action-btn"
+            className={[baseStyles.btn, baseStyles.btnLink, viewStyles.actionBtn].join(' ')}
           >
               Add to Dictionary
           </button>
@@ -228,15 +228,15 @@ export default class ChangeView extends Component {
     // Returning array of controls so that we don't have an extraneous containing div
     return [
       (
-        <div styleName="viewStyles.actions" key="change-view-actions">
-          <div styleName="viewStyles.actions-section">
+        <div className={viewStyles.actions} key="change-view-actions">
+          <div className={viewStyles.actionsSection}>
             <i className="fa fa-toggle-on" aria-hidden="true" />
             {/* TODO: should be buttons */}
             <a className="lnk-action" href="#" onClick={this._toggleCollapsedView}>Toggle Signifiers</a>
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
           </div>
-          <div styleName="viewStyles.actions-section">
+          <div className={viewStyles.actionsSection}>
             {markSignificant}
             {addToDictionary}
           </div>
@@ -350,11 +350,6 @@ export default class ChangeView extends Component {
       });
   }
 }
-
-ChangeView.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb),
-  localApi: PropTypes.instanceOf(WebMonitoringApi)
-};
 
 /**
  * Determine whether a change object represents the same change as another

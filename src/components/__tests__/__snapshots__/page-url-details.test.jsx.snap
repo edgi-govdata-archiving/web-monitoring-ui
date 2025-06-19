@@ -1,148 +1,54 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`PageUrlDetails Component shows separate URL histories for each version if they differ 1`] = `
-"<PageUrlDetails page={{...}} from={{...}} to={{...}}>
-  <details className="src-components-page-url-details-___page-url-details__page-url-details___1F8v5">
+<div>
+  <details
+    class="pageUrlDetails"
+  >
     <summary>
       ⚠️ Versions come from different URLs
     </summary>
     <strong>
       From Version URL and Redirects:
     </strong>
-    <UrlHistoryList urls={{...}} baseUrl="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-      <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
-        <li>
-          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener noreferrer">
-              <NaiveUrlDiff a={{...}} b={{...}}>
-                http://
-                 
-                www
-                .
-                ncei
-                .
-                noaa
-                .
-                gov
-                 
-                / news
-                 
-                / earth-science-conference-convenes
-                 
-                 
-              </NaiveUrlDiff>
-            </a>
-          </ExternalLink>
-          <RedirectIcon>
-            <i className="fa fa-no-hover fa-right-icon fa-angle-right" title="Redirects to" />
-          </RedirectIcon>
-        </li>
-        <li>
-          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener noreferrer">
-              <NaiveUrlDiff a={{...}} b={{...}}>
-                http://
-                 
-                www
-                .
-                ncei
-                .
-                noaa
-                .
-                gov
-                 
-                / news
-                 
-                / earth-science-conference-convenes
-                 
-                <ins>
-                  / something
-                </ins>
-                 
-                 
-              </NaiveUrlDiff>
-            </a>
-          </ExternalLink>
-        </li>
-      </ol>
-    </UrlHistoryList>
-    <strong>
-      To Version URL and Redirects:
-    </strong>
-    <UrlHistoryList urls={{...}} baseUrl="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-      <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
-        <li>
-          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener noreferrer">
-              <NaiveUrlDiff a={{...}} b={{...}}>
-                http://
-                 
-                www
-                .
-                ncei
-                .
-                noaa
-                .
-                gov
-                 
-                / news
-                 
-                / earth-science-conference-convenes
-                 
-                 
-              </NaiveUrlDiff>
-            </a>
-          </ExternalLink>
-          <RedirectIcon>
-            <i className="fa fa-no-hover fa-right-icon fa-angle-right" title="Redirects to" />
-          </RedirectIcon>
-        </li>
-        <li>
-          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else" target="_blank" rel="noopener noreferrer">
-              <NaiveUrlDiff a={{...}} b={{...}}>
-                http://
-                 
-                www
-                .
-                ncei
-                .
-                noaa
-                .
-                gov
-                 
-                / news
-                 
-                / earth-science-conference-convenes
-                 
-                <ins>
-                  / something
-                </ins>
-                 
-                <ins>
-                  / else
-                </ins>
-                 
-                 
-              </NaiveUrlDiff>
-            </a>
-          </ExternalLink>
-        </li>
-      </ol>
-    </UrlHistoryList>
-  </details>
-</PageUrlDetails>"
-`;
-
-exports[`PageUrlDetails Component shows the versions' URL if it differs from the page's 1`] = `
-"<PageUrlDetails page={{...}} from={{...}} to={{...}}>
-  <details className="src-components-page-url-details-___page-url-details__page-url-details___1F8v5">
-    <summary>
-      ⚠️ Captured from a different URL
-    </summary>
-    <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
-      <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener noreferrer">
-        <NaiveUrlDiff a="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" b="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
+    <ol
+      class="urlHistoryList"
+    >
+      <li>
+        <a
+          href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          http://
+           
+          www
+          .
+          ncei
+          .
+          noaa
+          .
+          gov
+           
+          / news
+           
+          / earth-science-conference-convenes
+           
+          
+           
+          
+        </a>
+        <i
+          class="fa fa-no-hover fa-right-icon fa-angle-right"
+          title="Redirects to"
+        />
+      </li>
+      <li>
+        <a
+          href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           http://
            
           www
@@ -161,77 +67,194 @@ exports[`PageUrlDetails Component shows the versions' URL if it differs from the
             / something
           </ins>
            
+          
            
-        </NaiveUrlDiff>
-      </a>
-    </ExternalLink>
+          
+        </a>
+      </li>
+    </ol>
+    <strong>
+      To Version URL and Redirects:
+    </strong>
+    <ol
+      class="urlHistoryList"
+    >
+      <li>
+        <a
+          href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          http://
+           
+          www
+          .
+          ncei
+          .
+          noaa
+          .
+          gov
+           
+          / news
+           
+          / earth-science-conference-convenes
+           
+          
+           
+          
+        </a>
+        <i
+          class="fa fa-no-hover fa-right-icon fa-angle-right"
+          title="Redirects to"
+        />
+      </li>
+      <li>
+        <a
+          href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something/else"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          http://
+           
+          www
+          .
+          ncei
+          .
+          noaa
+          .
+          gov
+           
+          / news
+           
+          / earth-science-conference-convenes
+           
+          <ins>
+            / something
+          </ins>
+           
+          <ins>
+            / else
+          </ins>
+           
+          
+           
+          
+        </a>
+      </li>
+    </ol>
   </details>
-</PageUrlDetails>"
+</div>
+`;
+
+exports[`PageUrlDetails Component shows the versions' URL if it differs from the page's 1`] = `
+<div>
+  <details
+    class="pageUrlDetails"
+  >
+    <summary>
+      ⚠️ Captured from a different URL
+    </summary>
+    <a
+      href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      http://
+       
+      www
+      .
+      ncei
+      .
+      noaa
+      .
+      gov
+       
+      / news
+       
+      / earth-science-conference-convenes
+       
+      <ins>
+        / something
+      </ins>
+       
+      
+       
+      
+    </a>
+  </details>
+</div>
 `;
 
 exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
-"<PageUrlDetails page={{...}} from={{...}} to={{...}}>
-  <details className="src-components-page-url-details-___page-url-details__page-url-details___1F8v5">
+<div>
+  <details
+    class="pageUrlDetails"
+  >
     <summary>
       ⚠️ Captured URL Redirected Somewhere Else
     </summary>
-    <UrlHistoryList urls={{...}} baseUrl="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-      <ol className="src-components-page-url-details-___page-url-details__url-history-list___3qirP">
-        <li>
-          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes" target="_blank" rel="noopener noreferrer">
-              <NaiveUrlDiff a={{...}} b={{...}}>
-                http://
-                 
-                www
-                .
-                ncei
-                .
-                noaa
-                .
-                gov
-                 
-                / news
-                 
-                / earth-science-conference-convenes
-                 
-                 
-              </NaiveUrlDiff>
-            </a>
-          </ExternalLink>
-          <RedirectIcon>
-            <i className="fa fa-no-hover fa-right-icon fa-angle-right" title="Redirects to" />
-          </RedirectIcon>
-        </li>
-        <li>
-          <ExternalLink href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something">
-            <a href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something" target="_blank" rel="noopener noreferrer">
-              <NaiveUrlDiff a={{...}} b={{...}}>
-                http://
-                 
-                www
-                .
-                ncei
-                .
-                noaa
-                .
-                gov
-                 
-                / news
-                 
-                / earth-science-conference-convenes
-                 
-                <ins>
-                  / something
-                </ins>
-                 
-                 
-              </NaiveUrlDiff>
-            </a>
-          </ExternalLink>
-        </li>
-      </ol>
-    </UrlHistoryList>
+    <ol
+      class="urlHistoryList"
+    >
+      <li>
+        <a
+          href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          http://
+           
+          www
+          .
+          ncei
+          .
+          noaa
+          .
+          gov
+           
+          / news
+           
+          / earth-science-conference-convenes
+           
+          
+           
+          
+        </a>
+        <i
+          class="fa fa-no-hover fa-right-icon fa-angle-right"
+          title="Redirects to"
+        />
+      </li>
+      <li>
+        <a
+          href="http://www.ncei.noaa.gov/news/earth-science-conference-convenes/something"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          http://
+           
+          www
+          .
+          ncei
+          .
+          noaa
+          .
+          gov
+           
+          / news
+           
+          / earth-science-conference-convenes
+           
+          <ins>
+            / something
+          </ins>
+           
+          
+           
+          
+        </a>
+      </li>
+    </ol>
   </details>
-</PageUrlDetails>"
+</div>
 `;

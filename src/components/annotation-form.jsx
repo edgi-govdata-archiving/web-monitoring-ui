@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import StandardTooltip from './standard-tooltip';
+import StandardTooltip from './standard-tooltip/standard-tooltip';
 
 /**
  * @typedef {Object} AnnotationFormProps
@@ -83,7 +83,7 @@ export default class AnnotationForm extends Component {
 
         <StandardTooltip
           id="annotation-tooltip"
-          disable={!this.props.collapsed}
+          hidden={!this.props.collapsed}
         />
       </form>
     );
@@ -123,8 +123,8 @@ function Checkbox ({ children, formValues, name, onChange, collapsed }) {
       />
       <label
         className="toggle-btn"
-        data-for="annotation-tooltip"
-        data-tip={children}
+        data-tooltip-id="annotation-tooltip"
+        data-tooltip-content={children}
         data-fieldNumber={fieldNumber}
         htmlFor={uuid}
       >

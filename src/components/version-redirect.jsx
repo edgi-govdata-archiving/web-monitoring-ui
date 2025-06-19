@@ -1,12 +1,13 @@
 import Loading from './loading';
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import WebMonitoringDb from '../services/web-monitoring-db';
+import { ApiContext } from './api-context';
 
-import '../css/base.css';
+import styles from '../css/base.css';
 
 export default class VersionRedirect extends Component {
+  static contextType = ApiContext;
+
   constructor (props) {
     super (props);
     this.state = {
@@ -29,7 +30,7 @@ export default class VersionRedirect extends Component {
   render () {
     if (this.state.error) {
       return (
-        <p styleName="alert alert-danger" role="alert">
+        <p className={[styles.alert, styles.alertDanger].join(' ')} role="alert">
           Error: We couldn't find the version you're looking for.
           Please check you provided the correct versionID.
         </p>
@@ -43,7 +44,3 @@ export default class VersionRedirect extends Component {
     return <Redirect to={`/page/${this.state.pageId}/..${this.props.match.params.versionId}`} />;
   }
 }
-
-VersionRedirect.contextTypes = {
-  api: PropTypes.instanceOf(WebMonitoringDb)
-};

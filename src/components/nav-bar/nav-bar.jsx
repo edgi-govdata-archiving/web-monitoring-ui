@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 
-import baseStyles from '../../css/base.css'; // eslint-disable-line
-import navStyles from './nav-bar.css'; // eslint-disable-line
+import baseStyles from '../../css/base.css';
+import navStyles from './nav-bar.css';
 /**
  * @typedef {Object} NavBarProps
  * @property {Function} logOut Callback requesting the user be logged out
@@ -15,12 +15,12 @@ import navStyles from './nav-bar.css'; // eslint-disable-line
  * @param {NavBarProps} props
  */
 export default ({ children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) => (
-  <div styleName="navStyles.container">
-    <nav styleName="navStyles.navbar">
-      <Link to="/" styleName="navStyles.brand">{title}</Link>
-      <ul styleName="navStyles.nav-list">
+  <div className={navStyles.container}>
+    <nav className={navStyles.navbar}>
+      <Link to="/" className={navStyles.brand}>{title}</Link>
+      <ul className={navStyles.navList}>
         <li>
-          <NavLink to="/pages" activeStyleName="navStyles.nav-link-active" styleName="navStyles.nav-link" exact>
+          <NavLink to="/pages" activeClassName={navStyles.navLinkActive} className={navStyles.navLink} exact>
             All Pages
           </NavLink>
         </li>
@@ -34,10 +34,10 @@ export default ({ children = null, title = 'EDGI Web Monitoring', user = null, s
 function renderUserInfo (user, showLogin, logOut) {
   if (user) {
     return (
-      <span styleName="navStyles.auth-status">
+      <span className={navStyles.authStatus}>
         {user.email}
         {' '}
-        <button styleName="baseStyles.btn baseStyles.btn-link navStyles.auth-btn" onClick={logOut}>
+        <button className={[baseStyles.btn, baseStyles.btnLink, navStyles.authBtn].join(' ')} onClick={logOut}>
           (Log out)
         </button>
       </span>
@@ -45,7 +45,7 @@ function renderUserInfo (user, showLogin, logOut) {
   }
   else {
     return (
-      <button styleName="baseStyles.btn baseStyles.btn-link navStyles.auth-btn navStyles.auth-status" onClick={showLogin}>
+      <button className={[baseStyles.btn, baseStyles.btnLink, navStyles.authBtn, navStyles.authStatus].join(' ')} onClick={showLogin}>
         Log In
       </button>
     );

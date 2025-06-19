@@ -17,7 +17,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
 
 ## Installation
 
-1. Install Node 18.20.4.
+1. Install Node 22.16.0.
     - We recommend using [Nodenv][nodenv], which will automatically select the correct version of Node.js to run for you.
         - If you don’t yet have the right version of Node.js installed, enter the root directory for this project and then run `nodenv install`.
     - Alternatively, you can use [NVM][nvm] or a variety of [alternatives][nodenv-alternatives] for managing multiple versions of Node.js.

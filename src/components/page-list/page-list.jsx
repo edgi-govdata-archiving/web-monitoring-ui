@@ -1,7 +1,7 @@
 import Loading from '../loading';
 import { Component } from 'react';
 import SearchBar from '../search-bar/search-bar';
-import StandardTooltip from '../standard-tooltip';
+import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import PageTag from '../page-tag/page-tag';
 import {
   getHttpStatusCategory,
@@ -9,8 +9,8 @@ import {
 } from '../../scripts/http-info';
 import { removeNonUserTags } from '../../scripts/tools';
 
-import baseStyles from '../../css/base.css'; // eslint-disable-line
-import listStyles from './page-list.css'; // eslint-disable-line
+import baseStyles from '../../css/base.css';
+import listStyles from './page-list.css';
 
 /**
  * These props also inherit from React Router's RouteComponent props
@@ -44,7 +44,7 @@ export default class PageList extends Component {
     }
 
     return (
-      <div styleName="baseStyles.main">
+      <div className={baseStyles.main}>
         <SearchBar
           onSearch={this.props.onSearch}
         />
@@ -55,9 +55,9 @@ export default class PageList extends Component {
 
   renderPages () {
     return (
-      <div styleName="listStyles.container">
+      <div className={listStyles.container}>
         <StandardTooltip id="list-tooltip" />
-        <table styleName="listStyles.table listStyles.page-list">
+        <table className={[listStyles.table, listStyles.pageList].join(' ')}>
           <thead>{this.renderHeader()}</thead>
           <tbody>
             {this.props.pages.map(page => this.renderRow(page))}
@@ -94,8 +94,8 @@ export default class PageList extends Component {
         <td>{tags.map(tag => <PageTag tag={tag} key={tag.name} />)}</td>
         <td
           data-status-category={statusCategory}
-          data-for="list-tooltip"
-          data-tip={describeHttpStatus(statusCode)}
+          data-tooltip-id="list-tooltip"
+          data-tooltip-content={describeHttpStatus(statusCode)}
         >
           {statusCode >= 400 ? '✘' : '•'} {record.status}
         </td>
@@ -109,8 +109,8 @@ export default class PageList extends Component {
   // TODO: we use similar markup elsewhere, consider making this a component
   renderError (message, type = 'danger') {
     return (
-      <div styleName="listStyles.container">
-        <p styleName={`listStyles.list-alert baseStyles.alert baseStyles.alert-${type}`} role="alert">
+      <div className={listStyles.container}>
+        <p className={[listStyles.listAlert, baseStyles.alert, baseStyles[`alert-${type}`]].join(' ')} role="alert">
           {message}
         </p>
       </div>
