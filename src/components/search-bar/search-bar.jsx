@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import styles from './search-bar.css';
-import SearchDatePicker from '../search-date-picker';
+import SearchDatePicker from '../search-date-picker/search-date-picker';
 
 /**
  * @typedef SearchBarProps

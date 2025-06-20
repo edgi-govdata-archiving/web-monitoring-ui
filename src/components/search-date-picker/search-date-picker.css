@@ -1,0 +1,12 @@
+.search-date-field {
+  border-left: 1px solid var(--default-border);
+  padding: 0 0.5em;
+  font-weight: normal;
+  color: var(--gray-light);
+  margin-bottom: 0;
+
+  input {
+    border: none;
+    margin-left: 0.1em;
+  }
+}

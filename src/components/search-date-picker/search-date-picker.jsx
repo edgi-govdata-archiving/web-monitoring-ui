@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import moment from 'moment';
+import styles from './search-date-picker.css';
 
 /**
  * @typedef SearchDatePickerProps
@@ -36,22 +37,24 @@ export default class SearchDatePicker extends Component {
   render () {
     return (
       <>
-        <label className="searchDateField">
+        <label className={styles.searchDateField}>
           From date:
           <input
             type="date"
             name="startDate"
             value={this.props.startDate?.toISOString()?.slice(0, 10) ?? ''}
             onChange={this.handleChange}
+            max={(new Date()).toISOString().slice(0, 10)}
           />
         </label>
-        <label className="searchDateField">
+        <label className={styles.searchDateField}>
           To date:
           <input
             type="date"
             name="endDate"
             value={this.props.endDate?.toISOString()?.slice(0, 10) ?? ''}
             onChange={this.handleChange}
+            max={moment().add(1, 'days').toISOString().slice(0, 10)}
           />
         </label>
       </>
