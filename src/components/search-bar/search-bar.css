@@ -2,11 +2,12 @@
   border-bottom: 1px solid var(--default-border);
   margin-bottom: 0.5em;
   display: flex;
+  font-size: 1.25em;
+  line-height: 2.15;
 }
 
 .search-bar-input {
   border: none;
-  font-size: 1.25em;
-  padding: 0.5em 15px;
+  padding: 0 15px;
   flex-grow: 2;
 }
