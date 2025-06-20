@@ -46,16 +46,10 @@ describe('search-bar', () => {
 
   it('Handles date range search queries for startDate', () => {
     const onSearch = jest.fn();
-    render(<SearchBar inputIdSuffix="1" onSearch={onSearch} />);
-    
-    // To open and interact with the calendar, we first need to focus the input it's attached to.
-    const startDateInput = screen.getByLabelText(/start date/i);
-    fireEvent.focus(startDateInput);
+    render(<SearchBar onSearch={onSearch} />);
 
-    // The actual button text is something like "Choose Sunday, June 1, 2025, blah blah".
-    // This should get us close enough. There will be more than one (for the current and previous month).
-    const calendarDay = screen.getAllByRole('button', { name: /Choose .* 1,/ });
-    fireEvent.click(calendarDay[0]);
+    const startDateInput = screen.getByLabelText(/from date/i);
+    fireEvent.change(startDateInput, { target: { value: '2025-06-01' } });
 
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
@@ -66,15 +60,10 @@ describe('search-bar', () => {
 
   it('Handles date range search queries for endDate', () => {
     const onSearch = jest.fn();
-    render(<SearchBar inputIdSuffix="1" onSearch={onSearch} />);
-    
-    const endDateInput = screen.getByLabelText(/end date/i);
-    fireEvent.focus(endDateInput);
+    render(<SearchBar onSearch={onSearch} />);
 
-    // The actual button text is something like "Choose Sunday, June 1, 2025, blah blah".
-    // This should get us close enough. There will be more than one (for the current and previous month).
-    const calendarDay = screen.getAllByRole('button', { name: /Choose .* 1,/ });
-    fireEvent.click(calendarDay[0]);
+    const endDateInput = screen.getByLabelText(/to date/i);
+    fireEvent.change(endDateInput, { target: { value: '2025-06-01' } });
 
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
