@@ -1,12 +1,12 @@
 import { Component } from 'react';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import styles from './search-date-picker.css';
 
 /**
  * @typedef SearchDatePickerProps
- * @property {({startDate: moment.Moment, endDate: Moment.moment}) => void} onDateSearch
- * @property {Date|moment.Moment} startDate
- * @property {Date|moment.Moment} endDate
+ * @property {({startDate: DateTime, endDate: DateTime}) => void} onDateSearch
+ * @property {DateTime} startDate
+ * @property {DateTime} endDate
  */
 
 /**
@@ -26,7 +26,7 @@ export default class SearchDatePicker extends Component {
   }
 
   handleChange (event) {
-    const value = event.target.value ? moment(event.target.value) : null;
+    const value = event.target.value ? DateTime.fromISO(event.target.value) : null;
     this.props.onDateSearch({
       startDate: this.props.startDate,
       endDate: this.props.endDate,
@@ -42,9 +42,9 @@ export default class SearchDatePicker extends Component {
           <input
             type="date"
             name="startDate"
-            value={this.props.startDate?.toISOString()?.slice(0, 10) ?? ''}
+            value={this.props.startDate?.toISODate() ?? ''}
             onChange={this.handleChange}
-            max={(new Date()).toISOString().slice(0, 10)}
+            max={DateTime.now().toISODate()}
           />
         </label>
         <label className={styles.searchDateField}>
@@ -52,9 +52,9 @@ export default class SearchDatePicker extends Component {
           <input
             type="date"
             name="endDate"
-            value={this.props.endDate?.toISOString()?.slice(0, 10) ?? ''}
+            value={this.props.endDate?.toISODate() ?? ''}
             onChange={this.handleChange}
-            max={moment().add(1, 'days').toISOString().slice(0, 10)}
+            max={DateTime.now().plus({ days: 1 }).toISODate()}
           />
         </label>
       </>

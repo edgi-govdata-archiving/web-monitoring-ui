@@ -2,7 +2,7 @@
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import SearchBar from '../search-bar/search-bar';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 describe('search-bar', () => {
   // Need to use a fake timer because the _urlSearch function is debounced.
@@ -53,7 +53,7 @@ describe('search-bar', () => {
 
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
-      startDate: expect.any(moment),
+      startDate: expect.any(DateTime),
       endDate: null
     });
   });
@@ -68,7 +68,7 @@ describe('search-bar', () => {
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
       startDate: null,
-      endDate: expect.any(moment)
+      endDate: expect.any(DateTime)
     });
   });
 });
