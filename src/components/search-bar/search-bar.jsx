@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import styles from './search-bar.css';
-import SearchDatePicker from '../search-date-picker';
+import SearchDatePicker from '../search-date-picker/search-date-picker';
+
+/** @typedef {import("luxon").DateTime} DateTime */
 
 /**
  * @typedef SearchBarProps
@@ -87,8 +89,8 @@ export default class SearchBar extends Component {
   /**
    * Updates query state with date range information.
    *
-   * @param {Date} startDate moment object from date picker
-   * @param {Date} endDate moment object from date picker
+   * @param {DateTime} startDate Luxon DateTime object from date picker
+   * @param {DateTime} endDate Luxon DateTime object from date picker
    */
   _dateSearch ({ startDate, endDate }) {
     this.setState({ startDate, endDate });
