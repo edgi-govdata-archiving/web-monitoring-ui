@@ -34,9 +34,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
            
           / earth-science-conference-convenes
            
-          
            
-          
         </a>
         <i
           class="fa fa-no-hover fa-right-icon fa-angle-right"
@@ -67,9 +65,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
             / something
           </ins>
            
-          
            
-          
         </a>
       </li>
     </ol>
@@ -99,9 +95,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
            
           / earth-science-conference-convenes
            
-          
            
-          
         </a>
         <i
           class="fa fa-no-hover fa-right-icon fa-angle-right"
@@ -136,9 +130,7 @@ exports[`PageUrlDetails Component shows separate URL histories for each version 
             / else
           </ins>
            
-          
            
-          
         </a>
       </li>
     </ol>
@@ -177,9 +169,7 @@ exports[`PageUrlDetails Component shows the versions' URL if it differs from the
         / something
       </ins>
        
-      
        
-      
     </a>
   </details>
 </div>
@@ -216,9 +206,7 @@ exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
            
           / earth-science-conference-convenes
            
-          
            
-          
         </a>
         <i
           class="fa fa-no-hover fa-right-icon fa-angle-right"
@@ -249,9 +237,7 @@ exports[`PageUrlDetails Component shows the versions' redirects 1`] = `
             / something
           </ins>
            
-          
            
-          
         </a>
       </li>
     </ol>

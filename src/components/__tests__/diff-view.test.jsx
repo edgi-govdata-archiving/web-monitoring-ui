@@ -31,6 +31,8 @@ describe('diff-view', () => {
     );
 
     expect(container).not.toBeEmptyDOMElement();
+    await screen.findByText(/loading/i);
+    await waitFor(() => expect(screen.queryByText(/loading/i)).toBeNull());
   });
 
   it('renders an alert if there are no changes in the diff', async () => {
@@ -47,7 +49,7 @@ describe('diff-view', () => {
       </ApiContext.Provider>
     );
 
-    await waitFor(() => screen.getByRole('alert'));
+    await screen.findByRole('alert');
   });
 
   it('renders no alert if there are changes in the diff', async () => {
@@ -63,7 +65,7 @@ describe('diff-view', () => {
     );
 
     await waitFor(() => expect(mockApi.getDiff).toHaveBeenCalled());
+    await screen.findByText('Hi');
     expect(screen.queryByRole('alert')).toBeNull();
-    screen.getByText('Hi');
   });
 });

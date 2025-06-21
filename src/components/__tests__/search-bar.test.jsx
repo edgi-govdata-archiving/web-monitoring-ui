@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import SearchBar from '../search-bar/search-bar';
 import { DateTime } from 'luxon';
 
@@ -14,13 +14,15 @@ describe('search-bar', () => {
     expect(searchBarInput).toBeInTheDocument();
   });
 
-  it('Handles search queries with a protocol correctly', () => {
+  it('Handles search queries with a protocol correctly', async () => {
     const onSearch = jest.fn();
     render(<SearchBar onSearch={onSearch} />);
-    const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
 
-    fireEvent.change(searchBarInput, { target: { value: 'http://epa' } });
-    jest.runAllTimers();
+    await act(() => {
+      const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
+      fireEvent.change(searchBarInput, { target: { value: 'http://epa' } });
+      jest.runAllTimers();
+    });
 
     expect(onSearch).toHaveBeenCalledWith({
       url: 'http://epa*',
@@ -29,13 +31,15 @@ describe('search-bar', () => {
     });
   });
 
-  it('Handles search queries without a protocol correctly', () => {
+  it('Handles search queries without a protocol correctly', async () => {
     const onSearch = jest.fn();
     render(<SearchBar onSearch={onSearch} />);
-    const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
 
-    fireEvent.change(searchBarInput, { target: { value: 'epa' } });
-    jest.runAllTimers();
+    await act(() => {
+      const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
+      fireEvent.change(searchBarInput, { target: { value: 'epa' } });
+      jest.runAllTimers();
+    });
 
     expect(onSearch).toHaveBeenCalledWith({
       url: '*//epa*',
@@ -44,12 +48,14 @@ describe('search-bar', () => {
     });
   });
 
-  it('Handles date range search queries for startDate', () => {
+  it('Handles date range search queries for startDate', async () => {
     const onSearch = jest.fn();
     render(<SearchBar onSearch={onSearch} />);
 
-    const startDateInput = screen.getByLabelText(/from date/i);
-    fireEvent.change(startDateInput, { target: { value: '2025-06-01' } });
+    await act(() => {
+      const startDateInput = screen.getByLabelText(/from date/i);
+      fireEvent.change(startDateInput, { target: { value: '2025-06-01' } });
+    });
 
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
@@ -58,12 +64,14 @@ describe('search-bar', () => {
     });
   });
 
-  it('Handles date range search queries for endDate', () => {
+  it('Handles date range search queries for endDate', async () => {
     const onSearch = jest.fn();
     render(<SearchBar onSearch={onSearch} />);
 
-    const endDateInput = screen.getByLabelText(/to date/i);
-    fireEvent.change(endDateInput, { target: { value: '2025-06-01' } });
+    await act(() => {
+      const endDateInput = screen.getByLabelText(/to date/i);
+      fireEvent.change(endDateInput, { target: { value: '2025-06-01' } });
+    });
 
     expect(onSearch).toHaveBeenCalledWith({
       url: null,
