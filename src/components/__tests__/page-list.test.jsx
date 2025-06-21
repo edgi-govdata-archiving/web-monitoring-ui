@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import PageList from '../page-list/page-list';
 import simplePages from '../../__mocks__/simple-pages.json';
 
@@ -56,25 +56,29 @@ describe('page-list', () => {
     expect(screen.queryByText(/loading/i)).toBeNull();
   });
 
-  it('opens a new window when a user control clicks on a page row', () => {
+  it('opens a new window when a user control clicks on a page row', async () => {
     global.open = jest.fn();
     render(<PageList pages={simplePages} />);
 
     const page = simplePages[0];
-    const row = screen.getByRole('link', { name: page.url }).closest('tr');
-    fireEvent.click(row, { ctrlKey : true });
+    await act(() => {
+      const row = screen.getByRole('link', { name: page.url }).closest('tr');
+      fireEvent.click(row, { ctrlKey : true });
+    });
 
     expect(global.open.mock.calls[0][0]).toBe(`/page/${page.uuid}`);
     expect(global.open.mock.calls[0][1]).toBe('_blank');
   });
 
-  it('opens a new window when a user command clicks on a page row', () => {
+  it('opens a new window when a user command clicks on a page row', async () => {
     global.open = jest.fn();
     render(<PageList pages={simplePages} />);
 
     const page = simplePages[0];
-    const row = screen.getByRole('link', { name: page.url }).closest('tr');
-    fireEvent.click(row, { metaKey : true });
+    await act(() => {
+      const row = screen.getByRole('link', { name: page.url }).closest('tr');
+      fireEvent.click(row, { metaKey : true });
+    });
 
     expect(global.open.mock.calls.length).toBe(1);
   });

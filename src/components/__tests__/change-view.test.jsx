@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ApiContext } from '../api-context';
 import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
 import layeredStorage from '../../scripts/layered-storage';
@@ -86,13 +86,13 @@ describe('change-view', () => {
 
   describe('initial diffType', () => {
     describe('when a diffType has been stored in layeredStorage and is relevant to the pages being compared', () => {
-      it('sets state.diffType to the stored value', () => {
+      it('sets state.diffType to the stored value', async () => {
         const storedDiffType = 'CHANGES_ONLY_TEXT';
         layeredStorage.setItem(diffTypeStorage, storedDiffType);
 
         renderBasicChangeView({ mediaType: 'text/html' });
 
-        screen.getByText(`diffType="${storedDiffType}"`);
+        await screen.findByText(`diffType="${storedDiffType}"`);
       });
 
       describe('when a diffType has been stored in layeredStorage and is is NOT relevant to the pages being compared', () => {
@@ -222,19 +222,24 @@ describe('change-view', () => {
       // sanity check
       expect(newType).not.toEqual(defaultDiffType);
 
-      const diffSelector = screen.getByLabelText('Comparison:');
-      diffSelector.value = newType;
-      fireEvent.change(diffSelector);
+      await act(() => {
+        const diffSelector = screen.getByLabelText('Comparison:');
+        diffSelector.value = newType;
+        fireEvent.change(diffSelector);
+      });
+
       screen.getByText(`diffType="${newType}"`);
     });
 
-    it('stores the new diffType in layeredStorage',  () => {
+    it('stores the new diffType in layeredStorage',  async () => {
       renderBasicChangeView({ mediaType: 'text/html' });
 
       const newType = diffTypesFor('text/html')[0].value;
-      const diffSelector = screen.getByLabelText('Comparison:');
-      diffSelector.value = newType;
-      fireEvent.change(diffSelector);
+      await act(() => {
+        const diffSelector = screen.getByLabelText('Comparison:');
+        diffSelector.value = newType;
+        fireEvent.change(diffSelector);
+      });
 
       expect(layeredStorage.getItem(diffTypeStorage)).toBe(newType);
     });

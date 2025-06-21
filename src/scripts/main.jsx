@@ -1,10 +1,8 @@
 import 'normalize.css';
 import '../css/styles.css';
 import '../css/global.css';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import WebMonitoringUi from '../components/web-monitoring-ui';
 
-ReactDOM.render(
-  <WebMonitoringUi />,
-  document.getElementById('web-monitoring-ui-root')
-);
+const root = createRoot(document.getElementById('web-monitoring-ui-root'));
+root.render(<WebMonitoringUi />);

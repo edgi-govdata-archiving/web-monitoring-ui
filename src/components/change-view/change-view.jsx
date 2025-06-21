@@ -56,6 +56,10 @@ export default class ChangeView extends Component {
     return null;
   }
 
+  get userCanAnnotate () {
+    return this.props.user?.permissions?.includes('annotate') ?? false;
+  }
+
   constructor (props) {
     super(props);
 
@@ -70,6 +74,8 @@ export default class ChangeView extends Component {
       updating: false,
     };
 
+    this.currentlyLoadingChange = null;
+
     this.handleFromVersionChange = this.handleFromVersionChange.bind(this);
     this.handleToVersionChange = this.handleToVersionChange.bind(this);
     this.handleDiffTypeChange = this.handleDiffTypeChange.bind(this);
@@ -82,11 +88,20 @@ export default class ChangeView extends Component {
   }
 
   componentDidMount () {
-    this._getChange();
+    if (this.userCanAnnotate) {
+      this._getChange();
+    }
+  }
+
+  componentWillUnmount () {
+    this.currentlyLoadingChange = null;
   }
 
   componentDidUpdate (previousProps) {
-    if (this.props.from !== previousProps.from || this.props.to !== previousProps.to) {
+    if (
+      this.userCanAnnotate
+      && (this.props.from !== previousProps.from || this.props.to !== previousProps.to)
+    ) {
       this._getChange(this.props.from, this.props.to);
     }
 
@@ -115,14 +130,6 @@ export default class ChangeView extends Component {
 
   render () {
     const { page } = this.props;
-    /**
-     * TODO: Update `userCanAnnotate` to reflect real user permissions once implemented.
-     * `canAnnotate` doesn't exist yet, so always defaults to null.
-     * Effectively hiding the annotation for everyone until permissions are implemented.
-     * `canAnnotate` is arbitrary and DOES NOT reflect any intended permissions model or setup.
-     * https://github.com/edgi-govdata-archiving/web-monitoring-ui/issues/120
-     */
-    const userCanAnnotate = this.props.user?.canAnnotate || null;
     if (!page || !page.versions) {
       // if haz no page, don't render
       return (<div></div>);
@@ -130,7 +137,7 @@ export default class ChangeView extends Component {
 
     return (
       <div className={viewStyles.changeView}>
-        {userCanAnnotate ? this.renderSubmission() : null}
+        {this.userCanAnnotate ? this.renderSubmission() : null}
         <div className="utilities">
           <SourceInfo
             from={this.props.from}
@@ -337,11 +344,12 @@ export default class ChangeView extends Component {
     from = from || this.props.from;
     to = to || this.props.to;
 
+    this.currentlyLoadingChange = { from, to };
     this.context.api.getChange(this.props.page.uuid, from.uuid, to.uuid)
       .then(change => {
         // only update state.change if what we want is still the same
         // and we don't already have it
-        if (!changeMatches(change, this.state.change) && changeMatches(change, this.props)) {
+        if (!changeMatches(change, this.state.change) && changeMatches(change, this.currentlyLoadingChange)) {
           this.setState({
             annotation: Object.assign({}, change.current_annotation),
             change
