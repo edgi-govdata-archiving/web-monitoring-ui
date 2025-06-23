@@ -29,6 +29,9 @@ import pageStyles from './page-details.css';
 export default class PageDetails extends Component {
   static contextType = ApiContext;
 
+  isMounted = false;
+  state = { page: null };
+
   static getDerivedStateFromProps (props, state) {
     // Clear existing content when switching pages
     if (state.page && state.page.uuid !== props.match.params.pageId) {
@@ -37,19 +40,14 @@ export default class PageDetails extends Component {
     return null;
   }
 
-  constructor (props) {
-    super(props);
-    this.state = { page: null };
-    this._annotateChange = this._annotateChange.bind(this);
-    this._navigateToChange = this._navigateToChange.bind(this);
-  }
-
   componentDidMount () {
+    this.isMounted = true;
     window.addEventListener('keydown', this);
     this._loadPage(this.props.match.params.pageId);
   }
 
   componentWillUnmount () {
+    this.isMounted = false;
     window.removeEventListener('keydown', this);
     this.setTitle(true);
   }
@@ -87,14 +85,14 @@ export default class PageDetails extends Component {
    * @param {string} toVersion ID of the `to` version of the change
    * @param {Object} annotation
    */
-  _annotateChange (fromVersion, toVersion, annotation) {
+  _annotateChange = (fromVersion, toVersion, annotation) => {
     return this.context.api.annotateChange(
       this.state.page.uuid,
       fromVersion,
       toVersion,
       annotation
     );
-  }
+  };
 
   render () {
     if (this.state.error) {
@@ -323,6 +321,10 @@ export default class PageDetails extends Component {
      */
     Promise.resolve(fromList || this.context.api.getPage(pageId))
       .then(page => {
+        if (!this.isMounted) {
+          console.debug('PageDetails was unmounted while loading.');
+          return;
+        }
         // If we redirected to a different page ID, store a special object so
         // we can redirect on render.
         if (page.uuid !== pageId) {
@@ -335,7 +337,7 @@ export default class PageDetails extends Component {
           });
       })
       .catch(error => {
-        this.setState({ error });
+        if (this.isMounted) this.setState({ error });
       });
   }
 
@@ -372,8 +374,8 @@ export default class PageDetails extends Component {
     return `/page/${pageId}/${changeId}`;
   }
 
-  _navigateToChange (from, to, page, replace = false) {
+  _navigateToChange = (from, to, page, replace = false) => {
     const url = this._getChangeUrl(from, to, page);
     this.props.history[replace ? 'replace' : 'push'](url);
-  }
+  };
 }

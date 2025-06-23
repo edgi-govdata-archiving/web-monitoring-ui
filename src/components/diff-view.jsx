@@ -31,6 +31,21 @@ import styles from '../css/base.css';
 export default class DiffView extends Component {
   static contextType = ApiContext;
 
+  // Tracks the diff that was most recently requested for loading. Prevents
+  // repeated calls causing multiple loads of the same data, and ensures that
+  // results only for the most recent diff is used (so if the diff props are
+  // changed while the component is loading, the data from the previous load
+  // will be discarded because it no longer matches `_loadingDiff`).
+  _loadingDiff = null;
+
+  state = {
+    // Will be requested via the API based on props.
+    diffData: null,
+    // Tracks previous diff-related props so that we know only to reload data
+    // if props related to the diff API call have changed.
+    previousDiff: null,
+  };
+
   static getDerivedStateFromProps (props, state) {
     // Clear out stale diff data before trying to render
     if (!specifiesSameDiff(props, state.previousDiff)) {
@@ -42,17 +57,13 @@ export default class DiffView extends Component {
     return null;
   }
 
-  constructor (props) {
-    super(props);
-    this._loadingDiff = null;
-    this.state = {
-      diffData: null,
-      previousDiff: null
-    };
-  }
-
   componentDidMount () {
     this._loadDiffIfNeeded(this.props);
+  }
+
+  componentWillUnmount () {
+    // Ensure any in-flight API calls are discarded and do not update state.
+    this._loadingDiff = null;
   }
 
   componentDidUpdate () {
@@ -198,34 +209,29 @@ export default class DiffView extends Component {
     }
 
     this._loadingDiff = specifier;
-    if (!diffTypes[diffType].diffService) {
-      return Promise.all([
+    let dataLoad;
+    if (diffTypes[diffType].diffService) {
+      dataLoad = this.context.api.getDiff(
+        page.uuid,
+        a.uuid,
+        b.uuid,
+        diffTypes[diffType].diffService,
+        diffTypes[diffType].options
+      );
+    }
+    else {
+      dataLoad = Promise.all([
         fetch(a.body_url, { mode: 'cors' }),
         fetch(b.body_url, { mode: 'cors' })
-      ])
-        .then(([rawA, rawB]) => {
-          return { raw: true, rawA, rawB };
-        })
-        .catch(error => error)
-        .then(data => {
-          this._loadingDiff = specifier;
-          this.setState({ diffData: data });
-        });
+      ]);
     }
 
-    this.context.api.getDiff(
-      page.uuid,
-      a.uuid,
-      b.uuid,
-      diffTypes[diffType].diffService,
-      diffTypes[diffType].options
-    )
-      .catch(error => {
-        return error;
-      })
+    dataLoad
+      .catch(error => error)
       .then(data => {
-        this._loadingDiff = specifier;
-        this.setState({ diffData: data });
+        if (this._loadingDiff === specifier) {
+          this.setState({ diffData: data });
+        }
       });
   }
 }
