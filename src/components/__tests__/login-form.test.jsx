@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';
 import { ApiContext } from '../api-context';
@@ -35,10 +35,14 @@ describe('login-form', () => {
     screen.getByRole('button', { name: 'Cancel' });
   });
 
-  it('Calls props.cancelLogin when the cancel button is clicked', () => {
+  it('Calls props.cancelLogin when the cancel button is clicked', async () => {
     const cancelLogin = jest.fn();
     render(<LoginPanel cancelLogin={cancelLogin} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    await act(() => {
+      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    });
+
     expect(cancelLogin).toHaveBeenCalled();
   });
 
@@ -51,9 +55,11 @@ describe('login-form', () => {
         </ApiContext.Provider>
       );
 
-      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      await act(() => {
+        fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+        fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      });
 
       expect(api.logIn).toHaveBeenCalledWith('aaa@aaa.aaa', 'password');
     });
@@ -67,9 +73,11 @@ describe('login-form', () => {
         </ApiContext.Provider>
       );
 
-      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      await act(() => {
+        fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+        fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      });
 
       await waitFor(() => expect(onLogin).toHaveBeenCalledWith({ id: 5 }));
     });
@@ -83,9 +91,11 @@ describe('login-form', () => {
         </ApiContext.Provider>
       );
 
-      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      await act(() => {
+        fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+        fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      });
 
       await screen.findByText('Login unsuccessful');
     });
@@ -98,8 +108,10 @@ describe('login-form', () => {
         </ApiContext.Provider>
       );
 
-      fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      await act(() => {
+        fireEvent.change(screen.getByLabelText(/e-?mail/i), { target: { value: 'aaa@aaa.aaa' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+      });
 
       expect(api.logIn).not.toHaveBeenCalled();
       await screen.findByText('Please enter an e-mail and password.');
