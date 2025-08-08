@@ -70,6 +70,11 @@ This implementation addresses GitHub issue #1067 by adding better handling for n
 - Consistent side-by-side layout for comparisons
 - Informative messaging explaining why inline rendering isn't available
 
+## Screenshot
+
+![File Preview Example](screenshots/file-preview-example.png)
+*New file preview interface showing non-renderable content with metadata instead of triggering browser downloads*
+
 ## Testing
 
 - Added comprehensive test coverage for new components
