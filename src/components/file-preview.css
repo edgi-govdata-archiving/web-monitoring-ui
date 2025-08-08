@@ -1,0 +1,113 @@
+/* File Preview Styles */
+.file-preview {
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+.file-preview__info {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.file-preview__title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.file-preview__details {
+  margin-bottom: 1.5rem;
+}
+
+.file-preview__detail {
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.file-preview__detail strong {
+  display: inline-block;
+  min-width: 100px;
+  color: #555;
+}
+
+.file-preview__hash {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85em;
+  background-color: #f4f4f4;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  word-break: break-all;
+  margin-left: 0.5rem;
+}
+
+.file-preview__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.file-preview__download {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.file-preview__download:hover {
+  text-decoration: none;
+}
+
+.file-preview__warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 1rem;
+  color: #856404;
+}
+
+.file-preview__warning p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Side-by-side file preview styles */
+.side-by-side-file-preview {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.side-by-side-file-preview__version {
+  flex: 1;
+  min-width: 0; /* Allow flex items to shrink below their content size */
+}
+
+.side-by-side-file-preview__version-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid #007cba;
+  color: #007cba;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .side-by-side-file-preview {
+    flex-direction: column;
+  }
+
+  .file-preview__actions {
+    flex-direction: column;
+  }
+
+  .file-preview__download {
+    text-align: center;
+  }
+}
