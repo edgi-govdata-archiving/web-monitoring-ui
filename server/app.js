@@ -79,6 +79,7 @@ else {
 
 app.set('views', path.join(__dirname, '../views'));
 app.engine('html', require('ejs').renderFile);
+app.engine('txt', require('ejs').renderFile);
 app.use(bodyParser.json());
 
 app.get('/healthcheck', function (request, response) {
@@ -149,6 +150,11 @@ app.post(
       .catch(createErrorHandler(response));
   }
 );
+
+app.get('/robots.txt', function (_request, response) {
+  response.header('Content-Type', 'text/plain');
+  response.render('robots.txt');
+});
 
 /**
  * Main view for manual entry

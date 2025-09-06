@@ -81,7 +81,7 @@ const diffTypesByMediaType = {
 export function diffTypesFor (mediaType) {
   let type = null;
   if (typeof mediaType === 'string' && mediaType.startsWith('.')) {
-    type = mediaTypeForExtension(mediaType) || unknownType;
+    type = mediaTypeForExtension[mediaType] || unknownType;
   }
   else {
     type = parseMediaType(mediaType);
