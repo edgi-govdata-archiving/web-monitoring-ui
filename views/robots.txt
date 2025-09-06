@@ -1,0 +1,4 @@
+# This is purely a dynamic web app and doesn't really have meaningful "pages"
+# as such. It shouldn't really be indexed or crawled at all.
+User-agent: *
+Disallow: /
