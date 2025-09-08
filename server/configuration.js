@@ -46,7 +46,7 @@ function baseConfiguration () {
     // dotenv.config() updates process.env, but only with properties it doesn't
     // already have. That means it won't update properties that were previously
     // specified, so we have to do it manually here.
-    const fromFile = require('dotenv').config();
+    const fromFile = require('dotenv').config({ quiet: true });
     // If there is no .env file, don't throw and just use process.env
     if (fromFile.error && fromFile.error.code !== 'ENOENT') {
       throw fromFile.error;
