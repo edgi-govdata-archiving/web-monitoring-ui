@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import AriaModal from 'react-aria-modal';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { ApiContext, WebMonitoringApi, WebMonitoringDb } from './api-context';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
@@ -164,16 +164,19 @@ export default class WebMonitoringUi extends Component {
             >
               <EnvironmentBanner apiUrl={api.url}/>
             </NavBar>
-            <Route exact path="/" render={() => <Redirect to="/pages" />}/>
-            <Route path="/pages" render={withData(PageList)} />
-            <Route path="/page/:pageId/:change?" render={(routeProps) =>
-              <PageDetails
-                {...routeProps}
-                user={this.state.user}
-                pages={this.state.pages}
-              />
-            }/>
-            <Route path="/version/:versionId" component={VersionRedirect} />
+
+            <Switch>
+              <Route exact path="/" render={() => <Redirect to="/pages" />}/>
+              <Route path="/pages" render={withData(PageList)} />
+              <Route path="/page/:pageId/:change?" render={(routeProps) =>
+                <PageDetails
+                  {...routeProps}
+                  user={this.state.user}
+                  pages={this.state.pages}
+                />
+              }/>
+              <Route path="/version/:versionId" component={VersionRedirect} />
+            </Switch>
             {modal}
           </div>
         </Router>
