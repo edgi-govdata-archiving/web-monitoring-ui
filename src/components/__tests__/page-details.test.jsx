@@ -12,11 +12,9 @@ describe('page-details', () => {
   simplePage.versions.forEach(version => {
     version.capture_time = new Date(version.capture_time);
   });
-  const match = {
-    params: {
-      pageId: simplePage.uuid,
-      change: `${simplePage.versions[1].uuid}..${simplePage.versions[0].uuid}`,
-    }
+  const urlParams = {
+    pageId: simplePage.uuid,
+    change: `${simplePage.versions[1].uuid}..${simplePage.versions[0].uuid}`,
   };
   const createMockApi = () => {
     let samples = simplePage.versions.reduce((samples, version) => {
@@ -49,7 +47,7 @@ describe('page-details', () => {
     const mockApi = createMockApi();
     render(
       <ApiContext.Provider value={{ api: mockApi }}>
-        <PageDetails match={match} />
+        <PageDetails {...urlParams} />
       </ApiContext.Provider>
     );
 
@@ -60,7 +58,7 @@ describe('page-details', () => {
     const mockApi = createMockApi();
     const { unmount } = render(
       <ApiContext.Provider value={{ api: mockApi }}>
-        <PageDetails match={match} />
+        <PageDetails {...urlParams} />
       </ApiContext.Provider>
     );
 
@@ -78,13 +76,8 @@ describe('page-details', () => {
     const { container } = render(
       <ApiContext.Provider value={{ api: mockApi }}>
         <PageDetails
-          match={{
-            ...match,
-            params: {
-              ...match.params,
-              change: `${allVersions.at(-1).uuid}..${allVersions[0].uuid}`
-            }
-          }}
+          {...urlParams}
+          change={`${allVersions.at(-1).uuid}..${allVersions[0].uuid}`}
         />,
       </ApiContext.Provider>
     );

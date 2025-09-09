@@ -168,7 +168,7 @@ export default class WebMonitoringUi extends Component {
 
     return (
       <ApiContext.Provider value={{ api, localApi }}>
-        <Router future={{ v7_relativeSplatPath: true }}>
+        <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
           <div id="application">
             <NavBar
               title="EDGI"
