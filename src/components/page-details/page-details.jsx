@@ -35,7 +35,7 @@ export default class PageDetails extends Component {
 
   static getDerivedStateFromProps (props, state) {
     // Clear existing content when switching pages
-    if (state.page && state.page.uuid !== props.pageId) {
+    if (state.page && state.page.uuid !== props.urlParams.pageId) {
       return { page: null };
     }
     return null;
@@ -44,7 +44,7 @@ export default class PageDetails extends Component {
   componentDidMount () {
     this.isMounted = true;
     window.addEventListener('keydown', this);
-    this._loadPage(this.props.pageId);
+    this._loadPage(this.props.urlParams.pageId);
   }
 
   componentWillUnmount () {
@@ -58,8 +58,8 @@ export default class PageDetails extends Component {
    */
   componentDidUpdate (previousProps) {
     this.setTitle();
-    const nextPageId = this.props.pageId;
-    if (nextPageId !== previousProps.pageId) {
+    const nextPageId = this.props.urlParams.pageId;
+    if (nextPageId !== previousProps.urlParams.pageId) {
       this._loadPage(nextPageId);
     }
   }
@@ -112,7 +112,7 @@ export default class PageDetails extends Component {
 
     if (this.state.page.merged_into) {
       const targetId = this.state.page.merged_into;
-      const changeId = this.props.change || '';
+      const changeId = this.props.urlParams.change || '';
       return <Navigate to={`/page/${targetId}/${changeId}`} replace />;
     }
 
@@ -246,7 +246,7 @@ export default class PageDetails extends Component {
    * @returns {[string|null, string|null]}
    */
   _versionIdsFromProps () {
-    return (this.props.change || '').split('..');
+    return (this.props.urlParams.change || '').split('..');
   }
 
   /**
@@ -371,7 +371,7 @@ export default class PageDetails extends Component {
 
   _getChangeUrl (from, to, page) {
     const changeId = (from && to) ? `${from.uuid}..${to.uuid}` : '';
-    const pageId = page && page.uuid || this.props.pageId;
+    const pageId = page && page.uuid || this.props.urlParams.pageId;
     return `/page/${pageId}/${changeId}`;
   }
 

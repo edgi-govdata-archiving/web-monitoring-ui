@@ -47,7 +47,7 @@ describe('page-details', () => {
     const mockApi = createMockApi();
     render(
       <ApiContext.Provider value={{ api: mockApi }}>
-        <PageDetails {...urlParams} />
+        <PageDetails urlParams={urlParams} />
       </ApiContext.Provider>
     );
 
@@ -58,7 +58,7 @@ describe('page-details', () => {
     const mockApi = createMockApi();
     const { unmount } = render(
       <ApiContext.Provider value={{ api: mockApi }}>
-        <PageDetails {...urlParams} />
+        <PageDetails urlParams={urlParams} />
       </ApiContext.Provider>
     );
 
@@ -76,8 +76,10 @@ describe('page-details', () => {
     const { container } = render(
       <ApiContext.Provider value={{ api: mockApi }}>
         <PageDetails
-          {...urlParams}
-          change={`${allVersions.at(-1).uuid}..${allVersions[0].uuid}`}
+          urlParams={{
+            ...urlParams,
+            change: `${allVersions.at(-1).uuid}..${allVersions[0].uuid}`
+          }}
         />,
       </ApiContext.Provider>
     );

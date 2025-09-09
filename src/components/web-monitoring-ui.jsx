@@ -158,7 +158,7 @@ export default class WebMonitoringUi extends Component {
       return (props) => {
         const urlParams = useParams();
         const navigate = useNavigate();
-        return <ComponentType navigate={navigate} {...urlParams} {...props} />;
+        return <ComponentType navigate={navigate} urlParams={urlParams} {...props} />;
       };
     };
     const PageListWithLoading = withUrlParams(withPages(PageList));
