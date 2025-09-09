@@ -64,7 +64,7 @@ describe('page-details', () => {
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());
     expect(mockApi.sampleVersions).toHaveBeenCalled();
-    expect(document.title).toBe('Scanner | http://www.ncei.noaa.gov/news/earth-science-conference-convenes');
+    await waitFor(() => expect(document.title).toBe(`Scanner | ${simplePage.url}`));
 
     unmount();
     expect(document.title).toBe('Scanner');

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import Loading from '../loading';
 import { Component } from 'react';
 import SearchBar from '../search-bar/search-bar';

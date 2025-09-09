@@ -1,6 +1,6 @@
 import { Component, useEffect } from 'react';
 import AriaModal from 'react-aria-modal';
-import { BrowserRouter as Router, Navigate, Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useNavigate, useParams } from 'react-router';
 import { ApiContext, WebMonitoringApi, WebMonitoringDb } from './api-context';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
@@ -168,7 +168,7 @@ export default class WebMonitoringUi extends Component {
 
     return (
       <ApiContext.Provider value={{ api, localApi }}>
-        <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <Router>
           <div id="application">
             <NavBar
               title="EDGI"

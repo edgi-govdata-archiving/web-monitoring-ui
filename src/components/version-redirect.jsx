@@ -1,6 +1,6 @@
 import Loading from './loading';
 import { useContext, useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router';
 import { ApiContext } from './api-context';
 
 import styles from '../css/base.css';
