@@ -20,7 +20,13 @@ export default ({ children = null, title = 'EDGI Web Monitoring', user = null, s
       <Link to="/" className={navStyles.brand}>{title}</Link>
       <ul className={navStyles.navList}>
         <li>
-          <NavLink to="/pages" activeClassName={navStyles.navLinkActive} className={navStyles.navLink} exact>
+          <NavLink
+            to="/pages"
+            end
+            className={({ isActive }) => [
+              navStyles.navLink, isActive ? navStyles.navLinkActive : ''
+            ].join(' ')}
+          >
             All Pages
           </NavLink>
         </li>
