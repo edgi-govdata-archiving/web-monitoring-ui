@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import { fireEvent, render, screen, act } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import PageList from '../page-list/page-list';
 import simplePages from '../../__mocks__/simple-pages.json';
 
@@ -25,7 +25,7 @@ describe('page-list', () => {
   function renderContext (element, options) {
     return render(
       (
-        <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <Router>
           {element}
         </Router>
       ),

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router';
 import { ApiContext } from '../api-context';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
