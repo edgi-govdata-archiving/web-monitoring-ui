@@ -50,9 +50,9 @@ describe('login-form', () => {
     it('Calls "logIn" on the api service if email and password are present', async () => {
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({}) });
       render(
-        <ApiContext.Provider value={{ api }}>
+        <ApiContext value={{ api }}>
           <LoginPanel />
-        </ApiContext.Provider>
+        </ApiContext>
       );
 
       await act(() => {
@@ -68,9 +68,9 @@ describe('login-form', () => {
       const onLogin = jest.fn();
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({ id: 5 }) });
       render(
-        <ApiContext.Provider value={{ api }}>
+        <ApiContext value={{ api }}>
           <LoginPanel onLogin={onLogin} />
-        </ApiContext.Provider>
+        </ApiContext>
       );
 
       await act(() => {
@@ -86,9 +86,9 @@ describe('login-form', () => {
       const onLogin = jest.fn();
       const api = getMockedApi({ logIn: jest.fn().mockRejectedValue(new Error('Login unsuccessful')) });
       render(
-        <ApiContext.Provider value={{ api }}>
+        <ApiContext value={{ api }}>
           <LoginPanel onLogin={onLogin} />
-        </ApiContext.Provider>
+        </ApiContext>
       );
 
       await act(() => {
@@ -103,9 +103,9 @@ describe('login-form', () => {
     it('Does not call "logIn" if email and password are not both present', async () => {
       const api = getMockedApi({ logIn: jest.fn().mockResolvedValue({}) });
       render(
-        <ApiContext.Provider value={{ api }}>
+        <ApiContext value={{ api }}>
           <LoginPanel />
-        </ApiContext.Provider>
+        </ApiContext>
       );
 
       await act(() => {
