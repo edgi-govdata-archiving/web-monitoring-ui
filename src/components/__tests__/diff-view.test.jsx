@@ -20,14 +20,14 @@ describe('diff-view', () => {
 
   it('can render', async () => {
     const { container } = render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <DiffView
           diffType="HIGHLIGHTED_TEXT"
           page={simplePage}
           a={simplePage.versions[1]}
           b={simplePage.versions[0]}
         />
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     expect(container).not.toBeEmptyDOMElement();
@@ -39,14 +39,14 @@ describe('diff-view', () => {
     mockApi.getDiff.mockResolvedValue({ change_count: 0, diff: [] });
 
     render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <DiffView
           diffType="HIGHLIGHTED_TEXT"
           page={simplePage}
           a={simplePage.versions[1]}
           b={simplePage.versions[0]}
         />
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     await screen.findByRole('alert');
@@ -54,14 +54,14 @@ describe('diff-view', () => {
 
   it('renders no alert if there are changes in the diff', async () => {
     render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <DiffView
           diffType="HIGHLIGHTED_TEXT"
           page={simplePage}
           a={simplePage.versions[1]}
           b={simplePage.versions[0]}
         />
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     await waitFor(() => expect(mockApi.getDiff).toHaveBeenCalled());

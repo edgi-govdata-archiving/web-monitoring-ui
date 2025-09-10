@@ -62,14 +62,14 @@ describe('change-view', () => {
     }
 
     return (
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <ChangeView
           page={simplePage}
           from={{ ...mockChangeFrom, media_type: fromMediaType }}
           to={{ ...mockChangeTo, media_type: toMediaType }}
           user={{ email: 'me' }}
         />
-      </ApiContext.Provider>
+      </ApiContext>
     );
   }
 

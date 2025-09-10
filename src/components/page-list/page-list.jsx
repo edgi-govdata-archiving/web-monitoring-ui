@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import Loading from '../loading';
 import { Component } from 'react';
 import SearchBar from '../search-bar/search-bar';
@@ -60,7 +61,9 @@ export default class PageList extends Component {
         <table className={[listStyles.table, listStyles.pageList].join(' ')}>
           <thead>{this.renderHeader()}</thead>
           <tbody>
-            {this.props.pages.map(page => this.renderRow(page))}
+            {this.props.pages.map(page => (
+              <PageListRow page={page} key={page.uuid} />
+            ))}
           </tbody>
         </table>
       </div>
@@ -80,32 +83,6 @@ export default class PageList extends Component {
     );
   }
 
-  renderRow (record) {
-    const onClick = this.didClickRow.bind(this, record);
-    const tags = removeNonUserTags(record.tags);
-    const statusCode = record.status || 200;
-    let statusCategory = getHttpStatusCategory(statusCode);
-
-    return (
-      <tr key={record.uuid} onClick={onClick} data-name="info-row">
-        <td>{getDomain(record.url)}</td>
-        <td>{record.title}</td>
-        <td><a href={record.url} target="_blank" rel="noopener">{record.url}</a></td>
-        <td>{tags.map(tag => <PageTag tag={tag} key={tag.name} />)}</td>
-        <td
-          data-status-category={statusCategory}
-          data-tooltip-id="list-tooltip"
-          data-tooltip-content={describeHttpStatus(statusCode)}
-        >
-          {statusCode >= 400 ? '✘' : '•'} {record.status}
-        </td>
-        <td data-page-active={record.active.toString()}>
-          {record.active ? '•' : '✘'}
-        </td>
-      </tr>
-    );
-  }
-
   // TODO: we use similar markup elsewhere, consider making this a component
   renderError (message, type = 'danger') {
     return (
@@ -116,20 +93,49 @@ export default class PageList extends Component {
       </div>
     );
   }
+}
 
-  didClickRow (page, event) {
-    const relativeUrl = `/page/${page.uuid}`;
+/**
+ * React component that renders a single row in the PageList table.
+ */
+function PageListRow ({ page }) {
+  const navigate = useNavigate();
+  const detailsUrl = `/page/${page.uuid}`;
+  const tags = removeNonUserTags(page.tags);
+  const statusCode = page.status || 200;
+  const statusCategory = getHttpStatusCategory(statusCode);
+
+  const onClick = (event) => {
     if (isInAnchor(event.target)) {
       return;
     }
 
     if (event.ctrlKey || event.metaKey) {
-      window.open(relativeUrl, '_blank');
+      window.open(detailsUrl, '_blank');
       return;
     }
 
-    this.props.history.push(relativeUrl);
-  }
+    navigate(detailsUrl);
+  };
+
+  return (
+    <tr onClick={onClick} data-name="info-row">
+      <td>{getDomain(page.url)}</td>
+      <td>{page.title}</td>
+      <td><a href={page.url} target="_blank" rel="noreferrer">{page.url}</a></td>
+      <td>{tags.map(tag => <PageTag tag={tag} key={tag.name} />)}</td>
+      <td
+        data-status-category={statusCategory}
+        data-tooltip-id="list-tooltip"
+        data-tooltip-content={describeHttpStatus(statusCode)}
+      >
+        {statusCode >= 400 ? '✘' : '•'} {page.status}
+      </td>
+      <td data-page-active={page.active.toString()}>
+        {page.active ? '•' : '✘'}
+      </td>
+    </tr>
+  );
 }
 
 function isInAnchor (node) {
