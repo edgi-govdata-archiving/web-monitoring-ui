@@ -95,6 +95,12 @@ export default defineConfig([
       },
     },
 
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+
     plugins: {
       react,
     },
