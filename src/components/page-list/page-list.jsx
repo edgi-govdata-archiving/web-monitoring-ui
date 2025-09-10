@@ -122,7 +122,7 @@ function PageListRow ({ page }) {
     <tr onClick={onClick} data-name="info-row">
       <td>{getDomain(page.url)}</td>
       <td>{page.title}</td>
-      <td><a href={page.url} target="_blank" rel="noopener">{page.url}</a></td>
+      <td><a href={page.url} target="_blank" rel="noreferrer">{page.url}</a></td>
       <td>{tags.map(tag => <PageTag tag={tag} key={tag.name} />)}</td>
       <td
         data-status-category={statusCategory}

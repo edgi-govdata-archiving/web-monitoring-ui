@@ -1,3 +1,3 @@
-export default function () {
+export default function MockChangeView () {
   return <div>Mock ChangeView</div>;
 }

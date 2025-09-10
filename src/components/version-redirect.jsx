@@ -29,7 +29,7 @@ export default function VersionRedirect () {
   if (error) {
     return (
       <p className={[styles.alert, styles.alertDanger].join(' ')} role="alert">
-        Error: We couldn't find the version you're looking for.
+        Error: We couldn’t find the version you’re looking for.
         Please check you provided the correct versionID.
       </p>
     );

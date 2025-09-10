@@ -1,5 +1,3 @@
-/* global globalThis */
-
 import '@testing-library/jest-dom';
 import nodeUtil from 'node:util';
 

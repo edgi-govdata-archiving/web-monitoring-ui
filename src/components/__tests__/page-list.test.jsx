@@ -8,13 +8,12 @@ import simplePages from '../../__mocks__/simple-pages.json';
 describe('page-list', () => {
   let globalOpen;
 
-  /* eslint-disable no-undef */
   beforeEach(() => {
-    globalOpen = global.open;
+    globalOpen = globalThis.open;
   });
 
   afterEach(() => {
-    global.open = globalOpen;
+    globalThis.open = globalOpen;
   });
 
   // Change string values to date objects so they're parsed correctly
@@ -69,7 +68,7 @@ describe('page-list', () => {
   });
 
   it('opens a new window when a user control clicks on a page row', async () => {
-    global.open = jest.fn();
+    globalThis.open = jest.fn();
     renderContext(<PageList pages={simplePages} />);
 
     const page = simplePages[0];
@@ -78,12 +77,12 @@ describe('page-list', () => {
       fireEvent.click(row, { ctrlKey : true });
     });
 
-    expect(global.open.mock.calls[0][0]).toBe(`/page/${page.uuid}`);
-    expect(global.open.mock.calls[0][1]).toBe('_blank');
+    expect(globalThis.open.mock.calls[0][0]).toBe(`/page/${page.uuid}`);
+    expect(globalThis.open.mock.calls[0][1]).toBe('_blank');
   });
 
   it('opens a new window when a user command clicks on a page row', async () => {
-    global.open = jest.fn();
+    globalThis.open = jest.fn();
     renderContext(<PageList pages={simplePages} />);
 
     const page = simplePages[0];
@@ -92,7 +91,6 @@ describe('page-list', () => {
       fireEvent.click(row, { metaKey : true });
     });
 
-    expect(global.open.mock.calls.length).toBe(1);
+    expect(globalThis.open.mock.calls.length).toBe(1);
   });
-  /* eslint-enable no-undef */
 });

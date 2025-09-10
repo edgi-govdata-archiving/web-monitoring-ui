@@ -14,28 +14,30 @@ import navStyles from './nav-bar.css';
  * The NavBar component renders an app title, user info, links, etc.
  * @param {NavBarProps} props
  */
-export default ({ children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) => (
-  <div className={navStyles.container}>
-    <nav className={navStyles.navbar}>
-      <Link to="/" className={navStyles.brand}>{title}</Link>
-      <ul className={navStyles.navList}>
-        <li>
-          <NavLink
-            to="/pages"
-            end
-            className={({ isActive }) => [
-              navStyles.navLink, isActive ? navStyles.navLinkActive : ''
-            ].join(' ')}
-          >
-            All Pages
-          </NavLink>
-        </li>
-        <li>{renderUserInfo(user, showLogin, logOut)}</li>
-      </ul>
-    </nav>
-    {children}
-  </div>
-);
+export default function NavBar ({ children = null, title = 'EDGI Web Monitoring', user = null, showLogin, logOut }) {
+  return (
+    <div className={navStyles.container}>
+      <nav className={navStyles.navbar}>
+        <Link to="/" className={navStyles.brand}>{title}</Link>
+        <ul className={navStyles.navList}>
+          <li>
+            <NavLink
+              to="/pages"
+              end
+              className={({ isActive }) => [
+                navStyles.navLink, isActive ? navStyles.navLinkActive : ''
+              ].join(' ')}
+            >
+              All Pages
+            </NavLink>
+          </li>
+          <li>{renderUserInfo(user, showLogin, logOut)}</li>
+        </ul>
+      </nav>
+      {children}
+    </div>
+  );
+}
 
 function renderUserInfo (user, showLogin, logOut) {
   if (user) {
