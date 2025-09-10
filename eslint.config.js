@@ -132,13 +132,12 @@ export default defineConfig([
   //   `formatters.js` from it).
   {
     files: [
-      '.bundlewatch.config.js',
+      // '.bundlewatch.config.js',
       'webpack.config.js',
-      'src/scripts/formatters.js',
+      // 'src/scripts/formatters.js',
     ],
 
     languageOptions: {
-      sourceType: 'commonjs',
       globals: {
         ...globals.node,
       },

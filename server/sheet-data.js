@@ -1,11 +1,10 @@
-'use strict';
+import googleSheets from '@googleapis/sheets';
+import { baseConfiguration } from './configuration.js';
+import { formatMaintainers, formatSites } from '../src/scripts/formatters.js';
 
-const googleSheets = require('@googleapis/sheets');
-const config = require('./configuration');
 const sheets = googleSheets.sheets('v4');
-const formatters = require('../src/scripts/formatters');
 
-function addChangeToDictionary (data) {
+export function addChangeToDictionary (data) {
   const versionista = data.to_version.source_type === 'versionista'
     && data.to_version.source_metadata;
 
@@ -17,9 +16,9 @@ function addChangeToDictionary (data) {
     // Output Date/Time
     formatDate(),
     // Maintainers
-    formatters.formatMaintainers(data.page.maintainers),
+    formatMaintainers(data.page.maintainers),
     // Sites
-    formatters.formatSites(data.page.tags),
+    formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
@@ -48,12 +47,12 @@ function addChangeToDictionary (data) {
 
   return appendRowToSheet(
     row,
-    config.baseConfiguration().GOOGLE_DICTIONARY_SHEET_ID
+    baseConfiguration().GOOGLE_DICTIONARY_SHEET_ID
   )
     .then(() => ({ success: 'appended' }));
 }
 
-function addChangeToImportant (data) {
+export function addChangeToImportant (data) {
   const versionista = data.to_version.source_type === 'versionista'
     && data.to_version.source_metadata;
   const annotation = data.annotation || {};
@@ -68,9 +67,9 @@ function addChangeToImportant (data) {
     // Output Date/Time
     formatDate(),
     // Maintainers
-    formatters.formatMaintainers(data.page.maintainers),
+    formatMaintainers(data.page.maintainers),
     // Sites
-    formatters.formatSites(data.page.tags),
+    formatSites(data.page.tags),
     // Page Name
     data.page.title,
     // URL
@@ -141,7 +140,7 @@ function addChangeToImportant (data) {
 
   return appendRowToSheet(
     row,
-    config.baseConfiguration().GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
+    baseConfiguration().GOOGLE_IMPORTANT_CHANGE_SHEET_ID,
     'A6:AN6'
   )
     .then(() => ({ success: 'appended' }));
@@ -192,7 +191,7 @@ function addAuthentication (requestData) {
     // If tokens expire in 30 seconds or less, refresh them.
     const expirationLeeway = 30000;
     if (!authTokens || Date.now() > authTokens.expiry_date - expirationLeeway) {
-      const configuration = config.baseConfiguration();
+      const configuration = baseConfiguration();
       const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
       // Replace `\n` in ENV variable with actual line breaks.
       const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
@@ -229,6 +228,3 @@ function formatDate (date) {
     .replace(/(\d\d)\.\d+/, '$1')
     .replace('Z', ' GMT');
 }
-
-exports.addChangeToDictionary = addChangeToDictionary;
-exports.addChangeToImportant = addChangeToImportant;

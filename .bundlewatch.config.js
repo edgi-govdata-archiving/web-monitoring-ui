@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   'files': [
     // Catch-all in case we add other JS files
     {

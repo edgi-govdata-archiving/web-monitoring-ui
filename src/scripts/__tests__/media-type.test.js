@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import MediaType, { parseMediaType } from '../media-type';
+import MediaType, { parseMediaType } from '../media-type.js';
 
 describe('MediaType module', () => {
   test('MediaType objects have a mediaType and genericType', () => {

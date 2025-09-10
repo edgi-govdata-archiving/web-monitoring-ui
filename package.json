@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "web-monitoring-ui",
   "main": "views/main.html",
+  "type": "module",
   "dependencies": {
     "@googleapis/sheets": "^11.1.0",
     "body-parser": "^2.2.0",

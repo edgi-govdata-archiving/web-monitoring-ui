@@ -1,12 +1,13 @@
 'use strict';
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const path = require('path');
-const sheetData = require('./sheet-data');
-const config = require('./configuration');
+import path from 'node:path';
+import ejs from 'ejs';
+import express from 'express';
+import bodyParser from 'body-parser';
+import { addChangeToDictionary, addChangeToImportant } from './sheet-data.js';
+import { baseConfiguration, clientConfiguration } from './configuration.js';
 
+const app = express();
 const serverPort = process.env.PORT || 3001;
 
 /**
@@ -21,7 +22,7 @@ function createErrorHandler (response) {
   return error => {
     let errorData = error;
     if (error instanceof Error) {
-      if (config.baseConfiguration().NODE_ENV !== 'production') {
+      if (baseConfiguration().NODE_ENV !== 'production') {
         errorData = { error: error.message, stack: error.stack };
       }
       else {
@@ -50,10 +51,11 @@ if (process.env.FORCE_SSL && process.env.FORCE_SSL.toLowerCase() === 'true') {
 }
 
 // Serve assets (live from Webpack in dev mode)
-if (config.baseConfiguration().NODE_ENV === 'development') {
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackConfig = require('../webpack.config.js');
+if (baseConfiguration().NODE_ENV === 'development') {
+  const { default: webpack } = await import('webpack');
+  const { default: webpackDevMiddleware } = await import('webpack-dev-middleware');
+  const { default: webpackConfig } = await import('../webpack.config.js');
+
   app.use(webpackDevMiddleware(webpack(webpackConfig)));
 }
 else {
@@ -77,9 +79,9 @@ else {
   }));
 }
 
-app.set('views', path.join(__dirname, '../views'));
-app.engine('html', require('ejs').renderFile);
-app.engine('txt', require('ejs').renderFile);
+app.set('views', path.join(import.meta.dirname, '../views'));
+app.engine('html', ejs.renderFile);
+app.engine('txt', ejs.renderFile);
 app.use(bodyParser.json());
 
 app.get('/healthcheck', function (request, response) {
@@ -106,7 +108,7 @@ function authorizeRequest (request, response, next) {
     return response.status(401).json({ error: 'You must include authorization headers' });
   }
 
-  let host = config.baseConfiguration().WEB_MONITORING_DB_URL;
+  let host = baseConfiguration().WEB_MONITORING_DB_URL;
   if (!host.endsWith('/')) {
     host += '/';
   }
@@ -134,7 +136,7 @@ app.post(
   authorizeRequest,
   validateChangeBody,
   function (request, response) {
-    sheetData.addChangeToImportant(request.body)
+    addChangeToImportant(request.body)
       .then(data => response.json(data))
       .catch(createErrorHandler(response));
   }
@@ -145,7 +147,7 @@ app.post(
   authorizeRequest,
   validateChangeBody,
   function (request, response) {
-    sheetData.addChangeToDictionary(request.body)
+    addChangeToDictionary(request.body)
       .then(data => response.json(data))
       .catch(createErrorHandler(response));
   }
@@ -160,11 +162,11 @@ app.get('/robots.txt', function (_request, response) {
  * Main view for manual entry
  */
 app.get('/{*splat}', function (request, response) {
-  const useGzip = config.baseConfiguration().NODE_ENV === 'production'
+  const useGzip = baseConfiguration().NODE_ENV === 'production'
     && request.acceptsEncodings('gzip');
 
   response.render('main.html', {
-    configuration: config.clientConfiguration(),
+    configuration: clientConfiguration(),
     useGzip
   });
 });

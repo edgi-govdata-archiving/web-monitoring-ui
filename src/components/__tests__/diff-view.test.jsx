@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import DiffView from '../diff-view';
 import simplePage from '../../__mocks__/simple-page.json';
 import { ApiContext } from '../api-context';
-import WebMonitoringDb from '../../services/web-monitoring-db';
+import WebMonitoringDb from '../../services/web-monitoring-db.js';
 
 describe('diff-view', () => {
   let mockApi;

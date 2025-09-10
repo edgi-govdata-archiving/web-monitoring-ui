@@ -5,7 +5,7 @@ import {
   loadSubresourcesFromWayback,
   compose
 } from '../scripts/html-transforms';
-import { versionUrl } from '../scripts/tools';
+import { versionUrl } from '../scripts/tools.js';
 import SandboxedHtml from './sandboxed-html';
 
 /**
