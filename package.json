@@ -4,7 +4,7 @@
   "description": "web-monitoring-ui",
   "main": "views/main.html",
   "dependencies": {
-    "@googleapis/sheets": "^10.0.1",
+    "@googleapis/sheets": "^11.1.0",
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
