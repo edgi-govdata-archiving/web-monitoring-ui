@@ -1,4 +1,4 @@
-'use strict';
+import dotenv from 'dotenv';
 
 const defaultValues = {
   WEB_MONITORING_DB_URL: 'https://api.monitoring-staging.envirodatagov.org',
@@ -37,7 +37,7 @@ function parseBoolean (text, options = { default: false }) {
  * it may contain keys that must be kept secure.
  * @returns {Object}
  */
-function baseConfiguration () {
+export function baseConfiguration () {
   let localEnvironment = processEnvironment;
 
   if (processEnvironment.NODE_ENV !== 'production') {
@@ -46,7 +46,7 @@ function baseConfiguration () {
     // dotenv.config() updates process.env, but only with properties it doesn't
     // already have. That means it won't update properties that were previously
     // specified, so we have to do it manually here.
-    const fromFile = require('dotenv').config({ quiet: true });
+    const fromFile = dotenv.config({ quiet: true });
     // If there is no .env file, don't throw and just use process.env
     if (fromFile.error && fromFile.error.code !== 'ENOENT') {
       throw fromFile.error;
@@ -72,7 +72,7 @@ function baseConfiguration () {
  * Get a configuration object that is safe to pass to client code.
  * @returns {Object}
  */
-function clientConfiguration () {
+export function clientConfiguration () {
   const source = baseConfiguration();
 
   return clientFields.reduce((result, field) => {
@@ -80,6 +80,3 @@ function clientConfiguration () {
     return result;
   }, {});
 }
-
-exports.baseConfiguration = baseConfiguration;
-exports.clientConfiguration = clientConfiguration;
