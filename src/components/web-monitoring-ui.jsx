@@ -139,7 +139,7 @@ export default class WebMonitoringUi extends Component {
     // TODO: this messy page list stuff should really be turned into a context
     //   for more understandable code.
     const withPages = (ComponentType) => {
-      return ({ pages, ...props }) => {
+      const wrapper = ({ pages, ...props }) => {
         useEffect(() => {
           if (!pages) {
             this.loadPages();
@@ -151,15 +151,19 @@ export default class WebMonitoringUi extends Component {
           {...props}
         />;
       };
+      wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithPages`;
+      return wrapper;
     };
     // Dumb function wrapper since we have mostly class components and React
     // Router now pretty much requires hooks.
     const withUrlParams = (ComponentType) => {
-      return (props) => {
+      const wrapper = (props) => {
         const urlParams = useParams();
         const navigate = useNavigate();
         return <ComponentType navigate={navigate} urlParams={urlParams} {...props} />;
       };
+      wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithUrlParams`;
+      return wrapper;
     };
     const PageListWithLoading = withUrlParams(withPages(PageList));
     const PageDetailsWithParams = withUrlParams(PageDetails);

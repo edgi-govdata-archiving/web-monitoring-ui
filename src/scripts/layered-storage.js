@@ -19,7 +19,7 @@ export class SafeStorage {
     try {
       return (value == null || !value.length) ? value : JSON.parse(value);
     }
-    catch (error) {
+    catch {
       return value;
     }
   }
@@ -34,7 +34,7 @@ export class SafeStorage {
       this.store.setItem(key, actualValue);
       return true;
     }
-    catch (error) {
+    catch {
       return false;
     }
   }
@@ -62,7 +62,7 @@ export class LayeredStorage {
         store.setItem(key, value);
         return success;
       }
-      catch (error) {
+      catch {
         return false;
       }
     }, true);
