@@ -46,9 +46,9 @@ describe('page-details', () => {
   it('can render', async () => {
     const mockApi = createMockApi();
     render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <PageDetails urlParams={urlParams} />
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     await screen.findByText(simplePage.title);
@@ -57,9 +57,9 @@ describe('page-details', () => {
   it('shows correct title', async () => {
     const mockApi = createMockApi();
     const { unmount } = render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <PageDetails urlParams={urlParams} />
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());
@@ -74,14 +74,14 @@ describe('page-details', () => {
     const allVersions = simplePage.versions;
     const mockApi = createMockApi();
     const { container } = render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <PageDetails
           urlParams={{
             ...urlParams,
             change: `${allVersions.at(-1).uuid}..${allVersions[0].uuid}`
           }}
         />,
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());

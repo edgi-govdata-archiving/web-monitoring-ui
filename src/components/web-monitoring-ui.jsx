@@ -167,7 +167,7 @@ export default class WebMonitoringUi extends Component {
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
-      <ApiContext.Provider value={{ api, localApi }}>
+      <ApiContext value={{ api, localApi }}>
         <Router>
           <div id="application">
             <NavBar
@@ -205,7 +205,7 @@ export default class WebMonitoringUi extends Component {
             {modal}
           </div>
         </Router>
-      </ApiContext.Provider>
+      </ApiContext>
     );
   }
 

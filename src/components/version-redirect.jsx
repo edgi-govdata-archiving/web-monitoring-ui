@@ -1,12 +1,12 @@
 import Loading from './loading';
-import { useContext, useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router';
 import { ApiContext } from './api-context';
 
 import styles from '../css/base.css';
 
 export default function VersionRedirect () {
-  const api = useContext(ApiContext);
+  const api = use(ApiContext);
   const { versionId } = useParams();
   const [pageId, setPageId] = useState('');
   const [error, setError] = useState(null);
