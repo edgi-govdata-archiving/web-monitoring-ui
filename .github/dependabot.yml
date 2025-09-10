@@ -4,10 +4,14 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
+    cooldown:
+      default-days: 3
 
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: monthly
       time: "10:00"
+    cooldown:
+      default-days: 5
     open-pull-requests-limit: 10
