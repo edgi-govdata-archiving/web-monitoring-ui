@@ -127,15 +127,9 @@ export default defineConfig([
     },
   },
 
-  // TODO: these files should be migrated to ESM, then we can set `type: module`
-  //   in `package.json` and possibly remove this config block (at least remove
-  //   `formatters.js` from it).
+  // Other Node.js scripts and config that are not part of the runtime app.
   {
-    files: [
-      // '.bundlewatch.config.js',
-      'webpack.config.js',
-      // 'src/scripts/formatters.js',
-    ],
+    files: ['webpack.config.js'],
 
     languageOptions: {
       globals: {
