@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import { diffTypes, diffTypesFor } from '../diff-types';
-import MediaType from '../../scripts/media-type.js';
+import MediaType from '../../scripts/media-type';
 
 describe('diffTypesFor', () => {
   it('accepts a file extension', () => {

@@ -14,7 +14,7 @@ import {
   mediaTypeForExtension,
   parseMediaType,
   unknownType
-} from '../../scripts/media-type.js';
+} from '../../scripts/media-type';
 
 import baseStyles from '../../css/base.css';
 import viewStyles from './change-view.css';

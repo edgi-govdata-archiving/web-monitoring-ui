@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { formatDateRange } from '../db-helpers.js';
+import { formatDateRange } from '../db-helpers';
 import { DateTime } from 'luxon';
 
 describe('db-helpers', () => {

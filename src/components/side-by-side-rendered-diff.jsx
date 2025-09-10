@@ -7,7 +7,7 @@ import {
   compose,
   addTargetBlank
 } from '../scripts/html-transforms';
-import { versionUrl } from '../scripts/tools.js';
+import { versionUrl } from '../scripts/tools';
 import SandboxedHtml from './sandboxed-html';
 
 /**

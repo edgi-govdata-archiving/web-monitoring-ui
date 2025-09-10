@@ -8,7 +8,7 @@ import PageUrlDetails from '../page-url-details/page-url-details';
 import PageTag from '../page-tag/page-tag';
 import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import { describeHttpStatus } from '../../scripts/http-info';
-import { removeNonUserTags } from '../../scripts/tools.js';
+import { removeNonUserTags } from '../../scripts/tools';
 
 import baseStyles from '../../css/base.css';
 import pageStyles from './page-details.css';

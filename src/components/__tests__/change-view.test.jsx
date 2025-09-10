@@ -3,10 +3,10 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ApiContext } from '../api-context';
 import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
-import layeredStorage from '../../scripts/layered-storage.js';
+import layeredStorage from '../../scripts/layered-storage';
 import simplePage from '../../__mocks__/simple-page.json';
-import WebMonitoringDb from '../../services/web-monitoring-db.js';
-import { diffTypesFor } from '../../constants/diff-types.js';
+import WebMonitoringDb from '../../services/web-monitoring-db';
+import { diffTypesFor } from '../../constants/diff-types';
 
 // The mock simply renders a list of props so we can inspect them.
 jest.mock('../diff-view');

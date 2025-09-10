@@ -8,7 +8,7 @@ import {
   getHttpStatusCategory,
   describeHttpStatus
 } from '../../scripts/http-info';
-import { removeNonUserTags } from '../../scripts/tools.js';
+import { removeNonUserTags } from '../../scripts/tools';
 
 import baseStyles from '../../css/base.css';
 import listStyles from './page-list.css';

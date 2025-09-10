@@ -3,7 +3,7 @@ import { render, waitFor, screen } from '@testing-library/react';
 import PageDetails from '../page-details/page-details';
 import simplePage from '../../__mocks__/simple-page.json';
 import { ApiContext } from '../api-context';
-import WebMonitoringDb from '../../services/web-monitoring-db.js';
+import WebMonitoringDb from '../../services/web-monitoring-db';
 
 jest.mock('../change-view/change-view');
 
