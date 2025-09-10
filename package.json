@@ -53,7 +53,7 @@
     "analyze": "npm run build-production -- --analyze",
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
-    "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
     "lint": "eslint",
     "prepare": "if [ -d .git ]; then husky; fi",
     "start": "node server/app.js",
