@@ -1,14 +1,14 @@
-const autoprefixer = require('autoprefixer');
-const CompressionPlugin = require('compression-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
-const zopfli = require('@gfx/zopfli');
+import autoprefixer from 'autoprefixer';
+import CompressionPlugin from 'compression-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
+import zopfli from '@gfx/zopfli';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv.toLocaleLowerCase() === 'production';
-const context = __dirname;
+const context = import.meta.dirname;
 
-module.exports = {
+const config = {
   context,
   mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? 'source-map' : 'inline-source-map',
@@ -19,7 +19,7 @@ module.exports = {
     // TODO: add hashes for production (server needs to be able to handle them)
     // filename: isProduction ? '[name]-[hash].js' : '[name].js',
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(import.meta.dirname, 'dist'),
     publicPath: '/',
     sourceMapFilename: 'sourceMaps/[file].map',
   },
@@ -36,9 +36,9 @@ module.exports = {
         test: /\.css$/,
         // Exclude legacy CSS from CSS modules pipeline
         exclude: [
-          path.resolve(__dirname, 'src/css/styles.css'),
-          path.resolve(__dirname, 'src/css/diff.css'),
-          path.resolve(__dirname, 'node_modules')
+          path.resolve(import.meta.dirname, 'src/css/styles.css'),
+          path.resolve(import.meta.dirname, 'src/css/diff.css'),
+          path.resolve(import.meta.dirname, 'node_modules')
         ],
         use: [
           { loader: 'style-loader' },
@@ -75,12 +75,12 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: [
-          path.resolve(__dirname, 'node_modules')
+          path.resolve(import.meta.dirname, 'node_modules')
         ],
         // Only process legacy CSS files
         include: [
-          path.resolve(__dirname, 'src/css/styles.css'),
-          path.resolve(__dirname, 'src/css/diff.css')
+          path.resolve(import.meta.dirname, 'src/css/styles.css'),
+          path.resolve(import.meta.dirname, 'src/css/diff.css')
         ],
         use: [
           {
@@ -136,7 +136,7 @@ module.exports = {
 
 // Production-specific additions
 if (isProduction) {
-  module.exports.plugins.push(
+  config.plugins.push(
     new CompressionPlugin({
       filename: '[path][base].gz[query]',
       test: /\.(js|css|svg|map)$/i,
@@ -149,3 +149,5 @@ if (isProduction) {
     })
   );
 }
+
+export default config;

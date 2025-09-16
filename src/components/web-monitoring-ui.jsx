@@ -17,6 +17,39 @@ const api = new WebMonitoringDb({
 });
 
 const localApi = new WebMonitoringApi(api);
+
+// TODO: this messy page list stuff should really be turned into a context
+//   for more understandable code.
+const withPages = (ComponentType) => {
+  const wrapper = ({ pages, loadPages, ...props }) => {
+    useEffect(() => {
+      if (!pages) {
+        loadPages();
+      }
+    });
+
+    return <ComponentType
+      pages={pages}
+      {...props}
+    />;
+  };
+  wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithPages`;
+  return wrapper;
+};
+// Dumb function wrapper since we have mostly class components and React
+// Router now pretty much requires hooks.
+const withUrlParams = (ComponentType) => {
+  const wrapper = (props) => {
+    const urlParams = useParams();
+    const navigate = useNavigate();
+    return <ComponentType navigate={navigate} urlParams={urlParams} {...props} />;
+  };
+  wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithUrlParams`;
+  return wrapper;
+};
+const PageListWithLoading = withUrlParams(withPages(PageList));
+const PageDetailsWithParams = withUrlParams(PageDetails);
+
 /**
  * WebMonitoringUi represents the root container for the app. It also maintains
  * a top-level lsit of pages to share across the app. We do this here instead
@@ -136,38 +169,6 @@ export default class WebMonitoringUi extends Component {
       return this.renderLoginDialog();
     }
 
-    // TODO: this messy page list stuff should really be turned into a context
-    //   for more understandable code.
-    const withPages = (ComponentType) => {
-      const wrapper = ({ pages, ...props }) => {
-        useEffect(() => {
-          if (!pages) {
-            this.loadPages();
-          }
-        });
-
-        return <ComponentType
-          pages={pages}
-          {...props}
-        />;
-      };
-      wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithPages`;
-      return wrapper;
-    };
-    // Dumb function wrapper since we have mostly class components and React
-    // Router now pretty much requires hooks.
-    const withUrlParams = (ComponentType) => {
-      const wrapper = (props) => {
-        const urlParams = useParams();
-        const navigate = useNavigate();
-        return <ComponentType navigate={navigate} urlParams={urlParams} {...props} />;
-      };
-      wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithUrlParams`;
-      return wrapper;
-    };
-    const PageListWithLoading = withUrlParams(withPages(PageList));
-    const PageDetailsWithParams = withUrlParams(PageDetails);
-
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
@@ -189,6 +190,7 @@ export default class WebMonitoringUi extends Component {
                 element={
                   <PageListWithLoading
                     pages={this.state.pages}
+                    loadPages={this.loadPages}
                     user={this.state.user}
                     onSearch={this.search}
                   />

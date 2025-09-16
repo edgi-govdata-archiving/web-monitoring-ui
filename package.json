@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "description": "web-monitoring-ui",
   "main": "views/main.html",
+  "type": "module",
   "dependencies": {
     "@googleapis/sheets": "^11.1.0",
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "luxon": "^3.6.1",
+    "luxon": "^3.7.2",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
@@ -52,7 +53,7 @@
     "analyze": "npm run build-production -- --analyze",
     "build": "webpack",
     "build-production": "NODE_ENV=production webpack",
-    "bundlewatch": "bundlewatch --config .bundlewatch.config.js",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
     "lint": "eslint",
     "prepare": "if [ -d .git ]; then husky; fi",
     "start": "node server/app.js",
