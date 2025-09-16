@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-
 const defaultValues = {
   WEB_MONITORING_DB_URL: 'https://api.monitoring-staging.envirodatagov.org',
   ALLOW_PUBLIC_VIEW: false
@@ -15,6 +13,15 @@ const processEnvironment = Object.assign(
   process.env,
   { NODE_ENV: (process.env.NODE_ENV || 'development').toLowerCase() }
 );
+
+// Dotenv is optional (only installed in development for now).
+let dotenv = { config () { return { parsed: {} }; } };
+try {
+  dotenv = await import('dotenv');
+}
+catch {
+  // pass
+}
 
 function parseBoolean (text, options = { default: false }) {
   if (text == null || text === '') return options.default;
