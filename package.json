@@ -5,7 +5,7 @@
   "main": "views/main.html",
   "type": "module",
   "dependencies": {
-    "@googleapis/sheets": "^11.1.0",
+    "@googleapis/sheets": "^12.0.0",
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
