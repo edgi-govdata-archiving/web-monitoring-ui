@@ -1,4 +1,4 @@
-import { versionUrl } from './tools';
+import { versionUrl } from './tools.js';
 
 /**
  * HtmlTransforms are functions that take an HTML Document and modify it in

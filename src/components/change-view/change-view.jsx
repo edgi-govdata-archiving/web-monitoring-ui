@@ -208,7 +208,7 @@ export default class ChangeView extends Component {
             onClick={this._markAsSignificant}
             className={[baseStyles.btn, baseStyles.btnLink, viewStyles.actionBtn].join(' ')}
           >
-              Add Important Change
+            Add Important Change
           </button>
         </span>
       );
@@ -227,7 +227,7 @@ export default class ChangeView extends Component {
             onClick={this._addToDictionary}
             className={[baseStyles.btn, baseStyles.btnLink, viewStyles.actionBtn].join(' ')}
           >
-              Add to Dictionary
+            Add to Dictionary
           </button>
         </span>
       );

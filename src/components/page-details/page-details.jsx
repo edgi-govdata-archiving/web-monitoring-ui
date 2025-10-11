@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router';
 import { ApiContext } from '../api-context';
 import ChangeView from '../change-view/change-view';
 import Loading from '../loading';
@@ -17,6 +17,7 @@ import pageStyles from './page-details.css';
  * @typedef {Object} PageDetailsProps
  * @property {Page[]} pages
  * @property {Object} user
+ * @property {(to: string, options: any) => void} navigate
  */
 
 /**
@@ -34,7 +35,7 @@ export default class PageDetails extends Component {
 
   static getDerivedStateFromProps (props, state) {
     // Clear existing content when switching pages
-    if (state.page && state.page.uuid !== props.match.params.pageId) {
+    if (state.page && state.page.uuid !== props.urlParams.pageId) {
       return { page: null };
     }
     return null;
@@ -43,7 +44,7 @@ export default class PageDetails extends Component {
   componentDidMount () {
     this.isMounted = true;
     window.addEventListener('keydown', this);
-    this._loadPage(this.props.match.params.pageId);
+    this._loadPage(this.props.urlParams.pageId);
   }
 
   componentWillUnmount () {
@@ -57,8 +58,8 @@ export default class PageDetails extends Component {
    */
   componentDidUpdate (previousProps) {
     this.setTitle();
-    const nextPageId = this.props.match.params.pageId;
-    if (nextPageId !== previousProps.match.params.pageId) {
+    const nextPageId = this.props.urlParams.pageId;
+    if (nextPageId !== previousProps.urlParams.pageId) {
       this._loadPage(nextPageId);
     }
   }
@@ -74,7 +75,7 @@ export default class PageDetails extends Component {
    */
   handleEvent (event) {
     if (event.keyCode === 27) {
-      this.props.history.push('/');
+      this.props.navigate('/');
     }
   }
 
@@ -111,8 +112,8 @@ export default class PageDetails extends Component {
 
     if (this.state.page.merged_into) {
       const targetId = this.state.page.merged_into;
-      const changeId = this.props.match.params.change || '';
-      return <Redirect to={`/page/${targetId}/${changeId}`} />;
+      const changeId = this.props.urlParams.change || '';
+      return <Navigate to={`/page/${targetId}/${changeId}`} replace />;
     }
 
     const statusCode = this.state.page.status || 200;
@@ -221,7 +222,7 @@ export default class PageDetails extends Component {
       );
     }
     else if (targetUrl) {
-      return <Redirect to={targetUrl} />;
+      return <Navigate to={targetUrl} replace />;
     }
     else if (!(versionData.from && versionData.to)) {
       return <div className={[baseStyles.alert, baseStyles.alertDanger].join(' ')}>No saved versions of this page.</div>;
@@ -245,7 +246,7 @@ export default class PageDetails extends Component {
    * @returns {[string|null, string|null]}
    */
   _versionIdsFromProps () {
-    return (this.props.match.params.change || '').split('..');
+    return (this.props.urlParams.change || '').split('..');
   }
 
   /**
@@ -370,12 +371,12 @@ export default class PageDetails extends Component {
 
   _getChangeUrl (from, to, page) {
     const changeId = (from && to) ? `${from.uuid}..${to.uuid}` : '';
-    const pageId = page && page.uuid || this.props.match.params.pageId;
+    const pageId = page && page.uuid || this.props.urlParams.pageId;
     return `/page/${pageId}/${changeId}`;
   }
 
   _navigateToChange = (from, to, page, replace = false) => {
     const url = this._getChangeUrl(from, to, page);
-    this.props.history[replace ? 'replace' : 'push'](url);
+    this.props.navigate(url, { replace });
   };
 }

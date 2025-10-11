@@ -12,11 +12,9 @@ describe('page-details', () => {
   simplePage.versions.forEach(version => {
     version.capture_time = new Date(version.capture_time);
   });
-  const match = {
-    params: {
-      pageId: simplePage.uuid,
-      change: `${simplePage.versions[1].uuid}..${simplePage.versions[0].uuid}`,
-    }
+  const urlParams = {
+    pageId: simplePage.uuid,
+    change: `${simplePage.versions[1].uuid}..${simplePage.versions[0].uuid}`,
   };
   const createMockApi = () => {
     let samples = simplePage.versions.reduce((samples, version) => {
@@ -48,9 +46,9 @@ describe('page-details', () => {
   it('can render', async () => {
     const mockApi = createMockApi();
     render(
-      <ApiContext.Provider value={{ api: mockApi }}>
-        <PageDetails match={match} />
-      </ApiContext.Provider>
+      <ApiContext value={{ api: mockApi }}>
+        <PageDetails urlParams={urlParams} />
+      </ApiContext>
     );
 
     await screen.findByText(simplePage.title);
@@ -59,14 +57,14 @@ describe('page-details', () => {
   it('shows correct title', async () => {
     const mockApi = createMockApi();
     const { unmount } = render(
-      <ApiContext.Provider value={{ api: mockApi }}>
-        <PageDetails match={match} />
-      </ApiContext.Provider>
+      <ApiContext value={{ api: mockApi }}>
+        <PageDetails urlParams={urlParams} />
+      </ApiContext>
     );
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());
     expect(mockApi.sampleVersions).toHaveBeenCalled();
-    expect(document.title).toBe('Scanner | http://www.ncei.noaa.gov/news/earth-science-conference-convenes');
+    await waitFor(() => expect(document.title).toBe(`Scanner | ${simplePage.url}`));
 
     unmount();
     expect(document.title).toBe('Scanner');
@@ -76,17 +74,14 @@ describe('page-details', () => {
     const allVersions = simplePage.versions;
     const mockApi = createMockApi();
     const { container } = render(
-      <ApiContext.Provider value={{ api: mockApi }}>
+      <ApiContext value={{ api: mockApi }}>
         <PageDetails
-          match={{
-            ...match,
-            params: {
-              ...match.params,
-              change: `${allVersions.at(-1).uuid}..${allVersions[0].uuid}`
-            }
+          urlParams={{
+            ...urlParams,
+            change: `${allVersions.at(-1).uuid}..${allVersions[0].uuid}`
           }}
         />,
-      </ApiContext.Provider>
+      </ApiContext>
     );
 
     await waitFor(() => expect(mockApi.getPage).toHaveBeenCalled());

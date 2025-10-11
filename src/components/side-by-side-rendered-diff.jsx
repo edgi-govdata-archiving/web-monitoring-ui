@@ -71,13 +71,13 @@ export default class SideBySideRenderedDiff extends Component {
           html={this.props.diffData.deletions}
           baseUrl={versionUrl(this.props.a)}
           transform={transformA}
-          ref={node => this._htmlViewA = node}
+          ref={node => { this._htmlViewA = node; }}
         />
         <SandboxedHtml
           html={this.props.diffData.insertions}
           baseUrl={versionUrl(this.props.b)}
           transform={transformB}
-          ref={node => this._htmlViewB = node}
+          ref={node => { this._htmlViewB = node; }}
         />
       </div>
     );

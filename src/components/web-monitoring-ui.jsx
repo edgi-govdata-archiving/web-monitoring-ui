@@ -1,6 +1,6 @@
-import { Component } from 'react';
+import { Component, useEffect } from 'react';
 import AriaModal from 'react-aria-modal';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useNavigate, useParams } from 'react-router';
 import { ApiContext, WebMonitoringApi, WebMonitoringDb } from './api-context';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
@@ -17,6 +17,39 @@ const api = new WebMonitoringDb({
 });
 
 const localApi = new WebMonitoringApi(api);
+
+// TODO: this messy page list stuff should really be turned into a context
+//   for more understandable code.
+const withPages = (ComponentType) => {
+  const wrapper = ({ pages, loadPages, ...props }) => {
+    useEffect(() => {
+      if (!pages) {
+        loadPages();
+      }
+    });
+
+    return <ComponentType
+      pages={pages}
+      {...props}
+    />;
+  };
+  wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithPages`;
+  return wrapper;
+};
+// Dumb function wrapper since we have mostly class components and React
+// Router now pretty much requires hooks.
+const withUrlParams = (ComponentType) => {
+  const wrapper = (props) => {
+    const urlParams = useParams();
+    const navigate = useNavigate();
+    return <ComponentType navigate={navigate} urlParams={urlParams} {...props} />;
+  };
+  wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithUrlParams`;
+  return wrapper;
+};
+const PageListWithLoading = withUrlParams(withPages(PageList));
+const PageDetailsWithParams = withUrlParams(PageDetails);
+
 /**
  * WebMonitoringUi represents the root container for the app. It also maintains
  * a top-level lsit of pages to share across the app. We do this here instead
@@ -136,24 +169,10 @@ export default class WebMonitoringUi extends Component {
       return this.renderLoginDialog();
     }
 
-    const withData = (ComponentType) => {
-      return (routeProps) => {
-        const pages = this.state.pages;
-        if (!pages) {
-          this.loadPages();
-        }
-        return <ComponentType
-          {...routeProps}
-          pages={pages}
-          user={this.state.user}
-          onSearch={this.search}
-        />;
-      };
-    };
     const modal = this.state.showLogin ? this.renderLoginDialog() : null;
 
     return (
-      <ApiContext.Provider value={{ api, localApi }}>
+      <ApiContext value={{ api, localApi }}>
         <Router>
           <div id="application">
             <NavBar
@@ -164,20 +183,35 @@ export default class WebMonitoringUi extends Component {
             >
               <EnvironmentBanner apiUrl={api.url}/>
             </NavBar>
-            <Route exact path="/" render={() => <Redirect to="/pages" />}/>
-            <Route path="/pages" render={withData(PageList)} />
-            <Route path="/page/:pageId/:change?" render={(routeProps) =>
-              <PageDetails
-                {...routeProps}
-                user={this.state.user}
-                pages={this.state.pages}
+
+            <Routes>
+              <Route
+                path="/pages"
+                element={
+                  <PageListWithLoading
+                    pages={this.state.pages}
+                    loadPages={this.loadPages}
+                    user={this.state.user}
+                    onSearch={this.search}
+                  />
+                }
               />
-            }/>
-            <Route path="/version/:versionId" component={VersionRedirect} />
+              <Route
+                path="/page/:pageId/:change?"
+                element={
+                  <PageDetailsWithParams
+                    user={this.state.user}
+                    pages={this.state.pages}
+                  />
+                }
+              />
+              <Route path="/version/:versionId" element={<VersionRedirect />} />
+              <Route path="/*?" element={<Navigate to="/pages" replace />} />
+            </Routes>
             {modal}
           </div>
         </Router>
-      </ApiContext.Provider>
+      </ApiContext>
     );
   }
 
