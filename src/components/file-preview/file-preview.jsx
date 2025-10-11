@@ -31,7 +31,7 @@ export default class FilePreview extends Component {
 
           <div className="file-preview__details">
             <div className="file-preview__detail">
-              <strong>File Name:</strong> {fileName || 'Unknown'}
+              <strong>File Name:</strong> {fileName || version.url}
             </div>
 
             <div className="file-preview__detail">
