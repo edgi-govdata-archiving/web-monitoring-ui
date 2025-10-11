@@ -100,7 +100,7 @@ export default class FilePreview extends Component {
     catch (e) {
       // If URL parsing fails, try simple string extraction
       const parts = url.split('/');
-      return parts[parts.length - 1] || null;
+      return parts[parts.length - 1];
     }
   }
 
