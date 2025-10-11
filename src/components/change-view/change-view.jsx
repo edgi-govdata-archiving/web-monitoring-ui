@@ -19,8 +19,7 @@ import {
 import baseStyles from '../../css/base.css';
 import viewStyles from './change-view.css';
 
-export const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
-export const defaultFilePreviewDiffType = 'SIDE_BY_SIDE_FILE_PREVIEW';
+export const defaultDiffType = 'TODO1095';
 export const diffTypeStorage = 'edgi.wm.ui.diff_type';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
@@ -432,14 +431,7 @@ function saveDiffSettings (settings) {
 
 function ensureValidDiffType (from, to, page, stateDiffType = null) {
   const relevantTypes = relevantDiffTypes(from, to, page);
-
-  // Determine the appropriate default based on content type
-  const isNonRenderable = relevantTypes.some(type =>
-    type.value === 'FILE_PREVIEW' || type.value === 'SIDE_BY_SIDE_FILE_PREVIEW'
-  );
-  const appropriateDefault = isNonRenderable ? defaultFilePreviewDiffType : defaultDiffType;
-
-  const typesToTry = ([stateDiffType, loadDiffType(), appropriateDefault]).filter(t => t);
+  const typesToTry = ([stateDiffType, loadDiffType(), defaultDiffType]).filter(t => t);
 
   return typesToTry.find(diffType => isDiffTypeRelevant(relevantTypes, diffType))
     || relevantTypes[0].value;
