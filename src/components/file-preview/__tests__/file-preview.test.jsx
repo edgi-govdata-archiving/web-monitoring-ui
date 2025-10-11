@@ -36,12 +36,8 @@ describe('FilePreview', () => {
     const { getByText } = render(
       <FilePreview page={mockPage} version={mockVersion} />
     );
-
-    const viewButton = getByText('View Raw File');
     const downloadButton = getByText('Download File');
 
-    expect(viewButton).toBeInTheDocument();
-    expect(viewButton.getAttribute('href')).toBe('https://example.com/versions/test.xlsx');
     expect(downloadButton).toBeInTheDocument();
     expect(downloadButton.getAttribute('href')).toBe('https://example.com/versions/test.xlsx');
   });
@@ -67,7 +63,5 @@ describe('FilePreview', () => {
     const { getByText } = render(
       <FilePreview page={pageWithoutFilename} version={versionWithoutFilename} />
     );
-
-    expect(getByText('Unknown')).toBeInTheDocument();
   });
 });

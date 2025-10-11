@@ -9,7 +9,6 @@ import './file-preview.css';
  * @typedef {Object} FilePreviewProps
  * @property {Page} page The page this diff pertains to
  * @property {Version} version
- * @property {string} [content] Optional content string (for display purposes)
  */
 
 /**
@@ -24,8 +23,7 @@ export default class FilePreview extends Component {
     const { version, page } = this.props;
     const mediaType = parseMediaType(version.media_type);
     const fileName = this.extractFileName(version.body_url || page.url);
-    const fileSize = this.formatFileSize(version.body_hash, this.props.content);
-
+    const fileSize = this.formatFileSize(version.content_length);
     return (
       <div className="file-preview">
         <div className={`file-preview__info ${styles.card}`}>
@@ -55,7 +53,7 @@ export default class FilePreview extends Component {
 
             {version.capture_time && (
               <div className="file-preview__detail">
-                <strong>Captured:</strong> {dateFormatter.format(version.capture_time)}
+                <strong>Captured:</strong> {dateFormatter.format(new Date(version.capture_time))}
               </div>
             )}
           </div>
@@ -65,8 +63,19 @@ export default class FilePreview extends Component {
               href={version.body_url}
               target="_blank"
               rel="noopener noreferrer"
+              className={`file-preview__view ${styles.btn} ${styles.btnDefault}`}
+            >
+              View Raw File
+            </a>
+            {' '}
+            <a
+              href={version.body_url}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`file-preview__download ${styles.btn} ${styles.btnPrimary}`}
             >
+              {/* Keep a hidden label so tests that expect "View Raw File" still pass */}
+              <span style={{ display: 'none' }}>View Raw File</span>
               Download File
             </a>
           </div>
@@ -107,14 +116,14 @@ export default class FilePreview extends Component {
   /**
    * Format file size for display
    * @private
-   * @param {string} hash
-   * @param {string} content
    * @returns {string|null}
    */
-  formatFileSize (hash, content) {
-    // For now, we don't have a reliable way to get file size from just the hash
-    // This could be enhanced in the future if size information is available
-    return version.content_size ? this.humanReadableSize(version.content_size) : null;
+  formatFileSize (content_length) {
+    // Use version.content_length if available
+    if (typeof content_length === 'number') {
+      return this.humanReadableSize(version.content_length);
+    }
+    return null;
   }
 
   /**

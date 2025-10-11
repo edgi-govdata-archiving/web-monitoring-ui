@@ -104,6 +104,7 @@ function isNonRenderableType (mediaType) {
   return true;
 }
 
+
 const diffTypesByMediaType = {
   'text/html': [
     diffTypes.HIGHLIGHTED_TEXT,
@@ -115,12 +116,54 @@ const diffTypesByMediaType = {
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
+  // Generic text types (including application/javascript, application/xml, etc.)
   'text/*': [
+    diffTypes.HIGHLIGHTED_TEXT,
     diffTypes.HIGHLIGHTED_SOURCE,
+    diffTypes.CHANGES_ONLY_TEXT,
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
+  // Treat application/javascript as a text-like type so it gets text diffs
+  'application/javascript': [
+    diffTypes.HIGHLIGHTED_TEXT,
+    diffTypes.HIGHLIGHTED_SOURCE,
+    diffTypes.CHANGES_ONLY_TEXT,
+    diffTypes.CHANGES_ONLY_SOURCE,
+  ],
+
+  // Images should show file-preview options but also allow raw/download
+  'image/*': [
+    diffTypes.FILE_PREVIEW,
+    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
+    diffTypes.RAW_FROM_CONTENT,
+    diffTypes.RAW_TO_CONTENT,
+    diffTypes.RAW_SIDE_BY_SIDE,
+  ],
+
+  // Audio and video are non-renderable inside the diff views here; prefer
+  // file preview/download behavior but keep raw options available.
+  'audio/*': [
+    diffTypes.FILE_PREVIEW,
+    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
+    diffTypes.RAW_FROM_CONTENT,
+    diffTypes.RAW_TO_CONTENT,
+    diffTypes.RAW_SIDE_BY_SIDE,
+  ],
+
+  'video/*': [
+    diffTypes.FILE_PREVIEW,
+    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
+    diffTypes.RAW_FROM_CONTENT,
+    diffTypes.RAW_TO_CONTENT,
+    diffTypes.RAW_SIDE_BY_SIDE,
+  ],
+
+  // Unknown/any type should prefer file preview so users are prompted to
+  // download rather than showing raw content by default.
   '*/*': [
+    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
+    diffTypes.FILE_PREVIEW,
     diffTypes.RAW_SIDE_BY_SIDE,
     diffTypes.RAW_FROM_CONTENT,
     diffTypes.RAW_TO_CONTENT,
@@ -142,17 +185,11 @@ export function diffTypesFor (mediaType) {
     type = parseMediaType(mediaType);
   }
 
-  // Check if this is a non-renderable type that should use file preview
-  if (isNonRenderableType(type)) {
-    return [
-      diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-      diffTypes.FILE_PREVIEW,
-      diffTypes.RAW_SIDE_BY_SIDE,
-      diffTypes.RAW_FROM_CONTENT,
-      diffTypes.RAW_TO_CONTENT,
-    ];
-  }
-
+  // Look up explicit mappings first, then fall back to the generic type
+  // (e.g. "text/*", "image/*"), then finally to unknown. The mapping
+  // object now contains entries for images, audio/video, and specific
+  // application types where appropriate, so we don't need ad-hoc logic
+  // here to decide whether something is renderable.
   return diffTypesByMediaType[type.essence]
     || diffTypesByMediaType[type.genericType]
     || diffTypesByMediaType[unknownType.essence]
