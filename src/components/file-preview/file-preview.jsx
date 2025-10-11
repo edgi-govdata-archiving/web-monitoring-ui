@@ -112,15 +112,9 @@ export default class FilePreview extends Component {
    * @returns {string|null}
    */
   formatFileSize (hash, content) {
-    // If we have content, use its length
-    if (content && typeof content === 'string') {
-      const bytes = new Blob([content]).size;
-      return this.humanReadableSize(bytes);
-    }
-
     // For now, we don't have a reliable way to get file size from just the hash
     // This could be enhanced in the future if size information is available
-    return null;
+    return version.content_size ? this.humanReadableSize(version.content_size) : null;
   }
 
   /**
