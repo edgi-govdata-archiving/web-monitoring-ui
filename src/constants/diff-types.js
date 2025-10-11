@@ -42,11 +42,66 @@ export const diffTypes = {
   CHANGES_ONLY_SOURCE: {
     description: 'Changes Only Source',
     diffService: 'html_source_dmp',
+  },
+  FILE_PREVIEW: {
+    description: 'File Preview',
+  },
+  SIDE_BY_SIDE_FILE_PREVIEW: {
+    description: 'Side-by-Side File Preview',
   }
 };
 
 for (let key in diffTypes) {
   diffTypes[key].value = key;
+}
+
+/**
+ * Check if a media type represents non-renderable content that should use
+ * file preview instead of raw display.
+ * @param {MediaType} mediaType
+ * @returns {boolean}
+ */
+function isNonRenderableType (mediaType) {
+  // Content types that browsers can typically render inline
+  const renderableTypes = new Set([
+    'text/html',
+    'text/plain',
+    'text/css',
+    'text/javascript',
+    'application/javascript',
+    'application/json',
+    'application/xml',
+    'text/xml',
+    'application/pdf', // PDFs can be displayed inline in most browsers
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/svg+xml',
+    'image/webp',
+    'audio/mpeg',
+    'audio/wav',
+    'audio/ogg',
+    'video/mp4',
+    'video/webm',
+    'video/ogg'
+  ]);
+
+  // Check if this is a renderable type
+  if (renderableTypes.has(mediaType.essence)) {
+    return false;
+  }
+
+  // Check for generic types that might be renderable
+  if (mediaType.type === 'text' && mediaType.subtype !== '*') {
+    return false; // Most text types can be rendered
+  }
+
+  if (mediaType.type === 'image' && mediaType.subtype !== '*') {
+    return false; // Most images can be rendered
+  }
+
+  // Everything else is considered non-renderable
+  return true;
 }
 
 const diffTypesByMediaType = {
@@ -85,6 +140,17 @@ export function diffTypesFor (mediaType) {
   }
   else {
     type = parseMediaType(mediaType);
+  }
+
+  // Check if this is a non-renderable type that should use file preview
+  if (isNonRenderableType(type)) {
+    return [
+      diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
+      diffTypes.FILE_PREVIEW,
+      diffTypes.RAW_SIDE_BY_SIDE,
+      diffTypes.RAW_FROM_CONTENT,
+      diffTypes.RAW_TO_CONTENT,
+    ];
   }
 
   return diffTypesByMediaType[type.essence]
