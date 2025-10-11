@@ -60,8 +60,13 @@ describe('FilePreview', () => {
       url: 'https://example.com/'
     };
 
-    const { getByText } = render(
+    const { getByText, queryByText } = render(
       <FilePreview page={pageWithoutFilename} version={versionWithoutFilename} />
     );
+
+    // Check that no filename is rendered if there is no URL
+    expect(queryByText('test.xlsx')).not.toBeInTheDocument();
+    // Check for fallback behavior
+    expect(getByText('File Information')).toBeInTheDocument();
   });
 });

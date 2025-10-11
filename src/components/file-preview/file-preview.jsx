@@ -108,6 +108,7 @@ export default class FilePreview extends Component {
     }
     catch (e) {
       // If URL parsing fails, try simple string extraction
+      console.warn('Failed to parse URL for filename extraction:', e);
       const parts = url.split('/');
       return parts[parts.length - 1];
     }
@@ -121,7 +122,7 @@ export default class FilePreview extends Component {
   formatFileSize (content_length) {
     // Use version.content_length if available
     if (typeof content_length === 'number') {
-      return this.humanReadableSize(version.content_length);
+      return this.humanReadableSize(content_length);
     }
     return null;
   }
