@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import { parseMediaType } from '../../scripts/media-type';
+import { dateFormatter } from '../../scripts/formatters';
 import styles from '../css/base.css';
 import './file-preview.css';
+
 
 /**
  * @typedef {Object} FilePreviewProps
@@ -53,7 +55,7 @@ export default class FilePreview extends Component {
 
             {version.capture_time && (
               <div className="file-preview__detail">
-                <strong>Captured:</strong> {new Date(version.capture_time).toLocaleString()}
+                <strong>Captured:</strong> {dateFormatter.format(version.capture_time)}
               </div>
             )}
           </div>
