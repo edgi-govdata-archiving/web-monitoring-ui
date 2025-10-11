@@ -9,7 +9,7 @@ import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 import ChangesOnlyDiff from './changes-only-diff';
 import RawVersion from './raw-version';
 import SideBySideRawVersions from './side-by-side-raw-versions';
-import FilePreview from './file-preview';
+import FilePreview from './file-preview/file-preview';
 import SideBySideFilePreview from './side-by-side-file-preview';
 
 import styles from '../css/base.css';

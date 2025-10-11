@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { parseMediaType } from '../scripts/media-type';
+import { parseMediaType } from '../../scripts/media-type';
 import styles from '../css/base.css';
 import './file-preview.css';
 
