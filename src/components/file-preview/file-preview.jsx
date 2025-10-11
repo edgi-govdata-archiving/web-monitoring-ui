@@ -67,13 +67,6 @@ export default class FilePreview extends Component {
               rel="noopener noreferrer"
               className={`file-preview__download ${styles.btn} ${styles.btnPrimary}`}
             >
-              View Raw File
-            </a>
-            <a
-              href={version.body_url}
-              download={fileName}
-              className={`file-preview__download ${styles.btn} ${styles.btnSecondary}`}
-            >
               Download File
             </a>
           </div>
@@ -82,7 +75,7 @@ export default class FilePreview extends Component {
         <div className="file-preview__warning">
           <p>
             <strong>Note:</strong> This file type cannot be rendered inline.
-            The above information shows basic file metadata. Use the buttons above to view or download the raw file.
+            The above information shows basic file metadata. Use the button above to download.
           </p>
         </div>
       </div>
