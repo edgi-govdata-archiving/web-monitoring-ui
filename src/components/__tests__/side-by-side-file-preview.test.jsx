@@ -8,7 +8,7 @@ import { render } from '@testing-library/react';
 import SideBySideFilePreview from '../side-by-side-file-preview';
 
 // Mock the FilePreview component since we test it separately
-jest.mock('../file-preview', () => {
+jest.mock('../file-preview//file-preview', () => {
   return function MockFilePreview ({ page, version, content }) {
     return <div data-testid="file-preview">{version.uuid}</div>;
   };

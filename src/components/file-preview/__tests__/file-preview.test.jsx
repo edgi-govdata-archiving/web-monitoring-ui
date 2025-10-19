@@ -36,10 +36,10 @@ describe('FilePreview', () => {
     const { getByText } = render(
       <FilePreview page={mockPage} version={mockVersion} />
     );
-    const downloadButton = getByText('Download File');
+    const viewButton = getByText('View Raw File');
 
-    expect(downloadButton).toBeInTheDocument();
-    expect(downloadButton.getAttribute('href')).toBe('https://example.com/versions/test.xlsx');
+    expect(viewButton).toBeInTheDocument();
+    expect(viewButton.getAttribute('href')).toBe('https://example.com/versions/test.xlsx');
   });
 
   it('shows non-renderable content warning', () => {

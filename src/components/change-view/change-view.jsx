@@ -19,7 +19,7 @@ import {
 import baseStyles from '../../css/base.css';
 import viewStyles from './change-view.css';
 
-export const defaultDiffType = 'TODO1095';
+export const defaultDiffType = 'SIDE_BY_SIDE_RENDERED';
 export const diffTypeStorage = 'edgi.wm.ui.diff_type';
 
 const collapsedViewStorage = 'WebMonitoring.ChangeView.collapsedView';
