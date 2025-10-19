@@ -1,43 +1,82 @@
-/* File Preview Styles */
+/* Main container for the file preview */
 .file-preview {
-  max-width: 100%;
-  margin: 1rem 0;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-/* 
-.side-by-side-file-preview {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
+/* Info section - acts like a card */
+.file-preview-info {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
 }
 
-.side-by-side-file-preview__version {
-  flex: 1;
-  min-width: 0;
+/* Title of the info section */
+.file-preview-title {
+  margin: 0 0 15px 0;
+  font-size: 1.5em;
+  color: #333;
 }
 
-.side-by-side-file-preview__version-title {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 2px solid #007cba;
-  color: #007cba;
-  font-size: 1.1rem;
-  font-weight: 600;
+/* Container for all details */
+.file-preview-details {
+  margin-bottom: 20px;
 }
-*/
 
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-  .side-by-side-file-preview {
-    flex-direction: column;
-  }
+/* Individual detail item */
+.file-preview-detail {
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
 
-  .file-preview__actions {
-    flex-direction: column;
-  }
+.file-preview-detail strong {
+  display: inline-block;
+  min-width: 100px;
+  color: #555;
+}
 
-  .file-preview__download {
-    text-align: center;
-  }
+/* Hash display */
+.file-preview-hash {
+  background-color: #eee;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+/* Actions container */
+.file-preview-actions {
+  text-align: center;
+}
+
+/* View link button */
+.file-preview-view {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.file-preview-view:hover {
+  background-color: #0056b3;
+}
+
+/* Warning/note section */
+.file-preview-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 5px;
+  padding: 15px;
+  color: #856404;
+}
+
+.file-preview-warning p {
+  margin: 0;
 }

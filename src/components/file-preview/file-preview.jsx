@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import { parseMediaType } from '../../scripts/media-type';
 import { dateFormatter } from '../../scripts/formatters';
-import './file-preview.css';
-
+import styles from './file-preview.css';
 
 /**
  * @typedef {Object} FilePreviewProps
@@ -24,45 +23,45 @@ export default class FilePreview extends Component {
     const fileName = this.extractFileName(version.body_url || page.url);
     const fileSize = this.formatFileSize(version.content_length);
     return (
-      <div className="file-preview">
-        <div className="file-preview__info">
-          <h3 className="file-preview__title">File Information</h3>
+      <div className={styles['file-preview']}>
+        <div className={styles['file-preview-info']}>
+          <h3 className={styles['file-preview-title']}>File Information</h3>
 
-          <div className="file-preview__details">
-            <div className="file-preview__detail">
+          <div className={styles['file-preview-details']}>
+            <div className={styles['file-preview-detail']}>
               <strong>File Name:</strong> {fileName || version.url}
             </div>
 
-            <div className="file-preview__detail">
+            <div className={styles['file-preview-detail']}>
               <strong>Media Type:</strong> {mediaType.essence}
             </div>
 
             {fileSize && (
-              <div className="file-preview__detail">
+              <div className={styles['file-preview-detail']}>
                 <strong>Size:</strong> {fileSize}
               </div>
             )}
 
             {version.body_hash && (
-              <div className="file-preview__detail">
+              <div className={styles['file-preview-detail']}>
                 <strong>Hash:</strong>
-                <code className="file-preview__hash">{version.body_hash}</code>
+                <code className={styles['file-preview-hash']}>{version.body_hash}</code>
               </div>
             )}
 
             {version.capture_time && (
-              <div className="file-preview__detail">
+              <div className={styles['file-preview-detail']}>
                 <strong>Captured:</strong> {dateFormatter.format(new Date(version.capture_time))}
               </div>
             )}
           </div>
 
-          <div className="file-preview__actions">
+          <div className={styles['file-preview-actions']}>
             <a
               href={version.body_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="file-preview__view"
+              className={styles['file-preview-view']}
             >
               View Raw File
             </a>
@@ -70,7 +69,7 @@ export default class FilePreview extends Component {
           </div>
         </div>
 
-        <div className="file-preview__warning">
+        <div className={styles['file-preview-warning']}>
           <p>
             <strong>Note:</strong> This file type cannot be rendered inline.
             The above information shows basic file metadata. Use the button above to view/download.
