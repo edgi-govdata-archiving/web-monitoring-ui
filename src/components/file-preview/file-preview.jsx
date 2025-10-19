@@ -25,7 +25,7 @@ export default class FilePreview extends Component {
     const fileSize = this.formatFileSize(version.content_length);
     return (
       <div className="file-preview">
-        <div className={`file-preview__info`}>
+        <div className="file-preview__info">
           <h3 className="file-preview__title">File Information</h3>
 
           <div className="file-preview__details">
@@ -62,7 +62,7 @@ export default class FilePreview extends Component {
               href={version.body_url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`file-preview__view`}
+              className="file-preview__view"
             >
               View Raw File
             </a>
