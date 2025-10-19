@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { parseMediaType } from '../../scripts/media-type';
 import { dateFormatter } from '../../scripts/formatters';
-import styles from '../css/base.css';
 import './file-preview.css';
 
 
@@ -26,7 +25,7 @@ export default class FilePreview extends Component {
     const fileSize = this.formatFileSize(version.content_length);
     return (
       <div className="file-preview">
-        <div className={`file-preview__info ${styles.card}`}>
+        <div className={`file-preview__info`}>
           <h3 className="file-preview__title">File Information</h3>
 
           <div className="file-preview__details">
@@ -63,28 +62,18 @@ export default class FilePreview extends Component {
               href={version.body_url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`file-preview__view ${styles.btn} ${styles.btnDefault}`}
+              className={`file-preview__view`}
             >
               View Raw File
             </a>
             {' '}
-            <a
-              href={version.body_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`file-preview__download ${styles.btn} ${styles.btnPrimary}`}
-            >
-              {/* Keep a hidden label so tests that expect "View Raw File" still pass */}
-              <span style={{ display: 'none' }}>View Raw File</span>
-              Download File
-            </a>
           </div>
         </div>
 
         <div className="file-preview__warning">
           <p>
             <strong>Note:</strong> This file type cannot be rendered inline.
-            The above information shows basic file metadata. Use the button above to download.
+            The above information shows basic file metadata. Use the button above to view/download.
           </p>
         </div>
       </div>

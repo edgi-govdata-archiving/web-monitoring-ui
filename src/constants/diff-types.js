@@ -94,29 +94,17 @@ const diffTypesByMediaType = {
   // Audio and video are non-renderable inside the diff views here; prefer
   // file preview/download behavior but keep raw options available.
   'audio/*': [
-    diffTypes.FILE_PREVIEW,
     diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-    diffTypes.RAW_FROM_CONTENT,
-    diffTypes.RAW_TO_CONTENT,
-    diffTypes.RAW_SIDE_BY_SIDE,
   ],
 
   'video/*': [
-    diffTypes.FILE_PREVIEW,
     diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-    diffTypes.RAW_FROM_CONTENT,
-    diffTypes.RAW_TO_CONTENT,
-    diffTypes.RAW_SIDE_BY_SIDE,
   ],
 
   // Unknown/any type should prefer file preview so users are prompted to
   // download rather than showing raw content by default.
   '*/*': [
     diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-    diffTypes.FILE_PREVIEW,
-    diffTypes.RAW_SIDE_BY_SIDE,
-    diffTypes.RAW_FROM_CONTENT,
-    diffTypes.RAW_TO_CONTENT,
   ],
 };
 

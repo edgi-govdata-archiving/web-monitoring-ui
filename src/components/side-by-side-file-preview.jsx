@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import FilePreview from './file-preview/file-preview';
-import './file-preview.css';
 
 /**
  * @typedef {Object} SideBySideFilePreviewProps
