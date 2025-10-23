@@ -5,7 +5,6 @@ import styles from './file-preview.css';
 
 /**
  * @typedef {Object} FilePreviewProps
- * @property {Page} page The page this diff pertains to
  * @property {Version} version
  */
 
@@ -18,9 +17,9 @@ import styles from './file-preview.css';
  */
 export default class FilePreview extends Component {
   render () {
-    const { version, page } = this.props;
+    const { version } = this.props;
     const mediaType = parseMediaType(version.media_type);
-    const fileName = this.extractFileName(version.body_url || page.url);
+    const fileName = this.extractFileName(version.url);
     const fileSize = this.formatFileSize(version.content_length);
     return (
       <div className={styles['file-preview']}>
