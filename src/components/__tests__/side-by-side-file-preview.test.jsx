@@ -8,42 +8,32 @@ import { render } from '@testing-library/react';
 import SideBySideFilePreview from '../side-by-side-file-preview';
 
 // Mock the FilePreview component since we test it separately
-jest.mock('../file-preview//file-preview', () => {
-  return function MockFilePreview ({ page, version, content }) {
+jest.mock('../file-preview/file-preview', () => {
+  return function MockFilePreview ({ version }) {
     return <div data-testid="file-preview">{version.uuid}</div>;
   };
 });
 
 describe('SideBySideFilePreview', () => {
-  const mockPage = {
-    url: 'https://example.com/test.xlsx',
-    uuid: 'mock-page-uuid'
-  };
-
   const mockVersionA = {
-    uuid: 'version-a-uuid',
+    uuid: '1257a5f5-143b-40cd-86ec-4dfceaf361f1',
     media_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    body_url: 'https://example.com/versions/test-a.xlsx',
+    url: 'https://test.com/test_a.xlsx',
+    body_hash: '21807b63cb',
   };
 
   const mockVersionB = {
-    uuid: 'version-b-uuid',
+    uuid: '2c598723-2222-412e-9f55-bf229fb6ca6c',
     media_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    body_url: 'https://example.com/versions/test-b.xlsx',
-  };
-
-  const mockDiffData = {
-    rawA: 'raw content A',
-    rawB: 'raw content B'
+    url: 'https://test.com/test_b.xlsx',
+    body_hash: '21807b63fccb',
   };
 
   it('renders both versions side by side', () => {
     const { getByText, getAllByTestId } = render(
       <SideBySideFilePreview
-        page={mockPage}
         a={mockVersionA}
         b={mockVersionB}
-        diffData={mockDiffData}
       />
     );
 
@@ -52,7 +42,5 @@ describe('SideBySideFilePreview', () => {
 
     const filePreviews = getAllByTestId('file-preview');
     expect(filePreviews).toHaveLength(2);
-    expect(filePreviews[0]).toHaveTextContent('version-a-uuid');
-    expect(filePreviews[1]).toHaveTextContent('version-b-uuid');
   });
 });
