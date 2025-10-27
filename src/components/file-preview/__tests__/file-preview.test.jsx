@@ -24,8 +24,8 @@ describe('FilePreview', () => {
     );
 
     expect(getByText('test.xlsx')).toBeInTheDocument();
-    expect(getByText('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).toBeInTheDocument();
-    expect(getByText('abc123def456')).toBeInTheDocument();
+    expect(getByText(mockVersion.media_type)).toBeInTheDocument();
+    expect(getByText(mockVersion.body_hash)).toBeInTheDocument();
   });
 
   it('renders download and view buttons', () => {
@@ -35,7 +35,7 @@ describe('FilePreview', () => {
     const viewButton = getByText('View Raw File');
 
     expect(viewButton).toBeInTheDocument();
-    expect(viewButton.getAttribute('href')).toBe('https://example.com/versions/scscs28u2882');
+    expect(viewButton.getAttribute('href')).toBe(mockVersion.body_url);
   });
 
   it('shows non-renderable content warning', () => {
@@ -57,6 +57,6 @@ describe('FilePreview', () => {
     );
 
     // Check for fallback behavior
-    expect(getByText('https://example.com/')).toBeInTheDocument();
+    expect(getByText(versionWithoutFilename.url)).toBeInTheDocument();
   });
 });

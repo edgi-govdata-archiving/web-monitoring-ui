@@ -23,6 +23,7 @@ else {
   };
 }
 
+
 export const formatMaintainers = maintainers => maintainers.map(maintainership => maintainership.name).join(', ');
 
 export const formatSites = tags => {
@@ -31,4 +32,29 @@ export const formatSites = tags => {
     .filter(tagging => tagging.name.startsWith(sitePrefix))
     .map(tagging => tagging.name.slice(sitePrefix.length))
     .join(', ');
+};
+
+/**
+ * Format a number to a maximum number of decimal places, removing trailing zeros
+ * @param {number} value - The number to format
+ * @param {number} maxDecimals - Maximum number of decimal places
+ * @returns {number}
+ */
+export const formatDecimalPlaces = (value, maxDecimals) => {
+  return parseFloat(value.toFixed(maxDecimals));
+};
+
+/**
+ * Convert bytes to human readable format
+ * @param {number} bytes
+ * @returns {string}
+ */
+export const humanReadableSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const cappedIndex = Math.min(i, sizes.length - 1);
+  const sizeUnit = sizes[cappedIndex];
+  return formatDecimalPlaces(bytes / Math.pow(k, cappedIndex), 2) + ' ' + sizeUnit;
 };

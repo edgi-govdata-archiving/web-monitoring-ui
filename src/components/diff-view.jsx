@@ -9,8 +9,7 @@ import SideBySideRenderedDiff from './side-by-side-rendered-diff';
 import ChangesOnlyDiff from './changes-only-diff';
 import RawVersion from './raw-version';
 import SideBySideRawVersions from './side-by-side-raw-versions';
-import FilePreview from './file-preview/file-preview';
-import SideBySideFilePreview from './side-by-side-file-preview';
+import SideBySideFilePreview from './side-by-side-file-preview/side-by-side-file-preview';
 
 import styles from '../css/base.css';
 
@@ -187,10 +186,6 @@ export default class DiffView extends Component {
       case diffTypes.CHANGES_ONLY_SOURCE.value:
         return (
           <ChangesOnlyDiff diffData={this.state.diffData} className='diff-source-inline' />
-        );
-      case diffTypes.FILE_PREVIEW.value:
-        return (
-          <FilePreview page={this.props.page} version={this.props.b} content={this.state.diffData.rawB} />
         );
       case diffTypes.SIDE_BY_SIDE_FILE_PREVIEW.value:
         return (

@@ -47,7 +47,6 @@ describe('diff-types with side by side content support', () => {
       const types = diffTypesFor('image/png');
 
       expect(types).toContain(diffTypes.SIDE_BY_SIDE_FILE_PREVIEW);
-      expect(types).toContain(diffTypes.FILE_PREVIEW);
     });
   });
 });

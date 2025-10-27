@@ -43,11 +43,8 @@ export const diffTypes = {
     description: 'Changes Only Source',
     diffService: 'html_source_dmp',
   },
-  FILE_PREVIEW: {
-    description: 'File Preview',
-  },
   SIDE_BY_SIDE_FILE_PREVIEW: {
-    description: 'Side-by-Side File Preview',
+    description: 'File Preview',
   }
 };
 
@@ -68,23 +65,14 @@ const diffTypesByMediaType = {
 
   // Generic text types (including application/javascript, application/xml, etc.)
   'text/*': [
-    diffTypes.HIGHLIGHTED_TEXT,
     diffTypes.HIGHLIGHTED_SOURCE,
     diffTypes.CHANGES_ONLY_TEXT,
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
-  // Treat application/javascript as a text-like type so it gets text diffs
-  'application/javascript': [
-    diffTypes.HIGHLIGHTED_TEXT,
-    diffTypes.HIGHLIGHTED_SOURCE,
-    diffTypes.CHANGES_ONLY_TEXT,
-    diffTypes.CHANGES_ONLY_SOURCE,
-  ],
 
-  // Images should show file-preview options but also allow raw/download
+  // Images are renderable, but diffs aren't very useful
   'image/*': [
-    diffTypes.FILE_PREVIEW,
     diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
     diffTypes.RAW_FROM_CONTENT,
     diffTypes.RAW_TO_CONTENT,
