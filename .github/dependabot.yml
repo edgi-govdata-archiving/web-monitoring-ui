@@ -24,6 +24,10 @@ updates:
         patterns:
           - 'eslint'
           - '@eslint/*'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
       testinglibrary:
         patterns:
           - '@testing-library/*'
