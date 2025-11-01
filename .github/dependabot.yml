@@ -24,6 +24,10 @@ updates:
         patterns:
           - 'eslint'
           - '@eslint/*'
+      jest:
+        patterns:
+          - 'jest'
+          - 'jest-*'
       react:
         patterns:
           - 'react'
