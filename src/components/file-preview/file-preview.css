@@ -1,0 +1,92 @@
+/* Main container for the file preview */
+.file-preview {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Info section - acts like a card */
+.file-preview-info {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+/* Title of the info section */
+.file-preview-title {
+  margin: 0 0 15px 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+/* Container for all details */
+.file-preview-details {
+  margin-bottom: 20px;
+}
+
+/* Individual detail item */
+.file-preview-detail {
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.file-preview-detail strong {
+  display: inline-block;
+  min-width: 100px;
+  color: #555;
+}
+
+/* Hash display */
+.file-preview-hash {
+  background-color: #eee;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9em;
+  padding: 2px 4px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+/* Actions container */
+.file-preview-actions {
+  text-align: center;
+  margin-top: 1em;
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+/* View link button */
+/* TODO: should share a unified, standard button style with rest of the app. */
+.file-preview-view {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.file-preview-view:hover,
+.file-preview-view:focus {
+  background-color: #5b5b5b;
+  color: white;
+  text-decoration: none;
+}
+
+/* Warning/note section */
+.file-preview-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 5px;
+  padding: 15px;
+  color: #856404;
+}
+
+.file-preview-warning p {
+  margin: 0;
+}
