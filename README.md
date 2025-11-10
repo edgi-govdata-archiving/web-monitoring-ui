@@ -122,6 +122,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [📖](# "Documentation") | [Patrick Connolly](https://github.com/patcon) |
 | [📖](# "Documentation") | [Manaswini Das](https://github.com/manaswinidas) |
 | [💻](# "Code") [⚠️](# "Tests") | [Nick Echols](https://github.com/steryereo) |
+| [💻](# "Code") [⚠️](# "Tests") | [Beckett Frey](https://github.com/BeckettFrey) |
 | [💻](# "Code") [⚠️](# "Tests") | [Katie Jones](https://github.com/katjone) |
 | [💡](# "Examples") | [@lh00000000](https://github.com/lh00000000) |
 | [💻](# "Code") [⚠️](# "Tests") | [Greg Merrill](https://github.com/g-merrill) |
