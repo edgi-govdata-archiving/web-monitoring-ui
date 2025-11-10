@@ -66,12 +66,11 @@ const diffTypesByMediaType = {
   // Generic text types (including application/javascript, application/xml, etc.)
   'text/*': [
     diffTypes.HIGHLIGHTED_SOURCE,
-    diffTypes.CHANGES_ONLY_TEXT,
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
 
-  // Images are renderable, but diffs aren't very useful
+  // Images are renderable, but we don't have any relevant diffs (we should!).
   'image/*': [
     diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
     diffTypes.RAW_FROM_CONTENT,
@@ -79,18 +78,8 @@ const diffTypesByMediaType = {
     diffTypes.RAW_SIDE_BY_SIDE,
   ],
 
-  // Audio and video are non-renderable inside the diff views here; prefer
-  // file preview/download behavior but keep raw options available.
-  'audio/*': [
-    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-  ],
-
-  'video/*': [
-    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-  ],
-
-  // Unknown/any type should prefer file preview so users are prompted to
-  // download rather than showing raw content by default.
+  // Other types only get a preview, since we don't know if the browser can
+  // render them or will do something else surprising (like download the file).
   '*/*': [
     diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
   ],
@@ -98,6 +87,7 @@ const diffTypesByMediaType = {
 
 /**
  * Get appropriate diff types for a given kind of content.
+ *
  * @param {string|MediaType} mediaType The type of content to get. Can be a
  *   MediaType object, a content type/media type string, or a file extension.
  * @returns {Array<DiffType>}
@@ -111,11 +101,6 @@ export function diffTypesFor (mediaType) {
     type = parseMediaType(mediaType);
   }
 
-  // Look up explicit mappings first, then fall back to the generic type
-  // (e.g. "text/*", "image/*"), then finally to unknown. The mapping
-  // object now contains entries for images, audio/video, and specific
-  // application types where appropriate, so we don't need ad-hoc logic
-  // here to decide whether something is renderable.
   return diffTypesByMediaType[type.essence]
     || diffTypesByMediaType[type.genericType]
     || diffTypesByMediaType[unknownType.essence]

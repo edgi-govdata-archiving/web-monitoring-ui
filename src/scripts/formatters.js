@@ -23,7 +23,6 @@ else {
   };
 }
 
-
 export const formatMaintainers = maintainers => maintainers.map(maintainership => maintainership.name).join(', ');
 
 export const formatSites = tags => {
@@ -45,12 +44,13 @@ export const formatDecimalPlaces = (value, maxDecimals) => {
 };
 
 /**
- * Convert bytes to human readable format
+ * Convert bytes to human readable format, e.g. 3280 -> "3.2 KB".
  * @param {number} bytes
  * @returns {string}
  */
 export const humanReadableSize = (bytes) => {
   if (bytes === 0) return '0 Bytes';
+
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
