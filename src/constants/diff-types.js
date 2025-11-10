@@ -42,6 +42,9 @@ export const diffTypes = {
   CHANGES_ONLY_SOURCE: {
     description: 'Changes Only Source',
     diffService: 'html_source_dmp',
+  },
+  SIDE_BY_SIDE_FILE_PREVIEW: {
+    description: 'File Preview',
   }
 };
 
@@ -65,15 +68,25 @@ const diffTypesByMediaType = {
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
-  '*/*': [
-    diffTypes.RAW_SIDE_BY_SIDE,
+
+  // Images are renderable, but we don't have any relevant diffs (we should!).
+  'image/*': [
+    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
     diffTypes.RAW_FROM_CONTENT,
     diffTypes.RAW_TO_CONTENT,
+    diffTypes.RAW_SIDE_BY_SIDE,
+  ],
+
+  // Other types only get a preview, since we don't know if the browser can
+  // render them or will do something else surprising (like download the file).
+  '*/*': [
+    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
   ],
 };
 
 /**
  * Get appropriate diff types for a given kind of content.
+ *
  * @param {string|MediaType} mediaType The type of content to get. Can be a
  *   MediaType object, a content type/media type string, or a file extension.
  * @returns {Array<DiffType>}
