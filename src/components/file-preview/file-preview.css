@@ -2,7 +2,6 @@
 .file-preview {
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
   font-family: Arial, sans-serif;
 }
 
@@ -54,13 +53,14 @@
 /* Actions container */
 .file-preview-actions {
   text-align: center;
-  margin-top: 1em; 
-  display: flex; 
-  gap: 1em; 
+  margin-top: 1em;
+  display: flex;
+  gap: 1em;
   flex-wrap: wrap;
 }
 
 /* View link button */
+/* TODO: should share a unified, standard button style with rest of the app. */
 .file-preview-view {
   display: inline-block;
   padding: 10px 20px;
@@ -71,7 +71,8 @@
   transition: background-color 0.3s;
 }
 
-.file-preview-view:hover {
+.file-preview-view:hover,
+.file-preview-view:focus {
   background-color: #5b5b5b;
   color: white;
   text-decoration: none;

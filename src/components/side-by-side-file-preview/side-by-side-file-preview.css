@@ -1,4 +1,10 @@
 .side-by-side-file-preview-container {
     display: flex;
     justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.side-by-side-file-preview-container > * {
+  flex: 1 1 16em;
 }
