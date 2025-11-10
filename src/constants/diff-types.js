@@ -63,7 +63,6 @@ const diffTypesByMediaType = {
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
-  // Generic text types (including application/javascript, application/xml, etc.)
   'text/*': [
     diffTypes.HIGHLIGHTED_SOURCE,
     diffTypes.CHANGES_ONLY_SOURCE,

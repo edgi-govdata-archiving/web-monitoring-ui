@@ -66,7 +66,7 @@ export default function FilePreview ({ version }) {
  * @param {string} url
  * @returns {string|null}
  */
-const extractFileName = (url) => {
+function extractFileName (url) {
   if (!url) return null;
 
   try {
@@ -86,7 +86,7 @@ const extractFileName = (url) => {
  * @param {number} content_length
  * @returns {string|null}
  */
-const formatFileSize = (content_length) => {
+function formatFileSize (content_length) {
   if (typeof content_length === 'number') {
     return humanReadableSize(content_length);
   }
