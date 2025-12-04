@@ -52,6 +52,16 @@ for (let key in diffTypes) {
   diffTypes[key].value = key;
 }
 
+// Diff types for files that we don't have a meaningful diff for, but which
+// the browser can render inline instead of just triggering a download.
+// Ideally, we want to provide useful diffs for these in the future.
+const diffTypesForInlineRenderableFiles = [
+  diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
+  diffTypes.RAW_FROM_CONTENT,
+  diffTypes.RAW_TO_CONTENT,
+  diffTypes.RAW_SIDE_BY_SIDE,
+];
+
 const diffTypesByMediaType = {
   'text/html': [
     diffTypes.HIGHLIGHTED_TEXT,
@@ -68,14 +78,9 @@ const diffTypesByMediaType = {
     diffTypes.CHANGES_ONLY_SOURCE,
   ],
 
+  'image/*': diffTypesForInlineRenderableFiles,
 
-  // Images are renderable, but we don't have any relevant diffs (we should!).
-  'image/*': [
-    diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
-    diffTypes.RAW_FROM_CONTENT,
-    diffTypes.RAW_TO_CONTENT,
-    diffTypes.RAW_SIDE_BY_SIDE,
-  ],
+  'application/pdf': diffTypesForInlineRenderableFiles,
 
   // Other types only get a preview, since we don't know if the browser can
   // render them or will do something else surprising (like download the file).
