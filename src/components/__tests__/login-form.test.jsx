@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import LoginPanel from '../login-form/login-form';
 import WebMonitoringDb from '../../services/web-monitoring-db';

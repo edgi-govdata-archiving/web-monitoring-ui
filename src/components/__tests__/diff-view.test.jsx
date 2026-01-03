@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { render, screen, waitFor } from '@testing-library/react';
 import DiffView from '../diff-view';
 import simplePage from '../../__mocks__/simple-page.json';
