@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { SafeStorage, LayeredStorage } from '../layered-storage';
 
 describe('LayeredStorage module', () => {

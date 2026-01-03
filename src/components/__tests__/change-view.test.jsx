@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ApiContext } from '../api-context';
 import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
