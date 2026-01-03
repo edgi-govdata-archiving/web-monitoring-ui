@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { render, screen, getByRole } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import NavBar from '../nav-bar/nav-bar';

@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { fireEvent, render, screen, act } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router';
 import PageList from '../page-list/page-list';

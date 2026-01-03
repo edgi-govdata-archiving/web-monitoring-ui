@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import EnvironmentBanner from '../environment-banner/environment-banner';
 import { render, screen } from '@testing-library/react';
 

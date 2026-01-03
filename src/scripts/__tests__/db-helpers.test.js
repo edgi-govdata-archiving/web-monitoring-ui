@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { formatDateRange } from '../db-helpers';
 import { DateTime } from 'luxon';
 

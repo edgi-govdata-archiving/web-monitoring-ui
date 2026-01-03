@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import MediaType, { parseMediaType } from '../media-type';
 
 describe('MediaType module', () => {

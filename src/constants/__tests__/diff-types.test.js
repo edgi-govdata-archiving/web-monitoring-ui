@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { diffTypes, diffTypesFor } from '../diff-types';
 import MediaType from '../../scripts/media-type';
 

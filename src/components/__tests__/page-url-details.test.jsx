@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
 import PageUrlDetails from '../page-url-details/page-url-details';
 import simplePage from '../../__mocks__/simple-page.json';

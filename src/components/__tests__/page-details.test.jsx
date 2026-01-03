@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { render, waitFor, screen } from '@testing-library/react';
 import PageDetails from '../page-details/page-details';
 import simplePage from '../../__mocks__/simple-page.json';
