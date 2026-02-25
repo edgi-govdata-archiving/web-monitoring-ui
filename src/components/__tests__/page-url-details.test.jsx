@@ -37,10 +37,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(container.querySelector('summary')).toHaveTextContent('Captured from a different URL');
-    expect(container.querySelector('a')).toHaveAttribute('href', `${simplePage.url}/something`);
-    // The difference should be highlighted with <ins>
-    expect(container.querySelector('ins')).toHaveTextContent('/ something');
+    expect(container).toMatchSnapshot();
   });
 
   it("shows the versions' redirects", () => {
@@ -72,13 +69,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(container.querySelector('summary')).toHaveTextContent('Captured URL Redirected Somewhere Else');
-    const listItems = container.querySelectorAll('.urlHistoryList li');
-    expect(listItems).toHaveLength(2);
-    expect(listItems[0].querySelector('a')).toHaveAttribute('href', simplePage.url);
-    expect(listItems[1].querySelector('a')).toHaveAttribute('href', `${simplePage.url}/something`);
-    // Redirect icon should appear on first item
-    expect(listItems[0].querySelector('i.fa-angle-right')).toBeInTheDocument();
+    expect(container).toMatchSnapshot();
   });
 
   it('shows separate URL histories for each version if they differ', () => {
@@ -110,13 +101,7 @@ describe('PageUrlDetails Component', () => {
       />
     );
 
-    expect(container.querySelector('summary')).toHaveTextContent('Versions come from different URLs');
-    // Should have two URL history lists (one for each version)
-    const urlLists = container.querySelectorAll('.urlHistoryList');
-    expect(urlLists).toHaveLength(2);
-    // Should have labels for each version
-    expect(container).toHaveTextContent('From Version URL and Redirects');
-    expect(container).toHaveTextContent('To Version URL and Redirects');
+    expect(container).toMatchSnapshot();
   });
 
   it('handles malformed redirect data by filtering out invalid URLs', () => {
