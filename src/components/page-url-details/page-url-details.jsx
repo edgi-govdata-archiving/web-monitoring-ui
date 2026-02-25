@@ -1,3 +1,4 @@
+import { isValidUrl } from '../../scripts/tools';
 import ExternalLink from '../external-link';
 import styles from './page-url-details.css';
 
@@ -245,10 +246,11 @@ function naiveInsertionDiff (listA, listB) {
 function _redirectHistoryForVersion (version) {
   if (!version) return [];
 
-  // Make a copy of the redirects
+  // Make a copy of the redirects, filtering out any malformed entries that
+  // aren't valid URLs. (Some old Versionista versions have bad data here.)
   const redirects = (
     version.source_metadata && version.source_metadata.redirects || []
-  ).slice();
+  ).filter(isValidUrl);
 
   // Ensure it starts with the URL we tried to capture here.
   if (redirects[0] != version.url) {
