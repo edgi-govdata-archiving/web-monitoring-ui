@@ -12,7 +12,13 @@ export function removeNonUserTags (tags) {
  * @returns {boolean}
  */
 export function isValidUrl (url) {
-  return typeof url === 'string' && /^[\w+-]+:\/\/[^/]+(\/[^?#]*)?(\?[^#]*)?(#.*)?$/.test(url);
+  try {
+    new URL(url);
+    return true;
+  }
+  catch (_) {
+    return false;
+  }
 }
 
 /**
