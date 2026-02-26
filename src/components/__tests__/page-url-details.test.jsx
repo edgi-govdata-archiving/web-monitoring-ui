@@ -103,4 +103,75 @@ describe('PageUrlDetails Component', () => {
 
     expect(container).toMatchSnapshot();
   });
+
+  it('handles malformed redirect data by filtering out invalid URLs', () => {
+    const version1 = {
+      ...simplePage.versions[1],
+      source_metadata: {
+        ...simplePage.versions[1].source_metadata,
+        redirects: [
+          '2016-01-01T00:00:00.000Z'
+        ]
+      }
+    };
+    const version2 = {
+      ...simplePage.versions[0],
+      source_metadata: {
+        ...simplePage.versions[0].source_metadata,
+        redirects: [
+          '2016-01-01T00:00:00.000Z'
+        ]
+      }
+    };
+    const { container } = render(
+      <PageUrlDetails
+        page={simplePage}
+        from={version1}
+        to={version2}
+      />
+    );
+
+    // Should render without error
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('filters out only invalid URLs from redirects, keeping valid ones', () => {
+    const version1 = {
+      ...simplePage.versions[1],
+      source_metadata: {
+        ...simplePage.versions[1].source_metadata,
+        redirects: [
+          simplePage.url,
+          '2016-01-01T00:00:00.000Z',
+          `${simplePage.url}/something`
+        ]
+      }
+    };
+    const version2 = {
+      ...simplePage.versions[0],
+      source_metadata: {
+        ...simplePage.versions[0].source_metadata,
+        redirects: [
+          simplePage.url,
+          '2016-01-01T00:00:00.000Z',
+          `${simplePage.url}/something`
+        ]
+      }
+    };
+    const { container } = render(
+      <PageUrlDetails
+        page={simplePage}
+        from={version1}
+        to={version2}
+      />
+    );
+
+    // Should show the redirect list with valid URLs only (invalid timestamp filtered out)
+    expect(container.querySelector('summary')).toHaveTextContent('Captured URL Redirected Somewhere Else');
+    const listItems = container.querySelectorAll('.urlHistoryList li');
+    expect(listItems).toHaveLength(2);
+    // Should only have valid URLs, not the timestamp
+    expect(listItems[0].querySelector('a')).toHaveAttribute('href', simplePage.url);
+    expect(listItems[1].querySelector('a')).toHaveAttribute('href', `${simplePage.url}/something`);
+  });
 });
