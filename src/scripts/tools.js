@@ -39,10 +39,7 @@ export function versionUrl (version) {
     else if (version.source_metadata.redirects) {
       // Filter out malformed entries that aren't valid URLs.
       // (Some old Versionista versions have bad data here.)
-      const redirects = version.source_metadata.redirects.filter(isValidUrl);
-      if (redirects.length > 0) {
-        url = redirects[redirects.length - 1];
-      }
+      url = version.source_metadata.redirects.filter(isValidUrl).at(-1) || url;
     }
   }
 
