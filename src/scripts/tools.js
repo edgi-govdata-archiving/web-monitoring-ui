@@ -16,7 +16,7 @@ export function isValidUrl (url) {
     new URL(url);
     return true;
   }
-  catch (_) {
+  catch {
     return false;
   }
 }
