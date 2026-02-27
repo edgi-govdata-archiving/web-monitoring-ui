@@ -1,6 +1,21 @@
 'use strict';
 
 /**
+ * Safely access a storage object (sessionStorage or localStorage).
+ * Returns null if access is denied (e.g., in sandboxed iframes).
+ * @param {() => Storage} getter - Function that returns the storage object
+ * @returns {Storage|null}
+ */
+function safeGetStorage (getter) {
+  try {
+    return getter();
+  }
+  catch {
+    return null;
+  }
+}
+
+/**
  * Wraps a DOMStorage instance (e.g. sessionStorage or localStorage) so that
  * you can save and load non-string values and so that you don't have to worry
  * about catching exceptions (e.g. if the storage quota is exceeded).
@@ -10,11 +25,12 @@ export class SafeStorage {
     this.store = backingStore;
   }
 
-  get length () { return this.store.length; }
+  get length () { return this.store?.length ?? 0; }
 
-  clear () { return this.store.clear(); }
+  clear () { return this.store?.clear(); }
 
   getItem (key) {
+    if (!this.store) return null;
     const value = this.store.getItem(key);
     try {
       return (value == null || !value.length) ? value : JSON.parse(value);
@@ -24,11 +40,12 @@ export class SafeStorage {
     }
   }
 
-  key (index) { return this.store.key(index); }
+  key (index) { return this.store?.key(index); }
 
-  removeItem (key) { return this.store.removeItem(key); }
+  removeItem (key) { return this.store?.removeItem(key); }
 
   setItem (key, value) {
+    if (!this.store) return false;
     const actualValue = JSON.stringify(value);
     try {
       this.store.setItem(key, actualValue);
@@ -83,6 +100,6 @@ export class LayeredStorage {
  * so concurrently open windows don't interfere with each other.
  */
 export default new LayeredStorage([
-  new SafeStorage(sessionStorage),
-  new SafeStorage(localStorage)
+  new SafeStorage(safeGetStorage(() => sessionStorage)),
+  new SafeStorage(safeGetStorage(() => localStorage))
 ]);

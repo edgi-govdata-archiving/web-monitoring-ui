@@ -1,6 +1,6 @@
 import { Component, useEffect } from 'react';
 import AriaModal from 'react-aria-modal';
-import { BrowserRouter as Router, Navigate, Routes, Route, useNavigate, useParams } from 'react-router';
+import { BrowserRouter as Router, Navigate, Routes, Route, useNavigate, useParams, useSearchParams } from 'react-router';
 import { ApiContext, WebMonitoringApi, WebMonitoringDb } from './api-context';
 import EnvironmentBanner from './environment-banner/environment-banner';
 import Loading from './loading';
@@ -47,7 +47,15 @@ const withUrlParams = (ComponentType) => {
   wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithUrlParams`;
   return wrapper;
 };
-const PageListWithLoading = withUrlParams(withPages(PageList));
+const withSearchParams = (ComponentType) => {
+  const wrapper = (props) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    return <ComponentType searchParams={searchParams} setSearchParams={setSearchParams} {...props} />;
+  };
+  wrapper.displayName = `${ComponentType.displayName || ComponentType.name}WithSearchParams`;
+  return wrapper;
+};
+const PageListWithLoading = withSearchParams(withUrlParams(withPages(PageList)));
 const PageDetailsWithParams = withUrlParams(PageDetails);
 
 /**

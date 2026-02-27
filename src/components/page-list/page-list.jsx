@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import { DateTime } from 'luxon';
 import Loading from '../loading';
 import { Component } from 'react';
 import SearchBar from '../search-bar/search-bar';
@@ -18,6 +19,8 @@ import listStyles from './page-list.css';
  * @typedef {Object} PageListProps
  * @property {Page[]} pages
  * @property {(any) => void} onSearch
+ * @property {URLSearchParams} searchParams
+ * @property {(params: URLSearchParams, options?: {replace?: boolean}) => void} setSearchParams
  */
 
 /**
@@ -28,6 +31,61 @@ import listStyles from './page-list.css';
  * @param {PageListProps} props
  */
 export default class PageList extends Component {
+  constructor (props) {
+    super(props);
+
+    // Parse initial values from URL search params
+    const urlParam = props.searchParams?.get('url') || '';
+    const startDateParam = props.searchParams?.get('startDate');
+    const endDateParam = props.searchParams?.get('endDate');
+
+    this._initialUrl = urlParam;
+    this._initialStartDate = startDateParam ? parseDate(startDateParam) : null;
+    this._initialEndDate = endDateParam ? parseDate(endDateParam) : null;
+
+    this._handleSearch = this._handleSearch.bind(this);
+    this._updateUrlParams = debounce(this._updateUrlParams.bind(this), 500);
+  }
+
+  /**
+   * Handle search from SearchBar and update URL params.
+   * @param {Object} query - The search query
+   */
+  _handleSearch (query) {
+    // Call the parent onSearch handler
+    this.props.onSearch(query);
+
+    // Update URL params (debounced)
+    this._updateUrlParams(query);
+  }
+
+  /**
+   * Update URL search params based on search query.
+   * @param {Object} query - The search query
+   */
+  _updateUrlParams (query) {
+    const params = new URLSearchParams();
+
+    // Extract raw URL from expanded pattern (e.g., "*//epa*" -> "epa")
+    if (query.url) {
+      const rawUrl = extractRawUrl(query.url);
+      if (rawUrl) {
+        params.set('url', rawUrl);
+      }
+    }
+
+    if (query.startDate) {
+      params.set('startDate', query.startDate.toISODate());
+    }
+
+    if (query.endDate) {
+      params.set('endDate', query.endDate.toISODate());
+    }
+
+    // Use replace to avoid polluting browser history
+    this.props.setSearchParams(params, { replace: true });
+  }
+
   render () {
     let results;
 
@@ -47,7 +105,10 @@ export default class PageList extends Component {
     return (
       <div className={baseStyles.main}>
         <SearchBar
-          onSearch={this.props.onSearch}
+          onSearch={this._handleSearch}
+          initialUrl={this._initialUrl}
+          initialStartDate={this._initialStartDate}
+          initialEndDate={this._initialEndDate}
         />
         {results}
       </div>
@@ -152,4 +213,48 @@ const HOST_WITHOUT_WWW_PATTERN = /^[^:]+:\/\/(?:ww+\d*\.)?([^/]+)/;
 
 function getDomain (url) {
   return url.match(HOST_WITHOUT_WWW_PATTERN)[1];
+}
+
+/**
+ * Extract raw URL from expanded pattern.
+ * E.g., "* //epa*" becomes "epa", "http://epa.gov*" becomes "http://epa.gov"
+ * @param {string} expandedUrl - The expanded URL pattern
+ * @returns {string} - The raw URL without wildcards
+ */
+function extractRawUrl (expandedUrl) {
+  if (!expandedUrl) return '';
+
+  let raw = expandedUrl;
+
+  // Remove leading wildcard pattern (e.g., "*//" -> "")
+  if (raw.startsWith('*//')) {
+    raw = raw.slice(3);
+  }
+
+  // Remove trailing wildcard
+  if (raw.endsWith('*')) {
+    raw = raw.slice(0, -1);
+  }
+
+  return raw;
+}
+
+/**
+ * Parse an ISO date string into a Luxon DateTime object.
+ * Returns null if the string is invalid.
+ * @param {string} dateStr - ISO date string (YYYY-MM-DD)
+ * @returns {DateTime|null}
+ */
+function parseDate (dateStr) {
+  if (!dateStr) return null;
+  const dt = DateTime.fromISO(dateStr);
+  return dt.isValid ? dt : null;
+}
+
+function debounce (func, delay) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
 }
