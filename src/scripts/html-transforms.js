@@ -120,9 +120,11 @@ export function addTargetBlank (document) {
       const targetId = href.slice(1);
       if (targetId) {
         // Anchors can target by id or name attribute
-        const escapedId = targetId.replace(/'/g, "\\'").replace(/\\/g, '\\\\');
+        // Escape backslashes first, then quotes for JS string context
+        const escapedId = targetId.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        // Use getElementsByName instead of querySelector to avoid CSS selector injection
         node.setAttribute('onclick',
-          `event.preventDefault(); (document.getElementById('${escapedId}') || document.querySelector('[name="${escapedId}"]'))?.scrollIntoView();`
+          `event.preventDefault(); (document.getElementById('${escapedId}') || document.getElementsByName('${escapedId}')[0])?.scrollIntoView();`
         );
       } 
       else {
