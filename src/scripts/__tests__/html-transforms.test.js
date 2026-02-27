@@ -133,4 +133,42 @@ describe('HtmlTransforms module', () => {
     expect(document.getElementById('goo').target).toEqual('_blank');
     expect(document.getElementById('orange').target).toBeFalsy();
   });
+
+  test('addTargetBlank does not add target="_blank" to intra-page links', () => {
+    let document = parser.parseFromString(`<!doctype html>
+      <html>
+        <body>
+          <a href='#section1' id='intra-page'>Jump to section</a>
+          <a href='#' id='hash-only'>Hash only</a>
+          <a href='https://example.com' id='external'>External link</a>
+        </body>
+      </html>
+      `, 'text/html');
+
+    document = addTargetBlank(document);
+    expect(document.getElementById('intra-page').target).toEqual('');
+    expect(document.getElementById('hash-only').target).toEqual('');
+    expect(document.getElementById('external').target).toEqual('_blank');
+
+    // Intra-page links should have onclick handlers for scrolling
+    expect(document.getElementById('intra-page').getAttribute('onclick')).toContain('scrollIntoView');
+    expect(document.getElementById('hash-only').getAttribute('onclick')).toContain('scrollTo');
+  });
+
+  test('addTargetBlank does not add target="_blank" to javascript: links', () => {
+    let document = parser.parseFromString(`<!doctype html>
+      <html>
+        <body>
+          <a href='javascript:void(0)' id='js-void'>JS void</a>
+          <a href='javascript:alert("hi")' id='js-alert'>JS alert</a>
+          <a href='https://example.com' id='external'>External link</a>
+        </body>
+      </html>
+      `, 'text/html');
+
+    document = addTargetBlank(document);
+    expect(document.getElementById('js-void').target).toEqual('');
+    expect(document.getElementById('js-alert').target).toEqual('');
+    expect(document.getElementById('external').target).toEqual('_blank');
+  });
 });

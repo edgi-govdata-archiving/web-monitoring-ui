@@ -111,9 +111,28 @@ export function removeClientRedirect (document) {
  * @returns {HTMLDocument}
  */
 export function addTargetBlank (document) {
-  // Add target="_blank" to all <a>tags
+  // Add target="_blank" to all <a> tags except intra-page and javascript: links
   document.querySelectorAll('a').forEach(node => {
-    node.setAttribute('target', '_blank');
+    const href = node.getAttribute('href') || '';
+    if (href.startsWith('#')) {
+      // For intra-page links, handle scrolling via JavaScript to avoid issues
+      // with the <base> tag causing navigation to the original site URL
+      const targetId = href.slice(1);
+      if (targetId) {
+        // Anchors can target by id or name attribute
+        const escapedId = targetId.replace(/'/g, "\\'").replace(/\\/g, '\\\\');
+        node.setAttribute('onclick',
+          `event.preventDefault(); (document.getElementById('${escapedId}') || document.querySelector('[name="${escapedId}"]'))?.scrollIntoView();`
+        );
+      } 
+      else {
+        // href="#" should scroll to top
+        node.setAttribute('onclick', 'event.preventDefault(); window.scrollTo(0, 0);');
+      }
+    } 
+    else if (!href.startsWith('javascript:')) {
+      node.setAttribute('target', '_blank');
+    }
   });
   return document;
 }
