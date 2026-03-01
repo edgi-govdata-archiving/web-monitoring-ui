@@ -133,4 +133,21 @@ describe('HtmlTransforms module', () => {
     expect(document.getElementById('goo').target).toEqual('_blank');
     expect(document.getElementById('orange').target).toBeFalsy();
   });
+
+  test('addTargetBlank does not add target="_blank" to in-page anchor links', () => {
+    let document = parser.parseFromString(`<!doctype html>
+      <html>
+        <body>
+          <a href='https://example.com' id='external'>External</a>
+          <a href='#section-one' id='anchor'>Jump to section</a>
+          <a href='javascript:void(0)' id='js-link'>JS link</a>
+        </body>
+      </html>
+    `, 'text/html');
+
+    document = addTargetBlank(document);
+    expect(document.getElementById('external').target).toEqual('_blank');
+    expect(document.getElementById('anchor').target).not.toEqual('_blank');
+    expect(document.getElementById('js-link').target).not.toEqual('_blank');
+  });
 });

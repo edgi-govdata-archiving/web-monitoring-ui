@@ -79,7 +79,7 @@ export function removeClientRedirect (document) {
           This page contains an automatic redirect that runs
           <em style="font-style: italic !important;">after</em> the page loads.
           Because the redirect happens after the page loads instead of before,
-          we can’t show a highlighted comparison of page.
+          we can't show a highlighted comparison of page.
         </p>
         <p>
           This page redirects to:
@@ -101,9 +101,12 @@ export function removeClientRedirect (document) {
 
 /**
  * Prevents navigation from within a diff by forcing links to open in a new
- * tab when clicked. This helps ensure we don’t get in a state where one side
+ * tab when clicked. This helps ensure we don't get in a state where one side
  * of a side-by-side diff has been navigated and viewer does not realize they
  * are no longer actually looking at a *diff*.
+ *
+ * In-page anchor links (href="#...") and javascript: links are left unchanged
+ * so they continue to scroll within the page as expected.
  *
  * NOTE: This requires the iframe displaying the diff to allow popups with the
  * `sandbox="allow-popups"` attribute.
@@ -111,8 +114,11 @@ export function removeClientRedirect (document) {
  * @returns {HTMLDocument}
  */
 export function addTargetBlank (document) {
-  // Add target="_blank" to all <a>tags
+  // Add target="_blank" to all <a> tags, but skip in-page anchor links and
+  // javascript: links which should remain in-page.
   document.querySelectorAll('a').forEach(node => {
+    const href = node.getAttribute('href');
+    if (href && (href.startsWith('#') || href.startsWith('javascript:'))) return;
     node.setAttribute('target', '_blank');
   });
   return document;
