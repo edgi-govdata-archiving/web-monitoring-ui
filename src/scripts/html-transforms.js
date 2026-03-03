@@ -116,22 +116,25 @@ export function addTargetBlank (document) {
     const href = node.getAttribute('href') || '';
     if (href.startsWith('#')) {
       // For intra-page links, handle scrolling via JavaScript to avoid issues
-      // with the <base> tag causing navigation to the original site URL
-      const targetId = href.slice(1);
-      if (targetId) {
-        // Anchors can target by id or name attribute
-        // Escape backslashes first, then quotes for JS string context
-        const escapedId = targetId.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-        // Use getElementsByName instead of querySelector to avoid CSS selector injection
-        node.setAttribute('onclick',
-          `event.preventDefault(); (document.getElementById('${escapedId}') || document.getElementsByName('${escapedId}')[0])?.scrollIntoView();`
-        );
-      } 
-      else {
-        // href="#" should scroll to top
-        node.setAttribute('onclick', 'event.preventDefault(); window.scrollTo(0, 0);');
+      // with the <base> tag causing navigation to the original site URL.
+      // Skip if onclick already exists (e.g., <a href="#" onclick="...">)
+      if (!node.getAttribute('onclick')) {
+        const targetId = href.slice(1);
+        if (targetId) {
+          // Anchors can target by id or name attribute
+          // Escape backslashes first, then quotes for JS string context
+          const escapedId = targetId.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+          // Use getElementsByName instead of querySelector to avoid CSS selector injection
+          node.setAttribute('onclick',
+            `event.preventDefault(); (document.getElementById('${escapedId}') || document.getElementsByName('${escapedId}')[0])?.scrollIntoView({ behavior: 'smooth' });`
+          );
+        }
+        else {
+          // href="#" should scroll to top
+          node.setAttribute('onclick', 'event.preventDefault(); window.scrollTo({ top: 0, behavior: \'smooth\' });');
+        }
       }
-    } 
+    }
     else if (!href.startsWith('javascript:')) {
       node.setAttribute('target', '_blank');
     }

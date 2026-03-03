@@ -150,9 +150,11 @@ describe('HtmlTransforms module', () => {
     expect(document.getElementById('hash-only').target).toEqual('');
     expect(document.getElementById('external').target).toEqual('_blank');
 
-    // Intra-page links should have onclick handlers for scrolling
+    // Intra-page links should have onclick handlers for smooth scrolling
     expect(document.getElementById('intra-page').getAttribute('onclick')).toContain('scrollIntoView');
+    expect(document.getElementById('intra-page').getAttribute('onclick')).toContain('smooth');
     expect(document.getElementById('hash-only').getAttribute('onclick')).toContain('scrollTo');
+    expect(document.getElementById('hash-only').getAttribute('onclick')).toContain('smooth');
   });
 
   test('addTargetBlank does not add target="_blank" to javascript: links', () => {
@@ -170,5 +172,27 @@ describe('HtmlTransforms module', () => {
     expect(document.getElementById('js-void').target).toEqual('');
     expect(document.getElementById('js-alert').target).toEqual('');
     expect(document.getElementById('external').target).toEqual('_blank');
+  });
+
+  test('addTargetBlank preserves existing onclick handlers on intra-page links', () => {
+    let document = parser.parseFromString(`<!doctype html>
+      <html>
+        <body>
+          <a href='#' onclick='doSomething()' id='existing-onclick'>Has onclick</a>
+          <a href='#section' onclick='doOther()' id='section-onclick'>Section with onclick</a>
+          <a href='#section' id='no-onclick'>No onclick</a>
+        </body>
+      </html>
+      `, 'text/html');
+
+    document = addTargetBlank(document);
+    // Existing onclick handlers should be preserved
+    expect(document.getElementById('existing-onclick').getAttribute('onclick')).toEqual('doSomething()');
+    expect(document.getElementById('section-onclick').getAttribute('onclick')).toEqual('doOther()');
+    // Links with existing onclick should NOT get target="_blank"
+    expect(document.getElementById('existing-onclick').target).toEqual('');
+    expect(document.getElementById('section-onclick').target).toEqual('');
+    // Links without existing onclick should get our scroll handler
+    expect(document.getElementById('no-onclick').getAttribute('onclick')).toContain('scrollIntoView');
   });
 });
