@@ -1,2 +1,2 @@
 # Pre-commit git hook
-npm run lint
+npx lint-staged
