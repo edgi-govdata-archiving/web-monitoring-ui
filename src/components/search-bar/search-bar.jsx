@@ -7,6 +7,9 @@ import SearchDatePicker from '../search-date-picker/search-date-picker';
 /**
  * @typedef SearchBarProps
  * @property {(SearchBarQuery) => void} onSearch
+ * @property {string} [initialUrl] - Initial URL value to populate the search field
+ * @property {DateTime} [initialStartDate] - Initial start date value
+ * @property {DateTime} [initialEndDate] - Initial end date value
  */
 
 /**
@@ -29,15 +32,53 @@ export default class SearchBar extends Component {
     super(props);
     this.state = {
       url: null,
-      startDate: null,
-      endDate: null
+      startDate: props.initialStartDate || null,
+      endDate: props.initialEndDate || null
     };
+
+    // Store the initial URL for use in defaultValue (uncontrolled input)
+    this._initialUrl = props.initialUrl || '';
 
     // enable inputIdSuffix to be passed in for testing purposes.
     this.inputIdSuffix = this.props.inputIdSuffix || Math.floor(Math.random() * 100).toString();
     this._handleUrlInput = this._handleUrlInput.bind(this);
     this._urlSearch = debounce(this._urlSearch.bind(this), 500);
     this._dateSearch = this._dateSearch.bind(this);
+  }
+
+  componentDidMount () {
+    // If initial values are provided (e.g., from URL params), trigger a search
+    if (this._initialUrl || this.state.startDate || this.state.endDate) {
+      // Bypass debounce for initial URL search to execute immediately
+      if (this._initialUrl) {
+        this._urlSearchImmediate(this._initialUrl);
+      }
+      else {
+        // If only dates are set, trigger onSearch directly
+        this.props.onSearch({
+          url: null,
+          startDate: this.state.startDate,
+          endDate: this.state.endDate
+        });
+      }
+    }
+  }
+
+  /**
+   * Non-debounced version of _urlSearch for initial load.
+   * @private
+   * @param {String} url
+   */
+  _urlSearchImmediate (url) {
+    if (url) {
+      if (!/^(\*|\/\/|(h|ht|htt|https?|https?\/|https?\/\/))/.test(url)) {
+        url = `*//${url}`;
+      }
+      if (/^[\w:*]+(\/\/)?[^/]+$/.test(url)) {
+        url = `${url}*`;
+      }
+    }
+    this.setState({ url: url || null });
   }
 
   componentDidUpdate (previousProps, previousState) {
@@ -103,6 +144,7 @@ export default class SearchBar extends Component {
           className={styles.searchBarInput}
           type="text"
           placeholder="Search for a URL..."
+          defaultValue={this._initialUrl}
           onChange={this._handleUrlInput}
         />
         <SearchDatePicker

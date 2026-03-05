@@ -3,8 +3,14 @@ import SearchBar from '../search-bar/search-bar';
 import { DateTime } from 'luxon';
 
 describe('search-bar', () => {
-  // Need to use a fake timer because the _urlSearch function is debounced.
-  jest.useFakeTimers();
+  beforeEach(() => {
+    // Need to use a fake timer because the _urlSearch function is debounced.
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
   it('Renders the search-bar', () => {
     render(<SearchBar />);
@@ -75,6 +81,84 @@ describe('search-bar', () => {
       url: null,
       startDate: null,
       endDate: expect.any(DateTime)
+    });
+  });
+
+  describe('initial values', () => {
+    it('populates URL input with initialUrl', () => {
+      const onSearch = jest.fn();
+      render(<SearchBar onSearch={onSearch} initialUrl="epa" />);
+
+      const searchBarInput = screen.getByPlaceholderText('Search for a URL...');
+      expect(searchBarInput).toHaveValue('epa');
+    });
+
+    it('triggers search on mount when initialUrl is provided', async () => {
+      const onSearch = jest.fn();
+
+      await act(async () => {
+        render(<SearchBar onSearch={onSearch} initialUrl="epa" />);
+      });
+
+      expect(onSearch).toHaveBeenCalledWith({
+        url: '*//epa*',
+        startDate: null,
+        endDate: null
+      });
+    });
+
+    it('triggers search on mount when initialStartDate is provided', async () => {
+      const onSearch = jest.fn();
+      const startDate = DateTime.fromISO('2025-01-15');
+
+      await act(async () => {
+        render(<SearchBar onSearch={onSearch} initialStartDate={startDate} />);
+      });
+
+      expect(onSearch).toHaveBeenCalledWith({
+        url: null,
+        startDate: startDate,
+        endDate: null
+      });
+    });
+
+    it('triggers search on mount when initialEndDate is provided', async () => {
+      const onSearch = jest.fn();
+      const endDate = DateTime.fromISO('2025-06-30');
+
+      await act(async () => {
+        render(<SearchBar onSearch={onSearch} initialEndDate={endDate} />);
+      });
+
+      expect(onSearch).toHaveBeenCalledWith({
+        url: null,
+        startDate: null,
+        endDate: endDate
+      });
+    });
+
+    it('triggers search on mount with all initial values', async () => {
+      const onSearch = jest.fn();
+      const startDate = DateTime.fromISO('2025-01-15');
+      const endDate = DateTime.fromISO('2025-06-30');
+
+      await act(async () => {
+        render(
+          <SearchBar
+            onSearch={onSearch}
+            initialUrl="epa"
+            initialStartDate={startDate}
+            initialEndDate={endDate}
+          />
+        );
+      });
+
+      // URL search triggers with dates from state
+      expect(onSearch).toHaveBeenCalledWith({
+        url: '*//epa*',
+        startDate: startDate,
+        endDate: endDate
+      });
     });
   });
 });
