@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { DateTime } from 'luxon';
 import Loading from '../loading';
-import { Component } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import SearchBar from '../search-bar/search-bar';
 import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import PageTag from '../page-tag/page-tag';
@@ -26,103 +26,79 @@ import listStyles from './page-list.css';
 /**
  * Display a list of pages.
  *
- * @class PageList
- * @extends {Component}
  * @param {PageListProps} props
  */
-export default class PageList extends Component {
-  constructor (props) {
-    super(props);
+export default function PageList ({ pages, onSearch, searchParams, setSearchParams }) {
+  // Store initial values from URL params so they don't change across re-renders
+  const initialUrl = useRef(searchParams?.get('url') || '').current;
+  const initialStartDate = useRef((() => {
+    const param = searchParams?.get('startDate');
+    return param ? parseDate(param) : null;
+  })()).current;
+  const initialEndDate = useRef((() => {
+    const param = searchParams?.get('endDate');
+    return param ? parseDate(param) : null;
+  })()).current;
 
-    // Parse initial values from URL search params
-    const urlParam = props.searchParams?.get('url') || '';
-    const startDateParam = props.searchParams?.get('startDate');
-    const endDateParam = props.searchParams?.get('endDate');
+  const updateUrlParams = useMemo(
+    () => debounce((query) => {
+      const params = new URLSearchParams();
 
-    this._initialUrl = urlParam;
-    this._initialStartDate = startDateParam ? parseDate(startDateParam) : null;
-    this._initialEndDate = endDateParam ? parseDate(endDateParam) : null;
-
-    this._handleSearch = this._handleSearch.bind(this);
-    this._updateUrlParams = debounce(this._updateUrlParams.bind(this), 500);
-  }
-
-  /**
-   * Handle search from SearchBar and update URL params.
-   * @param {Object} query - The search query
-   */
-  _handleSearch (query) {
-    // Call the parent onSearch handler
-    this.props.onSearch(query);
-
-    // Update URL params (debounced)
-    this._updateUrlParams(query);
-  }
-
-  /**
-   * Update URL search params based on search query.
-   * @param {Object} query - The search query
-   */
-  _updateUrlParams (query) {
-    const params = new URLSearchParams();
-
-    // Extract raw URL from expanded pattern (e.g., "*//epa*" -> "epa")
-    if (query.url) {
-      const rawUrl = extractRawUrl(query.url);
-      if (rawUrl) {
-        params.set('url', rawUrl);
+      // Extract raw URL from expanded pattern (e.g., "*//epa*" -> "epa")
+      if (query.url) {
+        const rawUrl = extractRawUrl(query.url);
+        if (rawUrl) {
+          params.set('url', rawUrl);
+        }
       }
-    }
 
-    if (query.startDate) {
-      params.set('startDate', query.startDate.toISODate());
-    }
+      if (query.startDate) {
+        params.set('startDate', query.startDate.toISODate());
+      }
 
-    if (query.endDate) {
-      params.set('endDate', query.endDate.toISODate());
-    }
+      if (query.endDate) {
+        params.set('endDate', query.endDate.toISODate());
+      }
 
-    // Use replace to avoid polluting browser history
-    this.props.setSearchParams(params, { replace: true });
+      // Use replace to avoid polluting browser history
+      setSearchParams(params, { replace: true });
+    }, 500),
+    [setSearchParams]
+  );
+
+  const handleSearch = useCallback((query) => {
+    onSearch(query);
+    updateUrlParams(query);
+  }, [onSearch, updateUrlParams]);
+
+  let results;
+
+  if (!pages) {
+    results = <Loading />;
   }
-
-  render () {
-    let results;
-
-    if (!this.props.pages) {
-      results = <Loading />;
-    }
-    else if (this.props.pages instanceof Error) {
-      results = this.renderError(`Could not load pages: ${this.props.pages.message}`);
-    }
-    else if (this.props.pages.length === 0) {
-      results = this.renderError('There were no page results.', 'warning');
-    }
-    else {
-      results = this.renderPages();
-    }
-
-    return (
-      <div className={baseStyles.main}>
-        <SearchBar
-          onSearch={this._handleSearch}
-          initialUrl={this._initialUrl}
-          initialStartDate={this._initialStartDate}
-          initialEndDate={this._initialEndDate}
-        />
-        {results}
-      </div>
-    );
+  else if (pages instanceof Error) {
+    results = renderError(`Could not load pages: ${pages.message}`);
   }
-
-  renderPages () {
-    return (
+  else if (pages.length === 0) {
+    results = renderError('There were no page results.', 'warning');
+  }
+  else {
+    results = (
       <div className={listStyles.container}>
         <StandardTooltip id="list-tooltip" />
         <table className={[listStyles.table, listStyles.pageList].join(' ')}>
-          <thead>{this.renderHeader()}</thead>
+          <thead>
+            <tr>
+              <th data-name="domain">Domain</th>
+              <th data-name="page-name">Page Name</th>
+              <th data-name="url">URL</th>
+              <th data-name="tags">Tags</th>
+              <th data-name="status">HTTP Status</th>
+              <th data-name="active">Active?</th>
+            </tr>
+          </thead>
           <tbody>
-            {this.props.pages.map(page => (
+            {pages.map(page => (
               <PageListRow page={page} key={page.uuid} />
             ))}
           </tbody>
@@ -131,29 +107,28 @@ export default class PageList extends Component {
     );
   }
 
-  renderHeader () {
-    return (
-      <tr>
-        <th data-name="domain">Domain</th>
-        <th data-name="page-name">Page Name</th>
-        <th data-name="url">URL</th>
-        <th data-name="tags">Tags</th>
-        <th data-name="status">HTTP Status</th>
-        <th data-name="active">Active?</th>
-      </tr>
-    );
-  }
+  return (
+    <div className={baseStyles.main}>
+      <SearchBar
+        onSearch={handleSearch}
+        initialUrl={initialUrl}
+        initialStartDate={initialStartDate}
+        initialEndDate={initialEndDate}
+      />
+      {results}
+    </div>
+  );
+}
 
-  // TODO: we use similar markup elsewhere, consider making this a component
-  renderError (message, type = 'danger') {
-    return (
-      <div className={listStyles.container}>
-        <p className={[listStyles.listAlert, baseStyles.alert, baseStyles[`alert-${type}`]].join(' ')} role="alert">
-          {message}
-        </p>
-      </div>
-    );
-  }
+// TODO: we use similar markup elsewhere, consider making this a component
+function renderError (message, type = 'danger') {
+  return (
+    <div className={listStyles.container}>
+      <p className={[listStyles.listAlert, baseStyles.alert, baseStyles[`alert-${type}`]].join(' ')} role="alert">
+        {message}
+      </p>
+    </div>
+  );
 }
 
 /**
