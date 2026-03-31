@@ -2,17 +2,29 @@
 
 /**
  * Safely access a storage object (sessionStorage or localStorage).
- * Returns null if access is denied (e.g., in sandboxed iframes).
+ * Returns a NoStorage instance if access is denied (e.g., in sandboxed iframes).
  * @param {() => Storage} getter - Function that returns the storage object
- * @returns {Storage|null}
+ * @returns {Storage|NoStorage}
  */
 function safeGetStorage (getter) {
   try {
     return getter();
   }
   catch {
-    return null;
+    return new NoStorage();
   }
+}
+
+/**
+ * A no-op storage implementation used when real storage is unavailable.
+ */
+class NoStorage {
+  get length () { return 0; }
+  clear () { return true; }
+  getItem (_key) { return null; }
+  key (_index) { return null; }
+  removeItem (_key) { return true; }
+  setItem (_key, _value) { return false; }
 }
 
 /**
@@ -25,12 +37,11 @@ export class SafeStorage {
     this.store = backingStore;
   }
 
-  get length () { return this.store?.length ?? 0; }
+  get length () { return this.store.length; }
 
-  clear () { return this.store?.clear(); }
+  clear () { return this.store.clear(); }
 
   getItem (key) {
-    if (!this.store) return null;
     const value = this.store.getItem(key);
     try {
       return (value == null || !value.length) ? value : JSON.parse(value);
@@ -40,12 +51,11 @@ export class SafeStorage {
     }
   }
 
-  key (index) { return this.store?.key(index); }
+  key (index) { return this.store.key(index); }
 
-  removeItem (key) { return this.store?.removeItem(key); }
+  removeItem (key) { return this.store.removeItem(key); }
 
   setItem (key, value) {
-    if (!this.store) return false;
     const actualValue = JSON.stringify(value);
     try {
       this.store.setItem(key, actualValue);
