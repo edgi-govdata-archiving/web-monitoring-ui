@@ -1,7 +1,14 @@
 import { fireEvent, render, screen, act } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import PageList from '../page-list/page-list';
 import simplePages from '../../__mocks__/simple-pages.json';
+
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useSearchParams: jest.fn(),
+}));
+
+import { useSearchParams } from 'react-router';
 
 describe('page-list', () => {
   let globalOpen;
@@ -19,12 +26,16 @@ describe('page-list', () => {
     record.latest.capture_time = new Date(record.latest.capture_time);
   });
 
+  beforeEach(() => {
+    useSearchParams.mockReturnValue([new URLSearchParams(), jest.fn()]);
+  });
+
   function renderContext (element, options) {
     return render(
       (
-        <Router>
+        <MemoryRouter>
           {element}
-        </Router>
+        </MemoryRouter>
       ),
       options
     );
@@ -110,16 +121,12 @@ describe('page-list', () => {
     }
 
     it('reads initial URL from search params', () => {
-      const searchParams = createMockSearchParams({ url: 'epa' });
-      const setSearchParams = jest.fn();
-      const onSearch = jest.fn();
+      useSearchParams.mockReturnValue([createMockSearchParams({ url: 'epa' }), jest.fn()]);
 
       renderContext(
         <PageList
           pages={simplePages}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          onSearch={onSearch}
+          onSearch={jest.fn()}
         />
       );
 
@@ -128,19 +135,15 @@ describe('page-list', () => {
     });
 
     it('reads initial dates from search params', () => {
-      const searchParams = createMockSearchParams({
-        startDate: '2025-01-15',
-        endDate: '2025-06-30'
-      });
-      const setSearchParams = jest.fn();
-      const onSearch = jest.fn();
+      useSearchParams.mockReturnValue([
+        createMockSearchParams({ startDate: '2025-01-15', endDate: '2025-06-30' }),
+        jest.fn()
+      ]);
 
       renderContext(
         <PageList
           pages={simplePages}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          onSearch={onSearch}
+          onSearch={jest.fn()}
         />
       );
 
@@ -151,16 +154,13 @@ describe('page-list', () => {
     });
 
     it('updates URL params when search is performed', async () => {
-      const searchParams = createMockSearchParams();
       const setSearchParams = jest.fn();
-      const onSearch = jest.fn();
+      useSearchParams.mockReturnValue([createMockSearchParams(), setSearchParams]);
 
       renderContext(
         <PageList
           pages={simplePages}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          onSearch={onSearch}
+          onSearch={jest.fn()}
         />
       );
 
@@ -185,16 +185,13 @@ describe('page-list', () => {
     });
 
     it('clears URL params when search is cleared', async () => {
-      const searchParams = createMockSearchParams({ url: 'epa' });
       const setSearchParams = jest.fn();
-      const onSearch = jest.fn();
+      useSearchParams.mockReturnValue([createMockSearchParams({ url: 'epa' }), setSearchParams]);
 
       renderContext(
         <PageList
           pages={simplePages}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          onSearch={onSearch}
+          onSearch={jest.fn()}
         />
       );
 
@@ -226,19 +223,13 @@ describe('page-list', () => {
     });
 
     it('handles invalid date in URL gracefully', () => {
-      const searchParams = createMockSearchParams({
-        startDate: 'invalid-date'
-      });
-      const setSearchParams = jest.fn();
-      const onSearch = jest.fn();
+      useSearchParams.mockReturnValue([createMockSearchParams({ startDate: 'invalid-date' }), jest.fn()]);
 
       // Should not throw
       renderContext(
         <PageList
           pages={simplePages}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          onSearch={onSearch}
+          onSearch={jest.fn()}
         />
       );
 
