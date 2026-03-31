@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { DateTime } from 'luxon';
 import Loading from '../loading';
 import { useCallback, useMemo, useRef } from 'react';
@@ -15,12 +15,9 @@ import baseStyles from '../../css/base.css';
 import listStyles from './page-list.css';
 
 /**
- * These props also inherit from React Router's RouteComponent props
  * @typedef {Object} PageListProps
  * @property {Page[]} pages
  * @property {(any) => void} onSearch
- * @property {URLSearchParams} searchParams
- * @property {(params: URLSearchParams, options?: {replace?: boolean}) => void} setSearchParams
  */
 
 /**
@@ -28,7 +25,8 @@ import listStyles from './page-list.css';
  *
  * @param {PageListProps} props
  */
-export default function PageList ({ pages, onSearch, searchParams, setSearchParams }) {
+export default function PageList ({ pages, onSearch }) {
+  const [searchParams, setSearchParams] = useSearchParams();
   // Store initial values from URL params so they don't change across re-renders
   const initialUrl = useRef(searchParams?.get('url') || '').current;
   const initialStartDate = useRef((() => {
