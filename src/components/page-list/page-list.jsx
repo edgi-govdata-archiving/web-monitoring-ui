@@ -1,5 +1,7 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import { DateTime } from 'luxon';
 import Loading from '../loading';
+import { useCallback, useMemo, useRef } from 'react';
 import SearchBar from '../search-bar/search-bar';
 import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import PageTag from '../page-tag/page-tag';
@@ -24,6 +26,49 @@ import listStyles from './page-list.css';
  * @param {PageListProps} props
  */
 export default function PageList ({ pages, onSearch }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Store initial values from URL params so they don't change across re-renders
+  const initialUrl = useRef(searchParams?.get('url') || '').current;
+  const initialStartDate = useRef((() => {
+    const param = searchParams?.get('startDate');
+    return param ? parseDate(param) : null;
+  })()).current;
+  const initialEndDate = useRef((() => {
+    const param = searchParams?.get('endDate');
+    return param ? parseDate(param) : null;
+  })()).current;
+
+  const updateUrlParams = useMemo(
+    () => debounce((query) => {
+      const params = new URLSearchParams();
+
+      // Extract raw URL from expanded pattern (e.g., "*//epa*" -> "epa")
+      if (query.url) {
+        const rawUrl = extractRawUrl(query.url);
+        if (rawUrl) {
+          params.set('url', rawUrl);
+        }
+      }
+
+      if (query.startDate) {
+        params.set('startDate', query.startDate.toISODate());
+      }
+
+      if (query.endDate) {
+        params.set('endDate', query.endDate.toISODate());
+      }
+
+      // Use replace to avoid polluting browser history
+      setSearchParams(params, { replace: true });
+    }, 500),
+    [setSearchParams]
+  );
+
+  const handleSearch = useCallback((query) => {
+    onSearch(query);
+    updateUrlParams(query);
+  }, [onSearch, updateUrlParams]);
+
   let results;
 
   if (!pages) {
@@ -63,7 +108,10 @@ export default function PageList ({ pages, onSearch }) {
   return (
     <div className={baseStyles.main}>
       <SearchBar
-        onSearch={onSearch}
+        onSearch={handleSearch}
+        initialUrl={initialUrl}
+        initialStartDate={initialStartDate}
+        initialEndDate={initialEndDate}
       />
       {results}
     </div>
@@ -138,4 +186,48 @@ const HOST_WITHOUT_WWW_PATTERN = /^[^:]+:\/\/(?:ww+\d*\.)?([^/]+)/;
 
 function getDomain (url) {
   return url.match(HOST_WITHOUT_WWW_PATTERN)[1];
+}
+
+/**
+ * Extract raw URL from expanded pattern.
+ * E.g., "* //epa*" becomes "epa", "http://epa.gov*" becomes "http://epa.gov"
+ * @param {string} expandedUrl - The expanded URL pattern
+ * @returns {string} - The raw URL without wildcards
+ */
+function extractRawUrl (expandedUrl) {
+  if (!expandedUrl) return '';
+
+  let raw = expandedUrl;
+
+  // Remove leading wildcard pattern (e.g., "*//" -> "")
+  if (raw.startsWith('*//')) {
+    raw = raw.slice(3);
+  }
+
+  // Remove trailing wildcard
+  if (raw.endsWith('*')) {
+    raw = raw.slice(0, -1);
+  }
+
+  return raw;
+}
+
+/**
+ * Parse an ISO date string into a Luxon DateTime object.
+ * Returns null if the string is invalid.
+ * @param {string} dateStr - ISO date string (YYYY-MM-DD)
+ * @returns {DateTime|null}
+ */
+function parseDate (dateStr) {
+  if (!dateStr) return null;
+  const dt = DateTime.fromISO(dateStr);
+  return dt.isValid ? dt : null;
+}
+
+function debounce (func, delay) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
 }

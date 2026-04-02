@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './search-bar.css';
 import SearchDatePicker from '../search-date-picker/search-date-picker';
 
@@ -7,6 +7,9 @@ import SearchDatePicker from '../search-date-picker/search-date-picker';
 /**
  * @typedef SearchBarProps
  * @property {(SearchBarQuery) => void} onSearch
+ * @property {string} [initialUrl] - Initial URL value to populate the search field
+ * @property {DateTime} [initialStartDate] - Initial start date value
+ * @property {DateTime} [initialEndDate] - Initial end date value
  * @property {string} [inputIdSuffix] - ID suffix for inputs; can be set for testing
  */
 
@@ -23,10 +26,13 @@ import SearchDatePicker from '../search-date-picker/search-date-picker';
  *
  * @param {SearchBarProps} props
  */
-export default function SearchBar ({ onSearch, inputIdSuffix }) {
+export default function SearchBar ({ onSearch, initialUrl, initialStartDate, initialEndDate, inputIdSuffix }) {
   const [url, setUrl] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(initialStartDate || null);
+  const [endDate, setEndDate] = useState(initialEndDate || null);
+
+  // Stable initial URL ref for use in defaultValue (uncontrolled input)
+  const initialUrlRef = useRef(initialUrl || '');
 
   // Stable ID suffix for inputs; allow override for testing
   const idSuffixRef = useRef(inputIdSuffix || Math.floor(Math.random() * 100).toString());
@@ -45,22 +51,25 @@ export default function SearchBar ({ onSearch, inputIdSuffix }) {
     return rawUrl || null;
   }, []);
 
-  // Call onSearch whenever the query changes, skipping the initial render
-  // This replaces componentDidUpdate
-  const prevState = useRef({ url, startDate, endDate });
-  if (isMounted.current) {
-    const queryHasChanged = prevState.current.url !== url
-      || prevState.current.startDate !== startDate
-      || prevState.current.endDate !== endDate;
-
-    if (queryHasChanged) {
-      prevState.current = { url, startDate, endDate };
-      onSearch?.({ url, startDate, endDate });
+  // On mount: trigger an initial search if initial values were provided
+  useEffect(() => {
+    const initUrl = initialUrlRef.current;
+    if (initUrl) {
+      setUrl(processUrl(initUrl));
     }
-  }
-  else {
-    isMounted.current = true;
-  }
+    else if (startDate || endDate) {
+      onSearch?.({ url: null, startDate, endDate });
+    }
+  }, []);
+
+  // Call onSearch whenever the query changes, skipping the initial render
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+    onSearch?.({ url, startDate, endDate });
+  }, [url, startDate, endDate]);
 
   const urlSearch = useRef(debounce((rawUrl) => {
     setUrl(processUrl(rawUrl));
@@ -81,6 +90,7 @@ export default function SearchBar ({ onSearch, inputIdSuffix }) {
         className={styles.searchBarInput}
         type="text"
         placeholder="Search for a URL..."
+        defaultValue={initialUrlRef.current}
         onChange={handleUrlInput}
       />
       <SearchDatePicker
