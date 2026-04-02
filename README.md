@@ -28,7 +28,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     npm install
     ```
 
-3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional)
+3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional) The default env should work standalone for development.
 
 4. Start the web server!
 
@@ -36,10 +36,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     npm start
     ```
 
-    …and point your browser to http://localhost:3001 to view the app. If you haven't changed `WEB_MONITORING_DB_URL` in your `.env` file (step 3), you can log in with the public user credentials:
-
-    - Username: `public.access@envirodatagov.org`
-    - Password: `PUBLIC_ACCESS`
+    …and point your browser to http://localhost:3001 to view the app.
 
 [nodenv]: https://github.com/nodenv/nodenv
 [nodenv-alternatives]: https://github.com/nodenv/nodenv/wiki/Alternatives
