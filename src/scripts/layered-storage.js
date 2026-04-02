@@ -1,6 +1,33 @@
 'use strict';
 
 /**
+ * A no-op storage implementation used when real storage is unavailable.
+ */
+class NoStorage {
+  get length () { return 0; }
+  clear () { return true; }
+  getItem (_key) { return null; }
+  key (_index) { return null; }
+  removeItem (_key) { return true; }
+  setItem (_key, _value) { return false; }
+}
+
+/**
+ * Safely access a storage object (sessionStorage or localStorage).
+ * Returns a NoStorage instance if access is denied (e.g., in sandboxed iframes).
+ * @param {() => Storage} getter - Function that returns the storage object
+ * @returns {Storage|NoStorage}
+ */
+function safeGetStorage (getter) {
+  try {
+    return getter();
+  }
+  catch {
+    return new NoStorage();
+  }
+}
+
+/**
  * Wraps a DOMStorage instance (e.g. sessionStorage or localStorage) so that
  * you can save and load non-string values and so that you don't have to worry
  * about catching exceptions (e.g. if the storage quota is exceeded).
@@ -83,6 +110,6 @@ export class LayeredStorage {
  * so concurrently open windows don't interfere with each other.
  */
 export default new LayeredStorage([
-  new SafeStorage(sessionStorage),
-  new SafeStorage(localStorage)
+  new SafeStorage(safeGetStorage(() => sessionStorage)),
+  new SafeStorage(safeGetStorage(() => localStorage))
 ]);

@@ -341,16 +341,21 @@ export default class WebMonitoringDb {
   }
 
   _loadToken () {
-    if ('localStorage' in window) {
+    try {
       this.authToken = localStorage.getItem(storageLocation);
       return this.authToken;
     }
-    return null;
+    catch {
+      return null;
+    }
   }
 
   _saveToken (token) {
-    if ('localStorage' in window) {
+    try {
       localStorage.setItem(storageLocation, token);
+    }
+    catch {
+      // Storage not available (e.g., sandboxed iframe)
     }
   }
 
