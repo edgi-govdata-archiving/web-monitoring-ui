@@ -87,7 +87,7 @@ export function clientConfiguration () {
     return result;
   }, {});
 
-  config.SHOW_ASSIGNED_PAGES = !!(
+  config.GOOGLE_SHEETS_CONFIGURED = !!(
     source.GOOGLE_SERVICE_CLIENT_EMAIL &&
     source.GOOGLE_SHEETS_PRIVATE_KEY
   );
