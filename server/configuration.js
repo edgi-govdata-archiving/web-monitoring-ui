@@ -1,5 +1,5 @@
 const defaultValues = {
-  WEB_MONITORING_DB_URL: 'https://api.monitoring-staging.envirodatagov.org',
+  WEB_MONITORING_DB_URL: 'https://api.monitoring.envirodatagov.org',
   ALLOW_PUBLIC_VIEW: false
 };
 
