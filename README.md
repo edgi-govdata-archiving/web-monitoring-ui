@@ -28,7 +28,7 @@ It’s a React.js-based browser application with a Node.js backend with the foll
     npm install
     ```
 
-3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional) The default env should work standalone for development.
+3. Copy `.env.example` to `.env` and supply any local configuration info you need (all fields are optional). The default env should work standalone for development.
 
 4. Start the web server!
 
