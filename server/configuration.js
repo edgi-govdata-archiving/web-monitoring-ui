@@ -6,7 +6,6 @@ const defaultValues = {
 const clientFields = [
   'WEB_MONITORING_DB_URL',
   'ALLOW_PUBLIC_VIEW',
-  'SHOW_ASSIGNED_PAGES'
 ];
 
 const processEnvironment = Object.assign(
