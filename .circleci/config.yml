@@ -49,6 +49,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Docker Login to dhi.io
+          command: docker login dhi.io -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
           name: Build Image
           command: |
             docker build -t envirodgi/ui:$CIRCLE_SHA1 .
