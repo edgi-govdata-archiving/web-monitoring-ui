@@ -117,50 +117,6 @@ In general, try to avoid “private” methods on objects or classes. If they ar
 Private functions in a module (that is, functions that are not exported) are fine.
 
 
-#### Spacing in code:
-
-Overall, we recommend [Stroustrup](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Stroustrup) spacing for blocks:
-
-```js
-if (foo) {
-  bar();
-}
-else {
-  baz();
-}
-```
-
-Separate the `if`/`for`/`while` keyword from the condition, but don’t add extra spaces inside the parentheses in conditionals and loops:
-
-```js
-if (!this.state.pageId) {
-```
-
-Don’t add spaces between the function name and parentheses or within the parentheses when calling a function:
-
-```js
-this.props.onChange(versions.find(v => v.uuid === newValue));
-```
-
-Add spaces between the brackets and content in object literals:
-
-```js
-this.setState({ updating: true });
-```
-
-Add spaces between the brackets and and variable names when de-structuring:
-
-```js
-const { page } = this.props;
-```
-
-Use spaces between the function keyword, name, and arguments in function declarations:
-
-```js
-function foo (a) {
-```
-
-
 #### Units and layout - px, em, rem, vh, flexbox, grid:
 
 Pixels for borders. Rems for fonts and spacing. Flexbox and Grid for layout.
