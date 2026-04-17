@@ -1,8 +1,17 @@
 version: 2.1
 
 commands:
+  build_ci_image:
+    description: "Build the CI container image from the main Dockerfile's dev stage"
+    steps:
+      - run:
+          name: Docker Login to dhi.io
+          command: docker login dhi.io -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Build CI image
+          command: docker build --target dev -t web-monitoring-ui-ci .
   setup_npm:
-    description: "Set up NPM dependencies"
+    description: "Set up NPM dependencies (inside CI image)"
     steps:
       - restore_cache:
           keys:
@@ -10,7 +19,7 @@ commands:
             - dependency-cache-2-
       - run:
           name: Dependencies
-          command: npm ci
+          command: docker run --rm -v "$PWD":/app -w /app web-monitoring-ui-ci npm ci
       - save_cache:
           key: dependency-cache-2-{{ checksum "package-lock.json" }}
           paths:
@@ -18,30 +27,39 @@ commands:
 
 jobs:
   build:
-    docker:
-      - image: cimg/node:22.16.0
+    machine:
+      image: ubuntu-2004:202111-02
     steps:
       - checkout
+      - build_ci_image
       - setup_npm
       - run:
           name: Build
-          command: npm run build-production
+          command: docker run --rm -v "$PWD":/app -w /app web-monitoring-ui-ci npm run build-production
       - run:
           name: Check Bundle Size
-          command: npm run bundlewatch
+          command: |
+            docker run --rm \
+              -v "$PWD":/app -w /app \
+              -e CI -e CIRCLECI \
+              -e CIRCLE_SHA1 -e CIRCLE_BRANCH \
+              -e CIRCLE_REPOSITORY_URL -e CIRCLE_BUILD_NUM \
+              -e BUNDLEWATCH_GITHUB_TOKEN \
+              web-monitoring-ui-ci npm run bundlewatch
 
   test:
-    docker:
-      - image: cimg/node:22.16.0
+    machine:
+      image: ubuntu-2004:202111-02
     steps:
       - checkout
+      - build_ci_image
       - setup_npm
       - run:
           name: Lint Code
-          command: npm run lint
+          command: docker run --rm -v "$PWD":/app -w /app web-monitoring-ui-ci npm run lint
       - run:
           name: Test
-          command: npm test
+          command: docker run --rm -v "$PWD":/app -w /app web-monitoring-ui-ci npm test
 
   build_docker:
     machine:
