@@ -8,7 +8,8 @@
   "workspaceFolder": "/app",
   "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
   "mounts": [
-    "source=web-monitoring-ui-node-modules,target=/app/node_modules,type=volume"
+    "source=web-monitoring-ui-node-modules,target=/app/node_modules,type=volume",
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,readonly"
   ],
   "containerEnv": {
     "TERM": "xterm-256color"
