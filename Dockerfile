@@ -10,8 +10,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         git \
         procps \
+        less \
+        ncurses-base \
+        ncurses-term \
     && rm -rf /var/lib/apt/lists/* \
     && ldconfig
+
+# Configure Git pager nicely + set a proper TERM so less doesn't complain
+RUN git config --global core.pager "less -FRX" \
+    && echo 'export TERM=xterm-256color' >> /etc/profile.d/dev.sh
 
 RUN mkdir -p /app
 WORKDIR /app
