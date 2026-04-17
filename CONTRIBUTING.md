@@ -17,53 +17,9 @@ The `Dockerfile` pulls its base images from [Docker Hardened Images][dhi] (`dhi.
 docker login dhi.io
 ```
 
-Use your Docker Hub username and password, or (recommended) a [Personal Access Token][dhub-pat] generated from your Docker Hub account settings.
-
 [dhi]: https://www.docker.com/products/hardened-images/
 
-Once logged in, build and run the release image locally:
-
-```
-docker build -t envirodgi/ui .
-docker run -p 3001:3001 -e <ENVIRONMENT VARIABLES> envirodgi/ui
-```
-
-Then point your browser at `http://localhost:3001`.
-
-
-### Working Inside the Container
-
-Once the dev image is built, you can use it as an ad-hoc workspace — handy for matching CI's Node version or running commands without installing local tooling.
-
-Get a shell:
-
-```
-docker build -t envirodgi/ui:dev --target dev .
-docker run -it --rm envirodgi/ui:dev bash
-```
-
-Run one-off commands without dropping into a shell:
-
-```
-docker run --rm envirodgi/ui:dev npm run lint
-docker run --rm envirodgi/ui:dev npm test
-docker run --rm envirodgi/ui:dev npm run build
-```
-
-Tail logs from a running release container. The server writes to stdout, so `docker logs` is how you read its output:
-
-```
-docker run -d -p 3001:3001 --name ui envirodgi/ui
-docker logs -f ui
-```
-
-Exec into an already-running container:
-
-```
-docker exec -it ui bash
-```
-
-Use the dev image (`envirodgi/ui:dev`) for interactive work. The release image is hardened and has a minimal userland; shell access may be limited or unavailable.
+For interactive development work inside the container, use the Dev Containers setup described below. The release image is hardened with a minimal userland, and the dev image is best driven through your editor so file sync, port forwarding, and git identity are handled for you.
 
 
 ### VS Code / Dev Containers
@@ -77,7 +33,7 @@ In VS Code: install the **Dev Containers** extension, open the repo, and run **D
 
 ### Code Style / Best Practices
 
-The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices for related to all the [web-monitoring] project (https://github.com/edgi-govdata-archiving/web-monitoring/blob/main/CONTRIBUTING.md) repo.
+The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices related to the [web-monitoring project](https://github.com/edgi-govdata-archiving/web-monitoring/blob/main/CONTRIBUTING.md) repo.
 
 
 ### UI - Support
