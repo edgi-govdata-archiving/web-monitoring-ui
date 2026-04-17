@@ -9,6 +9,72 @@ We love improvements to our tools! EDGI has general [guidelines for contributing
 Issues that are project-wide, or relate heavily to the interaction between different components, should be added to our [Web Monitoring issue queue](https://github.com/edgi-govdata-archiving/web-monitoring/issues). Component-specific issues should be added to their respective repository.
 
 
+### Local Docker Development
+
+The `Dockerfile` pulls its base images from [Docker Hardened Images][dhi] (`dhi.io/node:22-debian13-dev` for the dev/build stage and `dhi.io/node:22-debian13` for the release stage). Pulling from `dhi.io` requires authentication, so before your first `docker build` you need to log in:
+
+```
+docker login dhi.io
+```
+
+Use your Docker Hub username and password, or (recommended) a [Personal Access Token][dhub-pat] generated from your Docker Hub account settings.
+
+[dhi]: https://www.docker.com/products/hardened-images/
+
+Once logged in, build and run the release image locally:
+
+```
+docker build -t envirodgi/ui .
+docker run -p 3001:3001 -e <ENVIRONMENT VARIABLES> envirodgi/ui
+```
+
+Then point your browser at `http://localhost:3001`.
+
+
+### Working Inside the Container
+
+Once the dev image is built, you can use it as an ad-hoc workspace — handy for matching CI's Node version or running commands without installing local tooling.
+
+Get a shell:
+
+```
+docker build -t envirodgi/ui:dev --target dev .
+docker run -it --rm envirodgi/ui:dev bash
+```
+
+Run one-off commands without dropping into a shell:
+
+```
+docker run --rm envirodgi/ui:dev npm run lint
+docker run --rm envirodgi/ui:dev npm test
+docker run --rm envirodgi/ui:dev npm run build
+```
+
+Tail logs from a running release container. The server writes to stdout, so `docker logs` is how you read its output:
+
+```
+docker run -d -p 3001:3001 --name ui envirodgi/ui
+docker logs -f ui
+```
+
+Exec into an already-running container:
+
+```
+docker exec -it ui bash
+```
+
+Use the dev image (`envirodgi/ui:dev`) for interactive work. The release image is hardened and has a minimal userland; shell access may be limited or unavailable.
+
+
+### VS Code / Dev Containers
+
+A [`.devcontainer/devcontainer.json`](./.devcontainer/devcontainer.json) is included for contributors who use VS Code (or any editor that supports the [Dev Containers](https://containers.dev/) spec — JetBrains, GitHub Codespaces, etc.). It builds the `dev` stage of the `Dockerfile`, bind-mounts the repo at `/app`, keeps `node_modules` in a named volume to avoid masking it with the host's, bind-mounts your host `~/.gitconfig` read-only into the container so `git` commits from inside use your identity, forwards port 3001, runs `npm ci` on first create, and preinstalls the ESLint extension (`dbaeumer.vscode-eslint`).
+
+In VS Code: install the **Dev Containers** extension, open the repo, and run **Dev Containers: Reopen in Container**. You still need to have run `docker login dhi.io` once on your host so the base image can be pulled.
+
+> **Note:** the `~/.gitconfig` mount assumes a POSIX host path and currently only works on macOS and Linux. Windows contributors will need to adjust the mount (or remove it) in `devcontainer.json`.
+
+
 ### Code Style / Best Practices
 
 The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices for related to all the [web-monitoring] project (https://github.com/edgi-govdata-archiving/web-monitoring/blob/main/CONTRIBUTING.md) repo.
