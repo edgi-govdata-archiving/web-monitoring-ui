@@ -3,29 +3,38 @@
 FROM dhi.io/node:22-debian13-dev as dev
 LABEL maintainer="enviroDGI@gmail.com"
 
+# Extras for devcontainer + CI use on top of the hardened dev base.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        gzip \
+        tar \
+        ca-certificates \
+        git \
+        procps \
+    && rm -rf /var/lib/apt/lists/* \
+    && ldconfig
+
 RUN mkdir -p /app
 WORKDIR /app
+
+CMD ["/bin/bash"]
+
+### Build a production version of the app ###
+# Note this *creates* production artifacts. The docker image created here
+# should never actually be distributed; it's just an intermediate
+FROM dev as build
+# We need dumb-init to handle Docker's stop signal, but since the final image has no build tools, we have to install it here and copy it over later.
+RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
 # Copy dependencies only so they can be cached.
 COPY package.json package-lock.json ./
 
-# Install deps.
+# Install deps (including devDependencies needed for the build).
 RUN npm ci
 
-# Finally, pull in the source.
-# TODO: can we mount so this can be used for live-reload dev?
+# Pull in the source.
 COPY . .
 
-CMD ["/bin/bash"]
-
-
-### Build a production version of the app ###
-# Note this *creates* production artifacts. The docker image created here
-# should never actually be distributed; it's just an intermediate.
-FROM dev as build
 ENV NODE_ENV=production
-# We need dumb-init to handle Docker's stop signal, but since the final image has no build tools, we have to install it here and copy it over later.
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 RUN npm run build-production
 RUN npm prune --omit=dev
 
@@ -37,13 +46,16 @@ LABEL maintainer="enviroDGI@gmail.com"
 WORKDIR /app
 
 # Copy production artifacts from the build stage.
-COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init                                                                                
+# Explicit copying provides:
+# 1. Security: only includes necessary files, prevents accidental bloat
+# 2. Documentation: clarifies production dependencies
+# 3. Explicit control: clear visibility of what's included
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist                                                                                                       
 COPY --from=build /app/server ./server
 COPY --from=build /app/views ./views    
 COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/src ./src                                                                                                 
+COPY --from=build /app/src/scripts/formatters.js ./src/scripts/formatters.js                                                                                                
 
 ENV NODE_ENV=production
 
