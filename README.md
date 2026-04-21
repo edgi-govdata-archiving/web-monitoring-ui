@@ -76,7 +76,9 @@ We need your help! Please read through the [Web Monitoring Project](https://gith
 
 ## Docker
 
-You can also run this project via Docker. To build and run (on port 3001, as in the instructions for running directly above):
+You can also run this project via Docker. The Dockerfile is based on [Docker Hardened Images](https://www.docker.com/products/hardened-images/) (`dhi.io/node`), so you'll need to be authenticated to `dhi.io` and have access to the `node` hardened image before building. See Docker's [hardened images docs](https://docs.docker.com/dhi/) for setup.
+
+To build and run (on port 3001, as in the instructions for running directly above):
 
 ```
 docker build -t envirodgi/ui .
@@ -91,6 +93,8 @@ To run tests via Docker:
 docker build -t envirodgi/ui:dev --target dev .
 docker run envirodgi/ui:dev npm run test
 ```
+
+The release image is a minimal hardened runtime that contains only production artifacts (no shell, no package manager, no source tree). It runs the server directly via `node server/app.js` under `dumb-init`. The `dev` build stage retains the full toolchain (Python, GCC, npm) needed to compile native dependencies like Node-Zopfli and to run tests.
 
 
 ## Releases
