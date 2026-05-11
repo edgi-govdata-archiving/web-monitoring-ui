@@ -1,6 +1,6 @@
 ### Baseline image for development/test/build ###
 # We require a lot of extras for building (Python, GCC) because of Node-Zopfli.
-FROM node:22.16.0 as dev
+FROM dhi.io/node:22-debian13-dev as dev
 LABEL maintainer="enviroDGI@gmail.com"
 
 RUN mkdir -p /app
@@ -24,33 +24,31 @@ CMD ["/bin/bash"]
 # should never actually be distributed; it's just an intermediate.
 FROM dev as build
 ENV NODE_ENV=production
+# We need dumb-init to handle Docker's stop signal, but since the final image has no build tools, we have to install it here and copy it over later.
+RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 RUN npm run build-production
-
+RUN npm prune --omit=dev
 
 ### Release Image ###
-# It might feel ridiculous to build up all the same things again, but the
-# resulting image is less than half the size!
-FROM node:22.16.0-slim as release
+FROM dhi.io/node:22-debian13 as release
 LABEL maintainer="enviroDGI@gmail.com"
 
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
+# WORKDIR creates the directory if it doesn't exist.
+WORKDIR /app
+
+# Copy production artifacts from the build stage.
+COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init                                                                                
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist                                                                                                       
+COPY --from=build /app/server ./server
+COPY --from=build /app/views ./views    
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/src/scripts/formatters.js ./src/scripts/formatters.js                                                                                             
 
 ENV NODE_ENV=production
 
-RUN mkdir -p /app
-WORKDIR /app
-
-# Copy dependencies only so they can be cached.
-COPY package.json package-lock.json ./
 EXPOSE 3001
-
-# Install deps.
-RUN npm ci --only=production
-
-# Now copy all source.
-COPY . .
-COPY --from=build /app/dist ./dist
 
 # Run server. Use dumb-init because Node does not handle Docker's stop signal.
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["npm", "run", "start"]
+CMD ["node", "server/app.js"]
