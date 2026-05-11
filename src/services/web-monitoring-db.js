@@ -1,5 +1,5 @@
 import { formatDateRange } from '../scripts/db-helpers.js';
-const defaultApiUrl = 'https://api.monitoring-staging.envirodatagov.org/';
+const defaultApiUrl = 'https://api.monitoring.envirodatagov.org/';
 const storageLocation = 'WebMonitoringDb.token';
 
 /**
@@ -90,7 +90,6 @@ const storageLocation = 'WebMonitoringDb.token';
  *
  * @param {Object} [options]
  * @param {string} [options.url] URL of the DB instance to contact.
- *   Defaults to staging.
  * @param {boolean} [options.useSavedCredentials=true] Use credentials stored
  *   in the browser's localstorage
  */

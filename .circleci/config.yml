@@ -109,7 +109,13 @@ workflows:
             branches:
               only:
                 - release
+      - test:
+          filters:
+            branches:
+              only:
+                - release
       - publish_docker:
           requires:
             - build
             - build_docker
+            - test
