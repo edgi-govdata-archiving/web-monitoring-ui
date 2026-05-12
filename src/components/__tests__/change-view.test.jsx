@@ -163,7 +163,7 @@ describe('change-view', () => {
         });
 
         it('sets state.diffType to defaultDiffType if the stored diffType is NOT relevant to the pages being compared but defaultDiffType is', () => {
-          const oldMediaType = 'image/jpeg';
+          const oldMediaType = 'text/html';
           const newMediaType = 'text/html';
 
           const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
@@ -185,13 +185,16 @@ describe('change-view', () => {
           const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
           rerender({ mediaType: newMediaType });
 
-          screen.getByText(`diffType="${diffTypesFor(newMediaType)[0].value}"`);
+          // Get intersection of relevant types for old and new media types to find the expected diff type
+          let intersectionDiffTypes = diffTypesFor(oldMediaType).filter(type => diffTypesFor(newMediaType).some(newType => newType.value === type.value));
+
+          screen.getByText(`diffType="${intersectionDiffTypes[0].value}"`);
         });
       });
     });
 
     it('sets state.diffType to defaultDiffType if it is relevant to the pages being compared', () => {
-      const oldMediaType = 'image/jpeg';
+      const oldMediaType = 'text/html';
       const newMediaType = 'text/html';
 
       const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
