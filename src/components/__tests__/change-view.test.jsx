@@ -132,6 +132,27 @@ describe('change-view', () => {
         screen.getByText(`diffType="${relevantTypes[0].value}"`);
       });
     });
+
+    describe('when from and to have different media types', () => {
+      it('picks the first diff type in the intersection of both media types', () => {
+        const fromMediaType = 'image/jpeg';
+        const toMediaType = 'text/html';
+        const intersection = diffTypesFor(fromMediaType).filter(type => diffTypesFor(toMediaType).some(toType => toType.value === type.value));
+
+        renderBasicChangeView({ fromMediaType, toMediaType });
+
+        screen.getByText(`diffType="${intersection[0].value}"`);
+      });
+
+      it('falls back to the unknown-type diff types when the media types have no overlap', () => {
+        const fromMediaType = 'text/xml';
+        const toMediaType = 'application/pdf';
+
+        renderBasicChangeView({ fromMediaType, toMediaType });
+
+        screen.getByText(`diffType="${diffTypesFor('*/*')[0].value}"`);
+      });
+    });
   });
 
   describe('when the page versions change via props', () => {
