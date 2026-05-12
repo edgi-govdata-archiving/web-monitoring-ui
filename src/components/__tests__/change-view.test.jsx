@@ -132,6 +132,27 @@ describe('change-view', () => {
         screen.getByText(`diffType="${relevantTypes[0].value}"`);
       });
     });
+
+    describe('when from and to have different media types', () => {
+      it('picks the first diff type in the intersection of both media types', () => {
+        const fromMediaType = 'image/jpeg';
+        const toMediaType = 'text/html';
+        const intersection = diffTypesFor(fromMediaType).filter(type => diffTypesFor(toMediaType).some(toType => toType.value === type.value));
+
+        renderBasicChangeView({ fromMediaType, toMediaType });
+
+        screen.getByText(`diffType="${intersection[0].value}"`);
+      });
+
+      it('falls back to the unknown-type diff types when the media types have no overlap', () => {
+        const fromMediaType = 'text/xml';
+        const toMediaType = 'application/pdf';
+
+        renderBasicChangeView({ fromMediaType, toMediaType });
+
+        screen.getByText(`diffType="${diffTypesFor('*/*')[0].value}"`);
+      });
+    });
   });
 
   describe('when the page versions change via props', () => {
@@ -163,7 +184,7 @@ describe('change-view', () => {
         });
 
         it('sets state.diffType to defaultDiffType if the stored diffType is NOT relevant to the pages being compared but defaultDiffType is', () => {
-          const oldMediaType = 'image/jpeg';
+          const oldMediaType = 'text/html';
           const newMediaType = 'text/html';
 
           const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
@@ -185,13 +206,16 @@ describe('change-view', () => {
           const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
           rerender({ mediaType: newMediaType });
 
-          screen.getByText(`diffType="${diffTypesFor(newMediaType)[0].value}"`);
+          // Get intersection of relevant types for old and new media types to find the expected diff type
+          let intersectionDiffTypes = diffTypesFor(oldMediaType).filter(type => diffTypesFor(newMediaType).some(newType => newType.value === type.value));
+
+          screen.getByText(`diffType="${intersectionDiffTypes[0].value}"`);
         });
       });
     });
 
     it('sets state.diffType to defaultDiffType if it is relevant to the pages being compared', () => {
-      const oldMediaType = 'image/jpeg';
+      const oldMediaType = 'text/html';
       const newMediaType = 'text/html';
 
       const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
