@@ -1,3 +1,51 @@
+# Secrets / local env
 .env
+.env.*
+
+# VCS, CI, git hooks 
+# not needed inside the container
 .git/
+.github/
+.circleci/
+.husky/
+.gitignore
+.gitattributes
+
+# Host editor / tooling config
+# dev tools run in the container don't need these
+.vscode/
+.idea/
+.devcontainer/
+.editorconfig
+.node-version
+.DS_Store
+*.swp
+
+# Installed deps / build output 
+# reinstalled and rebuilt inside the image
 node_modules/
+dist/
+
+# Caches and logs
+.npm/
+.eslintcache
+coverage/
+.nyc_output/
+*.log
+logs/
+
+# Repo meta
+# not needed to build, lint, test, or run
+docs/
+README.md
+CONTRIBUTING.md
+DEPLOYMENT.md
+LICENSE
+screenshot.png
+Procfile
+
+# Host-only deploy helpers
+scripts/
+
+# Local scratch files
+scratch*

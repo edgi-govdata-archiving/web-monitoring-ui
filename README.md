@@ -76,21 +76,15 @@ We need your help! Please read through the [Web Monitoring Project](https://gith
 
 ## Docker
 
-You can also run this project via Docker. To build and run (on port 3001, as in the instructions for running directly above):
+Pre-built images are published to [Docker Hub](https://hub.docker.com/r/envirodgi/ui). To run the app with the latest release without cloning this repo:
 
 ```
-docker build -t envirodgi/ui .
 docker run -p 3001:3001 -e <ENVIRONMENT VARIABLES> envirodgi/ui
 ```
 
-Point your browser to ``http://localhost:3001``.
+Point your browser to `http://localhost:3001`.
 
-To run tests via Docker:
-
-```
-docker build -t envirodgi/ui:dev --target dev .
-docker run envirodgi/ui:dev npm run test
-```
+To build from source, run tests inside a container, or develop against the dev image, see [CONTRIBUTING.md](./CONTRIBUTING.md#local-docker-development).
 
 
 ## Releases

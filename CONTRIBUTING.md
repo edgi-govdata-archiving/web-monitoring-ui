@@ -9,9 +9,31 @@ We love improvements to our tools! EDGI has general [guidelines for contributing
 Issues that are project-wide, or relate heavily to the interaction between different components, should be added to our [Web Monitoring issue queue](https://github.com/edgi-govdata-archiving/web-monitoring/issues). Component-specific issues should be added to their respective repository.
 
 
+### Local Docker Development
+
+The `Dockerfile` pulls its base images from [Docker Hardened Images][dhi] (`dhi.io/node:22-debian13-dev` for the dev/build stage and `dhi.io/node:22-debian13` for the release stage). Pulling from `dhi.io` requires authentication, so before your first `docker build` you need to log in:
+
+```
+docker login dhi.io
+```
+
+[dhi]: https://www.docker.com/products/hardened-images/
+
+For interactive development work inside the container, use the Dev Containers setup described below. The release image is hardened with a minimal userland, and the dev image is best driven through your editor so file sync, port forwarding, and git identity are handled for you.
+
+
+### VS Code / Dev Containers
+
+A [`.devcontainer/devcontainer.json`](./.devcontainer/devcontainer.json) is included for contributors who use VS Code (or any editor that supports the [Dev Containers](https://containers.dev/) spec — JetBrains, GitHub Codespaces, etc.). It builds the `dev` stage of the `Dockerfile`, bind-mounts the repo at `/app`, keeps `node_modules` in a named volume to avoid masking it with the host's, bind-mounts your host `~/.gitconfig` read-only into the container so `git` commits from inside use your identity, forwards port 3001, runs `npm ci` on first create, and preinstalls the ESLint extension (`dbaeumer.vscode-eslint`).
+
+In VS Code: install the **Dev Containers** extension, open the repo, and run **Dev Containers: Reopen in Container**. You still need to have run `docker login dhi.io` once on your host so the base image can be pulled.
+
+> **Note:** the `~/.gitconfig` mount assumes a POSIX host path and currently only works on macOS and Linux. Windows contributors will need to adjust the mount (or remove it) in `devcontainer.json`.
+
+
 ### Code Style / Best Practices
 
-The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices for related to all the [web-monitoring] project (https://github.com/edgi-govdata-archiving/web-monitoring/blob/main/CONTRIBUTING.md) repo.
+The following are recommended code styling and best practices for the web-monitoring-ui repository. We also have best practices related to the [web-monitoring project](https://github.com/edgi-govdata-archiving/web-monitoring/blob/main/CONTRIBUTING.md) repo.
 
 
 ### UI - Support
@@ -49,50 +71,6 @@ This project uses [CSS Modules](https://github.com/css-modules/css-modules) with
 In general, try to avoid “private” methods on objects or classes. If they are really needed, prefix their names with an underscore.
 
 Private functions in a module (that is, functions that are not exported) are fine.
-
-
-#### Spacing in code:
-
-Overall, we recommend [Stroustrup](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Stroustrup) spacing for blocks:
-
-```js
-if (foo) {
-  bar();
-}
-else {
-  baz();
-}
-```
-
-Separate the `if`/`for`/`while` keyword from the condition, but don’t add extra spaces inside the parentheses in conditionals and loops:
-
-```js
-if (!this.state.pageId) {
-```
-
-Don’t add spaces between the function name and parentheses or within the parentheses when calling a function:
-
-```js
-this.props.onChange(versions.find(v => v.uuid === newValue));
-```
-
-Add spaces between the brackets and content in object literals:
-
-```js
-this.setState({ updating: true });
-```
-
-Add spaces between the brackets and and variable names when de-structuring:
-
-```js
-const { page } = this.props;
-```
-
-Use spaces between the function keyword, name, and arguments in function declarations:
-
-```js
-function foo (a) {
-```
 
 
 #### Units and layout - px, em, rem, vh, flexbox, grid:
