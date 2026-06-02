@@ -1,5 +1,11 @@
 version: 2.1
 
+parameters:
+  # Use this Node.js version for most jobs.
+  primary-node-version:
+    type: string
+    default: "24.15.0"
+
 commands:
   setup_npm:
     description: "Set up NPM dependencies"
@@ -19,7 +25,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/node:22.16.0
+      - image: cimg/node:<< pipeline.parameters.primary-node-version >>
     steps:
       - checkout
       - setup_npm
@@ -32,7 +38,7 @@ jobs:
 
   test:
     docker:
-      - image: cimg/node:22.16.0
+      - image: cimg/node:<< pipeline.parameters.primary-node-version >>
     steps:
       - checkout
       - setup_npm
