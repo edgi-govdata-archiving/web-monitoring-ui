@@ -35,7 +35,7 @@
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.0.5",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss": "^8.5.15",
     "postcss-loader": "^8.2.1",
