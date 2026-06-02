@@ -47,6 +47,11 @@ jobs:
     machine:
       image: ubuntu-2004:202111-02
     steps:
+      # You have to be logged in to download hardened base images (but it can
+      # be a free account).
+      - run:
+          name: Docker Login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - checkout
       - run:
           name: Build Image
