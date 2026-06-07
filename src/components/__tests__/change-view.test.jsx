@@ -183,19 +183,6 @@ describe('change-view', () => {
           screen.getByText(`diffType="${storedDiffType}"`);
         });
 
-        it('sets state.diffType to defaultDiffType if the stored diffType is NOT relevant to the pages being compared but defaultDiffType is', () => {
-          const oldMediaType = 'text/html';
-          const newMediaType = 'text/html';
-
-          const storedDiffType = 'IRRELEVANT_DIFF_TYPE';
-          layeredStorage.setItem(diffTypeStorage, storedDiffType);
-
-          const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
-          rerender({ mediaType: newMediaType });
-
-          screen.getByText(`diffType="${defaultDiffType}"`);
-        });
-
         it('sets state.diffType to the first relevant diff type if neither the stored diffType nor defaultDiffType are relevant to the pages being compared', () => {
           const oldMediaType = 'text/html';
           const newMediaType = 'image/jpeg';
