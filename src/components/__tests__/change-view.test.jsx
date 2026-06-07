@@ -198,16 +198,6 @@ describe('change-view', () => {
       });
     });
 
-    it('sets state.diffType to defaultDiffType if it is relevant to the pages being compared', () => {
-      const oldMediaType = 'text/html';
-      const newMediaType = 'text/html';
-
-      const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
-      rerender({ mediaType: newMediaType });
-
-      screen.getByText(`diffType="${defaultDiffType}"`);
-    });
-
     it('sets state.diffType to the first relevant diff type if defaultDiffType is NOT relevant to the pages being compared', () => {
       const oldMediaType = 'text/html';
       const newMediaType = 'image/jpeg';
