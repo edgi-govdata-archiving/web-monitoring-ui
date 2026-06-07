@@ -77,6 +77,7 @@ const diffTypesByMediaType = {
   'text/*': [
     diffTypes.HIGHLIGHTED_SOURCE,
     diffTypes.CHANGES_ONLY_SOURCE,
+    ...diffTypesForInlineRenderableFiles
   ],
 
   'image/*': diffTypesForInlineRenderableFiles,
