@@ -193,10 +193,7 @@ describe('change-view', () => {
           const { rerender } = renderBasicChangeView({ mediaType: oldMediaType });
           rerender({ mediaType: newMediaType });
 
-          // Get intersection of relevant types for old and new media types to find the expected diff type
-          let intersectionDiffTypes = diffTypesFor(oldMediaType).filter(type => diffTypesFor(newMediaType).some(newType => newType.value === type.value));
-
-          screen.getByText(`diffType="${intersectionDiffTypes[0].value}"`);
+          screen.getByText(`diffType="${diffTypesFor(newMediaType)[0].value}"`);
         });
       });
     });
