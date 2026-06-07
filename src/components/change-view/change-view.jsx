@@ -380,13 +380,15 @@ function isDisabled (element) {
 
 function relevantDiffTypes (versionA, versionB, page) {
   let typeA = mediaTypeForVersion(versionA, page);
+  let typeB = mediaTypeForVersion(versionB, page);
 
-  if (typeA.equals(mediaTypeForVersion(versionB, page))) {
+  if (typeA.equals(typeB)) {
     return diffTypesFor(typeA);
   }
 
-  // If we have differing types of content consider it an 'unkown' type.
-  return diffTypesFor(unknownType);
+  // If we have differing types of content resolve intersection
+  let diffTypeIntersection = diffTypesFor(typeA).filter(type => diffTypesFor(typeB).some(typeBType => typeBType.value === type.value));
+  return diffTypeIntersection.length > 0 ? diffTypeIntersection : diffTypesFor(unknownType);
 }
 
 // Matches the file extension on a URL

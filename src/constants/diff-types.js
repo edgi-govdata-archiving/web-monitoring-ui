@@ -71,11 +71,13 @@ const diffTypesByMediaType = {
     diffTypes.OUTGOING_LINKS,
     diffTypes.CHANGES_ONLY_TEXT,
     diffTypes.CHANGES_ONLY_SOURCE,
+    ...diffTypesForInlineRenderableFiles
   ],
 
   'text/*': [
     diffTypes.HIGHLIGHTED_SOURCE,
     diffTypes.CHANGES_ONLY_SOURCE,
+    ...diffTypesForInlineRenderableFiles
   ],
 
   'image/*': diffTypesForInlineRenderableFiles,
