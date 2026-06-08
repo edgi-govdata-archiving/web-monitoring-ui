@@ -12,6 +12,7 @@ import SideBySideRawVersions from './side-by-side-raw-versions';
 import SideBySideFilePreview from './side-by-side-file-preview/side-by-side-file-preview';
 
 import styles from '../css/base.css';
+import { parseMediaType } from '../scripts/media-type';
 
 /**
  * @typedef DiffViewProps
@@ -144,7 +145,7 @@ export default class DiffView extends Component {
     switch (this.props.diffType) {
       case diffTypes.RAW_SIDE_BY_SIDE.value:
         return (
-          <SideBySideRawVersions {...commonProps} />
+          <SideBySideRawVersions {...commonProps} diffSettings={this.props.diffSettings} />
         );
       case diffTypes.RAW_FROM_CONTENT.value:
         return (
@@ -225,10 +226,8 @@ export default class DiffView extends Component {
       );
     }
     else {
-      dataLoad = Promise.all([
-        fetch(a.body_url, { mode: 'cors' }),
-        fetch(b.body_url, { mode: 'cors' })
-      ]);
+      dataLoad = Promise.all([ fetchRawText(a), fetchRawText(b) ])
+        .then(([rawA, rawB]) => ({ rawA, rawB }));
     }
 
     dataLoad
@@ -255,4 +254,21 @@ function specifiesSameDiff (specifierA, specifierB) {
     && specifierA.a.uuid === specifierB.a.uuid
     && specifierA.b.uuid === specifierB.b.uuid
     && specifierA.diffType === specifierB.diffType;
+}
+
+/**
+ * Get the text content of a version if it is a text media type, otherwise
+ * return `null`.
+ * @param {Version} version
+ * @returns {Promise<String|null>}
+ */
+async function fetchRawText (version) {
+  // TODO: should cache this parsed data somewhere so we don't keep re-parsing.
+  const mediaType = parseMediaType(version.media_type);
+  if (mediaType.type !== 'text') {
+    return null;
+  }
+
+  const response = await fetch(version.body_url, { mode: 'cors' });
+  return await response.text();
 }

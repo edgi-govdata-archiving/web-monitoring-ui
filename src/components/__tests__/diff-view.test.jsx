@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import nock from 'nock';
 import DiffView from '../diff-view';
 import simplePage from '../../__mocks__/simple-page.json';
 import { ApiContext } from '../api-context';
@@ -65,5 +66,54 @@ describe('diff-view', () => {
     await waitFor(() => expect(mockApi.getDiff).toHaveBeenCalled());
     await screen.findByText('Hi');
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('loads and renders raw HTML in RAW diffs for text/html versions', async () => {
+    let requestedV0 = false;
+    let requestedV1 = false;
+    nock('http://example.com')
+      .get('/version_0_body')
+      .reply(200, () => {
+        requestedV0 = true;
+        return 'Hello version 0!';
+      })
+      .get('/version_1_body')
+      .reply(200, () => {
+        requestedV1 = true;
+        return '<!doctype html><html><body>Hello version 1!</body></html>';
+      });
+
+    const page = {
+      ...simplePage,
+      versions: [
+        {
+          ...simplePage.versions[0],
+          media_type: 'application/pdf',
+          body_url: 'http://example.com/version_0_body',
+        },
+        {
+          ...simplePage.versions[1],
+          media_type: 'text/html',
+          body_url: 'http://example.com/version_1_body',
+        },
+        ...simplePage.versions.slice(2),
+      ],
+    };
+
+    const { container } = render(
+      <ApiContext value={{ api: mockApi }}>
+        <DiffView
+          diffType="RAW_SIDE_BY_SIDE"
+          page={page}
+          a={page.versions[1]}
+          b={page.versions[0]}
+        />
+      </ApiContext>
+    );
+
+    await waitFor(() => expect(container.querySelector(`iframe[src="${page.versions[0].body_url}"]`)).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('iframe[srcdoc]')).toBeTruthy());
+    expect(requestedV0).toBe(false);
+    expect(requestedV1).toBe(true);
   });
 });
