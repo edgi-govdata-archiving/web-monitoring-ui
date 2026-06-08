@@ -146,7 +146,7 @@ describe('change-view', () => {
 
       it('falls back to the unknown-type diff types when the media types have no overlap', () => {
         const fromMediaType = 'text/xml';
-        const toMediaType = 'application/pdf';
+        const toMediaType = 'font/woff';
 
         renderBasicChangeView({ fromMediaType, toMediaType });
 
