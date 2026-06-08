@@ -1,7 +1,11 @@
 import { PureComponent } from 'react';
 
 // Diff types that we can remove formatting from
-const typesWithFormatting = ['SIDE_BY_SIDE_RENDERED', 'HIGHLIGHTED_RENDERED'];
+const typesWithFormatting = [
+  'SIDE_BY_SIDE_RENDERED',
+  'HIGHLIGHTED_RENDERED',
+  'RAW_SIDE_BY_SIDE',
+];
 
 // Shallow-merge multiple objects
 const mergeObjects = (...objects) => Object.assign({}, ...objects);
