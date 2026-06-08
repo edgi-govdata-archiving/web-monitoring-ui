@@ -56,10 +56,10 @@ for (let key in diffTypes) {
 // the browser can render inline instead of just triggering a download.
 // Ideally, we want to provide useful diffs for these in the future.
 const diffTypesForInlineRenderableFiles = [
+  diffTypes.RAW_SIDE_BY_SIDE,
   diffTypes.SIDE_BY_SIDE_FILE_PREVIEW,
   diffTypes.RAW_FROM_CONTENT,
   diffTypes.RAW_TO_CONTENT,
-  diffTypes.RAW_SIDE_BY_SIDE,
 ];
 
 const diffTypesByMediaType = {
