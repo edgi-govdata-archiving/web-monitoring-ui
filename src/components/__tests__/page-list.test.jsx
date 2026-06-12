@@ -1,7 +1,14 @@
 import { fireEvent, render, screen, act } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import PageList from '../page-list/page-list';
 import simplePages from '../../__mocks__/simple-pages.json';
+
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useSearchParams: jest.fn(),
+}));
+
+import { useSearchParams } from 'react-router';
 
 describe('page-list', () => {
   let globalOpen;
@@ -19,12 +26,16 @@ describe('page-list', () => {
     record.latest.capture_time = new Date(record.latest.capture_time);
   });
 
+  beforeEach(() => {
+    useSearchParams.mockReturnValue([new URLSearchParams(), jest.fn()]);
+  });
+
   function renderContext (element, options) {
     return render(
       (
-        <Router>
+        <MemoryRouter>
           {element}
-        </Router>
+        </MemoryRouter>
       ),
       options
     );
@@ -90,5 +101,140 @@ describe('page-list', () => {
     });
 
     expect(globalThis.open.mock.calls.length).toBe(1);
+  });
+
+  describe('URL search params', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    function createMockSearchParams (params = {}) {
+      const searchParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value) searchParams.set(key, value);
+      });
+      return searchParams;
+    }
+
+    it('reads initial URL from search params', () => {
+      useSearchParams.mockReturnValue([createMockSearchParams({ url: 'epa' }), jest.fn()]);
+
+      renderContext(
+        <PageList
+          pages={simplePages}
+          onSearch={jest.fn()}
+        />
+      );
+
+      const searchInput = screen.getByPlaceholderText('Search for a URL...');
+      expect(searchInput).toHaveValue('epa');
+    });
+
+    it('reads initial dates from search params', () => {
+      useSearchParams.mockReturnValue([
+        createMockSearchParams({ startDate: '2025-01-15', endDate: '2025-06-30' }),
+        jest.fn()
+      ]);
+
+      renderContext(
+        <PageList
+          pages={simplePages}
+          onSearch={jest.fn()}
+        />
+      );
+
+      const startDateInput = screen.getByLabelText(/from date/i);
+      const endDateInput = screen.getByLabelText(/to date/i);
+      expect(startDateInput).toHaveValue('2025-01-15');
+      expect(endDateInput).toHaveValue('2025-06-30');
+    });
+
+    it('updates URL params when search is performed', async () => {
+      const setSearchParams = jest.fn();
+      useSearchParams.mockReturnValue([createMockSearchParams(), setSearchParams]);
+
+      renderContext(
+        <PageList
+          pages={simplePages}
+          onSearch={jest.fn()}
+        />
+      );
+
+      const searchInput = screen.getByPlaceholderText('Search for a URL...');
+      fireEvent.change(searchInput, { target: { value: 'noaa' } });
+
+      // Run SearchBar's debounce timer (500ms)
+      await act(() => {
+        jest.advanceTimersByTime(500);
+      });
+
+      // Run PageList's URL update debounce timer (500ms)
+      await act(() => {
+        jest.advanceTimersByTime(500);
+      });
+
+      expect(setSearchParams).toHaveBeenCalled();
+      const lastCall = setSearchParams.mock.calls[setSearchParams.mock.calls.length - 1];
+      const [params, options] = lastCall;
+      expect(params.get('url')).toBe('noaa');
+      expect(options).toEqual({ replace: true });
+    });
+
+    it('clears URL params when search is cleared', async () => {
+      const setSearchParams = jest.fn();
+      useSearchParams.mockReturnValue([createMockSearchParams({ url: 'epa' }), setSearchParams]);
+
+      renderContext(
+        <PageList
+          pages={simplePages}
+          onSearch={jest.fn()}
+        />
+      );
+
+      // Run timers to process initial URL param (triggered by componentDidMount)
+      await act(() => {
+        jest.advanceTimersByTime(500);
+      });
+
+      // Clear any calls from initial mount
+      setSearchParams.mockClear();
+
+      const searchInput = screen.getByPlaceholderText('Search for a URL...');
+      fireEvent.change(searchInput, { target: { value: '' } });
+
+      // Run SearchBar's debounce timer
+      await act(() => {
+        jest.advanceTimersByTime(500);
+      });
+
+      // Run PageList's URL update debounce timer
+      await act(() => {
+        jest.advanceTimersByTime(500);
+      });
+
+      expect(setSearchParams).toHaveBeenCalled();
+      const lastCall = setSearchParams.mock.calls[setSearchParams.mock.calls.length - 1];
+      const [params] = lastCall;
+      expect(params.get('url')).toBeNull();
+    });
+
+    it('handles invalid date in URL gracefully', () => {
+      useSearchParams.mockReturnValue([createMockSearchParams({ startDate: 'invalid-date' }), jest.fn()]);
+
+      // Should not throw
+      renderContext(
+        <PageList
+          pages={simplePages}
+          onSearch={jest.fn()}
+        />
+      );
+
+      const startDateInput = screen.getByLabelText(/from date/i);
+      expect(startDateInput).toHaveValue('');
+    });
   });
 });
