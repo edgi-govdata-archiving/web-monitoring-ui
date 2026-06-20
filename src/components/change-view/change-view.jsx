@@ -151,6 +151,7 @@ export default class ChangeView extends Component {
           />
         </div>
         {this.renderVersionSelector(page)}
+        <QualityWarning a={this.props.from} b={this.props.to} />
         <DiffView page={page} diffType={this.state.diffType} a={this.props.from} b={this.props.to}
           diffSettings={this.state.diffSettings}/>
       </div>
@@ -356,6 +357,46 @@ export default class ChangeView extends Component {
           });
         }
       });
+  }
+}
+
+/**
+ * Shows a warning box about low-quality snapshots if either version is
+ * questionable. This is meant to help people better interpret when it was us
+ * vs. the site that was broken.
+ * @param {object} props
+ * @param {Version} props.a
+ * @param {Version} props.b
+ * @returns {import('react').ReactElement | null}
+ */
+function QualityWarning ({ a, b }) {
+  const qualityA = a?.quality ?? 1.0;
+  const qualityB = b?.quality ?? 1.0;
+
+  let message = null;
+  if (qualityA < 1 && qualityB < 1) {
+    message = <>Both versions appear to be bad snapshots.</>;
+  }
+  else if (qualityA < 1) {
+    message = <>The <strong>from version</strong> appears to be a bad snapshot.</>;
+  }
+  else if (qualityB < 1) {
+    message = <>The <strong>to version</strong> appears to be a bad snapshot.</>;
+  }
+
+  if (message) {
+    return (
+      <div
+        className={`${viewStyles.alert} ${baseStyles.alert} ${baseStyles.alertWarning}`}
+        role="alert"
+      >
+        {message} The web server may have blocked us from saving the page, so
+        this view may not represent the page at your chosen point in time.
+      </div>
+    );
+  }
+  else {
+    return null;
   }
 }
 
