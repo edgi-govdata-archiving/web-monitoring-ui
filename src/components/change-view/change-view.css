@@ -23,3 +23,7 @@
   padding: 0.7em 0.2em;
   flex: 0 0 auto;
 }
+
+.alert {
+  text-align: center;
+}

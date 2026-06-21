@@ -240,4 +240,34 @@ describe('change-view', () => {
       expect(layeredStorage.getItem(diffTypeStorage)).toBe(newType);
     });
   });
+
+  describe('QualityWarning', () => {
+    it('shows a warning when a version is low quality', () => {
+      render(
+        <ApiContext value={{ api: mockApi }}>
+          <ChangeView
+            page={simplePage}
+            from={{ ...mockChangeFrom, quality: 1 }}
+            to={{ ...mockChangeTo, quality: 0.1 }}
+          />
+        </ApiContext>
+      );
+
+      screen.getByText(/server may have blocked us/i);
+    });
+
+    it('shows nothing when both versions are good quality', () => {
+      render(
+        <ApiContext value={{ api: mockApi }}>
+          <ChangeView
+            page={simplePage}
+            from={{ ...mockChangeFrom, quality: 1 }}
+            to={{ ...mockChangeTo, quality: 1 }}
+          />
+        </ApiContext>
+      );
+
+      expect(() => screen.getByText(/server may have blocked us/i)).toThrow();
+    });
+  });
 });
