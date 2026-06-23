@@ -348,7 +348,8 @@ function inPageScrollModule (identifier, appOrigin) {
       type: '__wm_scroll',
       position: { x: window.scrollX, y: window.scrollY },
       landmark: landmarkId,
-      offset: (y - anchorY) / (nextY - anchorY)
+      offset: (y - anchorY) / (nextY - anchorY),
+      windowOffset: y / window.scrollMaxY,
     }, appOrigin);
   });
 
@@ -380,6 +381,9 @@ function inPageScrollModule (identifier, appOrigin) {
           }
         }
         y = anchorY + event.data.offset * (nextY - anchorY);
+      }
+      else {
+        y = event.data.windowOffset * window.scrollMaxY;
       }
 
       __wm_autoScrolling = true;
