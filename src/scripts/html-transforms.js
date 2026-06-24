@@ -235,7 +235,7 @@ function injectScriptModule (document, moduleFunction, ...args) {
  * DOM as such. When syncing scrolling in side-by-side views, we use these
  * landmarks to denote the scroll postion (landmark X, offset to landmark X+1).
  * This lets synced scrolling keep related parts of the page side-by-side even
- * when big changes one side have altered their locations.
+ * when big changes on one side have altered their locations.
  *
  * When the pages are live, `inPageScrollModule` (inserted into the pages
  * themselves) finds these landmarks and their positions on screen.
@@ -279,12 +279,12 @@ function markScrollLandmarks (document) {
           usable = false;
           break;
         }
-        characters += textNode.nodeValue.trim().replace(/[\s\n]/g, '');
+        characters += textNode.nodeValue.trim().replace(/[\s\n:_-]/g, '');
       }
       usable = usable && characters.length > minimumText;
     }
     else {
-      characters = e.textContent.trim().replace(/[\s\n]/g, '');
+      characters = e.textContent.trim().replace(/[\s\n:_-]/g, '');
       usable = usable && characters.length > minimumText;
     }
 
@@ -298,6 +298,28 @@ function markScrollLandmarks (document) {
       e.setAttribute('wm-scroll-landmark', `${idBase}-${idIndex}`);
     }
   }
+
+  // Special ARIA landmarks that should be unique on a page.
+  [
+    {
+      id: '::banner::',
+      selector: '[role="banner"], header:not(:is(aside, article, main, nav, section) header)',
+    },
+    {
+      id: '::contentinfo::',
+      selector: '[role="contentinfo"], footer:not(:is(aside, article, main, nav, section) footer)',
+    },
+    {
+      id: '::main::',
+      selector: '[role="main"], main',
+    },
+  ].forEach(({ id, selector }) => {
+    const nodes = document.querySelectorAll(selector);
+    if (nodes.length === 1) {
+      nodes[0].classList.add('wm-scroll-landmark');
+      nodes[0].setAttribute('wm-scroll-landmark', id);
+    }
+  });
 }
 
 function inPageScrollModule (identifier, appOrigin) {
