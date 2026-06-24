@@ -413,6 +413,7 @@ function inPageScrollModule (identifier, appOrigin) {
     const baseX = window.scrollX;
     const baseY = window.scrollY;
     const maxY = getScrollMaxY();
+    const minDistance = 16;
     let lastY = -Infinity;
     let lastIndex = -1;
     const result = Array.from(document.querySelectorAll('[wm-scroll-landmark]'))
@@ -432,7 +433,7 @@ function inPageScrollModule (identifier, appOrigin) {
           && bounds.height > 0
           && x + bounds.width > 0
           && y + bounds.height > 0
-          && y > lastY
+          && y >= lastY + minDistance
           && y < maxY
         );
 
