@@ -253,10 +253,12 @@ function markScrollLandmarks (document) {
   const candidates = [...document.querySelectorAll(`
     h1, h2, h3, h4, h5, h6,
     .h1, .h2, .h3, .h4, .h5, .h6,
-    header,footer,section,article,nav
+    header,footer,section,article,nav,
     .box
   `)];
-  let index = 0;
+  // Don't make a landmark if it doesn't have at least this  many characters.
+  const minimumText = 10;
+  let ids = new Map();
   for (const e of candidates) {
     if (e.matches(':is(.wm-diff *)')) continue;
 
@@ -267,27 +269,33 @@ function markScrollLandmarks (document) {
     // and be usable as a landmark. This lets us use items with complex content
     // like header/footer or nested content like section as landmarks.
     let usable = true;
+    let characters = '';
     const change = e.querySelector('.wm-diff');
     if (change) {
       const texts = document.createNodeIterator(e, NodeFilter.SHOW_TEXT);
-      let characters = 0;
       let textNode = null;
-      while (characters < 30 && (textNode = texts.nextNode())) {
+      while (characters.length < 30 && (textNode = texts.nextNode())) {
         if (textNode.parentElement.matches('.wm-diff,:is(.wm-diff *)')) {
           usable = false;
           break;
         }
-        characters += textNode.nodeValue.trim().replace(/[\s\n]/g, '').length;
+        characters += textNode.nodeValue.trim().replace(/[\s\n]/g, '');
       }
-      usable = usable && characters > 0;
+      usable = usable && characters.length > minimumText;
+    }
+    else {
+      characters = e.textContent.trim().replace(/[\s\n]/g, '');
+      usable = usable && characters.length > minimumText;
     }
 
     if (usable) {
       // This element should be present in some form on both sides, and is
       // usable as a landmark.
       e.classList.add('wm-scroll-landmark');
-      e.setAttribute('wm-scroll-landmark', index);
-      index++;
+      const idBase = characters.slice(0, 20).toLowerCase();
+      const idIndex = (ids.get(idBase) || 0) + 1;
+      ids.set(idBase, idIndex);
+      e.setAttribute('wm-scroll-landmark', `${idBase}-${idIndex}`);
     }
   }
 }
@@ -297,6 +305,7 @@ function inPageScrollModule (identifier, appOrigin) {
   // we can ignore scroll events.
   let __wm_autoScrolling = false;
   let __wm_scrollLandmarks = [];
+  let __wm_scrollIds = new Map();
 
   window.addEventListener('scroll', (e) => {
     // console.log('SCROLL EVENT in frame ${identifier}, auto:', __wm_autoScrolling, e);
@@ -305,51 +314,39 @@ function inPageScrollModule (identifier, appOrigin) {
       return;
     }
 
-    let anchorText = '<start>';
-    let nextText = '<end>';
     const y = window.scrollY;
-    let anchorY = 0;
-    let nextY = window.scrollMaxY;
-    let landmarkId = -1;
-    let nextLandmark = __wm_scrollLandmarks.find(l => l.y > y && l.usable);
-    if (nextLandmark) {
-      nextY = nextLandmark.y;
-      nextText = nextLandmark.text;
-      for (let i = nextLandmark.id - 1; i >= 0; i--) {
-        const landmark = __wm_scrollLandmarks[i];
-        if (landmark.usable) {
-          landmarkId = landmark.id;
-          anchorY = landmark.y;
-          anchorText = landmark.text;
+    let anchorMark = null;
+    let nextMark = null;
+    for (const mark of __wm_scrollLandmarks) {
+      if (mark.usable) {
+        if (mark.y > y) {
+          nextMark = mark;
           break;
         }
-      }
-    }
-    else if (__wm_scrollLandmarks.length) {
-      for (let i = __wm_scrollLandmarks.length - 1; i >= 0; i--) {
-        const landmark = __wm_scrollLandmarks[i];
-        if (landmark.usable) {
-          landmarkId = landmark.id;
-          anchorY = landmark.y;
-          anchorText = landmark.text;
-          break;
+        else {
+          anchorMark = mark;
         }
       }
     }
 
+    const maxY = window.scrollMaxY;
+    const anchorY = anchorMark?.y ?? 0;
+    const nextY = nextMark?.y ?? maxY;
+
     // Need some better debug tooling.
     // eslint-disable-next-line no-constant-condition
     if (false) {
-      console.log(`SCROLL CALC: anchorY=${anchorY}, y=${y}, nextY=${nextY} (anchor: "${anchorText}", next: "${nextText}")`, __wm_scrollLandmarks);
+      console.log(`SCROLL CALC: anchorY=${anchorY}, y=${y}, nextY=${nextY} (anchor: "${anchorMark?.id || '<start>'}", next: "${nextMark?.id ?? '<end>'}")`, __wm_scrollLandmarks);
     }
 
     window.top.postMessage({
       from: identifier,
       type: '__wm_scroll',
-      position: { x: window.scrollX, y: window.scrollY },
-      landmark: landmarkId,
+      position: { x: window.scrollX, y },
+      anchorMark: anchorMark?.id ?? '',
+      nextMark: nextMark?.id ?? '',
       offset: (y - anchorY) / (nextY - anchorY),
-      windowOffset: y / window.scrollMaxY,
+      windowOffset: y / maxY,
     }, appOrigin);
   });
 
@@ -359,31 +356,19 @@ function inPageScrollModule (identifier, appOrigin) {
       let x = event.data.position.x;
       let y = event.data.position.y;
 
-      let useLandmarks = true;
-      let anchorY = 0;
-      if (event.data.landmark > -1) {
-        const landmark = __wm_scrollLandmarks[event.data.landmark];
-        if (landmark) {
-          anchorY = landmark.y;
-        }
-        else {
-          useLandmarks = false;
-          console.warn(`Could not find scroll landmark in ${identifier}, falling back to literal position`);
-        }
-      }
-      if (useLandmarks) {
-        let nextY = window.scrollMaxY;
-        for (let i = event.data.landmark + 1; i < __wm_scrollLandmarks.length; i++) {
-          const nextLandmark = __wm_scrollLandmarks[i];
-          if (nextLandmark.usable) {
-            nextY = nextLandmark.y;
-            break;
-          }
-        }
-        y = anchorY + event.data.offset * (nextY - anchorY);
+      let anchorMark = __wm_scrollIds.get(event.data.anchorMark);
+      let nextMark = __wm_scrollIds.get(event.data.nextMark);
+      let landmarkError = (event.data.anchorMark && !anchorMark?.usable)
+        || (event.data.nextMark && !nextMark?.usable);
+
+      if (landmarkError) {
+        console.warn(`Could not find scroll landmark in ${identifier}, falling back to global offset`);
+        y = event.data.windowOffset * window.scrollMaxY;
       }
       else {
-        y = event.data.windowOffset * window.scrollMaxY;
+        let anchorY = anchorMark?.y ?? 0;
+        let nextY = nextMark?.y ?? window.scrollMaxY;
+        y = anchorY + event.data.offset * (nextY - anchorY);
       }
 
       __wm_autoScrolling = true;
@@ -396,11 +381,16 @@ function inPageScrollModule (identifier, appOrigin) {
     const baseX = window.scrollX;
     const baseY = window.scrollY;
     let lastY = -Infinity;
+    let lastIndex = -1;
     const result = Array.from(document.querySelectorAll('[wm-scroll-landmark]'))
       .map(node => {
-        const id = parseInt(node.getAttribute('wm-scroll-landmark'), 10);
-        if (isNaN(id)) return null;
+        const id = node.getAttribute('wm-scroll-landmark')?.trim();
+        if (!id) {
+          console.error(`Scroll landmark in ${identifier} had invalid ID`);
+          return null;
+        }
 
+        const index = ++lastIndex;
         const bounds = node.getBoundingClientRect();
         const x = bounds.left + baseX;
         const y = bounds.top + baseY;
@@ -418,16 +408,14 @@ function inPageScrollModule (identifier, appOrigin) {
 
         return {
           id,
+          index,
           x,
           y,
           usable,
-          text: node.textContent.trim().replace(/[\s\n]+/g, ' '),
+          text: node.textContent.trim().replace(/[\s\n]+/g, ' ').slice(0, 50),
         };
       })
       .filter(Boolean);
-    if (result.some((x, index) => x.id !== index)) {
-      console.error(`SCROLL LANDMARK IDS OUT OF SYNC in ${identifier}:`, result);
-    }
     return result;
   }
 
@@ -442,6 +430,8 @@ function inPageScrollModule (identifier, appOrigin) {
     }
     lastUpdate = now;
     __wm_scrollLandmarks = getScrollLandmarks();
+    __wm_scrollIds = new Map(__wm_scrollLandmarks.map(x => [x.id, x]));
+    // console.log(`Landmarks ${identifier}:`, __wm_scrollLandmarks);
   }
 
   updateScrollLandmarks();
