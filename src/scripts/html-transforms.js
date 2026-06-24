@@ -257,7 +257,7 @@ function markScrollLandmarks (document) {
     .box
   `)];
   // Don't make a landmark if it doesn't have at least this  many characters.
-  const minimumText = 10;
+  const minimumText = 8;
   let ids = new Map();
   for (const e of candidates) {
     if (e.matches(':is(.wm-diff *)')) continue;
