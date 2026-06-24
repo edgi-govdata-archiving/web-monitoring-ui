@@ -351,7 +351,7 @@ function inPageScrollModule (identifier, appOrigin) {
       }
     }
 
-    const maxY = window.scrollMaxY;
+    const maxY = getScrollMaxY();
     const anchorY = anchorMark?.y ?? 0;
     const nextY = nextMark?.y ?? maxY;
 
@@ -385,11 +385,11 @@ function inPageScrollModule (identifier, appOrigin) {
 
       if (landmarkError) {
         console.warn(`Could not find scroll landmark in ${identifier}, falling back to global offset`);
-        y = event.data.windowOffset * window.scrollMaxY;
+        y = event.data.windowOffset * getScrollMaxY();
       }
       else {
         let anchorY = anchorMark?.y ?? 0;
-        let nextY = nextMark?.y ?? window.scrollMaxY;
+        let nextY = nextMark?.y ?? getScrollMaxY();
         y = anchorY + event.data.offset * (nextY - anchorY);
       }
 
@@ -402,6 +402,11 @@ function inPageScrollModule (identifier, appOrigin) {
       }
     }
   });
+
+  function getScrollMaxY () {
+    const content = (document.scrollingElement || document.body).scrollHeight;
+    return Math.max(0, content - document.documentElement.clientHeight);
+  }
 
   function getScrollLandmarks () {
     // const rootBounds = document.documentElement.getBoundingClientRect();
