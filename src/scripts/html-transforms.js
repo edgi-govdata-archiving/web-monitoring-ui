@@ -374,6 +374,11 @@ function inPageScrollModule (identifier, appOrigin) {
       __wm_autoScrolling = true;
       window.scrollTo({ left: x, top: y, behavior: 'instant' });
     }
+    else if (event.data.type === '__wm_scroll_landmarks_common') {
+      for (const landmark of __wm_scrollLandmarks) {
+        landmark.usable = event.data.landmarks.includes(landmark.id);
+      }
+    }
   });
 
   function getScrollLandmarks () {
@@ -432,6 +437,12 @@ function inPageScrollModule (identifier, appOrigin) {
     __wm_scrollLandmarks = getScrollLandmarks();
     __wm_scrollIds = new Map(__wm_scrollLandmarks.map(x => [x.id, x]));
     // console.log(`Landmarks ${identifier}:`, __wm_scrollLandmarks);
+
+    window.top.postMessage({
+      from: identifier,
+      type: '__wm_scroll_landmarks',
+      landmarks: __wm_scrollLandmarks.filter(l => l.usable).map(l => l.id),
+    }, appOrigin);
   }
 
   updateScrollLandmarks();
