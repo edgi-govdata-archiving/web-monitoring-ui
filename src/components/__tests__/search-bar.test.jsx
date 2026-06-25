@@ -3,8 +3,14 @@ import SearchBar from '../search-bar/search-bar';
 import { DateTime } from 'luxon';
 
 describe('search-bar', () => {
-  // Need to use a fake timer because the _urlSearch function is debounced.
-  jest.useFakeTimers();
+  beforeEach(() => {
+    // Need to use a fake timer because the _urlSearch function is debounced.
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
   it('Renders the search-bar', () => {
     render(<SearchBar />);
