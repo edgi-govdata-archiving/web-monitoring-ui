@@ -188,10 +188,14 @@ let authClient;
  */
 function addAuthentication (requestData) {
   return new Promise((resolve, reject) => {
+    const configuration = baseConfiguration();
+    if (!configuration.GOOGLE_SERVICE_CLIENT_EMAIL || !configuration.GOOGLE_SHEETS_PRIVATE_KEY) {
+      return reject(new Error('Google Sheets is not configured. Set GOOGLE_SERVICE_CLIENT_EMAIL and GOOGLE_SHEETS_PRIVATE_KEY to enable this feature.'));
+    }
+
     // If tokens expire in 30 seconds or less, refresh them.
     const expirationLeeway = 30000;
     if (!authTokens || Date.now() > authTokens.expiry_date - expirationLeeway) {
-      const configuration = baseConfiguration();
       const clientEmail = configuration.GOOGLE_SERVICE_CLIENT_EMAIL;
       // Replace `\n` in ENV variable with actual line breaks.
       const privateKey = configuration.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n');
