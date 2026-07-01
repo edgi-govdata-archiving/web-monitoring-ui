@@ -37,7 +37,7 @@
     "jest-environment-jsdom": "^30.4.1",
     "lint-staged": "^17.0.5",
     "mini-css-extract-plugin": "^2.10.2",
-    "nock": "^14.0.15",
+    "nock": "^14.0.16",
     "postcss": "^8.5.15",
     "postcss-loader": "^8.2.1",
     "react": "^19.2.7",
