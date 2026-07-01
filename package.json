@@ -46,7 +46,7 @@
     "react-router": "^7.15.1",
     "react-tooltip": "^6.0.0",
     "style-loader": "^4.0.0",
-    "webpack": "^5.107.2",
+    "webpack": "^5.108.0",
     "webpack-bundle-analyzer": "^5.3.0",
     "webpack-cli": "^7.0.3",
     "webpack-dev-middleware": "^8.0.3"
