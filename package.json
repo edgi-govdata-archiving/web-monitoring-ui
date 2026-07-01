@@ -44,7 +44,7 @@
     "react-aria-modal": "^5.0.2",
     "react-dom": "^19.2.7",
     "react-router": "^7.15.1",
-    "react-tooltip": "^6.0.0",
+    "react-tooltip": "^6.0.8",
     "style-loader": "^4.0.0",
     "webpack": "^5.108.1",
     "webpack-bundle-analyzer": "^5.3.0",
