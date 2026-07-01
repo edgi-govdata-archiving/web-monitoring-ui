@@ -6,7 +6,7 @@
   "type": "module",
   "dependencies": {
     "@googleapis/sheets": "^13.0.2",
-    "body-parser": "^2.2.2",
+    "body-parser": "^2.3.0",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
     "luxon": "^3.7.2",
