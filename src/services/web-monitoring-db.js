@@ -340,16 +340,16 @@ export default class WebMonitoringDb {
   }
 
   _loadToken () {
-    if ('localStorage' in window) {
-      this.authToken = localStorage.getItem(storageLocation);
+    if ('sessionStorage' in window) {
+      this.authToken = sessionStorage.getItem(storageLocation);
       return this.authToken;
     }
     return null;
   }
 
   _saveToken (token) {
-    if ('localStorage' in window) {
-      localStorage.setItem(storageLocation, token);
+    if ('sessionStorage' in window) {
+      sessionStorage.setItem(storageLocation, token);
     }
   }
 
