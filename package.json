@@ -43,7 +43,7 @@
     "react": "^19.2.8",
     "react-aria-modal": "^5.0.2",
     "react-dom": "^19.2.8",
-    "react-router": "^7.18.1",
+    "react-router": "^8.3.0",
     "react-tooltip": "^6.0.8",
     "style-loader": "^4.0.0",
     "webpack": "^5.109.0",
