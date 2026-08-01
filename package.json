@@ -46,10 +46,10 @@
     "react-router": "^7.18.1",
     "react-tooltip": "^6.0.8",
     "style-loader": "^4.0.0",
-    "webpack": "^5.108.1",
-    "webpack-bundle-analyzer": "^5.3.0",
-    "webpack-cli": "^7.1.0",
-    "webpack-dev-middleware": "^8.0.3"
+    "webpack": "^5.109.0",
+    "webpack-bundle-analyzer": "^5.3.1",
+    "webpack-cli": "^7.2.1",
+    "webpack-dev-middleware": "^8.1.0"
   },
   "scripts": {
     "analyze": "npm run build-production -- --analyze",
