@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import { DateTime } from 'luxon';
 import Loading from '../loading';
-import { Component } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import SearchBar from '../search-bar/search-bar';
 import StandardTooltip from '../standard-tooltip/standard-tooltip';
 import PageTag from '../page-tag/page-tag';
@@ -14,7 +15,6 @@ import baseStyles from '../../css/base.css';
 import listStyles from './page-list.css';
 
 /**
- * These props also inherit from React Router's RouteComponent props
  * @typedef {Object} PageListProps
  * @property {Page[]} pages
  * @property {(any) => void} onSearch
@@ -23,45 +23,80 @@ import listStyles from './page-list.css';
 /**
  * Display a list of pages.
  *
- * @class PageList
- * @extends {Component}
  * @param {PageListProps} props
  */
-export default class PageList extends Component {
-  render () {
-    let results;
+export default function PageList ({ pages, onSearch }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Store initial values from URL params so they don't change across re-renders
+  const initialUrl = useRef(searchParams?.get('url') || '').current;
+  const initialStartDate = useRef((() => {
+    const param = searchParams?.get('startDate');
+    return param ? parseDate(param) : null;
+  })()).current;
+  const initialEndDate = useRef((() => {
+    const param = searchParams?.get('endDate');
+    return param ? parseDate(param) : null;
+  })()).current;
 
-    if (!this.props.pages) {
-      results = <Loading />;
-    }
-    else if (this.props.pages instanceof Error) {
-      results = this.renderError(`Could not load pages: ${this.props.pages.message}`);
-    }
-    else if (this.props.pages.length === 0) {
-      results = this.renderError('There were no page results.', 'warning');
-    }
-    else {
-      results = this.renderPages();
-    }
+  const updateUrlParams = useMemo(
+    () => debounce((query) => {
+      const params = new URLSearchParams();
 
-    return (
-      <div className={baseStyles.main}>
-        <SearchBar
-          onSearch={this.props.onSearch}
-        />
-        {results}
-      </div>
-    );
+      // Extract raw URL from expanded pattern (e.g., "*//epa*" -> "epa")
+      if (query.url) {
+        const rawUrl = extractRawUrl(query.url);
+        if (rawUrl) {
+          params.set('url', rawUrl);
+        }
+      }
+
+      if (query.startDate) {
+        params.set('startDate', query.startDate.toISODate());
+      }
+
+      if (query.endDate) {
+        params.set('endDate', query.endDate.toISODate());
+      }
+
+      // Use replace to avoid polluting browser history
+      setSearchParams(params, { replace: true });
+    }, 500),
+    [setSearchParams]
+  );
+
+  const handleSearch = useCallback((query) => {
+    onSearch(query);
+    updateUrlParams(query);
+  }, [onSearch, updateUrlParams]);
+
+  let results;
+
+  if (!pages) {
+    results = <Loading />;
   }
-
-  renderPages () {
-    return (
+  else if (pages instanceof Error) {
+    results = renderError(`Could not load pages: ${pages.message}`);
+  }
+  else if (pages.length === 0) {
+    results = renderError('There were no page results.', 'warning');
+  }
+  else {
+    results = (
       <div className={listStyles.container}>
         <StandardTooltip id="list-tooltip" />
         <table className={[listStyles.table, listStyles.pageList].join(' ')}>
-          <thead>{this.renderHeader()}</thead>
+          <thead>
+            <tr>
+              <th data-name="domain">Domain</th>
+              <th data-name="page-name">Page Name</th>
+              <th data-name="url">URL</th>
+              <th data-name="tags">Tags</th>
+              <th data-name="status">HTTP Status</th>
+              <th data-name="active">Active?</th>
+            </tr>
+          </thead>
           <tbody>
-            {this.props.pages.map(page => (
+            {pages.map(page => (
               <PageListRow page={page} key={page.uuid} />
             ))}
           </tbody>
@@ -70,29 +105,28 @@ export default class PageList extends Component {
     );
   }
 
-  renderHeader () {
-    return (
-      <tr>
-        <th data-name="domain">Domain</th>
-        <th data-name="page-name">Page Name</th>
-        <th data-name="url">URL</th>
-        <th data-name="tags">Tags</th>
-        <th data-name="status">HTTP Status</th>
-        <th data-name="active">Active?</th>
-      </tr>
-    );
-  }
+  return (
+    <div className={baseStyles.main}>
+      <SearchBar
+        onSearch={handleSearch}
+        initialUrl={initialUrl}
+        initialStartDate={initialStartDate}
+        initialEndDate={initialEndDate}
+      />
+      {results}
+    </div>
+  );
+}
 
-  // TODO: we use similar markup elsewhere, consider making this a component
-  renderError (message, type = 'danger') {
-    return (
-      <div className={listStyles.container}>
-        <p className={[listStyles.listAlert, baseStyles.alert, baseStyles[`alert-${type}`]].join(' ')} role="alert">
-          {message}
-        </p>
-      </div>
-    );
-  }
+// TODO: we use similar markup elsewhere, consider making this a component
+function renderError (message, type = 'danger') {
+  return (
+    <div className={listStyles.container}>
+      <p className={[listStyles.listAlert, baseStyles.alert, baseStyles[`alert-${type}`]].join(' ')} role="alert">
+        {message}
+      </p>
+    </div>
+  );
 }
 
 /**
@@ -152,4 +186,48 @@ const HOST_WITHOUT_WWW_PATTERN = /^[^:]+:\/\/(?:ww+\d*\.)?([^/]+)/;
 
 function getDomain (url) {
   return url.match(HOST_WITHOUT_WWW_PATTERN)[1];
+}
+
+/**
+ * Extract raw URL from expanded pattern.
+ * E.g., "* //epa*" becomes "epa", "http://epa.gov*" becomes "http://epa.gov"
+ * @param {string} expandedUrl - The expanded URL pattern
+ * @returns {string} - The raw URL without wildcards
+ */
+function extractRawUrl (expandedUrl) {
+  if (!expandedUrl) return '';
+
+  let raw = expandedUrl;
+
+  // Remove leading wildcard pattern (e.g., "*//" -> "")
+  if (raw.startsWith('*//')) {
+    raw = raw.slice(3);
+  }
+
+  // Remove trailing wildcard
+  if (raw.endsWith('*')) {
+    raw = raw.slice(0, -1);
+  }
+
+  return raw;
+}
+
+/**
+ * Parse an ISO date string into a Luxon DateTime object.
+ * Returns null if the string is invalid.
+ * @param {string} dateStr - ISO date string (YYYY-MM-DD)
+ * @returns {DateTime|null}
+ */
+function parseDate (dateStr) {
+  if (!dateStr) return null;
+  const dt = DateTime.fromISO(dateStr);
+  return dt.isValid ? dt : null;
+}
+
+function debounce (func, delay) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
 }
