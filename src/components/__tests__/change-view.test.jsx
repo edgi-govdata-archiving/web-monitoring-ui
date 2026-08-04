@@ -1,15 +1,14 @@
+import { jest, describe, it, afterEach } from '@jest/globals';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ApiContext } from '../api-context';
-import ChangeView, { defaultDiffType, diffTypeStorage } from '../change-view/change-view';
-import layeredStorage from '../../scripts/layered-storage';
-import simplePage from '../../__mocks__/simple-page.json';
-import WebMonitoringDb from '../../services/web-monitoring-db';
+import simplePage from '../../__mocks__/simple-page.json' with { type: 'json' };
 import { diffTypesFor } from '../../constants/diff-types';
+import * as MockDiffView from '../__mocks__/diff-view';
 
 // The mock simply renders a list of props so we can inspect them.
-jest.mock('../diff-view');
+jest.unstable_mockModule('../diff-view', () => MockDiffView);
 
-jest.mock('../../scripts/layered-storage', () => ({
+jest.unstable_mockModule('../../scripts/layered-storage', () => ({
   __esModule: true,
   default: {
     getItem (key) { return this._data[key]; },
@@ -19,6 +18,10 @@ jest.mock('../../scripts/layered-storage', () => ({
     _data: {}
   }
 }));
+
+const { default: ChangeView, defaultDiffType, diffTypeStorage } = await import('../change-view/change-view');
+const { default: layeredStorage } = await import('../../scripts/layered-storage');
+const { default: WebMonitoringDb } = await import('../../services/web-monitoring-db');
 
 // Change string values to date objects so they're parsed correctly
 simplePage.versions.forEach(version => {

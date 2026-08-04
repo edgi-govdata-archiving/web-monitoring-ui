@@ -1,10 +1,13 @@
+import { jest, describe, it } from '@jest/globals';
 import { render, waitFor, screen } from '@testing-library/react';
-import PageDetails from '../page-details/page-details';
-import simplePage from '../../__mocks__/simple-page.json';
+import simplePage from '../../__mocks__/simple-page.json' with { type: 'json' };
 import { ApiContext } from '../api-context';
 import WebMonitoringDb from '../../services/web-monitoring-db';
+import * as MockChangeView from '../change-view/__mocks__/change-view';
 
-jest.mock('../change-view/change-view');
+jest.unstable_mockModule('../change-view/change-view', () => MockChangeView);
+
+const { default: PageDetails } = await import('../page-details/page-details');
 
 describe('page-details', () => {
   // Change string values to date objects so they're parsed correctly

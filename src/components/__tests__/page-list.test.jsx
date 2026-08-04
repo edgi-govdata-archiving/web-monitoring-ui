@@ -1,7 +1,8 @@
+import { jest, describe, it, beforeEach, afterEach } from '@jest/globals';
 import { fireEvent, render, screen, act } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router';
 import PageList from '../page-list/page-list';
-import simplePages from '../../__mocks__/simple-pages.json';
+import simplePages from '../../__mocks__/simple-pages.json' with { type: 'json' };
 
 describe('page-list', () => {
   let globalOpen;
