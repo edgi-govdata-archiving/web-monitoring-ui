@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import PageUrlDetails from '../page-url-details/page-url-details';
-import simplePage from '../../__mocks__/simple-page.json';
+import simplePage from '../../__mocks__/simple-page.json' with { type: 'json' };
 
 describe('PageUrlDetails Component', () => {
   // Change string values to date objects so they're parsed correctly
