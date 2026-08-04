@@ -121,6 +121,7 @@ export default defineConfig([
     files: ['**/*.test.{js,jsx}'],
 
     languageOptions: {
+      ecmaVersion: 2025,
       globals: {
         ...globals.jest,
       },

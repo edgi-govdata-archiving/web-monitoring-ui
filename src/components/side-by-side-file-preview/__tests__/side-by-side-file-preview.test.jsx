@@ -2,15 +2,17 @@
  * @jest-environment jsdom
  */
 
+import { jest, describe, it } from '@jest/globals';
 import { render } from '@testing-library/react';
-import SideBySideFilePreview from '../../side-by-side-file-preview/side-by-side-file-preview';
 
 // Mock the FilePreview component since we test it separately
-jest.mock('../../file-preview/file-preview', () => {
-  return function MockFilePreview ({ version }) {
+jest.unstable_mockModule('../../file-preview/file-preview', () => ({
+  default: function MockFilePreview ({ version }) {
     return <div data-testid="file-preview">{version.uuid}</div>;
-  };
-});
+  },
+}));
+
+const { default: SideBySideFilePreview } = await import('../../side-by-side-file-preview/side-by-side-file-preview');
 
 describe('SideBySideFilePreview', () => {
   const mockVersionA = {
