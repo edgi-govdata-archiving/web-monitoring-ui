@@ -244,10 +244,12 @@ export default class ChangeView extends Component {
             <i className="fa fa-pencil" aria-hidden="true" />
             <a className="lnk-action" href="#" onClick={this._annotateChange}>Update Record</a>
           </div>
-          <div className={viewStyles.actionsSection}>
-            {markSignificant}
-            {addToDictionary}
-          </div>
+          {window.webMonitoringConfig.GOOGLE_SHEETS_CONFIGURED && (
+            <div className={viewStyles.actionsSection}>
+              {markSignificant}
+              {addToDictionary}
+            </div>
+          )}
         </div>
       ),
       (
