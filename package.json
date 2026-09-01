@@ -38,7 +38,7 @@
     "lint-staged": "^17.2.0",
     "mini-css-extract-plugin": "^2.10.2",
     "nock": "^14.0.17",
-    "postcss": "^8.5.23",
+    "postcss": "^8.5.26",
     "postcss-loader": "^8.2.1",
     "react": "^19.2.8",
     "react-aria-modal": "^5.0.2",
