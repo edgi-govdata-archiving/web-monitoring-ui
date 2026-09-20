@@ -5,7 +5,7 @@ const defaultValues = {
 
 const clientFields = [
   'WEB_MONITORING_DB_URL',
-  'ALLOW_PUBLIC_VIEW'
+  'ALLOW_PUBLIC_VIEW',
 ];
 
 const processEnvironment = Object.assign(
@@ -82,8 +82,15 @@ export function baseConfiguration () {
 export function clientConfiguration () {
   const source = baseConfiguration();
 
-  return clientFields.reduce((result, field) => {
+  const config = clientFields.reduce((result, field) => {
     result[field] = source[field];
     return result;
   }, {});
+
+  config.GOOGLE_SHEETS_CONFIGURED = !!(
+    source.GOOGLE_SERVICE_CLIENT_EMAIL &&
+    source.GOOGLE_SHEETS_PRIVATE_KEY
+  );
+
+  return config;
 }
