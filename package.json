@@ -49,7 +49,7 @@
     "webpack": "^5.109.2",
     "webpack-bundle-analyzer": "^5.3.2",
     "webpack-cli": "^7.2.2",
-    "webpack-dev-middleware": "^8.1.1"
+    "webpack-dev-middleware": "^8.3.0"
   },
   "scripts": {
     "analyze": "npm run build-production -- --analyze",
