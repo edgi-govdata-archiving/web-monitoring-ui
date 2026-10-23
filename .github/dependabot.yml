@@ -39,3 +39,10 @@ updates:
         patterns:
           - 'webpack'
           - 'webpack-*'
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    cooldown:
+      default-days: 7
