@@ -46,3 +46,8 @@ updates:
       interval: 'monthly'
     cooldown:
       default-days: 7
+    ignore:
+      - dependency-name: "node"
+        # TODO: stop ignoring 26 when it becomes LTS.
+        # NOTE: 25 will never be LTS, but starting with 27, odd numbers will.
+        versions: ["25", "26"]
