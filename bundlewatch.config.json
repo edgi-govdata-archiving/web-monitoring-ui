@@ -17,6 +17,7 @@
   ],
 
   "ci": {
+    "repoBranchBase": "main",
     "trackBranches": ["main"]
   }
 }
