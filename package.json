@@ -80,7 +80,7 @@
   "author": "",
   "license": "GPL-3.0",
   "engines": {
-    "node": "24.15.0"
+    "node": "24.22.1"
   },
   "browserslist": [
     "last 3 versions",

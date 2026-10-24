@@ -4,7 +4,7 @@ parameters:
   # Use this Node.js version for most jobs.
   primary-node-version:
     type: string
-    default: "24.15.0"
+    default: "24.22.1"
 
 commands:
   setup_npm:
