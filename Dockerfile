@@ -1,7 +1,6 @@
 ### Baseline image for development/test/build ###
 # We require a lot of extras for building (Python, GCC) because of Node-Zopfli.
 FROM node:24.22.1 as dev
-LABEL maintainer="enviroDGI@gmail.com"
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -31,7 +30,13 @@ RUN npm run build-production
 # It might feel ridiculous to build up all the same things again, but the
 # resulting image is less than half the size!
 FROM node:24.22.1-slim as release
-LABEL maintainer="enviroDGI@gmail.com"
+
+LABEL org.opencontainers.image.title="web-monitoring-ui" \
+      org.opencontainers.image.description="User-friendly front-end to EDGI Web Monitoring" \
+      org.opencontainers.image.authors="Environmental Data & Governance Initiative (EDGI)" \
+      org.opencontainers.image.url="https://envirodatagov.org/" \
+      org.opencontainers.image.source="https://github.com/edgi-govdata-archiving/web-monitoring-ui" \
+      org.opencontainers.image.licenses="GPL-3.0"
 
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 
