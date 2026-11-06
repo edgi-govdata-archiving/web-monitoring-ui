@@ -88,7 +88,7 @@ jobs:
             docker push envirodgi/ui:latest
 
 workflows:
-  build:
+  ci:
     jobs:
       - build:
           filters:
@@ -102,8 +102,21 @@ workflows:
           filters:
             branches:
               ignore: release
+      - publish_docker:
+          requires:
+            - build
+            - build_docker
+            - test
+          filters:
+            branches:
+              only:
+                - main
 
-  build-and-publish:
+  # TODO: consider removing this workflow. We are trialling publishing Docker
+  # images for every push to `main` in order to simplify ops, so we are no
+  # longer actively updating `release`. If we decide to stick with that, we can
+  # remove this whole workflow.
+  publish-release:
     jobs:
       - build:
           filters:
